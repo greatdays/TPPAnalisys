@@ -1,6 +1,7 @@
 ﻿@page
 @model DeveloperPortal.Pages.DashboardModel
 
+
 <div class="welcome-box">
     <h2 style="color:#135B79">Welcome to your Dashboard</h2>
     <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
@@ -11,7 +12,16 @@
 
     <div style="width:100%;justify-content:space-between;display:flex">
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">New Projects Submitted</span>
+            <span class="dashboard-summary-header text-color">New Projects Submitted
+                <span style="float:right">(@Model.RecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:scroll;scroll-behavior:smooth;scrollbar-width:thin">
+                
+                @for (int index = 0; index < Model.NewProjectsList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.NewProjectsList[index].ToString()</span>
+                }
+            </div>
         </div>
         <div class="dashboard-summary-container">
             <span class="dashboard-summary-header text-color">Plan Review</span>
@@ -28,5 +38,5 @@
     </div>
 </div>
 @{
-
+    //Model.OnGet();
 }
