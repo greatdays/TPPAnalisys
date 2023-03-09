@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+  margin-bottom: 60px;  
 }
 
 /* application styles */
@@ -27,7 +27,7 @@ body {
     border: solid 1px #dadada;
     display: inline-block;
     float: left;
-    height: 200px;
+    height: 300px;
 }
 .dashboard-summary-header {
     background-color: #DADADA;
