@@ -30,11 +30,11 @@ body {
     height: 300px;
 }
 .dashboard-summary-header {
-    background-color: #DADADA;
+    background-color: #f3f3f3;
     padding: 5px;
     width: 100%;
     display: inline-block;
-    border-bottom: solid 1px #a0a0a0;
+    border-bottom: 2px solid #dee2e6;
 }
 .text-color{
     color:darkslategray;
@@ -49,4 +49,7 @@ body {
     width: 100%;
     /*border: solid 1px #ccc;*/
     padding: 5px;
+}
+.text-bold{
+    font-weight:bold;
 }
