@@ -1,6 +1,7 @@
 ﻿@page
 @model DeveloperPortal.Pages.DashboardModel
 
+
 <div class="welcome-box">
     <h2 style="color:#135B79">Welcome to your Dashboard</h2>
     <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
@@ -11,22 +12,71 @@
 
     <div style="width:100%;justify-content:space-between;display:flex">
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">New Projects Submitted</span>
+            <span class="dashboard-summary-header text-color text-bold">New Projects Submitted
+                <span style="float:right">(@Model.NewProjRecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                
+                @for (int index = 0; index < Model.NewProjectsList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.NewProjectsList[index]</span>
+                }
+            </div>
         </div>
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">Plan Review</span>
+            <span class="dashboard-summary-header text-color text-bold">
+                Plan Review
+                <span style="float:right">(@Model.PlanReviewRecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+
+                @for (int index = 0; index < Model.PlanReviewList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.PlanReviewList[index]</span>
+                }
+            </div>
         </div>
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">Site Inspection</span>
+            <span class="dashboard-summary-header text-color text-bold">
+                Site Inspection
+                <span style="float:right">(@Model.SiteInspectionRecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+
+                @for (int index = 0; index < Model.SiteInspectionList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.SiteInspectionList[index]</span>
+                }
+            </div>
         </div>
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">NAC</span>
+            <span class="dashboard-summary-header text-color text-bold">
+                NAC
+                <span style="float:right">(@Model.NACRecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+
+                @for (int index = 0; index < Model.NACInspectionList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.NACInspectionList[index]</span>
+                }
+            </div>
         </div>
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color">Completed Certification</span>
+            <span class="dashboard-summary-header text-color text-bold">
+                Completed Certification
+                <span style="float:right">(@Model.CompletedCertRecordCount)</span>
+            </span>
+            <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+
+                @for (int index = 0; index < Model.CompletedCertList.Count; index++)
+                {
+                    <span style="display:inline-block">@Model.CompletedCertList[index]</span>
+                }
+            </div>
         </div>
     </div>
 </div>
 @{
-
+    //Model.OnGet();
 }
