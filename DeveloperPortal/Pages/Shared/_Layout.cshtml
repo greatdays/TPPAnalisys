@@ -7,13 +7,64 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
+
+    <script>
+        document.addEventListener('scroll', function (e) {
+            var developerPortalNavBar = document.getElementById('developerPortalNavBar');
+            lastKnownScrollPosition = window.scrollY;
+            if (lastKnownScrollPosition > 98) {
+                developerPortalNavBar.style.top = "0px";
+            } else {
+                developerPortalNavBar.style.top = "101px";
+            }
+        });
+    </script>
+
 </head>
 <body>
-    <div style="width:100%;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;padding-top:5px; padding-bottom:10px;margin-bottom:5px">
-        <img src="~/logo.png" style="width:100px;padding-left:5px;padding-right:10px;" />
-        <a class="navbar-brand" asp-area="" asp-page="/Index">DeveloperPortal</a>
-    </div>
-    <div class="container">
+    <script src="//navbar.lacity.org/global_nav.js"></script>
+    <header id="header-navs">
+        <div class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow topNavBar">
+            <div class="navbarContainer topNavBar-container">
+                <div class="navbar-header">
+                    <div class="navBarIdentity">
+                        <a class="navBarIdentityHome navbar-brand">
+                            <img src="~/logo.png" />
+                        </a>
+                        <span class="navBarTitle"> Developer Portal</span>
+                    </div>
+                    <div class="navBar-decor"></div>
+                </div>
+            </div>
+        </div>
+        <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
+            <div id="leftMenu collapse navbar-collapse">
+                <ul class="navbar-nav botNav-left-hide">
+                    <li class="nav-item navItem-decor">
+                        <a class="nav-link nav-link-basic" href='~/dashboard'>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item navItem-decor">
+                        <a class="nav-link nav-link-basic" href='~/PlanReview'>
+                            PlanReview
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="rightMenu">
+                <div class="SignInContatiner">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Sign up", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                        <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container body-content">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

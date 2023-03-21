@@ -1,0 +1,151 @@
+﻿@page
+@model DeveloperPortal.Pages.PlanReview.IndexModel
+@{
+}
+
+<div class="page-header-box">
+    <div class="row">
+        <div class="col-6">
+            <h2 style="color:#135B79">Plan Review - Serenity Apt</h2>
+        </div>
+        <div class="col-6 text-right ">
+            <button type="button" class="btn btn-sm btn-primary">Add Plan Review Folder </button>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="page-content">
+    <div class="accordion" id="accfolder">
+        @for (int index = 0; index < Model.PlanReviewFolders.Count; index++)
+        {
+            var accId = "accheader" + index;
+            var collapseId = "collapse" + index;
+            var showcss = index == 0 ? "show" : "";
+            var planReviewFolder = Model.PlanReviewFolders[index];
+            <div class="accordion-item">
+
+                <h2 class="accordion-header" id="@accId">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target='@("#" + collapseId)' aria-expanded="false" aria-controls="@collapseId">
+                        @planReviewFolder.Name
+                    </button>
+                </h2>
+                <div id="@collapseId" class='@("accordion-collapse collapse " +showcss )' aria-labelledby="@accId" data-bs-parent="#accfolder">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-12 text-right">
+                                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+                                    <div class="btn-group" role="group">
+                                        <button id="btnGroupDrop1" type="button" class="btn btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="glyphicon glyphicon-nav" aria-hidden="true"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                            <li><a class="dropdown-item" href="#">Upload File</a></li>
+                                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
+                                            <li><a class="dropdown-item" href="#">Edit Folder</a></li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <a class="" href="#">Files</a>
+                            </div>
+                            <div class="col-12">
+                                <table id="tblFiles" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Share with NAC	</th>
+                                            <th>Date</th>
+                                            <th>Filename</th>
+                                            <th>Category	 </th>
+                                            <th>Uploaded By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var planReviewFile in planReviewFolder.Files)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <input checked="@planReviewFile.ShareWithNAC"
+                                                           id="isActive"
+                                                           name="isActive"
+                                                           type="checkbox"
+                                                           value="@planReviewFile.ShareWithNAC" />
+
+
+                                                </td>
+                                                <td>@planReviewFile.UploadedDate</td>
+                                                <td>@planReviewFile.Name</td>
+                                                <td>@planReviewFile.FilePath</td>
+                                                <td>@planReviewFile.UploadedBy</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="row">
+
+                            <div class="col-12 text-right ">
+                                <button type="button" class="btn btn-sm btn-primary">Approve</button> &nbsp; &nbsp;
+                                <button type="button" class="btn btn-sm btn-primary">Not approve </button>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="row">
+                            <div class="col-12">
+                                <a class="" href="#">Notes</a>
+                            </div>
+                            <div class="col-12">
+                                <table id="tblNotes" class="table table-striped" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Name</th>
+                                            <th>Note	 </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var planReviewNote in planReviewFolder.Notes)
+                                        {
+                                            <tr>
+
+                                                <td>@planReviewNote.UploadedDate</td>
+                                                <td>@planReviewNote.Name</td>
+                                                <td>@planReviewNote.Note</td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tblFiles').DataTable({
+            "bInfo": false,
+            "paging": false,
+            "ordering": false,
+            "searching": false
+        });
+        $('#tblNotes').DataTable();
+    });
+</script>
