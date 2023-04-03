@@ -53,6 +53,9 @@ body {
 .text-bold{
     font-weight:bold;
 }
+.dashboard-anchor-plan-review{
+    display:inline-block;
+}
 .body-content {
     margin-top: 50px;
 }
