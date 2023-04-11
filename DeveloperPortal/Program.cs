@@ -32,4 +32,7 @@ app.UseAuthorization();
 app.UseSession();
 app.MapRazorPages();
 
+app.MapControllerRoute(name: "default",
+    pattern: "{controller=Dashboard}/{action=GetProjectData}");
+
 app.Run();
