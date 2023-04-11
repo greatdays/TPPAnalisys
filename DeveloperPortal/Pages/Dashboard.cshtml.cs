@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
+using Newtonsoft.Json;
 using System.Data;
 
 namespace DeveloperPortal.Pages
@@ -28,7 +29,19 @@ namespace DeveloperPortal.Pages
             Configuration = configBuilder.Build();
 
             DataTable dt = GetAllConstructionCases();
-            
+
+            object objDashboardData = HttpContext.Session.GetString("DashboardData");
+
+            if (objDashboardData != null)
+            {
+                dt = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("DashboardData"));
+            }
+            else
+            {//store the data in a Session
+                dt = GetAllConstructionCases();
+                HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
+            }
+
             //TODO: Filter conditions to be revised
             DataRow[] drNewProjColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
             DataRow[] drPlanReviewColl = dt.Select("Status='Ready for Design Review'");
