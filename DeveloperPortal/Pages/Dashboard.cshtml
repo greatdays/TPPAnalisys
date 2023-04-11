@@ -1,7 +1,6 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.DashboardModel
 
-
 <div class="welcome-box">
     <h2 style="color:#135B79">Welcome to your Dashboard</h2>
     <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
@@ -12,15 +11,18 @@
 
     <div style="width:100%;justify-content:space-between;display:flex">
         <div class="dashboard-summary-container">
-            <span class="dashboard-summary-header text-color text-bold">New Projects Submitted
+            <span class="dashboard-summary-header text-color text-bold">
+                New Projects Submitted
                 <span style="float:right">(@Model.NewProjRecordCount)</span>
             </span>
             <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                
-                @for (int index = 0; index < Model.NewProjectsList.Count; index++)
-                {
-                    <span style="display:inline-block">@Model.NewProjectsList[index]</span>
-                }
+                <table id="tblNewProjects" class="display" style="width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="dashboard-summary-container">
@@ -29,11 +31,13 @@
                 <span style="float:right">(@Model.PlanReviewRecordCount)</span>
             </span>
             <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-
-                @for (int index = 0; index < Model.PlanReviewList.Count; index++)
-                {
-                    <a class="dashboard-anchor-plan-review" href="../planReview">@Model.PlanReviewList[index]</a>
-                }
+                <table id="tblPlanReview" class="display" style="width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="dashboard-summary-container">
@@ -42,11 +46,13 @@
                 <span style="float:right">(@Model.SiteInspectionRecordCount)</span>
             </span>
             <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-
-                @for (int index = 0; index < Model.SiteInspectionList.Count; index++)
-                {
-                    <span style="display:inline-block">@Model.SiteInspectionList[index]</span>
-                }
+                <table id="tblSiteInspection" class="display" style="width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="dashboard-summary-container">
@@ -55,11 +61,13 @@
                 <span style="float:right">(@Model.NACRecordCount)</span>
             </span>
             <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-
-                @for (int index = 0; index < Model.NACInspectionList.Count; index++)
-                {
-                    <span style="display:inline-block">@Model.NACInspectionList[index]</span>
-                }
+                <table id="tblNACInspection" class="display" style="width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="dashboard-summary-container">
@@ -68,15 +76,71 @@
                 <span style="float:right">(@Model.CompletedCertRecordCount)</span>
             </span>
             <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-
-                @for (int index = 0; index < Model.CompletedCertList.Count; index++)
-                {
-                    <span style="display:inline-block">@Model.CompletedCertList[index]</span>
-                }
+                <table id="tblCompletedCert" class="display" style="width:100%">
+                    <thead style="display:none">
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
 </div>
 @{
-    //Model.OnGet();
+
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+           /* $.ajax({
+                "url": '/Dashboard/GetProjectData',
+                "dataSrc": "",
+
+                "success": function (data) {
+                    console.log("GetProjectData");
+                    console.log(data);
+                }
+            });*/
+
+            PopulateData('tblNewProjects', 'NewProjects');
+            PopulateData('tblPlanReview', 'PlanReview');
+            PopulateData('tblSiteInspection', 'SiteInspection')
+            PopulateData('tblNACInspection', 'NACInspection');
+            PopulateData('tblCompletedCert', 'CompletedCert');
+        });
+
+        function PopulateData(tableName, dashboardCategory) {
+            $('#' + tableName).DataTable({
+                ajax: {
+                    url: '/Dashboard/GetProjectData',
+                    data: { name: dashboardCategory },
+                    type: 'POST',
+                    "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    dataType: 'json',
+                    dataSrc: ''
+                },
+                sorting: false,
+                searching: false,
+                paging: false,
+                info: false,
+                header: false,
+                columns: [
+                    { data: 'projectName',
+                        render: function (data, type, row, meta) { // render event defines the markup of the cell text
+                            if (dashboardCategory == 'PlanReview') {
+                                var a = '<a class="dashboard-anchor-plan-review" href="../planReview">' + row.projectName + '</a>';
+                                return a;
+                            }
+                            else {
+                                return data;
+                            }
+                        }
+                    }
+                ]
+            });
+        }
+    </script>
 }
