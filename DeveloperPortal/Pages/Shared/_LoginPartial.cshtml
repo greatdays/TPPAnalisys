@@ -1,0 +1,29 @@
+﻿
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+   
+    DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+}
+
+<ul class="nav navbar-nav navbar-right">
+@if (usr.UserID != 0)    
+{
+    <li class="nav-item">
+            Welcome <a class="Accountbtn" aria-label="My Account" href="#">@usr.FullName</a>
+    </li>
+    <li class="nav-item">
+            &nbsp;<a class="Accountbtn" aria-label="My Account" href="@Url.Action("LogOff", "Login")">Logout</a>
+    </li>
+   @* <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Login/LogOff" asp-route-returnUrl="@Url.Action("LogOff", "Login")">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        </form>
+    </li>*@
+}
+else
+{
+        <li>@Html.ActionLink("Sign up", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+}
+</ul>

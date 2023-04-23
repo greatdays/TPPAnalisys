@@ -1,9 +1,8 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace DeveloperPortal.Models
+namespace DeveloperPortal.Models.IDM
 {
     public static class SessionExtensions
     {
@@ -16,7 +15,7 @@ namespace DeveloperPortal.Models
         {
             var value = session.GetString(key);
 
-            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
+            return value == null ? default : JsonConvert.DeserializeObject<T>(value);
         }
     }
 }

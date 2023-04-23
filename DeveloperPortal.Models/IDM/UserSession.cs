@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DeveloperPortal.Models
+namespace DeveloperPortal.Models.IDM
 {
     public class UserSession
     {
@@ -20,7 +20,7 @@ namespace DeveloperPortal.Models
         public DateTime LastLoginDate { get; set; }
         public string UserImage { get; set; }
         public string Provider { get; set; }
-        public Nullable<bool> IsFirstTimeLogin { get; set; }
+        public bool? IsFirstTimeLogin { get; set; }
         public string JWTToken { get; set; }
         public bool FromInternalApp { get; set; } // logged in from internal application
         public bool Impersonate { get; set; } // logged in as Impersonate true/false.
@@ -81,7 +81,7 @@ namespace DeveloperPortal.Models
                     value = string.Join(",", GetUserSession(context).Roles);
                     break;
                 case "jwttoken":
-                    value = (GetUserSession(context).JWTToken) != null ? GetUserSession(context).JWTToken.ToString() : "";
+                    value = GetUserSession(context).JWTToken != null ? GetUserSession(context).JWTToken.ToString() : "";
                     break;
                 default:
                     value = context.Session.GetString(key);
@@ -119,8 +119,8 @@ namespace DeveloperPortal.Models
                 JWTToken = jwtToken,
                 ModifiedOn = authenticateResponse.ModifiedOn,
                 FromInternalApp = true,
-                Impersonate = null != context.Request.GetTypedHeaders().Referer ? (context.Request.GetTypedHeaders().Referer.ToString().Contains("RefNoSearch") ? true : false) : false,
-                ImpersonateUser = null != context.Request.GetTypedHeaders().Referer ? (context.Request.GetTypedHeaders().Referer.ToString().Contains("RefNoSearch") ? HttpUtility.ParseQueryString(context.Request.GetTypedHeaders().Referer.Query)["UserName"] : "") : "",
+                Impersonate = null != context.Request.GetTypedHeaders().Referer ? context.Request.GetTypedHeaders().Referer.ToString().Contains("RefNoSearch") ? true : false : false,
+                ImpersonateUser = null != context.Request.GetTypedHeaders().Referer ? context.Request.GetTypedHeaders().Referer.ToString().Contains("RefNoSearch") ? HttpUtility.ParseQueryString(context.Request.GetTypedHeaders().Referer.Query)["UserName"] : "" : "",
                 Applications = authenticateResponse.ApplicationDetail?
                                     .Select(x => new AppDetail
                                     {
@@ -152,7 +152,7 @@ namespace DeveloperPortal.Models
         public string Email { get; set; }
         public bool IsAuthenticated { get; set; }
         public bool? IsFirstTimeLogin { get; set; }
-        public Nullable<bool> IsLocked { get; set; } // Check If Account is locked.
+        public bool? IsLocked { get; set; } // Check If Account is locked.
         public bool IsMaxUnsuccessfulAttempt { get; set; } // Check if last unsuccessful log-in attempts
         public List<string> Roles { get; set; }
         public string ErrorMessage { get; set; }
@@ -220,13 +220,13 @@ namespace DeveloperPortal.Models
         public string Email { get; set; }
         public bool isAuthenticated { get; set; }
         public bool? IsFirstTimeLogin { get; set; }
-        public Nullable<bool> IsLocked { get; set; } = false;// Check If Account is locked.
+        public bool? IsLocked { get; set; } = false;// Check If Account is locked.
         public bool IsMaxUnsuccessfulAttempt { get; set; } = false;// Check if last unsuccessful log-in attempts
         public string ErrorMessage { get; set; }
         public int UserId { get; set; }
         public string Provider { get; set; }
         public DateTime LastLogOn { get; set; }
-        public Nullable<System.DateTime> ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
         public List<ApplicationDetail> ApplicationDetail { get; set; }
         public string JWTToken { get; set; } // Set during authentication
         public UserSystemDetail UserSystemDetail { get; set; }
@@ -270,11 +270,11 @@ namespace DeveloperPortal.Models
         public string RegistrationActivationCode { get; set; }
         public string AccountReason { get; set; }
         public string ContactPhone { get; set; }
-        public Nullable<bool> IsLocked { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public Nullable<bool> IsFirstTimeLogin { get; set; }
+        public bool? IsLocked { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsFirstTimeLogin { get; set; }
         public DateTime LastLoginDate { get; set; }
-        public Nullable<DateTime> ModifiedOn { get; set; }
+        public DateTime? ModifiedOn { get; set; }
         public List<UserContactDetail> ContactList { get; set; }
         public UserProfileDetail ExtendedUserProfile { get; set; }
         public List<ApplicationDetail> AppList { get; set; }
@@ -288,7 +288,7 @@ namespace DeveloperPortal.Models
     /// </summary>
     public class UserContactDetail
     {
-        public Nullable<int> ContactTypeId { get; set; }
+        public int? ContactTypeId { get; set; }
         public string ContactNumber { get; set; }
     }
     #endregion
@@ -329,7 +329,7 @@ namespace DeveloperPortal.Models
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
-        public Nullable<bool> IsFirstTimeLogin { get; set; }
+        public bool? IsFirstTimeLogin { get; set; }
         public string SourceApp { get; set; } //Used in security token exchange between application; This may not be IDM systems AppKey
         public string TargetApp { get; set; } //Used in security token exchange between application; This may not be IDM systems AppKey
         public UserSystemDetail UserSystemDetail { get; set; }
@@ -367,10 +367,10 @@ namespace DeveloperPortal.Models
         public string RegistrationActivationCode { get; set; }
         public string TemporaryPassword { get; set; }
         public DateTime LastLoginDate { get; set; }
-        public Nullable<bool> IsFirstTimeLogin { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public bool? IsFirstTimeLogin { get; set; }
+        public bool? IsActive { get; set; }
         //public List<ContactDetail> ContactList { get; set; }
-        public Nullable<bool> IsLocked { get; set; } // Check If Account is locked.
+        public bool? IsLocked { get; set; } // Check If Account is locked.
         public bool IsMaxUnsuccessfulAttempt { get; set; } // Check if last unsuccessful log-in attempts
         //public UserProfile ExtendedUserProfile { get; set; }
         public string JWTToken { get; set; }

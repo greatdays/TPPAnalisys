@@ -1,4 +1,4 @@
-﻿using DeveloperPortal.Models;
+﻿using DeveloperPortal.Models.IDM;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

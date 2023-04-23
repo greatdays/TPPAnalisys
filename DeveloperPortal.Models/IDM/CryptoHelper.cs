@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeveloperPortal.Models
+namespace DeveloperPortal.Models.IDM
 {
-   public static  class CryptoHelper
+    public static class CryptoHelper
     {
         private static string passPhrase = "Pas5pr@se"; // can be any string
         private static string saltValue = "{3Di-Inc-USA}";        // can be any string
