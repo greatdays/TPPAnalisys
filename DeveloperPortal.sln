@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal", "DeveloperPortal\DeveloperPortal.csproj", "{B58B00D7-62EE-4FF5-88FA-4CE529E8CC62}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2FF1849B-AF80-40C7-BDC4-94A8B7E5A52E} = {2FF1849B-AF80-40C7-BDC4-94A8B7E5A52E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.ServiceClient", "DeveloperPortal.ServiceClient\DeveloperPortal.ServiceClient.csproj", "{2FF1849B-AF80-40C7-BDC4-94A8B7E5A52E}"
 EndProject
