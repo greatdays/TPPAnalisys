@@ -1,203 +1,102 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.DashboardModel
+
 <style>
-    .table-responsive .row {
-        margin-bottom: 15px;
+    table.dataTable.stripe > tbody > tr.odd > *, table.dataTable.display > tbody > tr.odd > * {
+        box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
     }
-
-    thead.thead-light th {
-        padding-bottom: 10px !important;
-        min-width: 75px;
-    }
+   
 </style>
-
-<div class="row custom_row_margin">
-
-    <div id="workFlowDiv" class="col-md-12 position-relative">
-        <h1 class="fs-title">My Dashboard</h1>
-        <div class="page-title left-data" id="divCollapseAll">
-            <ul class="quick-action-link noprint">
-                <li id="CollapseAll" class="mr-2">
-                    <button type="button" class="btn btn-primary " onclick="CollapseAll()">
-                        <span height="20" width="20" id="CollapseIn">Hide All Sections<span class="fas fa-chevron-up"></span></span>
-                        <span height="20" width="20" style="display: none;" id="CollapseOut">Show All Sections<span class="fas fa-chevron-down"></span></span>
-                    </button>
-                </li>
-                <li class="back-to-search-btn-container mr-2" style="padding-right: 1em; display: none;">
-                    <a href="/AAHR.UI/ComCon/Tab/RenderTab?tabName=Search%20for%20Accessible%20Housing&amp;IsSearchFilterApplied=True" class="btn btn-primary back-to-search" style="width: 13em;padding: 7px 6px 6px 0px;">
-                        <span height="20" width="20" id="back-to-search"><span class="fas fa-arrow-left" style="padding-right: 0.3em;"></span>Back to search page</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        </div>
-
-        </div>
-<div class="dashboard-content">
-    <div class="row GridviewViewRow">
-        <div class="col-sm-12">
-            <gridv>
-                <div class="card penal-details backgroundwhite dataTable-changes" id="cardView_NewProject">
-                    <h2 class="card-header accordion-header">
-                        <button type="button" class="card-header-title m-0" id="gridView_NewProject">
-                            New Projects Submitted<span>(@Model.NewProjRecordCount)</span>
-                        </button>
-                    </h2>
-                    <div class="card-body table-content" id="divGridView_NewProject" style="position: relative;">
-                        <div class="table-responsive">
-                            <div class="row m-0">
-                                <div class="col-sm-12">
-                                    <table tabindex="0" id="tableGridView_NewProject" class="datatbl table table-bordered dataTable no-footer" border="1">
-                                        <thead class="thead-light">
-                                            <tr role="row">
-                                                <th scope="col" class="sorting" aria-controls="tableGridView_NewProject" rowspan="1" colspan="1" style="width: 263px;" role="columnheader" aria-sort="none">
-                                                    Name    @* <button type="button" class="btn-th noprint" aria-label="Name. Unsorted. Sort ascending.">↕</button>*@
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </gridv>
-        </div>
+<div class="page-header-box padding-15">
+    <div class="welcome-box">
+        <h2 style="">Welcome to your Dashboard</h2>
+        <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
     </div>
-    <br />
-    <div class="row GridviewViewRow">
-        <div class="col-sm-12">
-            <gridv>
-                <div class="card penal-details backgroundwhite dataTable-changes" id="cardView_PlanReview">
-                    <h2 class="card-header accordion-header">
-                        <button type="button" class="card-header-title m-0" id="gridView_PlanReview">
-                            Plan Review
-                            <span>(@Model.PlanReviewRecordCount)</span>
-                        </button>
-                    </h2>
-                    <div class="card-body table-content" id="divGridView_PlanReview" style="position: relative;">
-                        <div class="table-responsive">
-                            <div class="row m-0">
-                                <div class="col-sm-12">
-                                    <table tabindex="0" id="tableGridView_PlanReview" class="datatbl table table-bordered dataTable no-footer" border="1">
-                                        <thead class="thead-light">
-                                            <tr role="row">
-                                                <th scope="col" class="sorting" aria-controls="tableGridView_PlanReview" rowspan="1" colspan="1"  role="columnheader" aria-sort="none">
-                                                    Name
-                                                    Name    @* <button type="button" class="btn-th noprint" aria-label="Name. Unsorted. Sort ascending.">↕</button>*@
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+</div>
+<div class="page-content-box">
+    <h3 class="title" style="color:#135B79">My Projects</h3>
+    <div class="row padding-10">
+        <div class="col-md-15 ">
+            <div class="dashboard-summary-container">
+                <span class="dashboard-summary-header text-color text-bold">
+                    New Projects Submitted
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblNewProjects" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-            </gridv>
+            </div>
         </div>
-    </div>
-    <br />
-    <div class="row GridviewViewRow">
-        <div class="col-sm-12">
-            <gridv>
-                <div class="card penal-details backgroundwhite dataTable-changes" id="cardView_SiteInspection">
-                    <h2 class="card-header accordion-header">
-                        <button type="button" class="card-header-title m-0" id="gridView_SiteInspection">
-                            Site Inspection<span>(@Model.SiteInspectionRecordCount)</span>
-                        </button>
-                    </h2>
-                    <div class="card-body table-content" id="divGridView_SiteInspection" style="position: relative;">
-                        <div class="table-responsive">
-                            <div class="row m-0">
-                                <div class="col-sm-12">
-                                    <table tabindex="0" id="tableGridView_SiteInspection" class="datatbl table table-bordered dataTable no-footer" border="1">
-
-                                        <thead class="thead-light">
-                                            <tr role="row">
-                                                <th scope="col" class="sorting" aria-controls="tableGridView_SiteInspection" rowspan="1" colspan="1" style="width: 263px;" role="columnheader" aria-sort="none">
-                                                    Name    @* <button type="button" class="btn-th noprint" aria-label="Name. Unsorted. Sort ascending.">↕</button>*@
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-15">
+            <div class="dashboard-summary-container">
+                <span class="dashboard-summary-header text-color text-bold">
+                    Plan Review
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblPlanReview" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-            </gridv>
+            </div>
         </div>
-    </div>
-    <br />
-    <div class="row GridviewViewRow">
-        <div class="col-sm-12">
-            <gridv>
-                <div class="card penal-details backgroundwhite dataTable-changes" id="cardView_NAC">
-                    <h2 class="card-header accordion-header">
-                        <button type="button" class="card-header-title m-0" id="gridView_NAC">
-                            NAC<span>(@Model.NACRecordCount)</span>
-                        </button>
-                    </h2>
-                    <div class="card-body table-content" id="divGridView_NAC" style="position: relative;">
-                        <div class="table-responsive">
-                            <div class="row m-0">
-                                <div class="col-sm-12">
-                                    <table tabindex="0" id="tableGridView_NACInspectionList" class="datatbl table table-bordered dataTable no-footer" border="1">
-                                        <thead class="thead-light">
-                                            <tr role="row">
-                                                <th scope="col" class="sorting" aria-controls="tableGridView_NACInspectionList" rowspan="1" colspan="1" style="width: 263px;" role="columnheader" aria-sort="none">
-                                                    Name    @* <button type="button" class="btn-th noprint" aria-label="Name. Unsorted. Sort ascending.">↕</button>*@
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-15">
+            <div class="dashboard-summary-container">
+                <span class="dashboard-summary-header text-color text-bold">
+                    Site Inspection
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblSiteInspection" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-            </gridv>
+            </div>
         </div>
-    </div>
-    <br />
-    <div class="row GridviewViewRow">
-        <div class="col-sm-12">
-            <gridv>
-                <div class="card penal-details backgroundwhite dataTable-changes" id="cardView_CompletedCert">
-                    <h2 class="card-header accordion-header">
-                        <button type="button" class="card-header-title m-0" id="gridView_CompletedCert">
-                            Completed Certification
-                            <span>(@Model.CompletedCertRecordCount)</span>
-                        </button>
-                    </h2>
-                    <div class="card-body table-content" id="divGridView_CompletedCert" style="position: relative;">
-                        <div class="table-responsive">
-                            <div class="row m-0">
-                                <div class="col-sm-12">
-                                    <table tabindex="0" id="tableGridView_CompletedCertList" class="datatbl table table-bordered dataTable no-footer" border="1">
-
-                                        <thead class="thead-light ">
-                                            <tr role="row">
-                                              
-                                                <th scope="col" class="sorting" aria-controls="tableGridView_CompletedCertList" rowspan="1" colspan="1" style="width: 263px;" role="columnheader" aria-sort="none">
-                                                    Name    @* <button type="button" class="btn-th noprint" aria-label="Name. Unsorted. Sort ascending.">↕</button>*@
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                      
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-md-15">
+            <div class="dashboard-summary-container">
+                <span class="dashboard-summary-header text-color text-bold">
+                    NAC
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblNACInspection" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-            </gridv>
+            </div>
         </div>
+        <div class="col-md-15">
+            <div class="dashboard-summary-container">
+                <span class="dashboard-summary-header text-color text-bold">
+                    Completed Certification
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblCompletedCert" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            </div>
     </div>
-    <br />
-
 </div>
 @{
 
@@ -205,20 +104,11 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
-            var isCollapsed = false;
-            accrodianSlideToggle("#gridView_NewProject", "#divGridView_NewProject", isCollapsed);
-            accrodianSlideToggle("#gridView_PlanReview", "#divGridView_PlanReview", isCollapsed);
-            accrodianSlideToggle("#gridView_SiteInspection", "#divGridView_SiteInspection", isCollapsed);
-            accrodianSlideToggle("#gridView_NAC", "#divGridView_NAC", isCollapsed);
-            accrodianSlideToggle("#gridView_CompletedCert", "#divGridView_CompletedCert", isCollapsed);
-
-            PopulateData('tableGridView_NewProject', 'NewProjects');
-            PopulateData('tableGridView_PlanReview', 'PlanReview');
-            PopulateData('tableGridView_SiteInspection', 'SiteInspection')
-            PopulateData('tableGridView_NACInspectionList', 'NACInspection');
-            PopulateData('tableGridView_CompletedCertList', 'CompletedCert');
-
-           
+            PopulateData('tblNewProjects', 'NewProjects');
+            PopulateData('tblPlanReview', 'PlanReview');
+            PopulateData('tblSiteInspection', 'SiteInspection')
+            PopulateData('tblNACInspection', 'NACInspection');
+            PopulateData('tblCompletedCert', 'CompletedCert');
         });
 
         function PopulateData(tableName, dashboardCategory) {
@@ -234,20 +124,21 @@
                     dataSrc: ''
                 },
                 sorting: false,
-                searching: true,
-                paging: true,
+                searching: false,
+                paging: false,
                 info: false,
                 header: false,
                 columns: [
-                    { data: 'projectName',
+                    {
+                        data: 'projectName',
                         render: function (data, type, row, meta) { // render event defines the markup of the cell text
+                            var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.projectName + '</a>';
                             if (dashboardCategory == 'PlanReview') {
-                                var a = '<a class="dashboard-anchor-plan-review" href="../planReview">' + row.projectName + '</a>';
+                                 a = '<a class="dashboard-anchor-plan-review" href="../planReview">' + row.projectName + '</a>';
+                                
+                            }
                                 return a;
-                            }
-                            else {
-                                return data;
-                            }
+                            
                         }
                     }
                 ]
