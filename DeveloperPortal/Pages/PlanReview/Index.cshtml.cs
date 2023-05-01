@@ -2,6 +2,7 @@ using DeveloperPortal.Models.PlanReview;
 using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 
 namespace DeveloperPortal.Pages.PlanReview
 {
@@ -11,9 +12,16 @@ namespace DeveloperPortal.Pages.PlanReview
     public class IndexModel : PageModel
     {
         /// <summary>
+        /// Configuration
+        /// </summary>
+        public IConfigurationRoot Configuration { get; set; }
+        /// <summary>
         /// Plan Review Folders
         /// </summary>
         public List<PlanReviewFolder> PlanReviewFolders { get; set; } = new List<PlanReviewFolder>();
+        /// <summary>
+        /// FolderModel
+        /// </summary>
         public FolderModel FolderModel { get; set; } = new FolderModel();
 
         /// <summary>
@@ -21,8 +29,23 @@ namespace DeveloperPortal.Pages.PlanReview
         /// </summary>
         public void OnGet()
         {
-            //API call
-            //FolderModel = AAHRServiceClient.GetFolderData("https://localhost:44363/", "0AAxyTJOy501BUk9PVA", "ARLT%20Arleta%20Park");
+            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            Configuration = configBuilder.Build();
+
+            try
+            {
+                //API call
+                var url = Configuration.GetSection("AAHRApiSettings:URL").Value;
+                var googleDrive = Configuration.GetSection("AAHRApiSettings:GoogleDrive").Value;
+                FolderModel = AAHRServiceClient.GetFolderData(url, googleDrive, "ARLT%20Arleta%20Park");
+                return;
+            }
+            catch
+            {
+                //Ignore for testing
+            }
+
             var folderModelList = new FolderModel();
             for (int i = 0; i < 4; i++)
             {
@@ -80,7 +103,7 @@ namespace DeveloperPortal.Pages.PlanReview
                 //PlanReviewFolders.Add(planReviewFolder);
 
                 folderModelList.Folders.Add(planReviewFolder);
-               
+
             }
             FolderModel = folderModelList;
         }
