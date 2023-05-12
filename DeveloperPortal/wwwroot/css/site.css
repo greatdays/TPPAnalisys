@@ -71,7 +71,7 @@ header._hcidla-service-portal-header._fixed-Header {
 body {
     /*font-family: Quicksand,Helvetica,Arial,sans-serif;*/
     font-family: 'Montserrat', sans-serif !important;
-    background: #f8f8f8 !important;
+    background: #F2F2F2 !important;
     -webkit-transition: background-color .3s ease;
     font-weight: 400;
     max-width: 100%;
@@ -186,13 +186,23 @@ body {
 
 .page-content-box {
     width: 100%;
-    border: solid 1px #ccc !IMPORTANT;
+    /*border: solid 1px #ccc !IMPORTANT;*/
     margin-bottom: 10px;
     background: WHITE;
     MARGIN-TOP: 15PX;
+    /*BORDER-RADIUS: 6PX;*/
+   /* box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);*/
+    PADDING: 10PX;
+}
+
+.content-box {
+    background-color: white;
+    width: 100%;
+    border: solid 1px #ccc !IMPORTANT;
+    margin-bottom: 25px;
     BORDER-RADIUS: 6PX;
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);
-    PADDING: 10PX;
+    padding-bottom: 10PX;
 }
 
 .page-content {
@@ -201,6 +211,8 @@ body {
 
 .title {
     font-weight: 700;
+    padding:15px 0px;
+    color:black;
 }
 
 h1.title {
@@ -2521,12 +2533,12 @@ ul.list-alpha {
 
 .btn-primary {
     color: #FFF !important;
-    background-color: #006381 !important;
-    border-color: #006381 !important;
+    background-color: #001D80 !important;
+    border-color: #001D80 !important;
 }
 
     .btn-primary:hover {
-        background-color: #006381 !important;
+        background-color: #001D80 !important;
         webkit-box-shadow: 0 2px 4px 0px rgba(6, 6, 6, 0.4);
         box-shadow: 0 2px 4px 0px rgba(6, 6, 6, 0.4);
         color: #fff !important;
@@ -2534,29 +2546,29 @@ ul.list-alpha {
     }
 
     .btn-primary:focus {
-        background-color: #006381 !important;
+        background-color: #001D80 !important;
         webkit-box-shadow: 0 2px 4px 0px rgba(6, 6, 6, 0.4);
         box-shadow: 0 2px 4px 0px rgba(6, 6, 6, 0.4);
         color: #fff !important;
     }
 
 .btn-outline-primary {
-    color: #006381 !important;
-    border-color: #006381 !important;
+    color: #001D80 !important;
+    border-color: #001D80 !important;
 }
 
     .btn-outline-primary:hover {
         color: #fff !important;
-        background-color: #006381 !important;
-        border-color: #006381 !important;
+        background-color: #001D80 !important;
+        border-color: #001D80 !important;
     }
 
     .btn-outline-primary:not(:disabled):not(.disabled).active,
     .btn-outline-primary:not(:disabled):not(.disabled):active,
     .show > .btn-outline-primary.dropdown-toggle {
         color: #FFF !important;
-        background-color: #006381 !important;
-        border-color: #006381 !important;
+        background-color: #001D80 !important;
+        border-color: #001D80 !important;
     }
 
 a.btn.btn-secondary {
@@ -2753,7 +2765,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 
 table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:after {
     opacity: 1;
-    color: #006381;
+    color: #001D80;
 }
 
 .dataTables_wrapper.form-inline.dt-bootstrap.no-footer {
@@ -2790,7 +2802,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 
     .pagination li.paginate_button.active a {
         color: #fff !important;
-        background: #006381;
+        background: #001D80;
     }
 
     .pagination li.paginate_button a {
@@ -3111,7 +3123,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 
         .vertical-tab-style .nav-pills .nav-link.active, .vertical-tab-style .nav-pills .show > .nav-link {
             color: #fff;
-            background-color: #006381;
+            background-color: #001D80;
         }
 
             .vertical-tab-style .nav-pills .nav-link.active .title, .vertical-tab-style .nav-pills .show > .nav-link .title {
@@ -3122,13 +3134,13 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
         max-width: 22px;
         width: 100%;
         height: 22px;
-        border: 2px solid #006381;
+        border: 2px solid #001D80;
         border-radius: 25px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 15px;
-        background: #006381;
+        background: #001D80;
         overflow: hidden;
     }
 
@@ -3181,11 +3193,11 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
         color: #006381;
     }
 
-    .Ahr-Property-Listing .Addyourfirstcontact h2 {
-        font-size: 18px;
-        font-weight: 500;
-        margin-bottom: 15px;
-    }
+.Ahr-Property-Listing .Addyourfirstcontact h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
 
 .Ahr-Property-Listing .add-dollar input.form-control {
     border-top-left-radius: 0 !important;
@@ -4589,7 +4601,9 @@ button#btnLogOut {
     display: none;
 }
 
-
+.card .accordion-header .card-header-title.downarrow::before {
+    color: #006381 !important;
+}
 
 ._custome-header {
     position: relative;

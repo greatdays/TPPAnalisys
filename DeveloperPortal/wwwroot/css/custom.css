@@ -31,15 +31,19 @@ body {
 }
 
 .dashboard-summary-header {
-    background-color: #f3f3f3;
-    padding: 5px;
+    background-color: #001D80;
+    padding: 8px;
     width: 100%;
     display: inline-block;
-    border-bottom: 2px solid #dee2e6;
+    border: solid 1px #ccc !IMPORTANT;
+    BORDER-RADIUS: 6PX 6px 0px 0px;
+    color: white;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);
+    padding-left: 15px;
 }
 
 .text-color {
-    color: darkslategray;
+    color: black;
 }
 
 .welcome-box {
@@ -50,7 +54,7 @@ body {
 }
 
     .welcome-box h2 {
-        color: #135B79;
+        color: #001D80;
         font-size: 25px;
     }
 
@@ -211,7 +215,7 @@ a.nav-link.nav-link-basic:hover {
 .bottomNavBar {
     display: flex;
     align-items: center;
-    background: #006381;
+    background: #001D80;
     height: 40px;
     position: fixed;
     width: 100%;
@@ -219,6 +223,7 @@ a.nav-link.nav-link-basic:hover {
     z-index: 1000;
     -webkit-transition: top .2s ease-out;
     transition: top .2s ease-out;
+    color:white;
 }
 
 

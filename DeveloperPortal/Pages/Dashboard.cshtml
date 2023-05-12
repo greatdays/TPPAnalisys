@@ -5,7 +5,6 @@
     table.dataTable.stripe > tbody > tr.odd > *, table.dataTable.display > tbody > tr.odd > * {
         box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
     }
-   
 </style>
 <div class="page-header-box padding-15">
     <div class="welcome-box">
@@ -13,12 +12,13 @@
         <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
     </div>
 </div>
-<div class="page-content-box">
-    <h3 class="title" style="color:#135B79">My Projects</h3>
-    <div class="row padding-10">
-        <div class="col-md-15 ">
-            <div class="dashboard-summary-container">
-                <span class="dashboard-summary-header text-color text-bold">
+<div class="page-content">
+
+    <h3 class="title" style="color:#000">My Projects</h3>
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
                     New Projects Submitted
                 </span>
                 <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
@@ -32,9 +32,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-15">
-            <div class="dashboard-summary-container">
-                <span class="dashboard-summary-header text-color text-bold">
+        <div class="col-md-4 ">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
                     Plan Review
                 </span>
                 <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
@@ -48,9 +48,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-15">
-            <div class="dashboard-summary-container">
-                <span class="dashboard-summary-header text-color text-bold">
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
                     Site Inspection
                 </span>
                 <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
@@ -64,9 +64,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-15">
-            <div class="dashboard-summary-container">
-                <span class="dashboard-summary-header text-color text-bold">
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
                     NAC
                 </span>
                 <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
@@ -80,9 +80,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-15">
-            <div class="dashboard-summary-container">
-                <span class="dashboard-summary-header text-color text-bold">
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
                     Completed Certification
                 </span>
                 <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
@@ -95,7 +95,7 @@
                     </table>
                 </div>
             </div>
-            </div>
+        </div>
     </div>
 </div>
 @{
@@ -134,11 +134,11 @@
                         render: function (data, type, row, meta) { // render event defines the markup of the cell text
                             var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.projectName + '</a>';
                             if (dashboardCategory == 'PlanReview') {
-                                 a = '<a class="dashboard-anchor-plan-review" href="../planReview">' + row.projectName + '</a>';
-                                
+                                a = '<a class="dashboard-anchor-plan-review" href="../planReview">' + row.projectName + '</a>';
+
                             }
-                                return a;
-                            
+                            return a;
+
                         }
                     }
                 ]
