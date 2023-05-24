@@ -31,12 +31,13 @@ body {
 }
 
 .dashboard-summary-header {
-    background-color: #f3f3f3;
+    background-color: #001D80;
+    color: #fff;
     padding: 8px;
     width: 100%;
     display: inline-block;
     border: solid 1px #ccc !IMPORTANT;
-    BORDER-RADIUS: 6PX 6px 0px 0px;
+    border-radius: 6PX 6px 0px 0px;
     box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);
     padding-left: 15px;
 }
