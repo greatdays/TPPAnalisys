@@ -223,7 +223,7 @@ a.nav-link.nav-link-basic:hover {
     z-index: 1000;
     -webkit-transition: top .2s ease-out;
     transition: top .2s ease-out;
-    color:white;
+    color: white;
 }
 
 
@@ -494,3 +494,97 @@ a.nav-link.nav-link-basic:hover {
 .paginate_button {
     padding: 0 !important;
 }
+
+.modal-footer.multi-button.btn-margin {
+    margin: 0 -15px -20px;
+}
+
+.modal-footer.multi-button button.btn.btn-Cancel {
+    background: #ededed;
+}
+
+.modal-footer.multi-button button {
+    border-radius: 0
+}
+
+.modal-content .multi-button button {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0
+}
+
+.modal-content {
+    border: 0
+}
+
+    .modal-content .modal-header {
+        align-items: center;
+        border-bottom: 0;
+        padding: 15px
+    }
+
+        .modal-content .modal-header .modal-title {
+            margin-bottom: 0;
+            line-height: 1.5;
+            font-size: 20px;
+            font-weight: bold
+        }
+
+    .modal-content .modal-body.fixedheight {
+        max-height: 400px;
+        overflow: auto
+    }
+
+    .modal-content .modal-body {
+        padding: 20px 15px
+    }
+
+        .modal-content .modal-body span.text-danger.asterisk-lg {
+            font-size: 20px !important
+        }
+
+    .modal-content .modal-footer {
+        border-top: 0;
+        padding: 0;
+        display: flex
+    }
+
+    .modal-content .singal-button button {
+        width: 100%;
+        padding: 10px 15px;
+        margin: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        cursor: pointer
+    }
+
+        .modal-content .singal-button button:hover {
+            background-color: #1a7ca5;
+            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+        }
+
+    .modal-content .multi-button button {
+        width: 100%;
+        padding: 10px 15px;
+        margin: 0
+    }
+
+    .modal-content .multi-button .btn-primary {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0
+    }
+
+        .modal-content .multi-button .btn-primary:hover {
+            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+        }
+
+    .modal-content .multi-button .btn.btn-light {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0
+    }
+
+        .modal-content .multi-button .btn.btn-light:hover {
+            box-shadow: 0 0 0 0 #d3d3d3,0 0 0 0 #d3d3d3
+        }

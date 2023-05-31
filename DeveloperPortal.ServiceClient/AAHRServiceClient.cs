@@ -13,11 +13,11 @@ namespace DeveloperPortal.ServiceClient
 {
     public class AAHRServiceClient
     {
-        
+
         public static FolderModel GetFolderData(string baseAddress, string driveID, string folderName)
         {
-            
-         
+
+
             var url = AAHRServiceConstant.GetFolderData + "?folderName=" + folderName + "&driveID=" + driveID;
             using (HttpClient client = new HttpClient())
             {
@@ -26,7 +26,7 @@ namespace DeveloperPortal.ServiceClient
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 HttpResponseMessage response;
-                response = client.PostAsJsonAsync(url,new object()).Result;
+                response = client.PostAsJsonAsync(url, new object()).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
@@ -38,10 +38,34 @@ namespace DeveloperPortal.ServiceClient
                 return new FolderModel();
             }
         }
+        public static string CreateFolder(string baseAddress, string driveID, string folderName, string parentFolderName)
+        {
+            var parameter = "?newFolderName=" + folderName.Trim() + "&parentFolderName=" + parentFolderName + "&driveID=" + driveID;
+            var url = AAHRServiceConstant.CreateFolder + parameter;
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response;
+                response = client.PostAsJsonAsync(url, new object()).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    return result;
+                }
+                response.Dispose();
+                response.Headers.ConnectionClose = true;
+                return "";
+            }
+        }
     }
 
     public static class AAHRServiceConstant
     {
         public const string GetFolderData = "api/GoogleDrive/GetFolderData";
+        public const string CreateFolder = "api/GoogleDrive/CreateFolder";
+
     }
 }

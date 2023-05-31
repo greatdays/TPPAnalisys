@@ -27,7 +27,9 @@ namespace DeveloperPortal.Pages.PlanReview
         /// <summary>
         /// Get Plan review details
         /// </summary>
-        public void OnGet()
+        /// 
+        
+        public void OnGet([FromQuery(Name = "CaseDetailId")] string CaseDetailId, [FromQuery(Name = "projectId")] int projectId)
         {
             var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
