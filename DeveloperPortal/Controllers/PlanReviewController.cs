@@ -42,5 +42,13 @@ namespace DeveloperPortal.Controllers
             var folderPath = AAHRServiceClient.CreateFolder(_BaseURL, _GoogleDriveId, folderName, parentFolderName);
             return Json(folderPath);
         }
+
+        [HttpPost]
+        [Route("UploadFile")]
+        public JsonResult UploadFile(string folderName, IFormFile files)
+        {
+            var folderPath = AAHRServiceClient.UploadFiel(_BaseURL, _GoogleDriveId, folderName, files);
+            return Json(folderPath);
+        }
     }
 }

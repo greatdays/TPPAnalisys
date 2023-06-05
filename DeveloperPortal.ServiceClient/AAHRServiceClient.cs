@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.Models;
 using DeveloperPortal.Models.PlanReview;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -60,12 +61,36 @@ namespace DeveloperPortal.ServiceClient
                 return "";
             }
         }
+
+        public static string UploadFiel(string baseAddress, string driveID, string folderName, IFormFile file)
+        {
+            var parameter = "?folderName=" + folderName.Trim() + "&driveID=" + driveID;
+            var url = AAHRServiceConstant.UploadFile + parameter;
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response;
+                response = client.PostAsJsonAsync(url, file).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    return result;
+                }
+                response.Dispose();
+                response.Headers.ConnectionClose = true;
+                return "";
+            }
+        }
     }
 
     public static class AAHRServiceConstant
     {
         public const string GetFolderData = "api/GoogleDrive/GetFolderData";
         public const string CreateFolder = "api/GoogleDrive/CreateFolder";
+        public const string UploadFile = "api/GoogleDrive/UploadFile";
 
     }
 }
