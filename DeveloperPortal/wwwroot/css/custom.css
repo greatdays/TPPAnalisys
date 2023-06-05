@@ -588,3 +588,17 @@ a.nav-link.nav-link-basic:hover {
         .modal-content .multi-button .btn.btn-light:hover {
             box-shadow: 0 0 0 0 #d3d3d3,0 0 0 0 #d3d3d3
         }
+
+.modal-footer {
+    flex-wrap: inherit !important;
+}
+
+.modal-header .btn-close {
+    padding: 7px;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-weight: bold;
+}
