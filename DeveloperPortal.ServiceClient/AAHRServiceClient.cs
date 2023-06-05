@@ -62,7 +62,7 @@ namespace DeveloperPortal.ServiceClient
             }
         }
 
-        public static string UploadFiel(string baseAddress, string driveID, string folderName, IFormFile file)
+        public static string UploadFiel(string baseAddress, string driveID, string folderName, IFormFile file, string filteType)
         {
             var parameter = "?folderName=" + folderName.Trim() + "&driveID=" + driveID;
             var url = AAHRServiceConstant.UploadFile + parameter;
@@ -70,8 +70,7 @@ namespace DeveloperPortal.ServiceClient
             {
                 client.BaseAddress = new Uri(baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(filteType));
                 HttpResponseMessage response;
                 response = client.PostAsJsonAsync(url, file).Result;
                 if (response.IsSuccessStatusCode)
@@ -84,7 +83,10 @@ namespace DeveloperPortal.ServiceClient
                 return "";
             }
         }
+
+       
     }
+
 
     public static class AAHRServiceConstant
     {

@@ -109,6 +109,22 @@ namespace DeveloperPortal.Pages.PlanReview
             }
             FolderModel = folderModelList;
         }
+        public ActionResult UploadFile()
+        {
+            bool isSavedSuccessfully = false;
+
+            //foreach (string fileName in Request.Files)
+            //{
+            //    HttpPostedFileBase file = Request.Files[fileName];
+
+            //    //You can Save the file content here
+
+            //    isSavedSuccessfully = true;
+            //}
+
+            return null;;
+
+        }
 
     }
 }

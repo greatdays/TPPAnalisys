@@ -374,17 +374,19 @@
                 </form>
                 <br />
                 <div class="form-group">
-                    <form action="/" class="dropzone dz-clickable" id="upload-File">
-                        <div class="dz-message d-flex flex-column">
-                            <span style="font-size:38px;"> Drop files to upload</span>
-                            (or click)
+                    <form action="" class="dropzone dz-clickable" id="upload-File">
+                        <div >
+                            <input type="file" id="fileuploader" class="dz-message d-flex flex-column" class="file-styled" />
+                           @* <span style="font-size:38px;"> Drop files to upload</span>
+                            (or click)*@
                         </div>
+                        
 
                     </form>
                 </div>
 
-            </div>                <div class="modal-footer multi-button comcom-fotter AddDocumentfotter">
-
+            </div>
+            <div class="modal-footer multi-button comcom-fotter AddDocumentfotter">
                 <button id="cancelUpload" type="button" value="" class="btn btn-Cancel" data-bs-dismiss="modal">Cancel</button>
                 <button id="uploadFile" type="button" value="" class="btn btn-primary">Upload</button>
             </div>
@@ -396,7 +398,7 @@
     $(document).ready(function () {
 
         $("#createFolder").click(function () {
-            var url = "api/PlanReview/CreateFolder?folderName=" + $("#txtfolderName").val() + "&parentFolderName=ARLT Arleta Park";
+            var url = "/api/PlanReview/CreateFolder?folderName=" + $("#txtfolderName").val() + "&parentFolderName=ARLT Arleta Park";
             $.ajax({
                 url: url, success: function (result) {
                     debugger;
@@ -404,16 +406,16 @@
                 }
             });
         });
-
+        
         $("#uploadFile").click(function () {
 
             var input = document.getElementById('upload-File');
             debugger;
-            var files = input.files;
+            var files = $("#fileuploader").get(0).files;
             var formData = new FormData();
-            formData.append("files", files[0]); 
+            formData.append("files", files[0]);
             formData.append("folderName", $("#txtfolderName").val());
-            var url = "api/PlanReview";
+            var url = "/api/PlanReview/UploadFile";
             $.ajax(
                 {
                     url: url,
@@ -429,12 +431,12 @@
 
 
 
-            //$.ajax({
-            //    url: url, success: function (result) {
-            //        debugger;
-            //        $("#div1").html(result);
-            //    }
-            //});
+        //    //$.ajax({
+        //    //    url: url, success: function (result) {
+        //    //        debugger;
+        //    //        $("#div1").html(result);
+        //    //    }
+        //    //});
         });
 
         var model = @Html.Raw(Json.Serialize(Model.FolderModel));

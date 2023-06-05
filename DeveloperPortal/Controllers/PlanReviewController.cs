@@ -3,6 +3,7 @@ using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Newtonsoft.Json;
 using System.Data;
 
@@ -45,10 +46,28 @@ namespace DeveloperPortal.Controllers
 
         [HttpPost]
         [Route("UploadFile")]
-        public JsonResult UploadFile(string folderName, IFormFile files)
+        public JsonResult UploadFile()
         {
-            var folderPath = AAHRServiceClient.UploadFiel(_BaseURL, _GoogleDriveId, folderName, files);
+
+            IFormFile file = HttpContext.Request.Form.Files[0];
+            var filteTye = GetMimeTypeForFileExtension(file.FileName);
+            var folderName = "Jignesh-Test-2";
+
+            var folderPath =AAHRServiceClient.UploadFiel(_BaseURL, _GoogleDriveId, folderName, file, filteTye);
             return Json(folderPath);
+        }
+        public string GetMimeTypeForFileExtension(string filePath)
+        {
+            const string DefaultContentType = "application/octet-stream";
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            if (!provider.TryGetContentType(filePath, out string contentType))
+            {
+                contentType = DefaultContentType;
+            }
+
+            return contentType;
         }
     }
 }
