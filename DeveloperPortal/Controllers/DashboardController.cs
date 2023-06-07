@@ -62,17 +62,18 @@ namespace DeveloperPortal.Controllers
                     break;
             }
 
-            DashboardData = drColl.Select(x => x["ProjectName"].ToString()).ToList();
-            DashboardData.Sort();
+            //DashboardData = drColl.Select(x => new ResultSet { ProjectName=x["ProjectName"].ToString()}).ToList();
+            //DashboardData.Sort();
 
             ResultSet rs = new ResultSet();
             List<ResultSet> retProjects = new List<ResultSet>();
 
-            foreach (string data in DashboardData)
+            foreach (var data in drColl)
             {
                 rs = new ResultSet();
-                rs.ProjectName = data;
-                retProjects.Add(rs);
+                rs.ProjectName = data["ProjectName"].ToString();
+                rs.CaseId = data["CaseId"].ToString();
+                retProjects.Add(rs); 
             }
 
             return Json(retProjects);
@@ -128,5 +129,6 @@ namespace DeveloperPortal.Controllers
     internal class ResultSet
     {
         public string ProjectName { get; internal set; }
+        public string CaseId { get; internal set; }
     }
 }

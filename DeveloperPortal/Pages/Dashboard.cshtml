@@ -134,7 +134,9 @@
                         render: function (data, type, row, meta) { // render event defines the markup of the cell text
                             var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.projectName + '</a>';
                             if (dashboardCategory == 'PlanReview') {
-                                var url = "../planReview/index?CaseDetailId=24302&projectId=40";
+                                var href = row.caseId.match(/href="([^"]*)/)[1];
+                                var queryString = href.split("?");
+                                var url = "../planReview/index?" + queryString[1] ;
                                 a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.projectName + '</a>';
 
                             }
