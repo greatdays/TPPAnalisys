@@ -215,7 +215,7 @@ a.nav-link.nav-link-basic:hover {
 .bottomNavBar {
     display: flex;
     align-items: center;
-    background: #001D80;
+    background: #003399; /*#001D80*/
     height: 40px;
     position: fixed;
     width: 100%;

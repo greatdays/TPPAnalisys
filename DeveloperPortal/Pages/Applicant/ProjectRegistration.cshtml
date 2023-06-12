@@ -1,0 +1,50 @@
+﻿@page
+@model DeveloperPortal.Pages.Applicant.ProjectRegistrationModel
+<div class="form-partial-container">
+    <div class="app-form-heading">
+        <h2>Project Registration</h2>
+    </div>
+    <hr />
+
+    <div class="text-danger" style="padding-bottom:3%">
+        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+    </div>
+
+    <fieldset>
+        <legend class="app-form-heading">Provide Your AcHP Number(s)</legend>
+        <span>If you do not know your AcHP Number, please contact your assigned RCS.</span>
+        <div class="row" style="padding-bottom:5rem;"></div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-6 text-center">
+                <div class="input-group">
+                    @Html.TextBox("AcHPNumber","", new { @class = "form-control", @placeholder="AcHP Number"})
+
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>                        
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="row justify-content-md-center" style="padding-top:5%">
+            <div class="col-md-4 border-no-right row-padding">
+                F0200 - 6120 N.Woodman Ave.
+            </div>
+            <div class="col-md-2 text-right border-no-left row-padding">
+                <button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;">Delete</button>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-4 border-no-right row-padding">
+                F0031 - NoHo 5050
+            </div>
+            <div class="col-md-2 text-right border-no-left row-padding">
+                <button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;">Delete</button>
+            </div>
+        </div>
+        
+    </fieldset>
+    <hr />
+
+</div>
+@{
+}

@@ -1,0 +1,137 @@
+﻿@page
+@model DeveloperPortal.Pages.Applicant.ContactMethodsModel
+
+<div class="form-partial-container">
+    <div class="app-form-heading">
+        <h2>Contact Methods</h2>
+    </div>
+    <hr />
+
+    <div class="text-danger" style="padding-bottom:3%">
+        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+    </div>
+    
+    <fieldset>
+        <legend class="app-form-heading">Phone Number</legend>
+        <div class="row">
+            <div class="col-md-6">
+                @Html.Label("","Phone Type")
+                @Html.Label("", "*", new {@class = "asterisk"})
+            </div>
+            <div class="col-md-6">
+                @Html.Label("","Phone Number")
+                @Html.Label("", "*", new {@class = "asterisk"})
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                @Html.DropDownList("PhoneType", new List<SelectListItem>{
+                new SelectListItem(text:"Mobile", value:"Mobile"),
+                new SelectListItem("Home","Home")
+                },"Select a Phone Type", new {@class="form-control"})
+            </div>
+            <div class="col-md-6">
+                @Html.TextBox("PhoneNumber","", new { @class = "form-control"})
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <legend class="app-form-heading">Mailing Address</legend>
+        <div class="form_body">
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "P.O.Box?", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.RadioButton("POBox", "Yes", false) Yes
+                    @Html.RadioButton("POBox", "No", false) No
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Office Number", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Street Direction", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.DropDownList("StreetDirection", new List<SelectListItem>{
+                    new SelectListItem(text:"N", value:"N"),
+                    new SelectListItem("E","E"),
+                    new SelectListItem("W","W"),
+                    new SelectListItem("S","S")
+                    },"Select a Direction", new {@class="form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Street Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Street Type", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Unit Number", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "City", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "State", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Zip Code", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+            <hr />
+            <div class="col-md-12" style="padding-bottom:5%">
+                <button class="main-btn float-right">Next</button>
+            </div>
+        </div>
+    </fieldset>
+</div>
+@{
+}
