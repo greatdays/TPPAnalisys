@@ -602,3 +602,8 @@ a.nav-link.nav-link-basic:hover {
     appearance: none;
     font-weight: bold;
 }
+
+.edit-button{
+    padding:2px 10px;
+    border-radius: 5px;
+}

@@ -10926,6 +10926,7 @@ hide-acc-subscription {
     --dark-blue: #0C2738;
     --blue: #001D80; /*#006381;*/
     --gray: #f8f8f8;
+    --error-Red: #D10000;
 }
 .white-text {
     color: white;
@@ -11005,5 +11006,58 @@ h1.white-text{
     outline: 0 !important;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
+}
+.btn-secondary-custom {
+    width: 5rem;
+    height: 2rem;
+    border-radius: 5px
+}
+
+.form-outline .form-control.form-control-lg {
+    font-size: 1rem;
+    line-height: 2.15;
+}
+.form-outline .form-control ~ .form-notch {
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    text-align: left;
+    pointer-events: none;
+}
+    .form-outline .form-control ~ .form-notch .form-notch-leading {
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: .5rem;
+        border-right: none;
+        border-radius: .25rem 0 0 .25rem;
+    }
+    .form-outline .form-control ~ .form-notch .form-notch-middle {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: calc(100% - 1rem);
+        height: 100%;
+        border-right: none;
+        border-left: none;
+    }
+    .form-outline .form-control ~ .form-notch .form-notch-trailing {
+        flex-grow: 1;
+        height: 100%;
+        border-left: none;
+        border-radius: 0 .25rem .25rem 0;
+    }
+    .form-outline .form-control ~ .form-notch div {
+        pointer-events: none;
+        border: 1px solid #bdbdbd;
+        box-sizing: border-box;
+        background: transparent;
+        transition: all .2s linear;
+    }
+.padding-zero {
+    padding: 0px !important;
 }
 /*Signup Page CSS - End*/

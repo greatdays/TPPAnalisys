@@ -2,6 +2,9 @@
 @model DeveloperPortal.Pages.Applicant.SignUpModel
 
 <script src="~/js/jquery-block-ui/blockUICollection.js"></script>
+
+
+
 <style>
     ul {
         list-style-type: none;
@@ -14,6 +17,7 @@
     <div class="form-panel-heading sub-blue">
         <h1 class="white-text">Create an Account</h1>
     </div>
+    <input id="curformValid" type="hidden" />
 
     <div role="navigation" aria-label="Breadcrumb" class="setup-panel">
         <ul id="Sign_progressbar" class="filter-flex-container-2 flex-list nav nav-tabs noprint" style="margin-bottom: 50px;">
@@ -40,7 +44,7 @@
             </li>
             <li role="presentation" class="disabled wizard-item" aria-disabled="true">
 
-                <a disabled="disabled" tabindex="-1" href="#step-5" type="button" role="tab" class="btn btn-default form_btn-circle app-circle" aria-selected="false">
+                <a disabled="disabled" tabindex="-1" href="#step-4" type="button" role="tab" class="btn btn-default form_btn-circle app-circle" aria-selected="false">
                     <span class="roundcircle"><span class="fa"></span></span> <span class="round-tab app-stepper-desc signUpBreadCircles">Summary</span>
                 </a>
             </li>
@@ -53,7 +57,7 @@
                 @{
                     var accountModel = new CreateAccountModel();
                     <partial name="CreateAccount" model="accountModel"></partial>
-                }   
+                }
             </div>
             <div class="setup-content" id="step-2" role="tabpanel">
                 @{
@@ -67,6 +71,12 @@
                     <partial name="ProjectRegistration" model="projRegistrationModel"></partial>
                 }
             </div>
+            <div class="setup-content" id="step-4" role="tabpanel">
+                @{
+                    var summaryModel = new SummaryModel();
+                    <partial name="Summary" model="summaryModel"></partial>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -74,18 +84,276 @@
 <script>
     $(document).ready(function () {
 
+        var StepChanged = function f($target) {
+            $active = $target || $('.wizard-item.active > a');
+            var $parent = $active.parent();
+            $('.wizard-item .roundcircle > .sr-only').remove();
+
+            $parent.addClass('active')
+                .removeClass('disabled')
+                .removeClass('completed')
+                .attr('aria-disabled', false)
+                .find('.roundcircle > .fa').attr('class', 'fa fa-dot-circle').attr('style', "font-family: 'Font Awesome 5 Free'");
+
+            $parent.prevAll().addClass('completed')
+                .removeClass('active')
+                .removeClass('disabled')
+                .attr('aria-disabled', false)
+                .find('.roundcircle').append('<span class="sr-only">Complete</span>')
+                .find('.fa').attr('class', 'fa fa-check').attr('style', "font-family: 'Font Awesome 5 Free'");
+
+            $parent.nextAll().addClass('disabled')
+                .removeClass('active')
+                .removeClass('completed')
+                .find('.roundcircle > .fa').attr('class', 'fa');
+
+            $parent.next().attr('aria-disabled', false);
+            $parent.next().nextAll().attr('aria-disabled', true);
+
+            $active.attr('aria-selected', true)
+                .attr('aria-current', 'step')
+                .removeAttr('tabindex');
+
+            $('.wizard-item > a').not($active).attr('aria-selected', false)
+                .removeAttr('aria-current')
+                .attr('tabindex', '-1')
+                .prop('disabled', true);
+
+            var stepnumber = $parent.index() + 1;
+            var totalSteps = $('.wizard-item').length;
+            var sectionTitle = $('.round-tab', $parent).text();
+            $('title').text(sectionTitle + ' (Step ' + stepnumber + ' of ' + totalSteps + ') - Resources.Txt_PropertyRegistration - HomeResource.Txt_TitleSuffix');
+            return f;
+        }();
+
         var navListItems = $('div.setup-panel ul li a'),
             allWells = $('.setup-content'),
             allNextBtn = $('.nextBtn'),
             allPrevBtn = $('.prevBtn'),
             trackUserPosition = 1;
 
-            allWells.hide();
+        allWells.hide();
 
-            //get active element
+        //get active element
         var activeNavId = $('.wizard-item.active a').attr('href');
-        var contentIdToEnable = activeNavId.replace('#','');
-        $('#'+contentIdToEnable).show();
+        var contentIdToEnable = activeNavId.replace('#', '');
+        $('#' + contentIdToEnable).show();
+
+        navListItems.click(function (e) {
+            e.preventDefault();
+            var checkStep1 = $(this).attr('href');
+            var startFlag = false;
+            var curFormValid = $("#curformValid").val();
+            if (curFormValid === 'false' && $(this).attr('disabled') == 'disabled') {
+                return;
+            }
+            if (checkStep1 == '#step-1' && startFlag == true) {
+                return;
+            }
+
+            var $target = $($(this).attr('href')),
+                $item = $(this);
+
+
+
+            if (!$item.hasClass('disabled')) {
+
+                navListItems.removeClass('btn-primary').addClass('btn-default');
+                $item.addClass('btn-primary');
+                allWells.attr('aria-hidden', 'true');
+                allWells.hide();
+                allWells.removeClass("active");
+                $target.attr('aria-hidden', 'false');
+                $target.addClass("active");
+
+                $target.show();
+                $target.find('input:eq(0)').focus();
+                StepChanged($item);
+            }
+
+        });
+
+        /*var UserName = document.getElementById("idmusername").value;
+        var UserNameFromUserSession = 'ComCon.DataAccess.Models.IDM.UserSession.GetUserSession().UserName';*/
+
+        var UserName = '';
+        var UserNameFromUserSession = 'Guest';
+
+        var previousStepElement, currentStepElement, nextStepElement, nextNextStepElement;
+
+        if (UserName != "" || UserNameFromUserSession != "Guest") {
+            console.log('username blank');
+            var curstefromLitedb = 'address'//Html.Raw(Json.Encode(Model.currentStep));
+            if (curstefromLitedb == 'address') {
+                previousStepElement = $('div.setup-panel ul li a[href="#step-1"]');
+                currentStepElement = $('div.setup-panel ul li a[href="#step-2"]');
+                var nextStepElement = $('div.setup-panel ul li a[href="#step-3"]'),
+                    nextNextStepElement = $('div.setup-panel ul li a[href="#step-4"]');
+                //                $('div.setup-panel ul li a[href="#step-2"]').trigger('click');
+                currentStepElement.trigger('click');
+                previousStepElement.removeAttr('aria-current');
+                currentStepElement[0].setAttribute("aria-current", "page");
+                currentStepElement.removeAttr('disabled');
+                trackUserPosition = 2;
+                previousStepElement.removeAttr("disabled");
+
+                /*if ($('#mail_addr_no').is(':checked')) {
+                    nextStepElement.removeAttr("disabled");
+                } else if ($('#mail_addr_yes').is(':checked') && $("#mailingaddressform").valid()) {
+                    nextStepElement.removeAttr("disabled");
+                }
+                if ($('#alternatecontact_no').is(':checked')) {
+                    $("#alternativecontactform").valid()
+                    nextNextStepElement.removeAttr("disabled");
+                } else if ($('#alternatecontact_yes').is(':checked') && $("#alternativecontactform").valid()) {
+                    nextNextStepElement.removeAttr("disabled");
+                }*/
+            }
+            else if (curstefromLitedb == 'alternatecontact') {
+                var prePreStep = $('div.setup-panel ul li a[href="#step-2"]'),
+                    NextStepElement = $('div.setup-panel ul li a[href="#step-5"]');
+                previousStepElement = $('div.setup-panel ul li a[href="#step-3"]');
+                currentStepElement = $('div.setup-panel ul li a[href="#step-4"]');
+                $('div.setup-panel ul li a[href="#step-4"]').trigger('click');
+                previousStepElement.removeAttr('aria-current');
+                currentStepElement[0].setAttribute("aria-current", "page");
+                trackUserPosition = 4;
+                previousStepElement.removeAttr("disabled");
+                currentStepElement.removeAttr('disabled');
+                prePreStep.removeAttr("disabled");
+                if ($('#alternatecontact_no').is(':checked')) {
+                    NextStepElement.removeAttr("disabled");
+                } else if ($('#alternatecontact_yes').is(':checked') && $("#alternativecontactform").valid()) {
+                    NextStepElement.removeAttr("disabled");
+                }
+            }
+            else {
+                previousStepElement = $('div.setup-panel ul li a[href="#step-1"]');
+                currentStepElement = $('div.setup-panel ul li a[href="#step-2"]');
+                var nextStepElement = $('div.setup-panel ul li a[href="#step-3"]'),
+                    nextNextStepElement = $('div.setup-panel ul li a[href="#step-4"]'),
+                    nextNextNextStepElement = $('div.setup-panel ul li a[href="#step-5"]');
+                $('div.setup-panel ul li a[href="#step-2"]').trigger('click');
+                previousStepElement.removeAttr('aria-current');
+                currentStepElement[0].setAttribute("aria-current", "page");
+                currentStepElement.removeAttr('disabled');
+                trackUserPosition = 2;
+                if ($('#phone_no').is(':checked')) {
+                    nextStepElement.removeAttr("disabled");
+                } else if ($('#phone_yes').is(':checked') && $("#phoneform").valid()) {
+                    nextStepElement.removeAttr("disabled");
+                }
+                if ($('#mail_addr_no').is(':checked')) {
+                    nextNextStepElement.removeAttr("disabled");
+                } else if ($('#mail_addr_yes').is(':checked') && checkMailValues) {
+                    nextNextStepElement.removeAttr("disabled");
+                }
+                if ($('#alternatecontact_no').is(':checked')) {
+                    nextNextNextStepElement.removeAttr("disabled");
+                } else if ($('#alternatecontact_yes').is(':checked') && checkAltValues) {
+                    nextNextNextStepElement.removeAttr("disabled");
+                }
+            }
+            StepChanged(currentStepElement);
+            currentStepElement.focus();
+        }
+        else {
+            console.log('step-1 click');
+            $('div.setup-panel ul li a[href="#step-1"]').trigger('click');
+            trackUserPosition = 1;
+        }
+              
+
+        allPrevBtn.click(function () {
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                prevStepWizard = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]').parent().prev().children("a"),
+                currentStepElement = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]');
+            trackUserPosition--;
+            prevStepWizard[0].setAttribute("aria-current", "page");
+            currentStepElement.removeAttr('aria-current');
+            prevStepWizard.removeAttr('disabled').trigger('click');
+            StepChanged(prevStepWizard);
+            prevStepWizard.focus();
+        });
+
+        allNextBtn.click(function () {
+            var curStep = $(this).closest(".setup-content"),
+                curStepBtn = curStep.attr("id"),
+                nextStepWizard = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+                currentStepElement = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]'),
+                curInputs = curStep.find("input");
+                console.log('curStepBtn:'+ curStepBtn);
+            console.log('nextStepWizard:' + currentStepElement);
+
+            //$(".form-group").removeClass("has-error");
+            /*for (var i = 0; i < curInputs.length; i++) {
+                if (curInputs.hasClass("error")) {
+                    isValid = false;
+                    $(curInputs[i]).closest(".form-group").addClass("has-error");
+                }
+            }*/
+
+            /*if (curStepBtn == 'step-1') {
+                CheckIfEmpty('FirstName', 'first name', '');
+                CheckIfEmpty('LastName', 'last name', '');
+                CheckIfEmpty('Email', 'email', '');
+                CheckIfEmpty('CompanyName', 'company', '');
+                CheckIfEmpty('Title', 'title', '');
+                CheckIfEmpty('Password', 'password', '');
+                CheckIfEmpty('ConfirmPassword', '', 'Please re-enter the password');
+                IsTermsAndConditionsAccepted('divTermsAndConditions', 'termsandconditions');
+            }*/
+
+            switch (curStepBtn) {
+                case "step-1":
+                    CheckIfEmpty('FirstName', 'first name', '');
+                    CheckIfEmpty('LastName', 'last name', '');
+                    CheckIfEmpty('Email', 'email', '');
+                    CheckIfEmpty('CompanyName', 'company', '');
+                    CheckIfEmpty('Title', 'title', '');
+                    CheckIfEmpty('Password', 'password', '');
+                    CheckIfEmpty('ConfirmPassword', '', 'Please re-enter the password');
+                    IsTermsAndConditionsAccepted('divTermsAndConditions', 'termsandconditions');
+                    break;
+                case "step-2":
+                    CheckIfEmpty('PhoneNumber', 'phone number', '');
+                    CheckIfPOBoxFieldsAreEmpty();
+                    CheckIfEmpty('City', 'city', '');
+                    CheckIfEmpty('State', 'state', '');
+                    CheckIfEmpty('ZipCode', 'zip code', '');
+                    CheckIfEmpty('PhoneType', '', 'Please select phone type.');
+                    //CheckIfPhoneTypeIsEmpty();
+                    break;
+                case "step-3":
+                console.log("step 3");
+                    LoadSummaryPage();
+                    break;
+            }
+
+            var errCtls = curStep.find("span.text-danger");
+
+            if (errCtls.length > 0) { isValid = false; $("#curformValid").val('false'); }
+            else { isValid = true; $("#curformValid").val('true'); 
+            SaveLocalData(curStepBtn);}
+
+
+            console.log('Track position:' + trackUserPosition);
+            if (trackUserPosition != 4) {
+                trackUserPosition++
+                nextStepWizard[0].setAttribute("aria-current", "page");
+                currentStepElement.removeAttr('aria-current');
+            }
+            else {
+                //LoadSummaryPage();
+            }
+            //console.log('$("#curformValid").val() ::' + $("#curformValid").val());
+            if ($("#curformValid").val() == 'true') {
+                nextStepWizard.removeAttr('disabled').trigger('click');
+                StepChanged(nextStepWizard);
+                nextStepWizard[0].focus();
+            }
+        });
     });
 </script>
 

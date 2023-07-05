@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DeveloperPortal.Pages.Applicant
 {
-    public class ContactMethodsModel : PageModel
+    public class SummaryModel : PageModel
     {
-        public string PhoneType { get; set; }
         public void OnGet()
         {
-            
         }
     }
 }
