@@ -83,6 +83,8 @@
 
 <script>
     $(document).ready(function () {
+        var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "ProjectList", "Data": ""}]}';
+        localStorage.setItem('ApplicantJson', applicantJson);
 
         var StepChanged = function f($target) {
             $active = $target || $('.wizard-item.active > a');
@@ -341,7 +343,8 @@
             console.log('Track position:' + trackUserPosition);
             if (trackUserPosition != 4) {
                 trackUserPosition++
-                nextStepWizard[0].setAttribute("aria-current", "page");
+                //Ananth
+                //nextStepWizard[0].setAttribute("aria-current", "page");
                 currentStepElement.removeAttr('aria-current');
             }
             else {

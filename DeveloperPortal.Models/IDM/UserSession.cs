@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+//using Microsoft.AspNetCore
 
 namespace DeveloperPortal.Models.IDM
 {
@@ -29,6 +30,10 @@ namespace DeveloperPortal.Models.IDM
 
         public DateTime? ModifiedOn { get; set; }
         public List<AppDetail> Applications { get; set; }
+
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// get user session
@@ -134,11 +139,14 @@ namespace DeveloperPortal.Models.IDM
                                         IsLocked = x.IsLocked,
                                         Attributes = x.Attributes,
                                         IsAppAssociated = x.IsAppAssociated
-                                    }).ToList()
+                                    }).ToList(),
+                FirstName = authenticateResponse.Firstname,
+                LastName = authenticateResponse.Lastname
             };
 
             return userSession; // return.
         }
+
     }
 
 

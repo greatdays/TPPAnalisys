@@ -1,4 +1,5 @@
 ﻿using DeveloperPortal.Models.IDM;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace DeveloperPortal.ServiceClient
 {
     public class IDMServiceClient
     {
-
-
+        public static IConfiguration _config;
+        
 
         /// <summary>
         /// This method is used to authenticate user while login
@@ -97,6 +98,48 @@ namespace DeveloperPortal.ServiceClient
             return authenticateResponse; // returns.
         }
 
+        /// <summary>
+        /// Method for validate authentication token from idm service.
+        /// </summary>
+        /// <param name="jwtToken">Token</param>
+        /// <returns>
+        /// Returns authentication response.
+        /// </returns>
+        public static AuthenticateResponse ValidateToken(string jwtToken) //removed static
+        {
+            AuthenticateResponse authenticateResponse = null;
+            
+
+            using (HttpClient client = new HttpClient())
+            {
+                string idmApiURL = _config["IDMSettings:IDMPath"];
+                // request object.
+                AuthenticateRequest authenticateRequest = new AuthenticateRequest()
+                {
+                    JWTAccessCode = _config["ThisApplication:JwtAccessCode"],
+                    JwtToken = jwtToken,
+                    SourceApp = _config["IDMSettings:SourceApp"],
+                    TargetApp = _config["IDMSettings:TargetApp"]
+                };
+
+                client.BaseAddress = new Uri(idmApiURL);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                // get data from api.
+                HttpResponseMessage response = client.PostAsJsonAsync(IDMServiceConstant.ValidateJWTToken, authenticateRequest).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    result = result.TrimStart('\"');
+                    result = result.TrimEnd('\"');
+                    result = result.Replace("\\", "");
+                    authenticateResponse = JsonConvert.DeserializeObject<AuthenticateResponse>(result);
+                }
+            }
+
+            return authenticateResponse; // returns.
+        }
         public static string ChangePassword(string username, string oldpassword, string newpassword, string idmApiURL, string idmAppKey)
         {
             using (HttpClient client = new HttpClient())

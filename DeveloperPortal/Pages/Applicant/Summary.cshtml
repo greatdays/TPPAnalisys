@@ -99,7 +99,7 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button type="button" class="main-btn nextBtn float-right" id="btnSubmit">Submit</button>            
+            <button type="button" class="main-btn nextBtn float-right" id="btnSubmit">Submit</button>
         </div>
     </div>
 </div>
@@ -107,13 +107,45 @@
     $(document).ready(function(){
         console.log('Summary');
         //Your Information data
-        var yourInfo = localStorage.getItem('YourInfo');
-        if(yourInfo != undefined){
-            var json = JSON.parse(yourInfo);
-            console.log(json);
-        }
-        else{ console.log('empty json');}
-    });
+        $('#btnSubmit').on('click', function(){
+            //onclick="location.href='@@Url.Action(CreateAccount, Account)
+            //var dataObject =
+            var yourInfo = localStorage.getItem('YourInfo');
+            var contactInfo = localStorage.getItem('ContactInfo');
+            var projList = localStorage.getItem('ProjectList');
+
+            var applicantJson = localStorage.getItem('ApplicantJson');
+            var stringifiedJson = JSON.stringify(applicantJson);
+
+            var array = [];
+            array.push(yourInfo);
+            array.push(contactInfo);
+            array.push(projList);
+
+            var dataObject = JSON.stringify({
+                'param': array
+            });
+            var json = "{['YourInfo': {" + yourInfo + "} ]}";
+            console.log('ajax call..');
+            console.log('array: ' + json);
+
+            dataObject = JSON.stringify(json);
+
+            $.ajax({
+                url: "/Account/CreateAccount",
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data: "data=" + stringifiedJson,
+                success: function (data) { },
+                error: function (xhr) { }
+                });
+        });//button click
+    });//ready
 </script>
 @{
 }

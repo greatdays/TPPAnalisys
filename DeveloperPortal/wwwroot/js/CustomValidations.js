@@ -277,6 +277,9 @@ function GetControlIndex() {
 }
 
 function SaveLocalData(currentStep) {
+    var json = localStorage.getItem('ApplicantJson');
+    var j = $.parseJSON(json)
+
     
     switch (currentStep) {
         case "step-1":
@@ -290,7 +293,28 @@ function SaveLocalData(currentStep) {
 
             var step1Json = { 'firstName': firstName, 'lastName': lastName, 'middleName': middleName, 'email': email, 'companyName': companyName, 'title': title, 'password': password };
 
+            /*
+            New structure:
+            {
+                "Applicant":[
+                    {
+                        "step": "YourInfo",
+                        "Data": step1Json
+                    },
+                    {
+                        "step": "ContactInfo",
+                        "Data": step2Json
+                    },
+                    {
+                        "step": "ProjectList",
+                        "Data": step3Json
+                    }
+                ]
+            }
+            */
             localStorage.setItem('YourInfo', JSON.stringify(step1Json));
+            console.log(JSON.stringify(step1Json));
+            j["Applicant"][0]["Data"] = step1Json;
             
             break;
         case "step-2":
@@ -311,6 +335,7 @@ function SaveLocalData(currentStep) {
             var step2Json = { 'phoneNumber': phoneNumber, 'city': city, 'state': state, 'zipCode': zipCode, 'phoneType': phoneType, 'extension': extension, 'streetNumber': streetNumber, 'streetDirection': streetDirection, 'streetName': streetName, 'streetType': streetType, 'unitNumber': unitNumber, 'poBoxNumber': poBoxNumber, 'poBox': poBox };
 
             localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
+            j["Applicant"][1]["Data"] = step2Json;
             break;
         case "step-3":
             var jsonObj = [];
@@ -319,9 +344,12 @@ function SaveLocalData(currentStep) {
                 jsonObj.push(proj);
             })
             localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
+            j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
             break;
         default:
     }
+    localStorage.setItem("ApplicantJson", JSON.stringify(j));
+    console.log(localStorage.getItem("ApplicantJson"));
 }
 /*Summary Page*/
 function LoadSummaryPage() {
