@@ -194,6 +194,18 @@ function InitializeContactMethods() {
     $('#POBox[value="No"]').attr("checked", true);
     OnPOBoxChanged();
 
+    $('#PhoneNumber').on('keyup', function () {
+        ValidatePhone('PhoneNumber');
+    });
+
+    $('input[type=radio][name=POBox]').on('click', function () {
+        OnPOBoxChanged();
+    });
+
+    $('#PhoneType').on('change', function () {
+        ValidatePhoneType('PhoneType');
+    });
+
     //fetch data to initialize PhoneType
     /*http://43svc/AAHRDev.Api/api/user/lookuplist"*/
     $.ajax({
@@ -221,7 +233,7 @@ function InitializeContactMethods() {
         },
         error: function (xhr) { }
     });
-    console.log('about to call phonetype');
+    //console.log('about to call phonetype');
     $.ajax({
         url: "/Account/GetLookupData?lookup=PhoneType",
         type: 'GET',
@@ -247,7 +259,7 @@ function InitializeContactMethods() {
         },
         error: function (xhr) { }
     });
-    console.log('about to call directions');
+    //console.log('about to call directions');
     $.ajax({
         url: "/Account/GetLookupData?lookup=Direction",
         type: 'GET',
@@ -273,7 +285,34 @@ function InitializeContactMethods() {
         },
         error: function (xhr) { }
     });
-    console.log('complete');
+
+    //StreetType
+    $.ajax({
+        url: "/Account/GetLookupData?lookup=StreetType",
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: "",
+        success: function (data) {
+            //console.log('success: ' + data);
+            var json = JSON.parse(data);
+            console.log('Street Type json: ' + json);
+            //debugger;
+            for (var index = 0; index < json.length; index++) {
+                var streetTypeText = json[index].StreetTypeText;
+                var streetTypeValue = json[index].StreetTypeValue;
+
+                $('#StreetType').append($('<option>').text(streetTypeText).attr('value', streetTypeValue));
+            }
+            $('#StreetType').val(0);
+        },
+        error: function (xhr) { }
+    });
+    
 }
 
 function ValidatePhone(ctlId) {
@@ -293,6 +332,19 @@ function ValidatePhone(ctlId) {
         default:
             $(ctl).next('.text-danger').remove();
             $(ctl).after("<span class='text-danger' id='ctl" + ctlId + "'>Input a valid 10 digit phone number.</span>");
+    }
+}
+
+function ValidatePhoneType(ctlId) {
+    var ctl = '#' + ctlId;
+    var ctlVal = $(ctl).val();
+    
+    switch (ctlVal) {
+        case '0':
+            $(ctl).after("<span class='text-danger' id='ctl" + ctlId + "'>Please select a Phone Type.</span>");
+            break;
+        default:
+            $(ctl).next('.text-danger').remove();
     }
 }
 

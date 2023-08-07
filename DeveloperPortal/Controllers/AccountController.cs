@@ -28,6 +28,7 @@ namespace DeveloperPortal.Controllers
     {
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
+
         // Here we are using Dependency Injection to inject the Configuration object
         public AccountController(IConfiguration config, IHttpContextAccessor httpConfig)
         {
@@ -425,8 +426,9 @@ namespace DeveloperPortal.Controllers
             List<State> statesList = new List<State>();
             List<PhoneType> phoneTypeList = new List<PhoneType>();
             List<Directions> directionsList = new List<Directions>();
+            List<StreetType> StreetTypeList = new List<StreetType>();
 
-            string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
+        string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
             var response = string.Empty;
             string json = string.Empty;
 
@@ -508,6 +510,23 @@ namespace DeveloperPortal.Controllers
                     }
                     json = JsonConvert.SerializeObject(directionsList, Formatting.Indented);
                     break;
+                case "StreetType":
+                    
+                    JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
+
+                    foreach (JToken streetType in streetTypeArr)
+                    {
+                        StreetType stType = new StreetType();
+                        string streetTypeText = streetType["LutStreetTypeCd"].ToString();
+                        string streetTypeValue = streetType["LutStreetTypeCd"].ToString();
+
+                        stType.StreetTypeText = streetTypeText;
+                        stType.StreetTypeValue = streetTypeValue;
+
+                        StreetTypeList.Add(stType);
+                    }
+                    json = JsonConvert.SerializeObject(StreetTypeList, Formatting.Indented);
+                    break;
                 default:
                     break;
             }
@@ -524,6 +543,12 @@ namespace DeveloperPortal.Controllers
             Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
             return result;
         }
+    }
+
+    internal class StreetType
+    {
+        public string StreetTypeText { get; internal set; }
+        public string StreetTypeValue { get; internal set; }
     }
 
     internal class State

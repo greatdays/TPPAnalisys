@@ -89,7 +89,9 @@
                         @Html.Label("", "Street Type", new { @class = "app-input-descr control-label required-label font-weight-bold" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextBox("StreetType","", new { @class = "form-control"})
+                        @Html.DropDownList("StreetType", new List<SelectListItem>{
+                        new SelectListItem(text:"Select a Street Type", value:"0")
+                        },null, new {@class="form-control"})
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -155,15 +157,6 @@
 <script>
     $(document).ready(function () {
         InitializeContactMethods();
-
-        $('#PhoneNumber').on('keyup', function () {
-            ValidatePhone('PhoneNumber');
-        });
-
-        $('input[type=radio][name=POBox]').on('click', function () {
-            OnPOBoxChanged();
-        });
-        
 
         //$('#POBox').click('OnPOBoxChanged');
     });
