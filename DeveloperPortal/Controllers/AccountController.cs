@@ -16,6 +16,9 @@ using System.Security.Cryptography;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using DeveloperPortal.Models.Resources;
+using System.Net.Http.Headers;
+using Azure;
+
 
 namespace DeveloperPortal.Controllers
 {
@@ -24,10 +27,12 @@ namespace DeveloperPortal.Controllers
     public class AccountController : Controller
     {
         private IConfiguration _config;
+        private IHttpContextAccessor _contextAccessor;
         // Here we are using Dependency Injection to inject the Configuration object
-        public AccountController(IConfiguration config)
+        public AccountController(IConfiguration config, IHttpContextAccessor httpConfig)
         {
             _config = config;
+            _contextAccessor = httpConfig;
         }
         public IActionResult Login(string ReturnUrl)
         {
@@ -45,7 +50,7 @@ namespace DeveloperPortal.Controllers
             //data = "{\"Applicant\":[{\"step\":\"YourInfo\",\"Data\":{\"firstName\":\"first\",\"lastName\":\"last\",\"middleName\":\"\",\"email\":\"a@a.com\",\"companyName\":\"my company\",\"title\":\"ownwer\",\"password\":\"passw0rd\"}},{\"step\":\"ContactInfo\",\"Data\":{\"phoneNumber\":\"(654)984-6513\",\"city\":\"Los Angeles\",\"state\":\"CA\",\"zipCode\":\"65498\",\"phoneType\":\"Mobile\",\"extension\":\"2354\",\"streetNumber\":\"\",\"streetDirection\":\"\",\"streetName\":\"\",\"streetType\":\"\",\"unitNumber\":\"\",\"poBoxNumber\":\"3847\",\"poBox\":\"Yes\"}},{\"step\":\"ProjectList\",\"Data\":\"[\\\"F0200 - 6120 N.Woodman Ave.\\\"]\"}]}";
             //data = "{\"Applicant\":[{\"step\":\"YourInfo\",\"Data\":{\"firstName\":\"first\",\"lastName\":\"last\",\"middleName\":\"\",\"email\":\"a@a.com\",\"companyName\":\"My Company\",\"title\":\"ownwer\",\"password\":\"passw0rd\"}},{\"step\":\"ContactInfo\",\"Data\":{\"phoneNumber\":\"(455)454-5454\",\"city\":\"Los Angeles\",\"state\":\"CA\",\"zipCode\":\"90023\",\"phoneType\":\"Mobile\",\"extension\":\"1253\",\"streetNumber\":\"\",\"streetDirection\":\"\",\"streetName\":\"\",\"streetType\":\"\",\"unitNumber\":\"\",\"poBoxNumber\":\"2347\",\"poBox\":\"Yes\"}},{\"step\":\"ProjectList\",\"Data\":\"[\\\"F0200 - 6120 N.Woodman Ave.\\\"]\"}]}";
             Console.WriteLine("createaccount");
-            ApplicantSignupModel signupModel = new ApplicantSignupModel();
+            ApplicantSignupModel signupModel = new ApplicantSignupModel(_config);
 
             //string yourInfo = json[0];
             //object coll = Request.Form.ToList();
@@ -134,7 +139,7 @@ namespace DeveloperPortal.Controllers
                 }
             }
 
-            CheckExistingUserName("aSoundararajan@lacity.org");
+            CreateIDMAccount(signupModel);
 
             return Content("Create Account called..");
         }
@@ -206,7 +211,7 @@ namespace DeveloperPortal.Controllers
 
                     OrganizationContactModel organizations = new OrganizationContactModel();
                     signupModel.NotificationData = new Dictionary<string, string>();
-                    IDMApplicationUser applicationUser = new IDMApplicationUser();
+                    IDMApplicationUser applicationUser = new IDMApplicationUser(_config);
                     IDMUser idmuser = new IDMUser();
                     idmuser.FirstName = signupModel.FirstName;
                     idmuser.MiddleName = signupModel.MiddleName;
@@ -246,13 +251,13 @@ namespace DeveloperPortal.Controllers
                             objUser.Password = signupModel.Password;
                             objUser.Provider = "SQL";
 
-                            objUser = new AccountServiceClient().AuthenticateUser(objUser);
+                            objUser = new AccountServiceClient(_config, _contextAccessor).AuthenticateUser(objUser);
 
                             if (objUser.IDMUserId > 0)
                             {
                                 //var userDetail = objUser.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(_config["ThisApplication:Application"]));
-                                ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(_config["ThisApplication:Application"]));
-                                var authenticateResponse = IDMServiceClient.ValidateToken(thisapp.JWTToken);
+                                ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("ThisApplication:Application")));
+                                var authenticateResponse = new IDMServiceClient(_config).ValidateToken(thisapp.JWTToken);
                                 //// add response to session.                                
                                 //FormsAuthentication.SetAuthCookie(objUser.UserName, true);
                                 //objUser.
@@ -266,7 +271,12 @@ namespace DeveloperPortal.Controllers
                                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                                 //UserSession.SetUserInSession(UserSession.AssignValues(HttpContext, r, thisapp.JWTToken, Constants.Application.Name));
-                                UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, thisapp.JWTToken, Constants.Application.Name));
+                                UserSession.SetUserInSession(HttpContext, 
+                                    UserSession.AssignValues(HttpContext, 
+                                        authenticateResponse, 
+                                        thisapp.JWTToken, 
+                                        new Constants.Application(_config).GetConfigValue("Name")
+                                    ));
                             }
 
                             // End - auto login
@@ -319,6 +329,8 @@ namespace DeveloperPortal.Controllers
                                 //string time = (t / 60).ToString();
                                 //signupModel.NotificationData.Add("time", time);
                                 /*send notification to registerd user*/
+                                //TODO: Add 'ComConEntities' connectionstring from AAHR
+                                //<add name="ComConEntities" connectionString="metadata=res://*/Entity.ComCon.csdl|res://*/Entity.ComCon.ssdl|res://*/Entity.ComCon.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.43.20.101;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
                                 signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
                             }
 
@@ -369,7 +381,7 @@ namespace DeveloperPortal.Controllers
 
         private string GetConfigValue(string key)
         {
-            return _config[key].ToString();
+            return _config[key] ?? string.Empty;
         }
 
         public bool CheckExistingUserName(string username)
@@ -380,7 +392,7 @@ namespace DeveloperPortal.Controllers
             objUser.UserName = username;
             objUser.Provider = "SQL";
 
-            objUser = new AccountServiceClient().ValidateUsername(objUser);
+            objUser = new AccountServiceClient(_config, _contextAccessor).ValidateUsername(objUser);
 
             if (objUser.Status.Contains("IDM115"))
             {
@@ -407,23 +419,128 @@ namespace DeveloperPortal.Controllers
             return tokenValue;
         }
 
-        #region Commented Json Parsing code
-        /*
-         * JObject json = JObject.Parse(data);
-            JArray myArray = (JArray)json["param"];
+        public async Task<JsonResult> GetLookupData()
+        {
+            string lookup = Request.Query["lookup"].FirstOrDefault();
+            List<State> statesList = new List<State>();
+            List<PhoneType> phoneTypeList = new List<PhoneType>();
+            List<Directions> directionsList = new List<Directions>();
 
-            foreach (var item in myArray)
+            string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
+            var response = string.Empty;
+            string json = string.Empty;
+
+            //if (TempData != null && TempData.ContainsKey("LookupData"))
+            //TODO: Use data persistence. Using TempData interferes with page refresh 
+            if(false)
             {
-                string itemString = item.ToObject<string>();
-                JObject itemObject = (JObject)JsonConvert.DeserializeObject(itemString);
-                var obj1 = (JsonConvert.DeserializeObject(item.ToObject<string>()));
-                JObject obj2 = (JObject)obj1;
-                foreach (JProperty p in obj2.Properties())
+                response = TempData["LookupData"] as string;
+            }
+            else
+            {
+                using (var client = new HttpClient())
                 {
+                    client.BaseAddress = new Uri(Baseurl);
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient
+                    HttpResponseMessage Res = await client.GetAsync("api/user/lookuplist");
 
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        //Storing the response details recieved from web api
+                        response = Res.Content.ReadAsStringAsync().Result;
+                        //TempData["LookupData"] = response
+                    }
                 }
             }
-         */
-        #endregion
+
+            JObject keyValuePairs = JObject.Parse(JsonConvert.DeserializeObject(response).ToString());
+
+            switch (lookup)
+            {
+                case "State":
+                    JArray states = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStateCDList").ToString());
+
+                    foreach (JToken state in states)
+                    {
+                        State state1 = new State();
+                        string stateId = state["LutStateCd"].ToString();
+                        string stateName = state["Description"].ToString();
+
+                        state1.StateName = stateName;
+                        state1.StateId = stateId;
+
+                        statesList.Add(state1);
+                    }
+                    json = JsonConvert.SerializeObject(statesList, Formatting.Indented);
+                    break;
+                case "PhoneType":
+                    JArray phoneTypes = JArray.Parse(keyValuePairs["Response"].SelectToken("LutPhoneTypeCdList").ToString());
+
+                    foreach (JToken phType in phoneTypes)
+                    {
+                        PhoneType phoneType = new PhoneType();
+                        string phoneTypeText = phType["PhoneType"].ToString();
+                        string phoneTypeValue = phType["LutPhoneTypeCd"].ToString();
+
+                        phoneType.PhoneTypeText = phoneTypeText;
+                        phoneType.PhoneTypeValue = phoneTypeValue;
+
+                        phoneTypeList.Add(phoneType);
+                    }
+                    json = JsonConvert.SerializeObject(phoneTypeList, Formatting.Indented);
+                    break;
+                case "Direction":
+                    JArray directions = JArray.Parse(keyValuePairs["Response"].SelectToken("LutPreDirCdList").ToString());
+
+                    foreach (JToken direction in directions)
+                    {
+                        Directions AllDirections = new Directions();
+                        string directionText = direction["LutPreDirCD"].ToString();
+                        string directionValue = direction["LutPreDirCD"].ToString();
+
+                        AllDirections.DirectionText = directionText;
+                        AllDirections.DirectionValue = directionValue;
+
+                        directionsList.Add(AllDirections);
+                    }
+                    json = JsonConvert.SerializeObject(directionsList, Formatting.Indented);
+                    break;
+                default:
+                    break;
+            }
+            
+            //var json = JavascriptSerializer.Serialize(statesList);
+            
+            return new JsonResult(json);
+        }
+
+        private async Task<Models.IDM.SignupModel> GetData()
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://43svc/AAHRDev.Api/");
+            Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
+            return result;
+        }
+    }
+
+    internal class State
+    {
+        public string StateId { get; set; }
+        public string StateName { get; set; }
+    }
+
+    internal class PhoneType
+    {
+        public string PhoneTypeText { get; set; }
+        public string PhoneTypeValue { get; set; }
+    }
+
+    internal class Directions
+    {
+        public string DirectionText { get; set; }
+        public string DirectionValue { get; set; }
     }
 }

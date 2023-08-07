@@ -1,5 +1,6 @@
 ﻿using ComCon.DataAccess.Entity;
 using ComCon.DataAccess.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -13,12 +14,18 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using DeveloperPortal.DataAccess;
 
 namespace DeveloperPortal.Models.IDM
 {
     public class ApplicantSignupModel
     {
         private IConfiguration _config;
+
+        public ApplicantSignupModel(IConfiguration config)
+        {
+            _config = config;
+        }
 
         #region YourInformation
         public string FirstName { get; set; }
@@ -57,8 +64,18 @@ namespace DeveloperPortal.Models.IDM
         public List<NotificationInfoModel> notificationInfoList { get; set; }
 
         public Dictionary<string, string> dictionary = new Dictionary<string, string>();
+        
+        public string AccountReason { get; set; }
 
         public bool IsApplicant { get; set; }
+
+        public List<LutPreDir> LutPreDirCdList { get; set; }
+
+        public List<LutStreetType> LutStreetTypeList { get; set; }
+        public List<LutState> LutStateCDList { get; set; }
+        public List<LutPhoneType> LutPhoneTypeCdList { get; set; }
+        public List<LutDepartment> DepartmentList { get; set; }
+
         #region ProjectRegistration
         public List<string> Projects { get; set; }
         public string LutPhoneTypeCd { get; set; }

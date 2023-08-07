@@ -2,9 +2,26 @@
 {
     public class Application
     {
-        static IConfiguration _config;
+        private string? retVal;
+        IConfiguration _config;
+        public Application(IConfiguration config)
+        {
+            _config = config;
+        }
 
-        public static string Name = _config["ThisApplication:Application"];
+        public string GetConfigValue(string key)
+        {
+            retVal = string.Empty;
+            switch (key)
+            {
+                case "Name":
+                    retVal = _config["ThisApplication:Application"] ?? string.Empty;
+                    break;
+                default:
+                    break;
+            }
+            return retVal;
+        }
     }
 
     public class AppConstant

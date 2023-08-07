@@ -15,6 +15,10 @@ namespace DeveloperPortal.Models.Helper
     public class IDMApplicationUser
     {
         private IConfiguration _config;
+        public IDMApplicationUser(IConfiguration config)
+        {
+            _config = config;
+        }
         public IDMUser ApplicantSignUp(IDMUser idmUser)
         {
             IDMUser resultIDMUser = new IDMUser();

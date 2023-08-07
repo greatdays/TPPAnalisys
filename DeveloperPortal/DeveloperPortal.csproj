@@ -25,4 +25,10 @@
     <Folder Include="wwwroot\js\jquery-mask-plugin\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DeveloperPortal.DataAccess">
+      <HintPath>..\DeveloperPortal.DataAccess\bin\Debug\net7.0\DeveloperPortal.DataAccess.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

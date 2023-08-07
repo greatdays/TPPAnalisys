@@ -8,7 +8,7 @@ namespace DeveloperPortal.Pages.Applicant
         public string PhoneType { get; set; }
         public void OnGet()
         {
-            
+            //PhoneType.
         }
     }
 }

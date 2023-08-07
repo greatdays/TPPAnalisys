@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration
 @model DeveloperPortal.Pages.Applicant.SignUpModel
+@inject IConfiguration Configuration
+
 
 <script src="~/js/jquery-block-ui/blockUICollection.js"></script>
 
@@ -55,7 +58,8 @@
         <div role="form" action="" method="post">
             <div class="setup-content" id="step-1">
                 @{
-                    var accountModel = new CreateAccountModel();
+                    string api = Configuration["AAHRApiSettings:PropertyApiURL"];
+                    var accountModel = new CreateAccountModel(Configuration);
                     <partial name="CreateAccount" model="accountModel"></partial>
                 }
             </div>
@@ -73,7 +77,8 @@
             </div>
             <div class="setup-content" id="step-4" role="tabpanel">
                 @{
-                    var summaryModel = new SummaryModel();
+                    //IConfiguration config = null;
+                    var summaryModel = new SummaryModel(Configuration);
                     <partial name="Summary" model="summaryModel"></partial>
                 }
             </div>
@@ -361,4 +366,10 @@
 </script>
 
 @{
+    string propertyApi = Configuration["AAHRApiSettings:PropertyApiURL"];
+    string url = propertyApi;
+    HttpClient client = new HttpClient();
+    client.BaseAddress = new Uri("http://43svc/AAHRDev.Api/");
+    Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
+    var t = result;
 }

@@ -20,6 +20,9 @@
     <Reference Include="ComCon.PropertySnapshot">
       <HintPath>Dlls\ComCon.PropertySnapshot.dll</HintPath>
     </Reference>
+    <Reference Include="DeveloperPortal.DataAccess">
+      <HintPath>..\DeveloperPortal.DataAccess\bin\Debug\net7.0\DeveloperPortal.DataAccess.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>Dlls\EntityFramework.dll</HintPath>
     </Reference>
@@ -59,6 +62,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailTemplate.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

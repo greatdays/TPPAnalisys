@@ -193,6 +193,87 @@ function InitializeContactMethods() {
 
     $('#POBox[value="No"]').attr("checked", true);
     OnPOBoxChanged();
+
+    //fetch data to initialize PhoneType
+    /*http://43svc/AAHRDev.Api/api/user/lookuplist"*/
+    $.ajax({
+        url: "/Account/GetLookupData?lookup=State", 
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: "",
+        success: function (data) {
+            //console.log('success: ' + data);
+            var json = JSON.parse(data);
+            console.log('json: ' + json);
+            //debugger;
+            for (var index = 0; index < json.length; index++) {
+                var stateName = json[index].StateName;
+                var stateId = json[index].StateId;
+
+                $('#State').append($('<option>').text(stateName).attr('value', stateId));
+            }
+            $('#State').val(0);
+        },
+        error: function (xhr) { }
+    });
+    console.log('about to call phonetype');
+    $.ajax({
+        url: "/Account/GetLookupData?lookup=PhoneType",
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: "",
+        success: function (data) {
+            //console.log('success: ' + data);
+            var json = JSON.parse(data);
+            console.log('PhoneType json: ' + json);
+            //debugger;
+            for (var index = 0; index < json.length; index++) {
+                var phoneTypeText = json[index].PhoneTypeText;
+                var phoneTypeValue = json[index].PhoneTypeValue;
+
+                $('#PhoneType').append($('<option>').text(phoneTypeText).attr('value', phoneTypeValue));
+            }
+            $('#PhoneType').val(0);
+        },
+        error: function (xhr) { }
+    });
+    console.log('about to call directions');
+    $.ajax({
+        url: "/Account/GetLookupData?lookup=Direction",
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: "",
+        success: function (data) {
+            console.log('success: ' + data);
+            var json = JSON.parse(data);
+            console.log('Direction json: ' + json);
+            //debugger;
+            for (var index = 0; index < json.length; index++) {
+                var directionText = json[index].DirectionText;
+                var directionValue = json[index].DirectionValue;
+
+                $('#StreetDirection').append($('<option>').text(directionText).attr('value', directionValue));
+            }
+            $('#StreetDirection').val(0);
+        },
+        error: function (xhr) { }
+    });
+    console.log('complete');
 }
 
 function ValidatePhone(ctlId) {

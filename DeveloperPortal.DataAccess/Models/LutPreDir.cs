@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DeveloperPortal.DataAccess;
+
+public partial class LutPreDir
+{
+    public string LutPreDirCd { get; set; } = null!;
+
+    public string CreatedBy { get; set; } = null!;
+
+    public DateTime CreatedOn { get; set; }
+
+    public string? ModifiedBy { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+}

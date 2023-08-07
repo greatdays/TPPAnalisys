@@ -29,9 +29,8 @@
         <div class="row">
             <div class="col-md-4">
                 @Html.DropDownList("PhoneType", new List<SelectListItem>{
-                new SelectListItem(text:"Mobile", value:"Mobile"),
-                new SelectListItem("Home","Home")
-                },"Select a Phone Type", new {@class="form-control"})
+                new SelectListItem(text:"Select a Phone Type", value:"0")
+                },null, new {@class="form-control"})
             </div>
             <div class="col-md-4">
                 @Html.TextBox("PhoneNumber","", new { @class = "form-control"})
@@ -72,11 +71,8 @@
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownList("StreetDirection", new List<SelectListItem>{
-                        new SelectListItem(text:"N", value:"N"),
-                        new SelectListItem("E","E"),
-                        new SelectListItem("W","W"),
-                        new SelectListItem("S","S")
-                        },"Select a Direction", new {@class="form-control"})
+                        new SelectListItem(text:"Select a Direction", value:"0")
+                        },null, new {@class="form-control"})
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -130,7 +126,8 @@
                     @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("State","", new { @class = "form-control"})
+                    @Html.DropDownList("State", new List<SelectListItem>{
+                    new SelectListItem(text:"Select a State", value:"0")},null, new {@class="form-control"})
                 </div>
             </div>
             <div class="row align-items-baseline">
@@ -171,5 +168,4 @@
         //$('#POBox').click('OnPOBoxChanged');
     });
 </script>
-@{
-}
+

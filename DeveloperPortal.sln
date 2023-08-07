@@ -12,6 +12,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.ServiceClie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.Models", "DeveloperPortal.Models\DeveloperPortal.Models.csproj", "{1196EF67-65A4-46A0-9F06-18EE5E5717CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperPortal.DataAccess", "DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj", "{F3E142D1-6639-4450-8F6E-422F09BFB1F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{1196EF67-65A4-46A0-9F06-18EE5E5717CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1196EF67-65A4-46A0-9F06-18EE5E5717CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1196EF67-65A4-46A0-9F06-18EE5E5717CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3E142D1-6639-4450-8F6E-422F09BFB1F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3E142D1-6639-4450-8F6E-422F09BFB1F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3E142D1-6639-4450-8F6E-422F09BFB1F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3E142D1-6639-4450-8F6E-422F09BFB1F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

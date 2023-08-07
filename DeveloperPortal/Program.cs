@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,6 +14,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
+/*builder.Services.AddScoped(client => 
+    new HttpClient { BaseAddress = new Uri("http://43svc/AAHRDev.Api") }
+);*/
 
 var app = builder.Build();
 

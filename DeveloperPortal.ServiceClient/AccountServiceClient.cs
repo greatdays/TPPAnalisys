@@ -16,7 +16,18 @@ namespace DeveloperPortal.ServiceClient
     {
         public IConfiguration _config;
         public IHttpContextAccessor _httpContextAccessor;
+        //private IHttpUserAgentParserProvider _parserProvider;
+        //public MyClass(IHttpUserAgentParserProvider parserProvider)
+        //{
+        //    _parserProvider = parserProvider;
+        //}
+        public AccountServiceClient(IConfiguration config, IHttpContextAccessor httpConfig)
+        {
+            _config = config;
+            _httpContextAccessor = httpConfig;
+        }
 
+        
         #region ValidateUsername API Call
         /// <summary>
         /// This method is used to validate username
@@ -70,7 +81,7 @@ namespace DeveloperPortal.ServiceClient
                 objUserSystemDetail.OSVersion = objOperatingSystem.Version.ToString();
                 objUserSystemDetail.BrowserName = request.Headers["User-Agent"].ToString();
                 //objUserSystemDetail.BrowserName = request.Browser.Browser;
-                
+//                HttpBrowserCapabilities
                 //TODO: find it
                 //objUserSystemDetail.BrowserVersion = request.Browser.Version;
 

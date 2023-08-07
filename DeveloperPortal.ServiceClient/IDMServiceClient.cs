@@ -1,4 +1,5 @@
 ﻿using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -14,7 +15,11 @@ namespace DeveloperPortal.ServiceClient
     public class IDMServiceClient
     {
         public static IConfiguration _config;
-        
+
+        public IDMServiceClient(IConfiguration config)
+        {
+            _config = config;
+        }
 
         /// <summary>
         /// This method is used to authenticate user while login
@@ -105,7 +110,7 @@ namespace DeveloperPortal.ServiceClient
         /// <returns>
         /// Returns authentication response.
         /// </returns>
-        public static AuthenticateResponse ValidateToken(string jwtToken) //removed static
+        public AuthenticateResponse ValidateToken(string jwtToken) //removed static
         {
             AuthenticateResponse authenticateResponse = null;
             
