@@ -182,18 +182,18 @@ namespace DeveloperPortal.Models.IDM
 
                 if (body.Contains("[Program Footer]"))
                 {
-                    emailFooter = db.NotificationTemplates.Where(m => m.Name == EmailTemplateConstant.ProgramFooterTemplate).SingleOrDefault().EmailBody;
+                    emailFooter = db.NotificationTemplates.Where(m => m.Name == DeveloperPortal.Constants.EmailTemplateConstant.ProgramFooterTemplate).SingleOrDefault().EmailBody;
                     body = body.Replace("[Program Footer]", emailFooter);
 
                 }
                 if (body.Contains("[System Footer]"))
                 {
-                    emailFooter = db.NotificationTemplates.Where(m => m.Name == EmailTemplateConstant.SystemFooterTemplate).SingleOrDefault().EmailBody;
+                    emailFooter = db.NotificationTemplates.Where(m => m.Name == DeveloperPortal.Constants.EmailTemplateConstant.SystemFooterTemplate).SingleOrDefault().EmailBody;
                     body = body.Replace("[System Footer]", emailFooter);
 
                 }
 
-                foreach (var item in EmailTemplateConstant.EmailConstants)
+                foreach (var item in DeveloperPortal.Constants.EmailTemplateConstant.EmailConstants)
                 {
                     body = body.Replace("[" + item.Key + "]", item.Value);
                 }
