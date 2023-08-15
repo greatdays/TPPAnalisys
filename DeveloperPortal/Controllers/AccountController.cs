@@ -18,7 +18,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using DeveloperPortal.Models.Resources;
 using System.Net.Http.Headers;
 using Azure;
-
+using Azure.Identity;
 
 namespace DeveloperPortal.Controllers
 {
@@ -223,10 +223,12 @@ namespace DeveloperPortal.Controllers
 
                     List<string> roles = new List<string>();
 
-                    if (signupModel.IsApplicant)
+                    roles.Add(UserRoles.PropertyDeveloper);
+
+                   /* if (signupModel.IsApplicant)
                     {
                         roles.Add(UserRoles.Applicant);
-                    }
+                    }*/
 
                     /*assign roles to user*/
                     idmuser.AppList = new List<AppDetail>();
@@ -332,7 +334,8 @@ namespace DeveloperPortal.Controllers
                                 /*send notification to registerd user*/
                                 //TODO: Add 'ComConEntities' connectionstring from AAHR
                                 //<add name="ComConEntities" connectionString="metadata=res://*/Entity.ComCon.csdl|res://*/Entity.ComCon.ssdl|res://*/Entity.ComCon.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.43.20.101;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
-                                signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
+                                //TODO: Implement email notification
+                                //signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
                             }
 
                             ///* Saving subscription data to DB */
