@@ -25,9 +25,17 @@
     <div role="navigation" aria-label="Breadcrumb" class="setup-panel">
         <ul id="Sign_progressbar" class="filter-flex-container-2 flex-list nav nav-tabs noprint" style="margin-bottom: 50px;">
             <li role="presentation" class="active wizard-item" aria-disabled="false">
-                <a aria-current="step" disabled="disabled" href="#step-1" type="button" role="tab" class="btn form_btn-circle app-circle btn-default btn-primary" aria-selected="true">
+                <a aria-current="step" disabled="disabled" href="#step-0" type="button" role="tab" class="btn form_btn-circle app-circle btn-default btn-primary" aria-selected="true">
                     <span class="roundcircle">
                         <span class="fa fa-dot-circle" style="font-family: 'Font Awesome 5 Free';"></span>
+                    </span>
+                    <span class="round-tab app-stepper-desc signUpBreadCircles">Account Type</span>
+                </a>
+            </li>
+            <li role="presentation" class="disabled wizard-item" aria-disabled="false">
+                <a aria-current="step" disabled="disabled" href="#step-1" type="button" role="tab" class="btn form_btn-circle app-circle btn-default" aria-selected="false">
+                    <span class="roundcircle">
+                        <span class="fa" style="font-family: 'Font Awesome 5 Free';"></span>
                     </span>
                     <span class="round-tab app-stepper-desc signUpBreadCircles">Your Information</span>
                 </a>
@@ -56,6 +64,12 @@
 
     <div class="">
         <div role="form" action="" method="post">
+            <div class="setup-content" id="step-0" role="tabpanel">
+                @{
+                    var accountTypeModel = new AccountTypeModel();
+                    <partial name="AccountType" model="accountTypeModel"></partial>
+                }
+            </div>
             <div class="setup-content" id="step-1">
                 @{
                     string api = Configuration["AAHRApiSettings:PropertyApiURL"];
@@ -88,7 +102,7 @@
 
 <script>
     $(document).ready(function () {
-        var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "ProjectList", "Data": ""}]}';
+        var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "ProjectList", "Data": ""}, {"step": "AccountType","Data": ""}]}';
         localStorage.setItem('ApplicantJson', applicantJson);
 
         var StepChanged = function f($target) {
@@ -266,8 +280,8 @@
         }
         else {
             console.log('step-1 click');
-            $('div.setup-panel ul li a[href="#step-1"]').trigger('click');
-            trackUserPosition = 1;
+            $('div.setup-panel ul li a[href="#step-0"]').trigger('click');
+            trackUserPosition = 0;
         }
               
 
@@ -290,8 +304,9 @@
                 nextStepWizard = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]').parent().next().children("a"),
                 currentStepElement = $('div.setup-panel ul li a[href="#' + curStepBtn + '"]'),
                 curInputs = curStep.find("input");
+                
                 console.log('curStepBtn:'+ curStepBtn);
-            console.log('nextStepWizard:' + currentStepElement);
+                console.log('nextStepWizard:' + currentStepElement);
 
             //$(".form-group").removeClass("has-error");
             /*for (var i = 0; i < curInputs.length; i++) {
@@ -313,6 +328,9 @@
             }*/
 
             switch (curStepBtn) {
+                case "step-0":
+                    CheckIfEmpty('AccountType', '', 'Please select an account type');
+                    break;
                 case "step-1":
                     CheckIfEmpty('FirstName', 'first name', '');
                     CheckIfEmpty('LastName', 'last name', '');
@@ -333,19 +351,31 @@
                     //CheckIfPhoneTypeIsEmpty();
                     break;
                 case "step-3":
-                console.log("step 3");
+                    console.log("step 3");
+                    SaveLocalData(curStepBtn);
+
                     LoadSummaryPage();
                     break;
             }
 
             var errCtls = curStep.find("span.text-danger");
+            console.log('errCtls.length:' + errCtls.length);
 
-            if (errCtls.length > 0) { isValid = false; $("#curformValid").val('false'); }
-            else { isValid = true; $("#curformValid").val('true'); 
-            SaveLocalData(curStepBtn);}
+            if (errCtls.length > 0) { 
+                isValid = false; 
+                $("#curformValid").val('false'); 
+            }
+            else { 
+                isValid = true; 
+                $("#curformValid").val('true'); 
+                SaveLocalData(curStepBtn);
+                console.log('ProjectList after SaveLocaldata: ' + localStorage.getItem('ProjectList'));
+            }
 
 
             console.log('Track position:' + trackUserPosition);
+            console.log('$("#curformValid").val():' + $("#curformValid").val());
+
             if (trackUserPosition != 4) {
                 trackUserPosition++
                 //Ananth
@@ -366,10 +396,5 @@
 </script>
 
 @{
-    string propertyApi = Configuration["AAHRApiSettings:PropertyApiURL"];
-    string url = propertyApi;
-    HttpClient client = new HttpClient();
-    client.BaseAddress = new Uri("http://43svc/AAHRDev.Api/");
-    Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
-    var t = result;
+    
 }

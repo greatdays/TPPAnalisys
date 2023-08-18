@@ -13,7 +13,7 @@
                 <legend class="app-form-heading">Your Information</legend>
             </div>
             <div class="col-md-6 float-right">
-                <button id="btn" class="btn-primary-outline float-right edit-button">Edit</button>
+                <button id="btnEditYourInfo" class="btn-primary-outline float-right edit-button">Edit</button>
             </div>
         </div>
         <div class="row align-items-baseline">
@@ -57,7 +57,7 @@
                 <legend class="app-form-heading">Contact Methods</legend>
             </div>
             <div class="col-md-6 float-right">
-                <button id="btn" class="btn-primary-outline float-right edit-button">Edit</button>
+                <button id="btnEditContactMethods" class="btn-primary-outline float-right edit-button">Edit</button>
             </div>
         </div>
         <div class="row align-items-baseline">
@@ -85,7 +85,7 @@
                 <legend class="app-form-heading">Project Registration</legend>
             </div>
             <div class="col-md-6 float-right">
-                <button id="btn" class="btn-primary-outline float-right edit-button">Edit</button>
+                <button id="btnEditProjectRegistration" class="btn-primary-outline float-right edit-button">Edit</button>
             </div>
         </div>
         <div class="col-md-12" id="divProjectsSummary">
@@ -99,25 +99,30 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button type="button" class="main-btn nextBtn float-right" id="btnSubmit">Submit</button>
+            <button type="button" class="main-btn float-right" id="btnSubmit">Submit</button>
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function(){
         console.log('Summary');
+         
+        $('#btnEditYourInfo').on('click', function () { $('a[href="#step-1"]').click() })
+        $('#btnEditContactMethods').on('click', function () { $('a[href="#step-2"]').click(); })
+        $('#btnEditProjectRegistration').on('click', function () { $('a[href="#step-3"]').click(); })
+
         //Your Information data
         $('#btnSubmit').on('click', function(){
             //onclick="location.href='@@Url.Action(CreateAccount, Account)
             //var dataObject =
-            var yourInfo = localStorage.getItem('YourInfo');
+            /*var yourInfo = localStorage.getItem('YourInfo');
             var contactInfo = localStorage.getItem('ContactInfo');
-            var projList = localStorage.getItem('ProjectList');
+            var projList = localStorage.getItem('ProjectList');*/
 
             var applicantJson = localStorage.getItem('ApplicantJson');
             var stringifiedJson = JSON.stringify(applicantJson);
 
-            var array = [];
+            /*var array = [];
             array.push(yourInfo);
             array.push(contactInfo);
             array.push(projList);
@@ -129,7 +134,7 @@
             console.log('ajax call..');
             console.log('array: ' + json);
 
-            dataObject = JSON.stringify(json);
+            dataObject = JSON.stringify(json);*/
 
             $.ajax({
                 url: "/Account/CreateAccount",
@@ -141,9 +146,14 @@
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 data: "data=" + stringifiedJson,
-                success: function (data) { },
+                success: function (data) {
+                    console.log('response from controller: ' + data);
+                    alert('success');
+                    localStorage.setItem('ApplicantJson', '');
+                    window.location.href = "/Applicant/Landing";
+                },
                 error: function (xhr) { }
-                });
+            });
         });//button click
     });//ready
 </script>

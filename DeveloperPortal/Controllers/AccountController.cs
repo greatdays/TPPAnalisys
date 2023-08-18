@@ -48,13 +48,8 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public ActionResult CreateAccount(string data)
         {
-            //data = "{\"Applicant\":[{\"step\":\"YourInfo\",\"Data\":{\"firstName\":\"first\",\"lastName\":\"last\",\"middleName\":\"\",\"email\":\"a@a.com\",\"companyName\":\"my company\",\"title\":\"ownwer\",\"password\":\"passw0rd\"}},{\"step\":\"ContactInfo\",\"Data\":{\"phoneNumber\":\"(654)984-6513\",\"city\":\"Los Angeles\",\"state\":\"CA\",\"zipCode\":\"65498\",\"phoneType\":\"Mobile\",\"extension\":\"2354\",\"streetNumber\":\"\",\"streetDirection\":\"\",\"streetName\":\"\",\"streetType\":\"\",\"unitNumber\":\"\",\"poBoxNumber\":\"3847\",\"poBox\":\"Yes\"}},{\"step\":\"ProjectList\",\"Data\":\"[\\\"F0200 - 6120 N.Woodman Ave.\\\"]\"}]}";
-            //data = "{\"Applicant\":[{\"step\":\"YourInfo\",\"Data\":{\"firstName\":\"first\",\"lastName\":\"last\",\"middleName\":\"\",\"email\":\"a@a.com\",\"companyName\":\"My Company\",\"title\":\"ownwer\",\"password\":\"passw0rd\"}},{\"step\":\"ContactInfo\",\"Data\":{\"phoneNumber\":\"(455)454-5454\",\"city\":\"Los Angeles\",\"state\":\"CA\",\"zipCode\":\"90023\",\"phoneType\":\"Mobile\",\"extension\":\"1253\",\"streetNumber\":\"\",\"streetDirection\":\"\",\"streetName\":\"\",\"streetType\":\"\",\"unitNumber\":\"\",\"poBoxNumber\":\"2347\",\"poBox\":\"Yes\"}},{\"step\":\"ProjectList\",\"Data\":\"[\\\"F0200 - 6120 N.Woodman Ave.\\\"]\"}]}";
-            Console.WriteLine("createaccount");
             ApplicantSignupModel signupModel = new ApplicantSignupModel(_config);
-
-            //string yourInfo = json[0];
-            //object coll = Request.Form.ToList();
+            string accountType = string.Empty;
 
             JObject keyValuePairs = JObject.Parse(JsonConvert.DeserializeObject(data).ToString());
             foreach (JProperty property in keyValuePairs.Properties())
@@ -70,6 +65,10 @@ namespace DeveloperPortal.Controllers
 
                     switch (step1)
                     {
+                        case "AccountType":
+                            accountType = GetApplicantDataByKey("accountType", lst);
+                            
+                            break;
                         case "YourInfo":
                             string first = GetApplicantDataByKey("firstName", lst);
                             string last = GetApplicantDataByKey("lastName", lst);
@@ -130,9 +129,6 @@ namespace DeveloperPortal.Controllers
                             }
                             
                             signupModel.Projects = projList;
-                            //ModelState.SetModelValue()
-                            //
-                            //string poBox = GetApplicantDataByKey("poBox", lst);
                             break;
                         default:
                             break;
@@ -140,245 +136,282 @@ namespace DeveloperPortal.Controllers
                 }
             }
 
-            CreateIDMAccount(signupModel);
+            ActionResult response = CreateIDMAccount(signupModel, accountType);
 
-            return Content("Create Account called..");
+
+            return response;
         }
 
-        [HttpPost]
-        public ActionResult CreateIDMAccount(ApplicantSignupModel signupModel)
+        public ActionResult CreateIDMAccount(ApplicantSignupModel signupModel, string selectedRole)
         {
             JsonData<JsonStatus> data = new JsonData<JsonStatus>(new JsonStatus());
             string username = "";
 
-            if (string.IsNullOrEmpty(signupModel.EmailId))
+            try
             {
-                username = signupModel.IDMUserName;
-            }
-            else
-            {
-                username = signupModel.EmailId;
-                signupModel.IDMUserName = signupModel.EmailId;
-            }
+                if (string.IsNullOrEmpty(signupModel.EmailId))
+                {
+                    username = signupModel.IDMUserName;
+                }
+                else
+                {
+                    username = signupModel.EmailId;
+                    signupModel.IDMUserName = signupModel.EmailId;
+                }
 
-            var userJson = new
-            {
-                UserName = username
-            };
+                var userJson = new
+                {
+                    UserName = username
+                };
 
-            data.Result.Data = userJson;
+                data.Result.Data = userJson;
 
-            // Remove model attributes that are not related to create account
-            ModelState.Remove("Summary");
-            ModelState.Remove("HouseNum");
-            ModelState.Remove("StreetName");
-            ModelState.Remove("City");
-            ModelState.Remove("LutStateCD");
-            ModelState.Remove("Zip");
-            ModelState.Remove("PhoneNumber");
-            ModelState.Remove("LutPhoneTypeCd");
-            ModelState.Remove("AddressQuestion");
-            ModelState.Remove("PhoneNumberQuestion");
-            ModelState.Remove("PhoneNotificationOptions");
-            ModelState.Remove("AdditionalPhoneNumberQuestion");
-            ModelState.Remove("LutAddPhoneTypeCd");
-            ModelState.Remove("AdditionalPhoneNumber");
-            ModelState.Remove("AdditionalPhoneNotificationOptions");
-            ModelState.Remove("AlternateContactQuestion");
-            ModelState.Remove("AlternateContact_FirstName");
-            ModelState.Remove("AlternateContact_LastName");
-            ModelState.Remove("AlternateContact_Email");
-            ModelState.Remove("AlternateContact_PhoneType");
-            ModelState.Remove("AlternateContact_PhoneNumber");
-            ModelState.Remove("AlternateContact_PhoneNotification");
-            ModelState.Remove("AlternateContact_HouseNum");
-            ModelState.Remove("AlternateContact_StreetName");
-            ModelState.Remove("AlternateContact_State");
-            ModelState.Remove("AlternateContact_Zipcode");
-            ModelState.Remove("AlternateContact_CityName");
+                // Remove model attributes that are not related to create account
+                ModelState.Remove("Summary");
+                ModelState.Remove("HouseNum");
+                ModelState.Remove("StreetName");
+                ModelState.Remove("City");
+                ModelState.Remove("LutStateCD");
+                ModelState.Remove("Zip");
+                ModelState.Remove("PhoneNumber");
+                ModelState.Remove("LutPhoneTypeCd");
+                ModelState.Remove("AddressQuestion");
+                ModelState.Remove("PhoneNumberQuestion");
+                ModelState.Remove("PhoneNotificationOptions");
+                ModelState.Remove("AdditionalPhoneNumberQuestion");
+                ModelState.Remove("LutAddPhoneTypeCd");
+                ModelState.Remove("AdditionalPhoneNumber");
+                ModelState.Remove("AdditionalPhoneNotificationOptions");
+                ModelState.Remove("AlternateContactQuestion");
+                ModelState.Remove("AlternateContact_FirstName");
+                ModelState.Remove("AlternateContact_LastName");
+                ModelState.Remove("AlternateContact_Email");
+                ModelState.Remove("AlternateContact_PhoneType");
+                ModelState.Remove("AlternateContact_PhoneNumber");
+                ModelState.Remove("AlternateContact_PhoneNotification");
+                ModelState.Remove("AlternateContact_HouseNum");
+                ModelState.Remove("AlternateContact_StreetName");
+                ModelState.Remove("AlternateContact_State");
+                ModelState.Remove("AlternateContact_Zipcode");
+                ModelState.Remove("AlternateContact_CityName");
 
-            if (signupModel.EmailId == null && signupModel.IDMUserName != null)
-            {
-                ModelState.Remove("AdditionalEmailQuestion");
-            }
+                if (signupModel.EmailId == null && signupModel.IDMUserName != null)
+                {
+                    ModelState.Remove("AdditionalEmailQuestion");
+                }
 
-            IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+                IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
 
-            if (ModelState.IsValid && !string.IsNullOrEmpty(username))
-            {
-
-                if (CheckExistingUserName(username))
+                if (ModelState.IsValid && !string.IsNullOrEmpty(username))
                 {
 
-                    OrganizationContactModel organizations = new OrganizationContactModel();
-                    signupModel.NotificationData = new Dictionary<string, string>();
-                    IDMApplicationUser applicationUser = new IDMApplicationUser(_config);
-                    IDMUser idmuser = new IDMUser();
-                    idmuser.FirstName = signupModel.FirstName;
-                    idmuser.MiddleName = signupModel.MiddleName;
-                    idmuser.LastName = signupModel.LastName;
-                    idmuser.Password = signupModel.Password;
-                    idmuser.Email = signupModel.EmailId;
-                    idmuser.UserName = username;
-
-                    List<string> roles = new List<string>();
-
-                    roles.Add(UserRoles.PropertyDeveloper);
-
-                   /* if (signupModel.IsApplicant)
+                    if (CheckExistingUserName(username))
                     {
-                        roles.Add(UserRoles.Applicant);
-                    }*/
 
-                    /*assign roles to user*/
-                    idmuser.AppList = new List<AppDetail>();
-                    idmuser.AppList.Add(new AppDetail()
-                    {
-                        AppKey = GetConfigValue("ThisApplication:AppKey"),
-                        AppName = GetConfigValue("ThisApplication:AppKey"),
-                        Roles = roles
-                    }); ;
+                        OrganizationContactModel organizations = new OrganizationContactModel();
+                        signupModel.NotificationData = new Dictionary<string, string>();
+                        IDMApplicationUser applicationUser = new IDMApplicationUser(_config);
+                        IDMUser idmuser = new IDMUser();
+                        idmuser.FirstName = signupModel.FirstName;
+                        idmuser.MiddleName = signupModel.MiddleName;
+                        idmuser.LastName = signupModel.LastName;
+                        idmuser.Password = signupModel.Password;
+                        idmuser.Email = signupModel.EmailId;
+                        idmuser.UserName = username;
 
-                    // Call IDM and create an account
-                    idmuser = applicationUser.ApplicantSignUp(idmuser);
+                        List<string> roles = new List<string>();
+                        string selectedLookupRole = string.Empty;
 
-                    if (idmuser.Status != null && idmuser.Status != "Not Found")
-                    {
-                        if (idmuser.Status.Contains("successfully"))
+                        if (selectedRole == string.Empty)
                         {
-                            data.Result.Status = true;
-                            // auto login current user
-                            ApplicantUser objUser = new ApplicantUser();
-
-                            objUser.UserName = username;
-                            objUser.Password = signupModel.Password;
-                            objUser.Provider = "SQL";
-
-                            objUser = new AccountServiceClient(_config, _contextAccessor).AuthenticateUser(objUser);
-
-                            if (objUser.IDMUserId > 0)
+                            selectedLookupRole = UserRoles.Guest;
+                        }
+                        else
+                        {
+                            switch (selectedRole)
                             {
-                                //var userDetail = objUser.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(_config["ThisApplication:Application"]));
-                                ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("ThisApplication:Application")));
-                                var authenticateResponse = new IDMServiceClient(_config).ValidateToken(thisapp.JWTToken);
-                                //// add response to session.                                
-                                //FormsAuthentication.SetAuthCookie(objUser.UserName, true);
-                                //objUser.
-                                var identity = new ClaimsIdentity(new[] {
+                                case "Property Developer":
+                                    selectedLookupRole = UserRoles.PropertyDeveloper;
+                                    break;
+                                case "Architect":
+                                    selectedLookupRole = UserRoles.Architect;
+                                    break;
+                                case "CASp":
+                                    selectedLookupRole = UserRoles.CASp;
+                                    break;
+                                case "General Contractor":
+                                    selectedLookupRole = UserRoles.GeneralContractor;
+                                    break;
+                                case "NAC":
+                                    selectedLookupRole = UserRoles.NAC;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        roles.Add(selectedLookupRole);
+
+                        /* if (signupModel.IsApplicant)
+                         {
+                             roles.Add(UserRoles.Applicant);
+                         }*/
+
+                        /*assign roles to user*/
+
+                        idmuser.AppList = new List<AppDetail>();
+                        idmuser.AppList.Add(new AppDetail()
+                        {
+                            AppKey = GetConfigValue("ThisApplication:AppKey"),
+                            AppName = GetConfigValue("ThisApplication:AppKey"),
+                            Roles = roles
+                        }); ;
+
+                        // Call IDM and create an account
+                        idmuser = applicationUser.ApplicantSignUp(idmuser);
+
+                        if (idmuser.Status != null && idmuser.Status != "Not Found")
+                        {
+                            if (idmuser.Status.Contains("successfully"))
+                            {
+                                data.Result.Status = true;
+                                // auto login current user
+                                ApplicantUser objUser = new ApplicantUser();
+
+                                objUser.UserName = username;
+                                objUser.Password = signupModel.Password;
+                                objUser.Provider = "SQL";
+
+                                objUser = new AccountServiceClient(_config, _contextAccessor).AuthenticateUser(objUser);
+
+                                if (objUser.IDMUserId > 0)
+                                {
+                                    //var userDetail = objUser.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(_config["ThisApplication:Application"]));
+                                    ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("ThisApplication:Application")));
+                                    var authenticateResponse = new IDMServiceClient(_config).ValidateToken(thisapp.JWTToken);
+                                    //// add response to session.                                
+                                    //FormsAuthentication.SetAuthCookie(objUser.UserName, true);
+                                    //objUser.
+                                    var identity = new ClaimsIdentity(new[] {
                                         new Claim(ClaimTypes.Name, authenticateResponse.Username),
                                         new Claim(ClaimTypes.Role,string.Join(",", thisapp.Roles))
                                         }, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                                var principal = new ClaimsPrincipal(identity);
+                                    var principal = new ClaimsPrincipal(identity);
 
-                                var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                                    var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                                //UserSession.SetUserInSession(UserSession.AssignValues(HttpContext, r, thisapp.JWTToken, Constants.Application.Name));
-                                UserSession.SetUserInSession(HttpContext, 
-                                    UserSession.AssignValues(HttpContext, 
-                                        authenticateResponse, 
-                                        thisapp.JWTToken, 
-                                        new Constants.Application(_config).GetConfigValue("Name")
-                                    ));
+                                    //UserSession.SetUserInSession(UserSession.AssignValues(HttpContext, r, thisapp.JWTToken, Constants.Application.Name));
+                                    UserSession.SetUserInSession(HttpContext,
+                                        UserSession.AssignValues(HttpContext,
+                                            authenticateResponse,
+                                            thisapp.JWTToken,
+                                            new Constants.Application(_config).GetConfigValue("Name")
+                                        ));
+                                }
+
+                                // End - auto login
+
+                                // Save entry in contact tables
+                                signupModel.IsApplicant = true;
+
+                                /*saving contact */
+                                signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
+
+
+                                ///* Saving subscription data to DB */
+                                ///Ananth: Commented below piece of code
+                                /*if (signupModel.IsApplicant)
+                                {
+                                    SubscriptionModel subscriptionModel = new SubscriptionModel();
+                                    subscriptionModel.ContactIdentifierID = signupModel.ContactIdentifierID;
+                                    subscriptionModel.IsListingAdded = signupModel.IsListingAdded;
+                                    subscriptionModel.IsOpenForApplication = signupModel.IsOpenForApplication;
+                                    subscriptionModel.IsWaitlistOpen = signupModel.IsWaitlistOpen;
+                                    subscriptionModel.UserName = signupModel.IDMUserName;
+                                    subscriptionModel.IsOpenForAffordableApplication = signupModel.IsOpenForAffordableApplication;
+                                    subscriptionModel.IsClosedForAffordableApplication = signupModel.IsClosedForAffordableApplication;
+                                    int contactIdentifierId = HousingRegistryClient.SaveSubscription(subscriptionModel);
+                                }*/
+                                data.Result.Status = true;
+
+                                // End - Save entry in contact tables
+                                ///Ananth: Commented below piece of code
+                                /*string path = System.AppDomain.CurrentDomain.BaseDirectory + @"\Models\ApplicantSignUp.db";
+                                using (var liteDbFile = new LiteDatabase(@"Filename=" + path + ";connection=shared"))
+                                {
+                                    var col = liteDbFile.GetCollection<ApplicantSignupModel>("ApplicantSignUp");
+
+                                    col.Insert(signupModel);
+
+                                    col.EnsureIndex(x => x.IDMUserName);
+                                }*/
+
+                                if (idmuser.Email != "")
+                                {
+                                    /*send email to user for account activation*/
+                                    //string AccountActivationUrl = ConfigurationManager.AppSettings["ApplicantAccountActivation"] + idmuser.RegistrationActivationCode + "&User=" + idmuser.Email;
+                                    signupModel.NotificationData.Add("firstname", idmuser.FirstName);
+                                    signupModel.NotificationData.Add("lastname", idmuser.LastName);
+                                    signupModel.NotificationData.Add("username", idmuser.UserName);
+                                    //signupModel.NotificationData.Add("AccountActivationLink", "<a href='" + AccountActivationUrl.ToString() + "' target='_blank' >" + "Please click here to complete the registration process and activate your account." + "</a>");
+                                    //convert the config value into hours.
+                                    //int t = int.Parse(ConfigurationManager.AppSettings["ACTIVATION-LINK-EXPIRATION"].ToString());
+                                    //string time = (t / 60).ToString();
+                                    //signupModel.NotificationData.Add("time", time);
+                                    /*send notification to registerd user*/
+                                    //TODO: Add 'ComConEntities' connectionstring from AAHR
+                                    //<add name="ComConEntities" connectionString="metadata=res://*/Entity.ComCon.csdl|res://*/Entity.ComCon.ssdl|res://*/Entity.ComCon.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.43.20.101;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+                                    //TODO: Implement email notification
+                                    //signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
+                                }
+
+                                ///* Saving subscription data to DB */
+                                //if (signupModel.IsApplicant)
+                                //{
+                                //    SubscriptionModel subscriptionModel = new SubscriptionModel();
+                                //    subscriptionModel.ContactIdentifierID = signupModel.ContactIdentifierID;
+                                //    subscriptionModel.IsListingAdded = signupModel.IsListingAdded;
+                                //    subscriptionModel.IsOpenForApplication = signupModel.IsOpenForApplication;
+                                //    subscriptionModel.IsWaitlistOpen = signupModel.IsWaitlistOpen;
+                                //    subscriptionModel.UserName = signupModel.IDMUserName;
+                                //    int contactIdentifierId = HousingRegistryClient.SaveSubscription(subscriptionModel);
+                                //}
+                                //data.Result.Status = true;
+                                //data.Result.Data = new { ErrorMsg = idmuser.Status };
+
                             }
-
-                            // End - auto login
-
-                            // Save entry in contact tables
-                            signupModel.IsApplicant = true;
-
-                            /*saving contact */
-                            signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
-
-
-                            ///* Saving subscription data to DB */
-                            ///Ananth: Commented below piece of code
-                            /*if (signupModel.IsApplicant)
+                            else
                             {
-                                SubscriptionModel subscriptionModel = new SubscriptionModel();
-                                subscriptionModel.ContactIdentifierID = signupModel.ContactIdentifierID;
-                                subscriptionModel.IsListingAdded = signupModel.IsListingAdded;
-                                subscriptionModel.IsOpenForApplication = signupModel.IsOpenForApplication;
-                                subscriptionModel.IsWaitlistOpen = signupModel.IsWaitlistOpen;
-                                subscriptionModel.UserName = signupModel.IDMUserName;
-                                subscriptionModel.IsOpenForAffordableApplication = signupModel.IsOpenForAffordableApplication;
-                                subscriptionModel.IsClosedForAffordableApplication = signupModel.IsClosedForAffordableApplication;
-                                int contactIdentifierId = HousingRegistryClient.SaveSubscription(subscriptionModel);
-                            }*/
-                            data.Result.Status = true;
-
-                            // End - Save entry in contact tables
-                            ///Ananth: Commented below piece of code
-                            /*string path = System.AppDomain.CurrentDomain.BaseDirectory + @"\Models\ApplicantSignUp.db";
-                            using (var liteDbFile = new LiteDatabase(@"Filename=" + path + ";connection=shared"))
-                            {
-                                var col = liteDbFile.GetCollection<ApplicantSignupModel>("ApplicantSignUp");
-
-                                col.Insert(signupModel);
-
-                                col.EnsureIndex(x => x.IDMUserName);
-                            }*/
-
-                            if (idmuser.Email != "")
-                            {
-                                /*send email to user for account activation*/
-                                //string AccountActivationUrl = ConfigurationManager.AppSettings["ApplicantAccountActivation"] + idmuser.RegistrationActivationCode + "&User=" + idmuser.Email;
-                                signupModel.NotificationData.Add("firstname", idmuser.FirstName);
-                                signupModel.NotificationData.Add("lastname", idmuser.LastName);
-                                signupModel.NotificationData.Add("username", idmuser.UserName);
-                                //signupModel.NotificationData.Add("AccountActivationLink", "<a href='" + AccountActivationUrl.ToString() + "' target='_blank' >" + "Please click here to complete the registration process and activate your account." + "</a>");
-                                //convert the config value into hours.
-                                //int t = int.Parse(ConfigurationManager.AppSettings["ACTIVATION-LINK-EXPIRATION"].ToString());
-                                //string time = (t / 60).ToString();
-                                //signupModel.NotificationData.Add("time", time);
-                                /*send notification to registerd user*/
-                                //TODO: Add 'ComConEntities' connectionstring from AAHR
-                                //<add name="ComConEntities" connectionString="metadata=res://*/Entity.ComCon.csdl|res://*/Entity.ComCon.ssdl|res://*/Entity.ComCon.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.43.20.101;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
-                                //TODO: Implement email notification
-                                //signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
+                                data.Result.Status = false;
+                                data.Result.Data = new { ErrorMsg = idmuser.Status, CurrentEmailID = idmuser.Email };
                             }
-
-                            ///* Saving subscription data to DB */
-                            //if (signupModel.IsApplicant)
-                            //{
-                            //    SubscriptionModel subscriptionModel = new SubscriptionModel();
-                            //    subscriptionModel.ContactIdentifierID = signupModel.ContactIdentifierID;
-                            //    subscriptionModel.IsListingAdded = signupModel.IsListingAdded;
-                            //    subscriptionModel.IsOpenForApplication = signupModel.IsOpenForApplication;
-                            //    subscriptionModel.IsWaitlistOpen = signupModel.IsWaitlistOpen;
-                            //    subscriptionModel.UserName = signupModel.IDMUserName;
-                            //    int contactIdentifierId = HousingRegistryClient.SaveSubscription(subscriptionModel);
-                            //}
-                            //data.Result.Status = true;
-                            //data.Result.Data = new { ErrorMsg = idmuser.Status };
-
+                        }
+                        else if (idmuser.Status == "Not Found")
+                        {
+                            data.Result.Status = false;
+                            data.Result.Data = new { ErrorMsg = "User account cannot be created at this time. Please try again later." };
                         }
                         else
                         {
                             data.Result.Status = false;
-                            data.Result.Data = new { ErrorMsg = idmuser.Status, CurrentEmailID = idmuser.Email };
+                            data.Result.Data = new { ErrorMsg = idmuser.Status != null ? idmuser.Status : "User account cannot be created at this time. Please try again later." };
                         }
-                    }
-                    else if (idmuser.Status == "Not Found")
-                    {
-                        data.Result.Status = false;
-                        data.Result.Data = new { ErrorMsg = "User account cannot be created at this time. Please try again later." };
+
                     }
                     else
                     {
                         data.Result.Status = false;
-                        data.Result.Data = new { ErrorMsg = idmuser.Status != null ? idmuser.Status : "User account cannot be created at this time. Please try again later." };
+                        data.Result.Data = new { ErrorMsg = "User account already exists.", CurrentEmailID = signupModel.EmailId };
                     }
 
                 }
-                else
-                {
-                    data.Result.Status = false;
-                    data.Result.Data = new { ErrorMsg = "User account already exists.", CurrentEmailID = signupModel.EmailId };
-                }
 
             }
-
+            catch (Exception ex)
+            {
+                data.Result.Status = false;
+                data.Result.Data = new { ErrorMsg = "Error occured when creating user account. Please try again later." };
+            }
 
             return Json(data);
         }

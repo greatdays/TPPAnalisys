@@ -271,7 +271,7 @@ function InitializeContactMethods() {
         },
         data: "",
         success: function (data) {
-            console.log('success: ' + data);
+            //console.log('success: ' + data);
             var json = JSON.parse(data);
             console.log('Direction json: ' + json);
             //debugger;
@@ -415,6 +415,12 @@ function SaveLocalData(currentStep) {
 
     
     switch (currentStep) {
+        case "step-0":
+            var accountType = $('#AccountType option:selected').text();
+            var step0Json = { 'accountType': accountType };
+            j["Applicant"][3]["Data"] = step0Json;
+
+            break;
         case "step-1":
             var firstName = $('#FirstName').val();
             var lastName = $('#LastName').val();
@@ -473,6 +479,7 @@ function SaveLocalData(currentStep) {
         case "step-3":
             var jsonObj = [];
             $('#divProjects > div').each(function (index) {
+                console.log('index: ' + index);
                 var proj = $('#div' + (index + 1) + '>:first-child').text();
                 jsonObj.push(proj);
             })
@@ -489,9 +496,10 @@ function LoadSummaryPage() {
     var yourInfo = localStorage.getItem('YourInfo');
     var contactInfo = localStorage.getItem('ContactInfo');
     var projList = localStorage.getItem('ProjectList');
+    var json = '';
 
     if (yourInfo != undefined) {
-        var json = JSON.parse(yourInfo);
+        json = JSON.parse(yourInfo);
         var name = json.firstName + ' ' + json.lastName;
 
         $('#spnName').text(name);
@@ -502,6 +510,7 @@ function LoadSummaryPage() {
 
     if (contactInfo != undefined) {
         json = JSON.parse(contactInfo);
+        //console.log('contact Info JSON: ' + json);
         var phoneNumber = json.phoneNumber;
         var extn = json.extension;
         var poBox = json.poBox;
@@ -515,18 +524,19 @@ function LoadSummaryPage() {
         var state = json.state;
         var zip = json.zipCode;
 
-        var mailingAddress = 'address...';
         var line2 = city + ', ' + state + ' ' + zip;
         var line1 = '';
 
-        if (poBox == 'true') {
-            //number dir name type unit#
-            //state, state zip
-            line1 = poBoxNumber //+ ' ' + streetDirection + ' ' + streetName + ' ' + streetType + ' ' + 
+        if (poBox == 'Yes') {
+            line1 = 'P.O. Box ' + poBoxNumber //+ ' ' + streetDirection + ' ' + streetName + ' ' + streetType + ' ' + 
+            
         }
         else {
+            //number dir name type unit#
+            //state, state zip
             line1 = streetNumber + ' ' + streetDirection + ' ' + streetName + ' ' + streetType + ' ' + unitNumber
         }
+        //console.log('poBox: ' + poBox + 'line1: ' + line1);
 
         $('#spnPhoneNumber').text(phoneNumber);
         $('#spnExtn').text(extn);
@@ -536,9 +546,11 @@ function LoadSummaryPage() {
 
     console.log('projList:' + projList);
     if (projList != undefined) {
-        json = JSON.parse(localStorage.getItem('ProjectList'));
+        json = JSON.parse(projList);
         var spanProj = '';
         console.log('json lenght:' + json.length);
+
+        $('#divProjectsSummary').empty();
 
         if (json.length > 0) {
             for (index = 0; index < json.length; index++) {
