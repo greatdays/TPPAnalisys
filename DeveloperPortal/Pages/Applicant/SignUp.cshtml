@@ -116,14 +116,14 @@
                 .attr('aria-disabled', false)
                 .find('.roundcircle > .fa').attr('class', 'fa fa-dot-circle').attr('style', "font-family: 'Font Awesome 5 Free'");
 
-            $parent.prevAll().addClass('completed')
+            $parent.prevAll().addClass('completed')                
                 .removeClass('active')
                 .removeClass('disabled')
                 .attr('aria-disabled', false)
                 .find('.roundcircle').append('<span class="sr-only">Complete</span>')
-                .find('.fa').attr('class', 'fa fa-check').attr('style', "font-family: 'Font Awesome 5 Free'");
+                .find('.fa').attr('class', 'fa fa-check').addClass('dashboard-font-awesome-completed-step'); //added style to enable tick mark in white font
 
-            $parent.nextAll().addClass('disabled')
+            $parent.nextAll().addClass('disabled')                
                 .removeClass('active')
                 .removeClass('completed')
                 .find('.roundcircle > .fa').attr('class', 'fa');
@@ -136,9 +136,13 @@
                 .removeAttr('tabindex');
 
             $('.wizard-item > a').not($active).attr('aria-selected', false)
+                .removeClass('background-green')
                 .removeAttr('aria-current')
                 .attr('tabindex', '-1')
                 .prop('disabled', true);
+
+            //apply background-color for completed stage
+            $('.fa-check').parent().parent().addClass('background-green');
 
             var stepnumber = $parent.index() + 1;
             var totalSteps = $('.wizard-item').length;
