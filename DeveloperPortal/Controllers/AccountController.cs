@@ -19,6 +19,11 @@ using DeveloperPortal.Models.Resources;
 using System.Net.Http.Headers;
 using Azure;
 using Azure.Identity;
+using System.Text.Json.Nodes;
+using System.Text;
+using DeveloperPortal.Models.Account;
+using DeveloperPortal.Models.Common;
+using static DeveloperPortal.ServiceClient.ServiceClient;
 
 namespace DeveloperPortal.Controllers
 {
@@ -45,6 +50,7 @@ namespace DeveloperPortal.Controllers
             return View();
         }
 
+        #region Create Account
         [HttpPost]
         public ActionResult CreateAccount(string data)
         {
@@ -67,7 +73,7 @@ namespace DeveloperPortal.Controllers
                     {
                         case "AccountType":
                             accountType = GetApplicantDataByKey("accountType", lst);
-                            
+
                             break;
                         case "YourInfo":
                             string first = GetApplicantDataByKey("firstName", lst);
@@ -100,14 +106,14 @@ namespace DeveloperPortal.Controllers
                             string unitNumber = GetApplicantDataByKey("unitNumber", lst);
                             string poBoxNumber = GetApplicantDataByKey("poBoxNumber", lst);
                             string poBox = GetApplicantDataByKey("poBox", lst);
-                            
+
                             signupModel.PhoneNumber = phoneNumber;
                             signupModel.City = city;
                             signupModel.State = state;
                             signupModel.Zipcode = zipCode;
                             signupModel.PhoneType = phoneType;
                             signupModel.PhoneExtension = extension;
-                            
+
                             int result = -1;
                             int.TryParse(streetNumber, out result);
                             signupModel.StreetNum = result;
@@ -121,13 +127,13 @@ namespace DeveloperPortal.Controllers
                             break;
                         case "ProjectList":
                             List<string> projList = new List<string>();
-                            JArray arr  = JArray.Parse(stepJson.ToString());
+                            JArray arr = JArray.Parse(stepJson.ToString());
                             foreach (var item1 in arr)
                             {
-                                string proj =  item1.ToString();
+                                string proj = item1.ToString();
                                 projList.Add(proj);
                             }
-                            
+
                             signupModel.Projects = projList;
                             break;
                         default:
@@ -414,6 +420,69 @@ namespace DeveloperPortal.Controllers
             }
 
             return Json(data);
+        }
+
+        #endregion
+
+        [HttpPost]
+        public ActionResult GetACHPDetails(string achpNumber)
+        {
+            string apiUrl = _config["ThisApplication:AAHRLookupAPI"] ?? string.Empty;
+            JsonResult response = new JsonResult(string.Empty);
+            PropertyAdvancedSearchResultModel searchResult = new PropertyAdvancedSearchResultModel();
+            PropertyAdvancedSearchModel propertyAdvancedSearchModel = new PropertyAdvancedSearchModel();
+            propertyAdvancedSearchModel.AcHPFileNumber = achpNumber;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(apiUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                
+                string inputJson = "[[{\"AcHPFileNumber\":\"" + achpNumber + "\"}]]";
+                //inputJson = string.Format(inputJson, achpNumber);
+
+                var content = new StringContent(inputJson, Encoding.UTF8, "application/json");
+
+                string requestUrl = "http://43svc/AAHPDev.Api/api/Property/PropertyAdvancedSearchResult";
+
+                //BaseResponse baseResponse = new ServiceClient.ServiceClient(_config).CreateRequest<BaseResponse>(propertyAdvancedSearchModel, requestUrl, ActionType.POST);
+
+                HttpResponseMessage httpResponse = client.PostAsJsonAsync("api/Property/PropertyAdvancedSearchResult", propertyAdvancedSearchModel).Result;
+
+                string responseCode;
+                string responseString;
+                string achp = string.Empty;
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    string stringResponse = httpResponse.Content.ReadAsStringAsync().Result;
+                    var jsonResponse = JsonConvert.DeserializeObject(stringResponse);
+
+                    JObject obj = JObject.Parse(jsonResponse.ToString());
+                    responseCode = obj["ResponseCode"].ToString();
+                    responseString = obj["Response"].ToString();
+                    var responseArr = JsonArray.Parse(responseString);
+                    string json = string.Empty;
+
+                    if (responseArr.AsArray().Count > 0)
+                    {
+                        searchResult = JsonConvert.DeserializeObject<PropertyAdvancedSearchResultModel>(responseArr[0].ToString());
+                        string streetName = searchResult.SiteAddress;
+                        achp = searchResult.AcHPFileSiteNumber;
+                        json = "{\"ResponseCode\":\"" + responseCode + "\", \"StreetName\":\"" + streetName + "\", \"AchpNumber\":\"" + achp + "\" }";
+                    }
+                    else
+                    {
+                        json = "{\"ResponseCode\":\"" + responseCode + "\", \"StreetName\":\"\", \"AchpNumber\":\"" + achp + "\", \"Response\":\"" + responseString +"\" }";
+                    }
+                    response = Json(json);
+                }
+            }
+            
+            //http://43svc/AAHPDev.Api/api/Property/PropertyAdvancedSearchResult
+
+            return response;
         }
 
         private string GetConfigValue(string key)
