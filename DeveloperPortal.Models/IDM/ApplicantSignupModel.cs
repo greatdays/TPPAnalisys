@@ -14,7 +14,7 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using DeveloperPortal.DataAccess;
+//using DeveloperPortal.DataAccess;
 
 namespace DeveloperPortal.Models.IDM
 {
@@ -68,14 +68,14 @@ namespace DeveloperPortal.Models.IDM
         public string AccountReason { get; set; }
 
         public bool IsApplicant { get; set; }
-
+        /*
         public List<LutPreDir> LutPreDirCdList { get; set; }
 
         public List<LutStreetType> LutStreetTypeList { get; set; }
         public List<LutState> LutStateCDList { get; set; }
         public List<LutPhoneType> LutPhoneTypeCdList { get; set; }
         public List<LutDepartment> DepartmentList { get; set; }
-
+        */
         #region ProjectRegistration
         public List<string> Projects { get; set; }
         public string LutPhoneTypeCd { get; set; }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -19,9 +19,6 @@
     </Reference>
     <Reference Include="ComCon.PropertySnapshot">
       <HintPath>Dlls\ComCon.PropertySnapshot.dll</HintPath>
-    </Reference>
-    <Reference Include="DeveloperPortal.DataAccess">
-      <HintPath>..\DeveloperPortal.DataAccess\bin\Debug\net7.0\DeveloperPortal.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>Dlls\EntityFramework.dll</HintPath>
