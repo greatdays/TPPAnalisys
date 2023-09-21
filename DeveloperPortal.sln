@@ -12,7 +12,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.ServiceClie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.Models", "DeveloperPortal.Models\DeveloperPortal.Models.csproj", "{1196EF67-65A4-46A0-9F06-18EE5E5717CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperPortal.DataAccess", "DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj", "{F3E142D1-6639-4450-8F6E-422F09BFB1F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.DataAccess", "DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj", "{F3E142D1-6639-4450-8F6E-422F09BFB1F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{059B31D5-D16E-4738-BAD9-E8CA4BB9BD21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A01021F7-7CC5-469E-9419-3F35FAEFCB69}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F0AC9BCF-4B98-4DCE-B848-8AB688CCBDD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B58B00D7-62EE-4FF5-88FA-4CE529E8CC62} = {059B31D5-D16E-4738-BAD9-E8CA4BB9BD21}
+		{2FF1849B-AF80-40C7-BDC4-94A8B7E5A52E} = {F0AC9BCF-4B98-4DCE-B848-8AB688CCBDD9}
+		{1196EF67-65A4-46A0-9F06-18EE5E5717CD} = {A01021F7-7CC5-469E-9419-3F35FAEFCB69}
+		{F3E142D1-6639-4450-8F6E-422F09BFB1F2} = {A01021F7-7CC5-469E-9419-3F35FAEFCB69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D3E1D37-F315-4587-A3EC-B7F1A6829533}
