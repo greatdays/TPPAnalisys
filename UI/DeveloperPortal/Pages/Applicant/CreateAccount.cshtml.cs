@@ -1,0 +1,25 @@
+using DeveloperPortal.ServiceClient;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace DeveloperPortal.Pages.Applicant
+{
+    public class CreateAccountModel : PageModel
+    {
+        IConfiguration _config;
+        public CreateAccountModel(IConfiguration config)
+        {
+            _config = config;
+        }
+        public CreateAccountModel(string api)
+        {
+            string url = api;
+        }
+        public void OnGet()
+        {
+            //Models.IDM.ApplicantSignupModel model = new UserServiceClient(_config).GetLookupLists_P2();
+        }
+
+        
+    }
+}

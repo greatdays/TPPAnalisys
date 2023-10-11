@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /DeveloperPortal/Controllers/DashboardController.cs
 /.gitignore
+/DeveloperPortal.Api.zip

@@ -1,0 +1,61 @@
+﻿@page
+@model DeveloperPortal.Pages.Applicant.AccountTypeModel
+
+<div class="form-partial-container">
+    <div class="app-form-heading">
+        <h2>Account Type</h2>
+    </div>
+    <hr />
+
+    <div class="text-danger" style="padding-bottom:3%">
+        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+    </div>
+
+    <h3 style="font-size: 19px; padding-bottom: 3%; font-weight: bold;">Select your account type</h3>
+    <div>
+        @Html.Label("","Account Type")
+        @Html.Label("", "*", new {@class = "asterisk"})
+        @Html.DropDownList("AccountType", new List<SelectListItem>
+        {
+        new SelectListItem(text:"Select an Account Type", value:"0"),
+        new SelectListItem(text:"Property Developer", value:"1"),
+        new SelectListItem(text:"Architect", value:"2"),
+        new SelectListItem(text:"CASp", value:"3"),
+        new SelectListItem(text:"General Contractor", value:"4"),
+        new SelectListItem(text:"NAC", value:"5"),
+        }, null, new {@class="form-control", id = "AccountType"})
+    </div>
+    
+
+    <hr />
+
+    <div class="row" style="padding-bottom:5%">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <button class="main-btn nextBtn float-right" id="nextButton">Next</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#AccountType').on('change', function(){
+            var ctlId = 'AccountType';
+            var ctl = '#' + ctlId;
+            var ctlVal = $(this).val();
+            var message = 'Please select an account type';
+            //alert(ctlVal);
+            if (ctlVal != '0') {
+                $(this).next('.text-danger').remove();
+            }
+            else
+            {
+                $(ctl).next('.text-danger').remove();
+                $(ctl).after("<span class='text-danger' id='ctl" + ctlId + "'>" + message + "</span>");
+            }
+        });
+    });
+</script>
+
+

@@ -1,0 +1,619 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* application styles */
+.dashboard-summary-container {
+    width: 100%;
+    border: solid 1px #dadada;
+    display: inline-block;
+    float: left;
+    height: 300px;
+}
+
+.dashboard-summary-header {
+    background-color: #001D80;
+    color: #fff;
+    padding: 8px;
+    width: 100%;
+    display: inline-block;
+    border: solid 1px #ccc !IMPORTANT;
+    border-radius: 6PX 6px 0px 0px;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);
+    padding-left: 15px;
+}
+
+.text-color {
+    color: black;
+}
+
+.welcome-box {
+    width: 100%;
+    /*border: solid 1px #ccc;*/
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+    .welcome-box h2 {
+        color: #001D80;
+        font-size: 25px;
+    }
+
+.dashboard-content {
+    width: 100%;
+    /*border: solid 1px #ccc;*/
+    padding: 5px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.dashboard-anchor-plan-review {
+    display: inline-block;
+}
+
+.body-content {
+    margin-top: 50px;
+}
+
+.navbar {
+    border-radius: 0px !important;
+    margin: 0px !important;
+    border: 0px !important;
+    padding: 0px !important;
+}
+
+.topNavBar {
+    padding: 0px;
+    box-shadow: 0 1px 2px 0 #939393 !important;
+    background-color: #f1f9ff;
+}
+
+.topNavBar-container {
+    margin: 0px;
+    width: 100%;
+    padding: 0px !important;
+}
+
+.navBarTitle {
+    margin-left: 15px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+}
+
+a.nav-link.nav-link-basic:hover {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.navBarItems {
+    display: flex;
+}
+
+    .navBarItems a {
+        color: white;
+        margin: 5px;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+        .navBarItems a:hover, .navBarItems a:focus {
+            color: #fff !important;
+            background: #0f2940;
+            border-radius: 4px;
+            transition: all 0.2s ease-in;
+            text-decoration: none;
+        }
+
+.navbarContainer {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar img {
+    height: auto !important;
+    width: 164px !important;
+    margin: 0px 0px 0px 5px !important;
+}
+
+.userSettingDropContainer {
+    background-color: #006381 !important;
+}
+
+.navbar-header {
+    display: grid;
+    width: 100%;
+    justify-content: space-between;
+    grid-template-areas: "header . . rightNavBar1";
+    align-content: center;
+    flex-direction: row;
+    margin: 0;
+    margin-left: 0 !important;
+}
+
+.navBarIdentity {
+    display: flex;
+    align-items: center;
+    grid-area: header;
+    justify-content: center;
+}
+
+.navBarIdentityHome {
+    display: flex;
+    flex-direction: column;
+}
+
+.navBar-decor {
+    grid-area: rightNavBar1;
+}
+
+    .navBar-decor::before {
+        content: " ";
+        background: url(https://HOUSINGAPP.lacity.org/CentralIDM/serviceportal/images/patch-lg.png);
+        display: flex;
+        align-items: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 55px;
+        padding-left: 75px;
+        margin-bottom: 0;
+    }
+
+.navbar-brand {
+    font-size: 14px !important;
+    padding: 0px !important;
+    margin-left: 8px !important;
+    height: 40px !important;
+}
+
+.navbar-nav {
+    display: flex;
+    margin: 2px;
+}
+
+    .navbar-nav > li > a {
+        color: white;
+    }
+
+#rightMenu {
+    width: 100%;
+    align-items: center;
+    justify-content: end;
+}
+
+.nav-link {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.nav-item {
+    margin: auto !important;
+}
+
+.bottomNavBar {
+    display: flex;
+    align-items: center;
+    background: #003399; /*#001D80*/
+    height: 40px;
+    position: fixed;
+    width: 100%;
+    top: 101px;
+    z-index: 1000;
+    -webkit-transition: top .2s ease-out;
+    transition: top .2s ease-out;
+    color: white;
+}
+
+
+.navItem-decor {
+    border-right: 1px solid white;
+}
+
+#rightMenu {
+    display: flex;
+    height: 47px;
+}
+
+.Header_helpButton {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 3px 10px;
+    margin-right: 15px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .Header_helpButton:hover {
+        color: #006381 !important;
+        background: #fff;
+        justify-content: center;
+    }
+
+#loginLink, #registerLink {
+    margin-right: 15px;
+    color: #006381;
+    background: #fff;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 5px;
+    padding: 2px 15px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-left: 10px;
+    text-transform: capitalize;
+}
+
+.SignInContatiner {
+    margin-right: 50px;
+}
+
+.smallView-menu {
+    margin-left: 25px;
+    background-color: transparent !important;
+    border: 1px solid white !important;
+    color: white;
+    padding: 2px;
+}
+
+.lft-dropdown {
+    position: unset !important;
+}
+
+.lft-dropdown-menu {
+    padding: 0px;
+    line-height: 4rem;
+    border: 0px;
+}
+
+.smallView-menu:hover, .smallView-menu:focus {
+    color: white !important;
+}
+
+.open > .lft-dropdown-menu {
+    display: flex;
+    left: 0;
+    position: absolute;
+    right: 0;
+    /*top: 160px;*/
+    background: rgba(236,236,236,1);
+    z-index: 99;
+    border-radius: 0 0 10px 10px;
+    padding: 0;
+    box-shadow: 0 2px 4px rgb(1 40 51 / 29%);
+}
+
+.dropdown-menu {
+    border-width: 0px !important;
+}
+
+.dropdown-item {
+    text-decoration: none !important;
+    width: 100%;
+    display: flex;
+    color: black;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 5px 15px;
+}
+
+.toggle-li-item a:hover {
+    background-color: #097090;
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.lft-dropdown-list {
+    margin-bottom: 0 !important;
+}
+
+.toggle-li-decor {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.smallView-menu.btn {
+    padding: 3px !important;
+    margin-bottom: auto !important;
+}
+
+#logoutForm .nav .open > a {
+    background-color: #006381 !important;
+}
+
+.panel {
+    border: 1px solid #ababab !important;
+}
+
+@@media screen and (min-width: 992px) {
+    .container {
+        width: 100% !important;
+    }
+}
+
+@@media screen and (min-width: 768px) {
+    .container {
+        width: 100% !important;
+    }
+
+    .navBarIdentity {
+        height: 55px;
+    }
+}
+
+@@media screen and (max-width: 991px) {
+    .navBarTitle {
+        display: none;
+    }
+
+    .botNav-left-hide {
+        display: none;
+    }
+
+    .Header_helpButton {
+        font-size: 0;
+    }
+
+    .question-icon {
+        margin-right: 0px !important;
+    }
+
+    .standardReportContainer {
+        margin-top: -14px;
+    }
+}
+
+@@media screen and (min-width: 991px) {
+    .dropdown {
+        display: none;
+    }
+}
+
+
+@@media screen and (min-width: 375px) and (max-width: 605px) {
+    .navBarItems {
+        flex-direction: column;
+    }
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+}
+
+.menu-padding {
+    padding-top: 40px;
+}
+
+@@media screen and (max-width: 767px) {
+    li.dropdown.open {
+        margin-top: 95px;
+        margin-right: 0px;
+    }
+
+        li.dropdown.open.a {
+            height: 60px;
+            align-self: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+}
+
+
+
+.btn-primary.disabled, .btn-primary {
+    color: #fff;
+    background-color: #135B79;
+    border-color: #135B79;
+}
+
+
+.accordion-button {
+    color: #135B79 !important;
+    background-color: white !important;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+/* CSS used here will be applied after bootstrap.css */
+
+.glyphicon-nav {
+    width: 18px;
+    padding: 8px 0;
+    position: relative;
+    display: inline-block;
+}
+
+    .glyphicon-nav:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        border-top: 2px solid white;
+        border-bottom: 2px solid white;
+        top: 0px;
+    }
+
+    .glyphicon-nav:after {
+        content: '';
+        position: absolute;
+        top: 7px;
+        left: 0px;
+        height: 2px;
+        width: 100%;
+        background: white;
+    }
+
+
+.text-right {
+    text-align: right;
+}
+
+.form-group {
+    padding: 5px 0px
+}
+
+.dropzone {
+    border: 2px dashed #dedede;
+    border-radius: 5px;
+    background: #f5f5f5;
+}
+
+
+    .dropzone .dz-message {
+        font-weight: 500;
+        font-size: initial;
+    }
+
+.paginate_button {
+    padding: 0 !important;
+}
+
+.modal-footer.multi-button.btn-margin {
+    margin: 0 -15px -20px;
+}
+
+.modal-footer.multi-button button.btn.btn-Cancel {
+    background: #ededed;
+}
+
+.modal-footer.multi-button button {
+    border-radius: 0
+}
+
+.modal-content .multi-button button {
+    width: 100%;
+    padding: 10px 15px;
+    margin: 0
+}
+
+.modal-content {
+    border: 0
+}
+
+    .modal-content .modal-header {
+        align-items: center;
+        border-bottom: 0;
+        padding: 15px
+    }
+
+        .modal-content .modal-header .modal-title {
+            margin-bottom: 0;
+            line-height: 1.5;
+            font-size: 20px;
+            font-weight: bold
+        }
+
+    .modal-content .modal-body.fixedheight {
+        max-height: 400px;
+        overflow: auto
+    }
+
+    .modal-content .modal-body {
+        padding: 20px 15px
+    }
+
+        .modal-content .modal-body span.text-danger.asterisk-lg {
+            font-size: 20px !important
+        }
+
+    .modal-content .modal-footer {
+        border-top: 0;
+        padding: 0;
+        display: flex
+    }
+
+    .modal-content .singal-button button {
+        width: 100%;
+        padding: 10px 15px;
+        margin: 0;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        cursor: pointer
+    }
+
+        .modal-content .singal-button button:hover {
+            background-color: #1a7ca5;
+            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+        }
+
+    .modal-content .multi-button button {
+        width: 100%;
+        padding: 10px 15px;
+        margin: 0
+    }
+
+    .modal-content .multi-button .btn-primary {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0
+    }
+
+        .modal-content .multi-button .btn-primary:hover {
+            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+        }
+
+    .modal-content .multi-button .btn.btn-light {
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+        border-bottom-right-radius: 0
+    }
+
+        .modal-content .multi-button .btn.btn-light:hover {
+            box-shadow: 0 0 0 0 #d3d3d3,0 0 0 0 #d3d3d3
+        }
+
+.modal-footer {
+    flex-wrap: inherit !important;
+}
+
+.modal-header .btn-close {
+    padding: 7px;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-weight: bold;
+}
+
+.edit-button{
+    padding:2px 10px;
+    border-radius: 5px;
+}
+
+.background-green{
+    background-color: green;
+}
+
+.dashboard-font-awesome-completed-step {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900 !important;
+    color: #fff !important;
+}

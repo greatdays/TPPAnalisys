@@ -1,0 +1,190 @@
+﻿@page
+@model DeveloperPortal.Pages.Applicant.CreateAccountModel
+
+<div class="form-partial-container">
+    <div class="app-form-heading">
+        <h2>Your Information</h2>
+    </div>
+    <hr />
+
+    <div class="text-danger" style="padding-bottom:3%">
+        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+    </div>
+
+    <fieldset>
+        <div class="form_body">
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Your Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("FirstName","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Middle Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("MiddleName","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Last Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("LastName","", new { @class = "form-control"})
+                </div>
+            </div>
+
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <legend class="app-form-heading">Company Information</legend>
+        <div class="form_body">
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Company Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("CompanyName","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Title", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Title","", new { @class = "form-control"})
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <legend class="app-form-heading">Login ID and Password</legend>
+        <div class="form_body">
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Email", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.TextBox("Email","", new { @class = "form-control"})
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Password", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.Password("Password","", new { @class = "form-control"})
+                    <p id="password-requirements" class="informationtext m-0">
+                        Password must be between 6 and 20 characters.
+                    </p>
+                </div>
+            </div>
+            <div class="row align-items-baseline">
+                <div class="col-md-12">
+                    @Html.Label("", "Confirm Password", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                    @Html.Label("", "*", new {@class = "asterisk"})
+                </div>
+                <div class="col-md-12">
+                    @Html.Password("ConfirmPassword","", new { @class = "form-control"})                    
+                </div>
+            </div>
+
+            <div class="app-input-descr app-sub-input-descr">
+                <label for="showpass" class="float-right">
+                    <input type="checkbox" value="" class="app-big-checkbox" id="chkShowHidePassword">
+                    Show password
+                </label>
+            </div>
+
+            <div id="divTermsAndConditions" class="app-input-descr app-sub-input-descr">
+                <label for="termsandconditions">
+                    <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions">
+                    I agree to the <a href="#" style="text-decoration:underline">Terms and Conditions</a> @Html.Label("", "*", new {@class = "asterisk"})
+                    <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
+                </label>
+            </div>
+            <div>
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    
+    <div class="row" style="padding-bottom:5%">
+        <div class="col-md-4">
+            
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <button class="main-btn nextBtn float-right">Next</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        SetMaxLength('FirstName', 100);
+        SetMaxLength('MiddleName', 100);
+        SetMaxLength('LastName', 100);
+        SetMaxLength('CompanyName', 100);
+        SetMaxLength('Title', 50);
+        SetMaxLength('Password', 20);
+        SetMaxLength('ConfirmPassword', 20);
+        //
+        $('#FirstName,#MiddleName,#LastName').on('keyup', function (e) {
+            //Regular expression to allow only alphabets, space, period, single quote, hyphen
+            /*var regex = new RegExp("^[a-zA-Z \.\'\-]+$");
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }*/
+            var ctlId = $(this).attr('id');
+            //ValidateName(ctlId);
+
+            var charCode = !event.charCode ? event.which : event.charCode
+            ValidateName(ctlId, charCode);
+        })
+
+        $('#Email').on('blur',function(){
+            var ctlId = $(this).attr('id');
+            ValidateEmail(ctlId);            
+        })
+
+        $('#Password').on('keyup', function (e) {
+            var ctlId = $(this).attr('id');
+            ValidatePassword(ctlId);
+        });
+
+        $('#ConfirmPassword').on('keyup', function (e) {
+            var ctlId = $(this).attr('id');
+            ValidateConfirmPassword(ctlId);
+        });
+
+        $('#chkShowHidePassword').click(function () {
+            //alert($(this).is(':checked'));
+            $(this).is(':checked') ? $('#Password,#ConfirmPassword').attr('type', 'text') : $('#Password,#ConfirmPassword').attr('type', 'password');
+        });
+
+        $('#CompanyName,#Title').on('blur', function(){
+            var ctlVal = $(this).val();
+            if(ctlVal != ''){
+                $(this).next('.text-danger').remove();
+            }
+        })
+    });
+</script>
+@{
+}

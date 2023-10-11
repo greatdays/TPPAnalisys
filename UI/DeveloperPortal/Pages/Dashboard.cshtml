@@ -1,0 +1,182 @@
+﻿@page "/"
+@model DeveloperPortal.Pages.DashboardModel
+
+<style>
+    table.dataTable.stripe > tbody > tr.odd > *, table.dataTable.display > tbody > tr.odd > * {
+        box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+</style>
+<div class="page-header-box padding-15">
+    <div class="welcome-box">
+        <h2 style="">Welcome to your Dashboard</h2>
+        <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
+    </div>
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="title" style="color:#000">My Projects</h3>
+        </div>
+        <div class="col-md-4 right">
+            <button style="float:right;margin-top:5%;background-color:#001D80;color: #fff;padding:5px;border-radius:5px" onclick="DisplayModal()">Edit Project(s)</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 ">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
+                    New Projects Submitted
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblNewProjects" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
+                    Plan Review
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblPlanReview" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
+                    Site Inspection
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblSiteInspection" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
+                    NAC
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblNACInspection" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="dashboard-summary-container content-box">
+                <span class="dashboard-summary-header text-bold">
+                    Completed Certification
+                </span>
+                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+                    <table id="tblCompletedCert" class="display" style="width:100%">
+                        <thead style="display:none">
+                            <tr>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal-->
+<div class="modal fade" id="ActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #001D80;color: #fff;">
+                <h4 class="modal-title ActioModalTitle popup-title" id="myModalLabel" style="color:#fff">Edit Project(s)</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+                
+            </div>
+            <div class="modal-body ActioModalBody">
+                <!-- Render Action Partial -->
+                All fields marked with asterisk (*) are required!
+
+                Provide your AcHP Number(s)
+            </div>
+        </div>
+    </div>
+</div>
+@{
+
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            //console.log('Width:' + $(window).width());
+            //console.log('Height:' + $(window).height());//1519 * 754
+
+            PopulateData('tblNewProjects', 'NewProjects');
+            PopulateData('tblPlanReview', 'PlanReview');
+            PopulateData('tblSiteInspection', 'SiteInspection')
+            PopulateData('tblNACInspection', 'NACInspection');
+            PopulateData('tblCompletedCert', 'CompletedCert');
+        });
+
+        function PopulateData(tableName, dashboardCategory) {
+            $('#' + tableName).DataTable({
+                ajax: {
+                    url: '/Dashboard/GetProjectData',
+                    data: { name: dashboardCategory },
+                    type: 'POST',
+                    "headers": {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    dataType: 'json',
+                    dataSrc: ''
+                },
+                sorting: false,
+                searching: false,
+                paging: false,
+                info: false,
+                header: false,
+                columns: [
+                    {
+                        data: 'projectName',
+                        render: function (data, type, row, meta) { // render event defines the markup of the cell text
+                            var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.projectName + '</a>';
+                            if (dashboardCategory == 'PlanReview') {
+                                var href = row.caseId.match(/href="([^"]*)/)[1];
+                                var queryString = href.split("?");
+                                var url = "../planReview/index?" + queryString[1] ;
+                                a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.projectName + '</a>';
+
+                            }
+                            return a;
+
+                        }
+                    }
+                ]
+            });
+        }
+
+        function DisplayModal(){
+            $('#ActionModal').modal('show');
+        }
+    </script>
+}
