@@ -1,0 +1,32 @@
+﻿@page
+@model DeveloperPortal.Pages.Shared.GoogleTranslateModel
+
+<div class="g_translate_iconize">
+    <div id="google_translate_element" class="noprint language_div"></div>
+    <span class="fa fa-language" aria-hidden="true"></span>
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+
+            new google.translate.TranslateElement
+                ({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,es,ko,tl,ru,vi,hy,th,zh-CN,zh-TW,ja,ko',
+                    //layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                },
+                    'google_translate_element');
+            var removePopup = document.getElementById('goog-gt-tt');
+            if (removePopup != null) {
+                removePopup.parentNode.removeChild(removePopup);
+            }
+
+            var x = document.getElementById(':0.targetLanguage').firstChild;
+            x.setAttribute("lang", "en");
+        }
+    </script>
+    <script type="text/javascript"
+            src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+</div>
+
+@{
+}

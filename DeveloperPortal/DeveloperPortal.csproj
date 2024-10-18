@@ -1,40 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>1a9f0211-1ce5-437e-a4f5-f670e28758a9</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\DeveloperPortal.ServiceClient\DeveloperPortal.ServiceClient.csproj" />
+    <ProjectReference Include="..\DeveloperPortal.Models\DeveloperPortal.Models.csproj" />
+    <ProjectReference Include="..\DeveloperPortal.ServiceClient\DeveloperPortal.ServiceClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\js\jquery-mask-plugin\" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ComCon.DataAccess">
-      <HintPath>..\..\Core\DeveloperPortal.Domain\Dlls\ComCon.DataAccess.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>
