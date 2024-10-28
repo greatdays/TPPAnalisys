@@ -23,7 +23,11 @@
 }
 else
 {
-        <li>@Html.ActionLink("Sign up", "Landing", "Applicant", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>
+            <a class="nav-link nav-link-basic" href='~/'>
+                Sign Up
+            </a>
+        </li>
         <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 }
 </ul>
