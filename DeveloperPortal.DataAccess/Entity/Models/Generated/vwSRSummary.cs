@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
+
+public partial class vwSRSummary
+{
+    public long ServiceRequestID { get; set; }
+
+    public int CaseID { get; set; }
+
+    public int CaseTypeID { get; set; }
+
+    public string? CaseNo { get; set; }
+
+    public string CaseType { get; set; } = null!;
+
+    public string? APN { get; set; }
+
+    public string? ProjectName { get; set; }
+
+    public int RefProjectID { get; set; }
+
+    public int RefProjectSiteID { get; set; }
+
+    public string Name { get; set; } = null!;
+
+    public string Status { get; set; } = null!;
+
+    public string? Assignee { get; set; }
+
+    public string IdentifierType { get; set; } = null!;
+
+    public string? ProjSource { get; set; }
+
+    public string? ProjectFund { get; set; }
+
+    public string? TypeofProject { get; set; }
+
+    public string? YearStart { get; set; }
+
+    public string? AcHPFileProjectNumber { get; set; }
+
+    public string? PrimaryAPN { get; set; }
+
+    public string? HIMSNumber { get; set; }
+
+    public string Region { get; set; } = null!;
+
+    public string Neighborhood { get; set; } = null!;
+
+    public string? CouncilDistrict { get; set; }
+
+    public string? FullAddress { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+}
