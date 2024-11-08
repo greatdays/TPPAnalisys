@@ -17,7 +17,8 @@ namespace DeveloperPortal.DataAccess
         {
             AahrdevContext context = new AahrdevContext();
             //context.Database.ExecuteSqlInterpolated($"EXEC uspRoGetAllConstructionCases");
-            List<uspRoGetAllConstructionCasesResult> result = context.Set<uspRoGetAllConstructionCasesResult>().FromSql($"EXEC uspRoGetAllConstructionCases").ToList<uspRoGetAllConstructionCasesResult>();
+            List<uspRoGetAllConstructionCasesResult> result = context.Set<uspRoGetAllConstructionCasesResult>().FromSql($"EXEC AAHPCC.uspRoGetAllConstructionCases").ToList<uspRoGetAllConstructionCasesResult>();
+            
             /*return await uspRoGetAllConstructionCasesResult
                 .FromSqlRaw($"EXEC MyStoredProcedureName @Param = {parameter}")
                 .ToListAsync();*/
@@ -27,21 +28,22 @@ namespace DeveloperPortal.DataAccess
 
     }
 
+    [Keyless]
     public class uspRoGetAllConstructionCasesResult
-    {
-        public required string Type { get; set; }
+    {   
+        public string? Type { get; set; }
         public string? CaseId { get; set; }
         public string? SiteCases { get; set; }
         public string? ComplianceMatrixLink { get; set; }
         public string? PropertyDetailsLink { get; set; }
-        public required string Status { get; set; }
+        public string? Status { get; set; }
         public string? AssigneeID { get; set; }
         public string? Summary { get; set; }
-        public required string ProjectName { get; set; }
-        public required string ProjectAddress { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public required string ModifiedOn { get; set; }
-        public required string AcHPFileProjectNumber { get; set; }
-        public required string ProblemProject { get; set; }
+        public string? ProjectName { get; set; }
+        public string? ProjectAddress { get; set; }
+        public string? CreatedOn { get; set; }
+        public string? ModifiedOn { get; set; }
+        public string? AcHPFileProjectNumber { get; set; }
+        public string? ProblemProject { get; set; }
     }
 }

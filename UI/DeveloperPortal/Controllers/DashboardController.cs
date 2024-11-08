@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DeveloperPortal.DataAccess;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -29,7 +31,21 @@ namespace DeveloperPortal.Controllers
             }
             else
             {
-                dt = GetAllConstructionCases();
+                //dt = GetAllConstructionCases();
+                List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
+                //List<uspRoGetAllConstructionCasesResult> list = result.Result;
+
+                //foreach (uspRoGetAllConstructionCasesResult item in list)
+                //{
+
+                //}
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+                 dt = new DataTable();
+                if (!string.IsNullOrEmpty(json))
+                {
+                    dt = JsonConvert.DeserializeObject<DataTable>(json);
+                }
+//                dt = GetAllConstructionCasesEF();
                 HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
             }
 
@@ -123,6 +139,13 @@ namespace DeveloperPortal.Controllers
 
             conn.Close();
             return dt;
+        }
+        private async Task<List<uspRoGetAllConstructionCasesResult>> GetAllConstructionCasesEF()
+        {
+            AahrdevContext context = new AahrdevContext();
+            List<uspRoGetAllConstructionCasesResult> result = await context.uspRoGetAllConstructionCases();
+            
+            return result;
         }
     }
 
