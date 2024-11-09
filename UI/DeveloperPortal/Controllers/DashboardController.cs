@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.DataAccess;
+﻿using DeveloperPortal.Application;
+using DeveloperPortal.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -32,20 +33,17 @@ namespace DeveloperPortal.Controllers
             else
             {
                 //dt = GetAllConstructionCases();
-                List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
-                //List<uspRoGetAllConstructionCasesResult> list = result.Result;
-
-                //foreach (uspRoGetAllConstructionCasesResult item in list)
-                //{
-
-                //}
+                Dashboard dashboard = new Dashboard();
+                List<uspRoGetAllConstructionCasesResult> list = dashboard.GetAllConstructionCases();
+                //List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
+                
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
                  dt = new DataTable();
                 if (!string.IsNullOrEmpty(json))
                 {
                     dt = JsonConvert.DeserializeObject<DataTable>(json);
                 }
-//                dt = GetAllConstructionCasesEF();
+
                 HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
             }
 

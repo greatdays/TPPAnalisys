@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
+    <ProjectReference Include="..\..\DeveloperPortal.Application\DeveloperPortal.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\DeveloperPortal.ServiceClient\DeveloperPortal.ServiceClient.csproj" />
   </ItemGroup>
 
