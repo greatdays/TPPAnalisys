@@ -118,7 +118,7 @@ namespace DeveloperPortal.Controllers
         {
         }
 
-        private DataTable GetAllConstructionCases()
+        /*private DataTable GetAllConstructionCases()
         {
             var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -144,7 +144,7 @@ namespace DeveloperPortal.Controllers
             List<uspRoGetAllConstructionCasesResult> result = await context.uspRoGetAllConstructionCases();
             
             return result;
-        }
+        }*/
     }
 
     internal class ResultSet

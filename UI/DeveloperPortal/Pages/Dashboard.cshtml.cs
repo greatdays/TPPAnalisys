@@ -1,3 +1,5 @@
+using DeveloperPortal.Application;
+using DeveloperPortal.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -24,11 +26,13 @@ namespace DeveloperPortal.Pages
         //public Startup(IConfigurationRoot configuration) { }
         public void OnGet()
         {
-            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+            /*var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
             Configuration = configBuilder.Build();
 
-            DataTable dt = GetAllConstructionCases();
+            DataTable dt = GetAllConstructionCases();*/
+
+            DataTable dt;
 
             object objDashboardData = HttpContext.Session.GetString("DashboardData");
 
@@ -38,12 +42,21 @@ namespace DeveloperPortal.Pages
             }
             else
             {//store the data in a Session
-                dt = GetAllConstructionCases();
+                //dt = GetAllConstructionCases();
+                Dashboard dashboard = new Dashboard();
+                List<uspRoGetAllConstructionCasesResult> list = dashboard.GetAllConstructionCases();
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+                dt = new DataTable();
+                if (!string.IsNullOrEmpty(json))
+                {
+                    dt = JsonConvert.DeserializeObject<DataTable>(json);
+                }
                 HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
             }
 
             //TODO: Filter conditions to be revised
-            DataRow[] drNewProjColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
+            /*DataRow[] drNewProjColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
             DataRow[] drPlanReviewColl = dt.Select("Status='Ready for Design Review'");
             DataRow[] drSiteInspectionColl = dt.Select("Status='Site Case In Progress'");
             DataRow[] drNACColl = dt.Select("Status='NAC Inspection IN Progress'");
@@ -72,7 +85,7 @@ namespace DeveloperPortal.Pages
             //Completed Cert
             CompletedCertList = drCompletedCertColl.Select(x => x["ProjectName"].ToString()).ToList();
             CompletedCertList.Sort();
-            CompletedCertRecordCount = CompletedCertList.Count;
+            CompletedCertRecordCount = CompletedCertList.Count;*/
         }
 
         private DataTable GetAllConstructionCases()
