@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+
+    DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -67,21 +73,23 @@
             </div>
         </div>
         <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
-            <div id="leftMenu collapse navbar-collapse">
-                <ul class="navbar-nav botNav-left-hide">
+            @if (usr.UserID == 0)
+            {
+                <div id="leftMenu collapse navbar-collapse">
+                    <ul class="navbar-nav botNav-left-hide">
                     <li class="nav-item navItem-decor">
                         <a class="nav-link nav-link-basic" href='~/dashboard'>
                             Dashboard
                         </a>
                     </li>
-                    <li class="nav-item navItem-decor">
+                     <li class="nav-item navItem-decor">
                         <a class="nav-link nav-link-basic" href='~/PlanReview'>
                             PlanReview
                         </a>
                     </li>
                 </ul>
             </div>
-
+            }
             <div id="rightMenu">
                 <div class="SignInContatiner">
                     <partial name="_LoginPartial" />
@@ -101,8 +109,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - DeveloperPortal - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        <div class="container" style="max-width: 100%; padding: 0px;">
+            <partial name="_StandardAppFooter" />
         </div>
     </footer>
 

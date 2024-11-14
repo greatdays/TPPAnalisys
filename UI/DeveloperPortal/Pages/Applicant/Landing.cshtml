@@ -1,72 +1,91 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.Applicant.SignupModel
 
-<div class="row" style="margin-top:-0.9%;background-color: #001D80;top:0px;padding-top:2%">
-    <div class="col-md-6" style="color: white;  background-color: #001D80;">
+<div class="row" style="background-color: #001D80;top:0px;padding-top:2%;margin-top:-11px;">
+    <div class="col-md-6" style="color: white;  background-color: #001D80;padding: 0px 50px;">
         <span style="font-size: 320%;display:inline-block">Welcome to the AcHP Construction/Retrofit Third-Party Portal</span>
         <span style="display:inline-block;font-size:130%">This is your one stop shop for uploading and receiving property files</span>
-        <span style="display:inline-block;font-size:80%;margin-top:5%;padding-bottom:2%">This website is not to be confused for our Affordable and Accessible <b><a href="#" style="color:#fff;text-decoration:underline">Housing Registry</a></b></span>
+        <span style="display:inline-block;font-size:80%;margin-top:15%;padding-bottom:2%">This website is not to be confused for our Affordable and Accessible <b><a href="#" style="color:#fff;text-decoration:underline">Housing Registry</a></b></span>
     </div>
-    <div class="col-md-6">
-        <div style="background:url(../Images/imgManWriting.jpg) no-repeat;width:100%;height:98%;background-size:cover" >
-            <img style="display: inline-block;transform: scale(0.28);margin-left: 41%;margin-top: -33%;" src="/Images/imgAccessibility.png">
+    <div class="col-md-6" style="margin-top: -20px; margin-bottom: 10px;">
+        <div style="background:url(../Images/imgManWriting.jpg) no-repeat;width:100%;height:98%;background-size:cover">
+            <img style="width:100px;float:right " src="/Images/imgAccessibility.png">
         </div>
-    </div>    
+    </div>
 </div>
 
-<div>
-    <div style="font-weight:bold;text-align:center;margin-top:4%;margin-bottom:2%">
+<div class="row">
+    <div class="col-md-12" style="font-weight:bold;text-align:center;margin: 25px 0px;font-size: 20px;">
         Create The Right Account For You
     </div>
-
-    <div class="row">
-        <div class="col-md-2 account-section-header">
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="account-section-header">
             <span>Project Developers/Owners</span>
-            <ul style="padding-bottom:35%">
+            <ul style="padding-left:5%">
                 <li>Oversee project participants</li>
                 <li>Edit important project information</li>
             </ul>
             <button id="btnPropertyDev" style="margin-top:5%;">I am a Property Developer</button>
         </div>
-        <div class="col-md-2 account-section-header">
+    </div>
+
+    <div class="col-md-4">
+        <div class="account-section-header">
             <span>Architects</span>
-            <ul style="padding-bottom:90%">
+            <ul style="padding-left:5%">
                 <li>Send and receive project plans</li>
             </ul>
-            <button id="btnArchitect" >I am an Architect</button>
+            <button id="btnArchitect">I am an Architect</button>
         </div>
-        <div class="col-md-2 account-section-header">
+    </div>
+    <div class="col-md-4">
+        <div class="account-section-header">
             <span>Certified Access Specialists (CASp)</span>
-            <ul style="padding-bottom:60%">
+            <ul style="padding-left:5%">
                 <li>Provide consultation and inspection services</li>
             </ul>
-            <button id="btnPropertyDev2" >I am a CASp</button>
-        </div>
-        <div class="col-md-2 account-section-header">
-            <span>General Contractors</span>
-            <ul style="padding-bottom:65%">
-                <li>Schedule site inspections</li>
-                <li>Review field reports</li>
-            </ul>
-            <button id="btnGenContractor" >I am a General Contractor</button>
-        </div>
-        <div class="col-md-2 account-section-header">
-            <span>Neutral Accessesibility Consultant (NAC)</span>
-            <ul style="padding-bottom:60%">
-                <li>Conduct analysis on project's accessibility</li>
-            </ul>
-            <button id="btnNac" >I am a NAC</button>
+            <button id="btnPropertyDev2">I am a CASp</button>
         </div>
     </div>
 </div>
-
+<div class="row" style="margin-top:4%;">
+    <div class="col-md-4">
+        <div class="account-section-header">
+            <span>General Contractors</span>
+            <ul style="padding-left:5%">
+                <li>Schedule site inspections</li>
+                <li>Review field reports</li>
+            </ul>
+            <button id="btnGenContractor">I am a General Contractor</button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="account-section-header">
+            <span>Relocation Contractors</span>
+            <ul style="padding-left:5%">
+                <li>Facilitate housing and relocaton for tenants</li>
+                <li>Upload reloaction plans</li>
+            </ul>
+            <button id="btnNac">I am a Relocation Contractor</button>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="account-section-header">
+            <span>Neutral Accessesibility Consultant (NAC)</span>
+            <ul style="padding-left:5%">
+                <li>Conduct analysis on project's accessibility</li>
+            </ul>
+            <button id="btnNac">I am a NAC</button>
+        </div>
+    </div>
+</div>
 <script>
-    $(document).ready(function(){
-        $('button').click(function(){
+    $(document).ready(function    ( ) {
+        $('button').click(function    ( ) {
             window.location = 'Applicant/signup';
             return false;
         })
     })
 </script>
-@{ 
-}

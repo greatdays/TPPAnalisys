@@ -74,6 +74,8 @@ body {
 
 .body-content {
     margin-top: 50px;
+    max-width: 100% !important;
+    margin-bottom: 350px;
 }
 
 .navbar {
@@ -269,7 +271,7 @@ a.nav-link.nav-link-basic:hover {
 }
 
 .SignInContatiner {
-    margin-right: 50px;
+    margin-right: 0px;
 }
 
 .smallView-menu {
@@ -616,4 +618,487 @@ a.nav-link.nav-link-basic:hover {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900 !important;
     color: #fff !important;
+}
+
+
+@media screen and (max-width:992px) {
+    ._hcidla-service-portal-header {
+        font-size: 12px;
+    }
+
+        ._hcidla-service-portal-header ._maine-project-links {
+            display: none;
+        }
+
+    ._hcidla-service-portal-header-subtitle {
+        display: flex;
+    }
+
+        ._hcidla-service-portal-header-subtitle ._sub-right-arrow {
+            min-width: 60px;
+            min-height: 40px;
+            background: #086f8e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+
+            ._hcidla-service-portal-header-subtitle ._sub-right-arrow img {
+                width: 35px;
+            }
+
+        ._hcidla-service-portal-header-subtitle ._subtitlemain {
+            width: 100%;
+            min-height: 40px;
+            background: #80d4ef;
+            font-weight: bold;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            color: #00345c;
+            text-transform: uppercase;
+        }
+
+    ._hcidla-service-portal-footer ._footer-logo,
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm,
+    ._hcidla-service-portal-footer ._address-contact-subscribe,
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._Disclaimer {
+        padding: 10px 15px 5px;
+    }
+
+    ._hcidla-service-portal-footer ._address-contact-subscribe {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+        ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button {
+            margin-left: 0 !important;
+            margin-top: 15px;
+        }
+
+        ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont,
+        ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links {
+            justify-content: center;
+        }
+
+    ._hcidla-service-portal-footer ._Leadership-SocialMedia {
+        justify-content: center;
+    }
+
+        ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia {
+            margin-left: 0 !important;
+            padding-top: 15px;
+            justify-content: center;
+        }
+
+    ._hcidla-service-portal-footer ._footer-logo {
+        text-align: center;
+    }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._Disclaimer {
+        text-align: center;
+    }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm {
+        justify-content: center;
+    }
+
+        ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition {
+            margin-left: 0 !important;
+            margin-top: 15px;
+        }
+}
+
+@media screen and (max-width:600px) {
+    ._hcidla-service-portal-header .myhousing img.housing-right {
+        width: 14px;
+        margin-right: 0;
+        display: flex;
+    }
+
+    ._hcidla-service-portal-header .myhousing span.my-housingtext {
+        display: none;
+    }
+
+    ._hcidla-service-portal-header ._ul-menus-list li img._right-arrow {
+        margin-right: 10px;
+        display: none;
+    }
+}
+
+._hcidla-service-portal-footer {
+    background-color: #e5e5e5;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+}
+
+    ._hcidla-service-portal-footer * {
+        padding: 0;
+        margin: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    ._hcidla-service-portal-footer ._footer-logo {
+        padding: 10px 35px 5px;
+    }
+
+        ._hcidla-service-portal-footer ._footer-logo img._img-responsive {
+            width: 100px;
+        }
+
+    ._hcidla-service-portal-footer ._address-contact-subscribe {
+        display: flex;
+        align-items: center;
+        padding: 0 35px 14px;
+        margin-bottom: 0;
+    }
+
+        ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont {
+            display: flex;
+            flex-wrap: wrap;
+            list-style-type: none;
+            padding: 0;
+            text-transform: uppercase;
+        }
+
+            ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li {
+                position: relative;
+                border-right: 0 solid #003399 !important;
+                background-color: transparent;
+                padding: 0 25px 0 0;
+                display: flex;
+                color: #003399;
+            }
+
+                ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li > span {
+                    display: flex;
+                    align-items: center;
+                    text-transform: capitalize;
+                }
+
+                ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li img {
+                    margin-right: 8px;
+                }
+
+                ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li:last-child {
+                    border-right: 0 solid #003399 !important;
+                    padding-right: 0;
+                }
+
+                ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li:first-child {
+                    padding-left: 0;
+                }
+
+                    ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li:first-child > a {
+                        padding-left: 0;
+                    }
+
+                ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li > a {
+                    padding: 0;
+                    font-size: 14px;
+                    text-decoration: none;
+                    position: relative;
+                    text-transform: capitalize;
+                    display: flex;
+                    align-items: center;
+                    color: #003399;
+                }
+
+                    ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li > a ._text {
+                        margin-left: 0;
+                    }
+
+                    ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li > a:hover {
+                        text-decoration: underline;
+                    }
+
+        ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button {
+            font-size: 15px;
+            color: #fff;
+            outline: none;
+            padding: 6px 30px;
+            border: 0;
+            border-radius: 40px;
+            background: #003399;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            letter-spacing: .5px;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+            ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button:hover {
+                background: #006381;
+            }
+
+            ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button:focus {
+                background: #006381;
+                outline: auto 5px -webkit-focus-ring-color;
+            }
+
+            ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button img._subscribe-icon {
+                width: 27px;
+                margin-right: 15px;
+            }
+
+    ._hcidla-service-portal-footer ._Leadership-SocialMedia {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0 35px 13px 35px;
+    }
+
+        ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 0;
+            flex-wrap: wrap;
+        }
+
+            ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li {
+                position: relative;
+                border-right: 0 solid #003399 !important;
+                background-color: transparent;
+                padding: 0 8px 0 8px;
+                display: flex;
+            }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li:last-child {
+                    border-right: 0 solid #003399 !important;
+                }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li:first-child {
+                    padding-left: 0;
+                }
+
+                    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li:first-child > a {
+                        padding-left: 0;
+                    }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li > a {
+                    padding: 0;
+                    font-size: 14px;
+                    text-decoration: none;
+                    position: relative;
+                    text-transform: capitalize;
+                    display: flex;
+                    align-items: center;
+                    color: #003399;
+                }
+
+                    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li > a ._text {
+                        margin-left: 5px;
+                    }
+
+                    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links li > a:hover {
+                        text-decoration: underline;
+                    }
+
+        ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+            padding: 0;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+            padding-right: 0;
+            padding-top: 10px;
+        }
+
+            ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li {
+                margin-right: 35px;
+            }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-facebook:hover,
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-facebook:focus {
+                    background: #3b5998;
+                }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-instagram:hover,
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-instagram:focus {
+                    background: linear-gradient(45deg,#405de6,#5851db,#833ab4,#c13584,#e1306c,#fd1d1d);
+                }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-twitter:hover,
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-twitter:focus {
+                    background: #1c9deb;
+                }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-youtube:hover,
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li a._Sm-youtube:focus {
+                    background: #f80000;
+                }
+
+                ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li > a {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #013b4c;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 32px;
+                }
+
+                    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li > a img {
+                        width: 18px;
+                        height: 18px;
+                    }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm {
+        background: #003399;
+        color: #fff;
+        padding: 15px 0 0 0;
+    }
+
+        ._hcidla-service-portal-footer ._FooterCenterBtm ._Disclaimer {
+            padding: 8px 35px 7px;
+        }
+
+            ._hcidla-service-portal-footer ._FooterCenterBtm ._Disclaimer .Disclaimer-text {
+                margin-bottom: 10px;
+                line-height: 20px;
+                font-size: 13px;
+            }
+
+        ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 15px 35px;
+            border-top: 0 solid #113851;
+        }
+
+            ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._rightsreserved {
+                display: flex;
+                align-items: center;
+            }
+
+                ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._rightsreserved img._LAlogoBtm {
+                    width: 35px;
+                    margin-right: 15px;
+                }
+
+            ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition {
+                margin-left: auto;
+                display: flex;
+                align-items: center;
+                list-style: none;
+            }
+
+                ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition li {
+                    margin-right: 14px;
+                }
+
+                    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition li a {
+                        color: #fff;
+                        text-decoration: none;
+                    }
+
+                        ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition li a:hover {
+                            text-decoration: underline;
+                        }
+
+                    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition li:last-child {
+                        margin-right: 0;
+                    }
+
+@media only screen and (max-width:766px) {
+    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul._SocialMedia li:last-child {
+        margin-right: 0;
+    }
+
+    ._hcidla-service-portal-footer ._footer-logo img._img-responsive {
+        width: 60px;
+    }
+
+    ._hcidla-service-portal-footer ._footer-logo {
+        padding: 10px;
+        text-align: center;
+    }
+
+    ._hcidla-service-portal-footer ._address-contact-subscribe {
+        padding: 10px;
+    }
+
+        ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont li {
+            padding: 0;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm {
+        padding: 10px;
+    }
+
+    ._address-contact-subscribe ._subscribe-button {
+        margin: auto;
+    }
+
+    ._Leadership-SocialMedia {
+        padding: 10px !important;
+    }
+
+        ._Leadership-SocialMedia ul.Opportunities-links li {
+            padding: 0 !important;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        ._Leadership-SocialMedia ul._SocialMedia li:first-child {
+            margin-left: 0;
+        }
+
+        ._Leadership-SocialMedia ul._SocialMedia {
+            margin: auto !important;
+            padding: 10px 0 5px !important;
+        }
+
+    ._FooterCenterBtm {
+        padding: 0 !important;
+    }
+
+        ._FooterCenterBtm ._Disclaimer {
+            padding: 10px !important;
+            text-align: center;
+        }
+
+            ._FooterCenterBtm ._Disclaimer p.Disclaimer-text:last-child {
+                margin-bottom: 0 !important;
+            }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._TermsCondition {
+        margin: auto;
+        padding-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    ._hcidla-service-portal-footer ._address-contact-subscribe ._add-cont {
+        justify-content: center;
+    }
+
+    ._hcidla-service-portal-footer ._Leadership-SocialMedia ul.Opportunities-links {
+        justify-content: center;
+    }
+
+    ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._rightsreserved {
+        flex-direction: column !important;
+        text-align: center;
+    }
+
+        ._hcidla-service-portal-footer ._FooterCenterBtm ._FooterBtm ._rightsreserved img._LAlogoBtm {
+            margin: 10px 0 !important;
+        }
+
+    ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button {
+        padding: 4px 15px !important;
+        margin: 10px 0;
+    }
 }
