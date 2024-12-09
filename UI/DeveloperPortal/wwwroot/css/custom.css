@@ -27,7 +27,7 @@ body {
     border: solid 1px #dadada;
     display: inline-block;
     float: left;
-    height: 300px;
+    min-height: 300px;
 }
 
 .dashboard-summary-header {
@@ -429,13 +429,13 @@ a.nav-link.nav-link-basic:hover {
 
 .btn-primary.disabled, .btn-primary {
     color: #fff;
-    background-color: #135B79;
-    border-color: #135B79;
+    background-color: #003399;
+    border-color: #003399;
 }
 
 
 .accordion-button {
-    color: #135B79 !important;
+    color: #003399 !important;
     background-color: white !important;
     font-weight: bold;
     font-size: 18px;
@@ -562,7 +562,7 @@ a.nav-link.nav-link-basic:hover {
 
         .modal-content .singal-button button:hover {
             background-color: #1a7ca5;
-            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+            box-shadow: 0 0 0 0 white,0 0 0 0 #003399
         }
 
     .modal-content .multi-button button {
@@ -578,7 +578,7 @@ a.nav-link.nav-link-basic:hover {
     }
 
         .modal-content .multi-button .btn-primary:hover {
-            box-shadow: 0 0 0 0 white,0 0 0 0 #135b79
+            box-shadow: 0 0 0 0 white,0 0 0 0 #003399
         }
 
     .modal-content .multi-button .btn.btn-light {
@@ -1102,3 +1102,468 @@ a.nav-link.nav-link-basic:hover {
         margin: 10px 0;
     }
 }
+
+
+
+/*====New Site Information Page==============*/
+/* Style the tab */
+.tab {
+    overflow: hidden;
+}
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        color: #003399;
+        font-weight: bold;
+        border: solid 1px;
+        background-color: white;
+        min-width: 150px;
+    }
+
+/* Style the buttons that are used to open the tab content */
+.siteInformationPage .tab button {
+    padding: 14px 14px;
+    color: #003399;
+    min-width: 50px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #003399;
+    color: white;
+    border: solid 1px #003399;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #003399;
+    color: white;
+    border: solid 1px #003399;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    border-radius: 5px;
+    min-height: 200px;
+}
+
+.site-summary {
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.site-title {
+    color: #003399;
+    font-size: 23px;
+    margin-bottom: 15px;
+}
+
+#dtSiteData_wrapper {
+    margin-top: 20px;
+}
+
+.site-more-info {
+    color: #003399;
+    font-size: 18px;
+    /*  text-decoration: underline;*/
+    padding: 10px 0px;
+    margin-top: 15px;
+}
+
+.row-box {
+    border: solid 1px #ddd;
+    min-height: 42px;
+    border-radius: 5px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.row-title {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-right: solid 1px #ddd;
+}
+
+table .row-title {
+    padding-bottom: 13px;
+}
+
+.lelf-border {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-left: solid 1px #ddd;
+}
+
+.siteInformationPage .row-box {
+    border: solid 1px #ddd;
+    min-height: 42px;
+    border-radius: 5px;
+    display: inline-flex;
+    width: 100%;
+}
+
+.siteInformationPage .row-title {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-right: solid 1px #ddd;
+}
+
+.link a {
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.row-text {
+    padding: 10px;
+    min-width: 50px;
+}
+
+.dataTable {
+    width: 100% !important;
+}
+
+.dataTables_length label {
+    display: inline-flex !important;
+}
+
+.dataTables_filter label {
+    display: inline-flex !important;
+}
+
+
+
+.dataTables_filter {
+    float: right;
+}
+
+    .dataTables_filter input {
+        height: 38px;
+        border: 1px solid #e4e4e4;
+        margin: 0px 9px;
+        margin-top: -10px;
+    }
+
+.dataTables_length select {
+    border: solid 1px;
+    height: 38px;
+    border: 1px solid #e4e4e4;
+    margin: 0px 9px;
+    margin-top: -10px;
+    width: 80px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #003399;
+    border-color: #003399;
+}
+
+.pagination .page-link {
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: -10px;
+    border: solid 1px #003399;
+}
+
+
+.Case-deatils {
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+    .Case-deatils ul {
+        border: solid 1px #ddd;
+        min-height: 42px;
+        border-radius: 5px;
+        display: inline-flex;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .Case-deatils.Case-addrees .Case-addrees-line-2 {
+        border-top: 0px dashed #000;
+        padding-top: 0px;
+    }
+
+    .Case-deatils li {
+        padding: 10px;
+        border-right: solid 1px #ddd;
+        border-left: solid 1px #ddd;
+        color: #4d4d4d;
+    }
+
+    .Case-deatils.Case-addrees ul.Case-addrees-ul li {
+        display: flex;
+        margin-right: 0px;
+        border-right: 0px solid #000 !important;
+        padding: 0px;
+        margin-bottom: 0px;
+    }
+
+    .Case-deatils li .bold {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-right: solid 1px #ddd;
+        font-weight: normal !important;
+    }
+
+    .Case-deatils.Case-addrees ul.Case-addrees-ul li span.cd-value {
+        margin-left: 15px;
+        padding-top: 10px;
+        padding-right: 10px;
+    }
+
+    .Case-deatils.Case-addrees ul.Case-addrees-ul {
+        margin-bottom: 15px;
+    }
+
+#siteInformationPopup .modal-dialog {
+    max-width: 80% !important;
+}
+
+#siteInformationPopupBody .event-date {
+    z-index: 1;
+    padding: 12px 5px;
+}
+
+#siteInformationPopupBody .event-name {
+    padding: 12px 5px;
+}
+
+#siteInformationPopupBody #CreateProjectCase th:nth-of-type(2) {
+    width: 110px;
+}
+
+.modal table td,
+.modal table th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.modal tbody tr:nth-of-type(even) {
+    background-color: #fff !important;
+}
+
+.modal tbody tr:nth-of-type(odd) {
+    background-color: #f9f9f9 !important;
+}
+
+#dtSiteData_wrapper .paging_numbers {
+    DISPLAY: FLEX;
+    MARGIN-LEFT: 25PX;
+}
+
+#dtSiteData_wrapper .select-site-title {
+    font-size: 16PX;
+    FONT-WEIGHT: BOLD;
+    padding-top: 10PX;
+    min-width: 100px;
+}
+
+#dtSiteData_wrapper .pagination .page-link {
+    display: table-cell !important;
+}
+
+#dtSiteData_wrapper .pagination li {
+    margin-bottom: 5px;
+}
+
+#dtPrkingData_wrapper .paging_numbers {
+    DISPLAY: FLEX;
+    MARGIN-LEFT: 25PX;
+}
+
+#dtPrkingData_wrapper .select-site-title {
+    font-size: 16PX;
+    FONT-WEIGHT: BOLD;
+    padding-top: 10PX;
+    min-width: 135px;
+}
+
+#dtPrkingData_wrapper .pagination .page-link {
+    display: table-cell !important;
+}
+
+#dtPrkingData_wrapper .pagination li {
+    margin-bottom: 5px;
+}
+
+
+/*==Kendo Grid==*/
+.k-window-actions {
+    padding: 0px;
+}
+
+.k-grid-add {
+    float: right;
+    padding: 10px;
+    border-right: solid 1px #ddd;
+}
+
+.k-grid .k-command-cell > .k-button {
+    padding: 5px;
+    margin: 2px 0px;
+}
+
+.k-command-cell {
+    display: flex;
+}
+
+.k-grid-edit, .k-grid-update {
+    background-color: #003399 !important;
+    color: #fff !important;
+}
+
+.k-grid-delete, .k-grid-cancel {
+    background-color: #d3d3d3 !important;
+    color: #4d4d4d !important;
+}
+
+.k-grid-toolbar {
+    background-color: #f4f4f4 !important;
+}
+
+.k-list-scroller {
+    overflow: auto;
+    scroll-behavior: auto;
+}
+
+.k-grid table {
+    width: 100% !important;
+}
+
+    .k-grid table th {
+        color: #4d4d4d !important;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .k-grid table td {
+        padding: 0 10px;
+        border-top: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+
+.k-loading-image {
+    background-image: none
+}
+
+.totalGrid th {
+    color: #4d4d4d !important;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+    background-color: #f4f4f4 !important;
+}
+
+.totalGrid td {
+    padding: 5px 10px !important;
+    border: 1px solid #dee2e6 !important;
+}
+
+.k-grid-header-title {
+    font-size: 17px;
+    color: #4d4d4d;
+    width: 100%;
+    font-weight: bold;
+    padding: 8px;
+    line-height: 40px;
+}
+
+.k-box-header {
+    margin-top: 20px;
+    font-size: 15px;
+    color: gray;
+    width: 100%;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.k-box-body {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.k-box-body-header {
+    color: #4d4d4d !important;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0.75rem;
+    vertical-align: top;
+    background: #f4f4f4 !important
+}
+
+.hide-hover .k-grid tr:hover {
+    background-color: inherit !important;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    justify-content: flex-start !important;
+}
+
+.yesno_radio {
+    padding: 0px !important;
+    font-size: 14px !important;
+}
+
+#unitKgrid .k-dropdown-wrap {
+    min-height: 30px;
+    border: solid 1px darkgray
+}
+
+#unitKgrid .k-select {
+    padding-top: 3px;
+}
+
+.k-list {
+    border: solid 1px darkgray !important;
+}
+
+.k-list-scroller {
+    min-width: 200px;
+}
+
+.k-list .k-item {
+    padding: 5px 5px;
+    border-bottom: solid 1px gray;
+    min-width: 200px;
+}
+
+#unitKgrid .k-textbox {
+    min-height: 30px;
+    border: solid 1px darkgray
+}
+
+#unitKgrid input[type=checkbox] {
+    height: 18px;
+    width: 18px;
+}
+
+
+/*====New Site Information Page==============*/

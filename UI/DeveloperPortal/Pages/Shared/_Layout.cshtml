@@ -1,9 +1,7 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-
     DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +13,7 @@
     <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />

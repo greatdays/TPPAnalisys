@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.Application;
 using DeveloperPortal.DataAccess;
+using DeveloperPortal.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,14 @@ namespace DeveloperPortal.Controllers
     {
         public IConfigurationRoot Configuration { get; set; }
         public List<string?> DashboardData { get; private set; }
+
+        [HttpPost]
+        public List<AllConstructionCases> GetMyProjectData()
+        {
+            Dashboard dashboard = new Dashboard();
+            List<AllConstructionCases> list = dashboard.GetAllConstructionCasesForUser();
+            return list;
+        }
 
         // GET: api/<DashboardController>
         [HttpPost]
@@ -36,9 +45,9 @@ namespace DeveloperPortal.Controllers
                 Dashboard dashboard = new Dashboard();
                 List<uspRoGetAllConstructionCasesResult> list = dashboard.GetAllConstructionCases();
                 //List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
-                
+
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
-                 dt = new DataTable();
+                dt = new DataTable();
                 if (!string.IsNullOrEmpty(json))
                 {
                     dt = JsonConvert.DeserializeObject<DataTable>(json);
@@ -55,43 +64,64 @@ namespace DeveloperPortal.Controllers
 
             //initialize
             DataRow[] drColl = Array.Empty<DataRow>();
-            switch (dashboardCategory)
-            {
-                case "NewProjects":
-                    drColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
-                    break;
-                case "PlanReview":
-                    drColl = dt.Select("Status='Ready for Design Review'");
-                    break;
-                case "SiteInspection":
-                    drColl = dt.Select("Status='Site Case In Progress'");
-                    break;
-                case "NACInspection":
-                    drColl = dt.Select("Status='NAC Inspection IN Progress'");
-                    break;
-                case "CompletedCert":
-                    drColl = dt.Select("Status='City Compliance Certificate Issued'");
-                    break;
-                default:
-                    break;
-            }
-
-            //DashboardData = drColl.Select(x => new ResultSet { ProjectName=x["ProjectName"].ToString()}).ToList();
-            //DashboardData.Sort();
-
             ResultSet rs = new ResultSet();
             List<ResultSet> retProjects = new List<ResultSet>();
-
-            foreach (var data in drColl)
+            if (objDashboardData != null)
             {
-                rs = new ResultSet();
-                rs.ProjectName = data["ProjectName"].ToString();
-                rs.CaseId = data["CaseId"].ToString();
-                retProjects.Add(rs); 
-            }
+                if (!string.IsNullOrWhiteSpace(dashboardCategory))
+                {
+                    switch (dashboardCategory)
+                    {
+                        case "NewProjects":
+                            drColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
+                            break;
+                        case "PlanReview":
+                            drColl = dt.Select("Status='Ready for Design Review'");
+                            break;
+                        case "SiteInspection":
+                            drColl = dt.Select("Status='Site Case In Progress'");
+                            break;
+                        case "NACInspection":
+                            drColl = dt.Select("Status='NAC Inspection IN Progress'");
+                            break;
+                        case "CompletedCert":
+                            drColl = dt.Select("Status='City Compliance Certificate Issued'");
+                            break;
+                        default:
+                            break;
+                    }
 
+                    foreach (var data in drColl)
+                    {
+                        rs = new ResultSet();
+                        rs.ProjectName = data["ProjectName"].ToString();
+                        rs.CaseId = data["CaseId"].ToString();
+                        retProjects.Add(rs);
+                    }
+                    return Json(retProjects);
+                }
+
+                drColl = dt.Select();
+
+                foreach (var data in drColl)
+                {
+                    rs = new ResultSet();
+                    rs.CaseId = data["CaseId"].ToString();
+                    rs.AcHPFileProjectNumber = data["AcHPFileProjectNumber"].ToString();
+                    rs.ProjectName = data["ProjectName"].ToString();
+                    rs.ProjectAddress = data["ProjectAddress"].ToString();
+                    rs.Type = data["Type"].ToString();
+                    rs.OccpancyType = "";//data["OccpancyType"].ToString();
+                    rs.NoofSites = 0;//data["NoofSites"].ToString();
+                    rs.TotalUnits = 0;// data["Type"].ToString();
+                    rs.Status = data["Status"].ToString();
+                    retProjects.Add(rs);
+                }
+            }
             return Json(retProjects);
         }
+
+
 
         // GET api/<DashboardController>/5
         [HttpGet("{id}")]
@@ -149,7 +179,14 @@ namespace DeveloperPortal.Controllers
 
     internal class ResultSet
     {
+        public string AcHPFileProjectNumber { get; internal set; }
         public string ProjectName { get; internal set; }
+        public string ProjectAddress { get; internal set; }
+        public string Type { get; internal set; }
         public string CaseId { get; internal set; }
+        public string OccpancyType { get; internal set; }
+        public int NoofSites { get; internal set; }
+        public int TotalUnits { get; internal set; }
+        public string Status { get; internal set; }
     }
 }

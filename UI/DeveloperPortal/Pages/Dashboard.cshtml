@@ -21,7 +21,7 @@
             <button style="float:right;margin-top:5%;background-color:#001D80;color: #fff;padding:5px;border-radius:5px" onclick="DisplayModal()">Edit Project(s)</button>
         </div>
     </div>
-    <div class="row" style="display:none">
+    <div class="row" >
         <div class="col-md-12 ">
             <div class="dashboard-summary-container content-box">
                 <span class="dashboard-summary-header text-bold">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="row" >
+    <div class="row" style="display:none">
         <div class="col-md-4 ">
             <div class="dashboard-summary-container content-box">
                 <span class="dashboard-summary-header text-bold">
@@ -153,18 +153,18 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            //PopulateMyProjectData();
-             PopulateData('tblNewProjects', 'NewProjects');
-             PopulateData('tblPlanReview', 'PlanReview');
-             PopulateData('tblSiteInspection', 'SiteInspection')
-             PopulateData('tblNACInspection', 'NACInspection');
-             PopulateData('tblCompletedCert', 'CompletedCert');
+            PopulateMyProjectData();
+             // PopulateData('tblNewProjects', 'NewProjects');
+             // PopulateData('tblPlanReview', 'PlanReview');
+             // PopulateData('tblSiteInspection', 'SiteInspection')
+             // PopulateData('tblNACInspection', 'NACInspection');
+             // PopulateData('tblCompletedCert', 'CompletedCert');
         });
         function PopulateMyProjectData() {
             $('#tblMyProjects').DataTable({
                 ajax: {
-                    url: '/Dashboard/GetProjectData',
-                    data: { name: '' },
+                    url: '/Dashboard/GetMyProjectData',
+                    data: { },
                     type: 'POST',
                     "headers": {
                         "Content-Type": "application/x-www-form-urlencoded"
@@ -182,17 +182,20 @@
                         data: 'acHPFileProjectNumber',
                         render: function (data, type, row, meta) { 
                             // render event defines the markup of the cell text
-                            if (row.caseId.match(/href="([^"]*)/)) {
-                                var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.acHPFileProjectNumber + '</a>';
-                                var href = row.caseId.match(/href="([^"]*)/)[1];
-                                var queryString = href.split("?");
-                                var url = "../planReview/index?" + queryString[1];
-                                a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.acHPFileProjectNumber + '</a>';
-                                return a;
+                            if (row.caseId) {
+                                if (row.caseId.match(/href="([^"]*)/)) {
+                                    var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.acHPFileProjectNumber + '</a>';
+                                    var href = row.caseId.match(/href="([^"]*)/)[1];
+                                    var queryString = href.split("?");
+                                    var url = "../projectdetail?" + queryString[1];
+                                    a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.acHPFileProjectNumber + '</a>';
+                                    return a;
+                                }
+                                else {
+                                    return row.caseId.replace('View Project', row.acHPFileProjectNumber);
+                                }
                             }
-                            else {
-                                return row.caseId.replace('View Project', row.acHPFileProjectNumber);
-                            }
+                            return "";
                         }
                     },
                     { data: 'projectName' },

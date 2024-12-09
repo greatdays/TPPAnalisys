@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddSession(options =>
 /*builder.Services.AddScoped(client => 
     new HttpClient { BaseAddress = new Uri("http://43svc/AAHRDev.Api") }
 );*/
+
 
 var app = builder.Build();
 
@@ -42,3 +44,5 @@ app.MapControllerRoute(name: "default",
     pattern: "{controller=Dashboard}/{action=GetProjectData}");
 
 app.Run();
+
+

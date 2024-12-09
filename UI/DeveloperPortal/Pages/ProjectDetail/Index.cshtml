@@ -1,0 +1,628 @@
+﻿@page
+@model DeveloperPortal.Pages.ProjectDetails.IndexModel
+
+<style>
+    .table-responsive .row {
+        margin-bottom: 15px;
+    }
+
+    .datatbl {
+        width: 100% !important;
+    }
+</style>
+<link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+<script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+<script src="~/"></script>
+<script src="~/js/kendojs/kendo.all.min.js"></script>
+<script src="~/js/kendojs/kendo.timezones.min.js"></script>
+
+
+<link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
+<link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
+<div class="row custom_row_margin">
+
+    <div id="workFlowDiv" class="col-md-12 position-relative">
+        <h1 class="fs-title">
+            @Model.TabName
+        </h1>
+
+        <div class="page-title left-data" id="divCollapseAll">
+            <ul class="quick-action-link noprint">
+                <li id="CollapseAll" class="mr-2">
+                    <button type="button" class="btn btn-primary ">
+                        <span height="20" width="20" id="CollapseIn">Action buttons<span class="fas fa-chevron-up"></span></span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<div>
+    @{
+        Html.RenderPartial("_ProjectSummary", Model);
+    } 
+</div>
+
+<br />
+<!-- Tab links -->
+<div class="tab">
+    <button class="tablinks active" onclick="openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
+    <button class="tablinks" onclick="openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+    <button class="tablinks" onclick="openTab(event, 'tabImportantDates')">Funding Details</button>
+    <button class="tablinks" onclick="openTab(event, 'tabProjectParticipants')">Project Participants</button>
+    <button class="tablinks" onclick="openTab(event, 'tabPolicyContacts')">Policy Contacts</button>
+    <button class="tablinks" onclick="openTab(event, 'tabDocuments')">Documents</button>
+    <button class="tablinks" onclick="openTab(event, 'tabLogs')">Plan Review</button>
+</div>
+<style>
+    #unitKgrid .k-grid-add {
+        margin-right: 100px;
+    }
+
+    .k-grid-content tr:last-child {
+        border-bottom: solid 1px lightgray;
+    }
+</style>
+<!-- Tab content -->
+<div id="tabProjectInformation" class="tabcontent" style="display: block ">
+    <div>
+        <div style="position: absolute; z-index: 1; right: 209px; padding-top:2px; ">
+            <input autocomplete="off" id="search-unit-grid" placeholder="Search..." tabindex="0" class="k-textbox form-control" style="height: 38px !important;" />
+            <label for="search-unit-grid" tabindex="0" style="display:none">Search</label>
+        </div>
+
+        <div style="position: absolute;right: 37px;z-index: 1; margin-top:1px">
+            <button class="btn btn-primary no-access" id="uploadUnitExcel" role-access="true" style=" background: #0382a2; border: #0382a2;border-radius: 0px; ">
+                Upload <i class="fa fa-upload"></i>
+            </button>
+        </div>
+        <div id="unitKgrid"></div>
+        <div id="kednoWindow"></div>
+        <table style="width:100%;margin-top:5px;" class="hide-hover">
+            <tr>
+                <td style="width: 45%; vertical-align: top;">
+                    <div id="tblTotalUnit">
+                        <div class="k-grid totalGrid">
+                            <table style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" scope="col" role="columnheader" dclass="k-header">
+                                            Total Number of Units
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td colspan="2">SRO</td>
+                                    <td style="width: 90px; text-align: right"><lable id="lblSROCount"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Studio</td>
+                                    <td style="width: 90px; text-align: right"><lable id="lblStudioCount"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Efficiency</td>
+                                    <td style="text-align:right"><lable id="lblEfficiencyCount"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">1 Bedroom</td>
+                                    <td style="text-align:right"><lable id="lblBedroom1Count"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">2 Bedroom</td>
+                                    <td style="text-align:right"><lable id="lblBedroom2Count"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">3 Bedroom</td>
+                                    <td style="text-align:right"><lable id="lblBedroom3Count"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">4 Bedroom</td>
+                                    <td style="text-align:right"><lable id="lblBedroom4Count"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">5+ Bedroom</td>
+                                    <td style="text-align:right"><lable id="lblBedroom5Count"></lable></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">Manager Unit </td>
+                                    <td style="text-align:right"><lable id="lblManagerUnitCount"></lable></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Grand Total</td>
+                                    <td style="text-align:right; font-weight:bold"><lable id="lblTotalCount"></lable></td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+                <td style="width:100px ">
+                </td>
+                <td>
+                    <div id="tblTotalCSAVCA">
+                        <div class="k-grid totalGrid">
+                            <table style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" scope="col" role="columnheader" dclass="k-header">
+                                            Total # Units for VCA & CSA:
+                                        </th>
+                                        <th style="border-left: 1px solid #dee2e6; text-align: right; width:100px">
+                                            CSA #: <lable id="lblUnitDesignatedCSACount"></lable>
+                                        </th>
+                                        <th style="border-left: 1px solid #dee2e6; text-align: right; width:100px">
+                                            VCA#: <lable id="lblUnitDesignatedVCACount"></lable>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUntCount"></lable></td>
+                                    <td colspan="3"> Total Number of Mobility Units</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalCommunicationUntCount"></lable></td>
+                                    <td colspan="3"> Total Number of Communication Units</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalAdaptableUntCount"></lable></td>
+                                    <td colspan="3">  Total Number of Adaptable Units</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUnitsPer"></lable>% </td>
+                                    <td colspan="3">Total % of Mobility Units Provided for this Project</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalCommunicationsPer"></lable>% </td>
+                                    <td colspan="3">Total % of Communications Units Max Counted for CSA and VCA 4%</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalCommunicationCount"></lable></td>
+                                    <td colspan="3">Total number for Communications Units Counted for CSA and VCA</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUnitsVCAPer"></lable>% </td>
+                                    <td colspan="3">% of Mobility Units for Compliance with VCA Max. 11%</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUnitsVCACount"></lable></td>
+                                    <td colspan="3">Number of Mobility Units for Compliance with VCA</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUnitsCSAPer"></lable>% </td>
+                                    <td colspan="3"> % of Mobility Units for Compliance with CSA Max. 16% </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width:90px;text-align:right"><lable id="lblTotalMobilityUnitsCSACount"></lable></td>
+                                    <td colspan="3">  Number of Mobility Units for Compliance with CSA</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        @* Parking Information *@
+        <div class="k-grid " style="margin-top:20px;">
+            <div class="k-header k-grid-toolbar">
+                <span class="k-grid-header-title"> Building Information</span>
+            </div>
+        </div>
+
+        <div class=" k-box-body">
+            <br />
+            <table id="dtPrkingData"></table>
+        </div>
+    </div>
+</div>
+<div id="tabSiteInformation" class="tabcontent">
+    <table id="dtSiteData"></table>
+</div>
+<div id="tabImportantDates" class="tabcontent">
+    <div id="divImportantDates"></div>
+</div>
+<div id="tabProjectParticipants" class="tabcontent">
+    <div id="divProjectParticipants"></div>
+</div>
+<div id="tabPolicyContacts" class="tabcontent">
+    <div id="divPolicyContacts"></div>
+</div>
+<div id="tabDocuments" class="tabcontent">
+    <div id="divDocument"></div>
+</div>
+<div id="tabLogs" class="tabcontent">
+    <div id="divLogs"></div>
+</div>
+
+
+
+<script type="text/x-kendo-template" id="windowTemplate">
+    <p>ACHPNo  <strong>#= ACHPNo #</strong> ? </p>
+     <div class=" multi-button" style="float:right">
+        <button class=" btn btn btn-primary k-button k-button-md k-rounded-md k-button-solid k-button-solid-base" id="yesButton"><span class="k-button-text">Yes</span></button>
+    <button class="btn btn btn-secondary  k-button k-button-md k-rounded-md k-button-solid k-button-solid-base" id="noButton"><span class="k-button-text">No</span></button>
+            </div>
+
+
+</script>
+<script type="text/javascript">
+    var baseUrl = window.location.origin;
+    var Id = @Model.Id; 
+    var ProjectId = @Model.ProjectId;
+    var isEditAccess = true;
+    var reloadUntiGrid = false;
+    var documentControlViewModelId = 7313;
+    var logsControlViewModelId = 1006;
+    var ContactControlViewModelId = 1028;
+    var PolicyContactControlViewModelId = 12505;
+    var popupCaseId = 0;
+    var popuprefProjectSiteID = 0;
+    var popupTitle = "";
+    var oldPageSize = 0;
+    var selectedEvents = [];
+    var allUnitsData = [];
+    var BuildingInformationData = [];
+    var SiteInformationData = [];
+    var UnitGridData = [];
+    var dtBuildingDataTable;
+    var gridBuildingDropdowData = [];
+    function openTab(evt, tabName) {
+        // Get all elements with class="tabcontent" and hide them
+        $(".tabcontent").css("display", "none");
+        // Get all elements with class="tablinks" and remove the class "active"
+        $(".tablinks").removeClass("active");
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabName).style.display = "block";
+        if (evt) { evt.currentTarget.className += " active"; }
+        var url = "";
+
+        switch (tabName) {
+            case "tabImportantDates":
+                url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
+                LoadTabData(url, "divImportantDates");
+                break;
+            case "tabProjectParticipants":
+                url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                LoadTabData(url, "divProjectParticipants");
+                break;
+            case "tabPolicyContacts":
+                url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                LoadTabData(url, "divPolicyContacts");
+                break;
+            case "tabDocuments":
+                url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Documents" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                LoadTabData(url, "divDocument", true);
+                break;
+            case "tabLogs":
+                url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                LoadTabData(url, "divLogs");
+                break;
+            default:
+        }
+    }
+    function LoadTabData(url, tabId, forceLoad = false) {
+        if ($("#" + tabId).html() == "" || forceLoad) {
+            AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
+                function (result) {
+                    $("#" + tabId).html(result);
+                }, null, true, null, false);
+        }
+    }
+
+    /*Start Unit Kendo Grid */
+    var windowTemplate = kendo.template($("#windowTemplate").html());
+    var window = $("#kednoWindow").kendoWindow({
+        title: "Are you sure you want to delete this unit?",
+        visible: false, //the window will not appear before its .open method is called
+        width: "400px",
+
+    }).data("kendoWindow");
+    dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { })',
+                dataType: "json"
+                , method: "post"
+            },
+            update: {
+                url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { })',
+                method: "post",
+                dataType: "json"
+            },
+            destroy: {
+                url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { })',
+                method: "post",
+                dataType: "json"
+            },
+            create: {
+                url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { })',
+                method: "post",
+                dataType: "json"
+            },
+            parameterMap: function (options, operation) {
+                debugger;
+                if (operation !== "read" && options.models) {
+                    $('#cm_loader').attr("hidden", false);
+                    $('.blockUI').attr("hidden", true);
+                    //Update Ids based on vales
+                    if (options.models.length > 0) {
+                        options.models[0].UnitType = "";
+                    }
+                    UnitGridData = [];
+                    return { models: kendo.stringify(options.models) };
+                }
+                options.caseId = Id;
+                options.projectId = ProjectId;
+                if (operation == "read" && reloadUntiGrid) {
+                    reloadUntiGrid = false;
+                    options.page = 1;
+                    options.pageSize = 20;
+                    options.skip = 0;
+                    options.take = 20;
+                }
+                else { options.UnitGridData = UnitGridData; }
+                return options;
+            }
+        },
+        pageSize: 20,
+        batch: true,
+        serverPaging: true,
+        serverSorting: true,
+        schema: {
+            total: function (response) {
+                return response._total;
+            },
+            model: {
+                id: "UnitID",
+                fields: {
+                    unitID: { editable: false, nullable: true },
+                    achpNo: { validation: { required: true } },
+                    unitNum: { type: "string" },
+                    managersUnit: { type: "boolean" },
+                    totalBedroom: { type: "string", validation: { required: true } },
+                    floorPlanType: { type: "string", },
+                    unitType: { type: "string", defaultValue: { Value: 0, Text: "Select" } },
+                    additionalAccecibility: { type: "string" },
+                    isCompliant: { type: "boolean" },
+                    isCSA: { type: "boolean" },
+                    isVCA: { type: "boolean" }
+                }
+            },
+            noRecords: true,
+            data: function (response) {
+                if (response.totalUnitsCount) {
+                    SetUnitTotalGridData(response.totalUnitsCount);
+                    gridBuildingDropdowData = response.buildingDropDownList;
+                }
+
+                UnitGridData = response.unitGridData;
+                if (response.success == true) {
+                    showMessage("Success", response.message);
+                }
+                if (response.success == false) {
+                    showMessage("Error", "Error occurred, please try again.");
+                }
+                if (response.isRefreshGrid) {
+
+                    var grid = $('#unitKgrid').data('kendoGrid');
+                    grid.dataSource.read();
+
+                }
+                $('#cm_loader').attr("hidden", true);
+                return response ? response.data : response;
+            }
+        }
+    });
+
+    var gridCommand = [];
+    var gridToolbar = [];
+    if (isEditAccess) {
+        gridToolbar = [{ name: "create", text: "Add" }];
+        gridCommand = [
+            { name: "edit", text: { edit: " ", update: " ", cancel: " " } },
+            {
+                name: "Delete", text: "<span class='k-icon k-i-close'></span>",
+                click: function (e) {
+
+                    //add a click event listener on the delete button
+                    e.preventDefault(); //prevent page scroll reset
+                    var tr = $(e.target).closest("tr"); //get the row for deletion
+                    var data = this.dataItem(tr); //get the row data so it can be referred later
+
+                    window.content(windowTemplate(data)); //send the row data object to the template and render it
+                    window.center().open();
+
+                    $("#yesButton").click(function () {
+                        dataSource.remove(data)  //prepare a "destroy" request
+                        dataSource.sync()  //actually send the request (might be ommited if the autoSync option is enabled in the dataSource)
+                        window.close();
+                    })
+                    $("#noButton").click(function () {
+                        window.close();
+                    })
+
+                }
+            }
+        ]
+    }
+
+    $("#unitKgrid").kendoGrid({
+        dataSource: dataSource,
+        height: 600,
+        sortable: true,
+        scrollable: {
+            endless: true
+        },
+        pageable: {
+            numeric: false,
+            previousNext: false
+        },
+
+        editable: {
+            mode: "inline",
+            confirmation: true,
+            confirmDelete: "No"
+        },
+        edit: onGridEdit,
+        toolbar: gridToolbar,
+        columns: [
+            { field: "achpNo", title: "ACHP #", width: "150px", editor: BuildingDropDownEditor, template: "#=achpNo#" },
+            { field: "unitNum", title: "Unit #", width: "80px" },
+            { field: "managersUnit", title: "Managers Unit", width: "80px", template: ManagersUnitTemplate },
+            { field: "totalBedroom", title: "Unit Type", width: "110px", editor: TotalBedroomDropDownEditor, template: TotalBedroomTemplate },
+            { field: "floorPlanType", title: "Floor Plan Type", width: "150px" },
+            { field: "unitType", title: "Unit Designation Mobility, Communication, FHA / 11A / 11B)", editor: UnitTypeDropDownEditor, template: UnitTypeTemplate, width: "150px" },
+            { field: "additionalAccecibility", title: "Additional Accessibility Requirement: Universal Design, EAP, Unruh", width: "150px" },
+            { field: "isCompliant", title: "Compliant Yes or No", template: IsCompliantTemplate, width: "80px" },
+            { field: "isCSA", title: "Unit Designated for Compliance With CSA", template: IsComplianceWithCSATemplate, width: "120px" },
+            { field: "isVCA", title: "Unit Designated for Compliance With VCA", template: IsComplianceWithVCATemplate, width: "120px" },
+            {
+                command: gridCommand, title: "&nbsp;", width: "80px"
+            }]
+    });
+
+    function onGridEdit(arg) {
+        var buildingId = arg.model.BuildingId;
+        var ftDatasource = []
+        if (buildingId) {
+            var buildingddl = $("[name^='achpNo']").data("kendoDropDownList");
+            buildingddl.readonly();
+        }
+    }
+
+    function BuildingDropDownEditor(container, options) {
+        $('<input required name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+
+                autoBind: false,
+                dataTextField: "BuildingFileNumber",
+                dataValueField: "BuildingFileNumber",
+                dataSource: BuildingInformationData,
+                change: function (e) {
+                    var dataItem = e.sender.dataItem();
+                    options.model.set("BuildingId", dataItem.buildingId);
+                    options.model.set("CaseId", dataItem.caseId);
+                    BuildingDropDownChange(e);
+                }
+            });
+    }
+
+    function BuildingDropDownChange(e) {
+    }
+
+    function TotalBedroomDropDownEditor(container, options) {
+        $('<input required name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataTextField: "Text",
+                dataValueField: "Text",
+                dataSource: modelData.LutTotalBedrooms,
+                change: function (e) {
+                    var dataItem = e.sender.dataItem();
+                    options.model.set("LutTotalBedroomID", dataItem.Value);
+                }
+            });
+
+    }
+    function UnitTypeDropDownEditor(container, options) {
+        $('<input  name="' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataTextField: "Text",
+                dataValueField: "Text",
+                dataSource: modelData.LutUnitType,
+                change: function (e) {
+                    var dataItem = e.sender.dataItem();
+                    options.model.set("LutUnitTypeID", dataItem.Value);
+                }
+
+            });
+    }
+
+    function TotalBedroomTemplate(data) {
+        switch (data.totalBedroom) {
+            case "1":
+                data.totalBedroom = "1 Bedroom";
+                break;
+            case "2":
+                data.totalBedroom = "2 Bedroom";
+                break;
+            case "3":
+                data.totalBedroom = "3 Bedroom";
+                break;
+            case "4":
+                data.totalBedroom = "4 Bedroom";
+                break;
+            case "5+":
+                data.totalBedroom = "5 Bedroom";
+                break;
+            default:
+
+                break;
+        }
+        return data.totalBedroom == null ? "" : data.totalBedroom;
+    }
+    function UnitTypeTemplate(data) {
+        return data.unitType == null ? "" : data.unitType;
+    }
+    function ManagersUnitTemplate(data) {
+        return data.managersUnit ? "<span class='k-icon k-i-x'></span>" : "";
+    }
+    function IsCompliantTemplate(data) {
+        return data.isCompliant ? "Yes" : "No";
+    }
+    function IsComplianceWithCSATemplate(data) {
+
+        return data.isCSA ? "<span class='k-icon k-i-x'></span>" : "";
+    }
+    function IsComplianceWithVCATemplate(data) {
+        return data.isVCA ? "<span class='k-icon k-i-x'></span>" : "";
+    }
+    function SetUnitTotalGridData(data) {
+        if ($(".k-unit-grid-title").length == 0) {
+            $("#unitKgrid .k-grid-add").html("Add <i class='fa fa-plus'></i>");
+            $(".k-grid-toolbar", "#unitKgrid").prepend("<span class='k-grid-header-title k-unit-grid-title'>Unit Information </span>");
+            //$(".k-grid-toolbar", "#unitKgrid").prepend("<span class='k-grid-header-title k-unit-grid-title'>Unit: Distribution & Designation By Unit Type, Floor Plan Type, Accessible Unit Type </span>");
+        }
+
+        $("#lblSROCount").text(data.sroCount);
+        $("#lblStudioCount").text(data.StudioCount);
+        $("#lblEfficiencyCount").text(data.efficiencyCount);
+        $("#lblBedroom1Count").text(data.bedroom1Count);
+        $("#lblBedroom2Count").text(data.bedroom2Count);
+        $("#lblBedroom3Count").text(data.bedroom3Count);
+        $("#lblBedroom4Count").text(data.bedroom4Count);
+        $("#lblBedroom5Count").text(data.bedroom5Count);
+        $("#lblManagerUnitCount").text(data.managerUnitCount);
+        $("#lblTotalCount").text(data.totalCount);
+
+        $("#lblUnitDesignatedCSACount").text(data.unitDesignatedCSACount);
+        $("#lblUnitDesignatedVCACount").text(data.unitDesignatedVCACount);
+        $("#lblTotalMobilityUntCount").text(data.totalMobilityUntCount);
+        $("#lblTotalCommunicationUntCount").text(data.totalCommunicationUntCount);
+        $("#lblTotalAdaptableUntCount").text(data.totalAdaptableUntCount);
+        $("#lblTotalMobilityUnitsPer").text(data.totalMobilityUnitsPer);
+        $("#lblTotalCommunicationsPer").text(data.totalCommunicationsPer);
+        $("#lblTotalCommunicationCount").text(data.totalCommunicationCount);
+        $("#lblTotalMobilityUnitsVCAPer").text(data.totalMobilityUnitsVCAPer);
+        $("#lblTotalMobilityUnitsVCACount").text(data.TotalMobilityUnitsVCACount);
+        $("#lblTotalMobilityUnitsCSAPer").text(data.TotalMobilityUnitsCSAPer);
+        $("#lblTotalMobilityUnitsCSACount").text(data.TotalMobilityUnitsCSACount);
+
+    }
+
+    /*End Unit Kendo Grid */
+</script>
+
+
+
+
