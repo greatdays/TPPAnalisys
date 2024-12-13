@@ -37,5 +37,12 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\ProjectDetail\_SiteInformation.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 
 </Project>

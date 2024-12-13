@@ -9,10 +9,24 @@
     .datatbl {
         width: 100% !important;
     }
+
+    #tabSiteInformation .pagination
+    {
+        display: list-item!important;
+        text-align: start;
+    }
+
+    #tabSiteInformation .paginate_button a {
+        margin-left: -5px !important;
+    }
+
+    #tabSiteInformation .paginate_button:first-child a {
+        margin-left: -5px;
+    }
 </style>
 <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.2/jquery-ui.min.js"></script>
+
 <script src="~/"></script>
 <script src="~/js/kendojs/kendo.all.min.js"></script>
 <script src="~/js/kendojs/kendo.timezones.min.js"></script>
@@ -41,8 +55,8 @@
 </div>
 <div>
     @{
-        Html.RenderPartial("_ProjectSummary", Model);
-    } 
+        Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
+    }
 </div>
 
 <br />
@@ -50,9 +64,8 @@
 <div class="tab">
     <button class="tablinks active" onclick="openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
     <button class="tablinks" onclick="openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-    <button class="tablinks" onclick="openTab(event, 'tabImportantDates')">Funding Details</button>
     <button class="tablinks" onclick="openTab(event, 'tabProjectParticipants')">Project Participants</button>
-    <button class="tablinks" onclick="openTab(event, 'tabPolicyContacts')">Policy Contacts</button>
+    <button class="tablinks" onclick="openTab(event, 'tabImportantDates')">Funding Source</button>
     <button class="tablinks" onclick="openTab(event, 'tabDocuments')">Documents</button>
     <button class="tablinks" onclick="openTab(event, 'tabLogs')">Plan Review</button>
 </div>
@@ -74,7 +87,7 @@
         </div>
 
         <div style="position: absolute;right: 37px;z-index: 1; margin-top:1px">
-            <button class="btn btn-primary no-access" id="uploadUnitExcel" role-access="true" style=" background: #0382a2; border: #0382a2;border-radius: 0px; ">
+            <button class="btn btn-primary no-access" id="uploadUnitExcel" role-access="true" style="height: 40px;border-radius: 0px; ">
                 Upload <i class="fa fa-upload"></i>
             </button>
         </div>
@@ -253,7 +266,7 @@
 </script>
 <script type="text/javascript">
     var baseUrl = window.location.origin;
-    var Id = @Model.Id; 
+    var Id = @Model.Id;
     var ProjectId = @Model.ProjectId;
     var isEditAccess = true;
     var reloadUntiGrid = false;
@@ -269,6 +282,7 @@
     var allUnitsData = [];
     var BuildingInformationData = [];
     var SiteInformationData = [];
+    var IsLoadSiteInformationTab = false;
     var UnitGridData = [];
     var dtBuildingDataTable;
     var gridBuildingDropdowData = [];
@@ -283,6 +297,13 @@
         var url = "";
 
         switch (tabName) {
+            case "tabSiteInformation":
+                if (!IsLoadSiteInformationTab) {
+                    LoadSiteInformation();
+                    IsLoadSiteInformationTab = true;
+                }
+                
+                break;
             case "tabImportantDates":
                 url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
                 LoadTabData(url, "divImportantDates");
@@ -306,6 +327,8 @@
             default:
         }
     }
+
+
     function LoadTabData(url, tabId, forceLoad = false) {
         if ($("#" + tabId).html() == "" || forceLoad) {
             AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
@@ -314,6 +337,87 @@
                 }, null, true, null, false);
         }
     }
+
+    /*Start Site Data table */
+    function LoadSiteInformation()
+    {
+
+        $.fn.dataTableExt.pager.numbers_length = 50;
+    var dtSiteDataTable = $('#dtSiteData').dataTable({
+        ajax: {
+            url: '@Url.Action("GetSiteInformations", "ProjectDetail", new { })',
+            type: 'POST',
+            data: function (d) {
+                d.SiteInformationData = SiteInformationData,
+                    d.caseId = Id
+
+            },
+            "headers": {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            dataType: 'json'
+
+        },
+        "columns": [
+            {
+                "data": 'siteInfomationData'
+            }
+        ],
+        processing: true,
+        serverSide: true,
+        pagingType: 'numbers',
+        pageLength: 1,
+        "paging": true,
+        "searching": true,
+        "ordering": false,
+        "dom": "<'row'<'<'col-sm-12'p>>",
+        "oLanguage": {
+            "sEmptyTable": "No record found."
+        }
+    });
+    dtSiteDataTable.on('draw.dt', function () {
+        if ($(".select-site-title").length == 0) {
+            $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:</div>")
+        }
+
+        $(".dataTables_length").hide();
+        var siteData = $('#dtSiteData').dataTable().fnGetData();
+
+        var siteLength = siteData.length;
+        if (siteLength > 0) {
+            $("#dtSiteData_paginate").show();
+            documentControlViewModelId = siteData[0].documentControlViewModelId;
+            logsControlViewModelId = siteData[0].logsControlViewModelId;
+            ContactControlViewModelId = siteData[0].contactControlViewModelId;
+            SiteInformationData = siteData[0].siteInformationData;
+                var pageItems = $("#tabSiteInformation .paginate_button");
+            var siteList = siteData[0].siteList;
+            for (var i = 0; i < pageItems.length; i++) {
+                   var  item = $(pageItems[i]).children("a")
+                    if (item.text() != '…') {
+                        if (parseInt(item.text()) !== NaN) {
+                            $(item).text(siteList[parseInt(item.text()) - 1]);
+                    }
+                }
+            }
+            $("#btnSiteInformation").text("Site Information (" + siteList.length + ")");
+        }
+        else { $("#dtSiteData_paginate").hide(); }
+    });
+    $("#siteInformationPopup").on("hide.bs.modal", function (e) {
+        if ($(e.target).attr("id") !== "siteInformationPopup") {
+            $('#siteInformationPopup').modal("show");
+        }
+    })
+    $("#siteInformationPopup").on("hidden.bs.modal", function (e) {
+        if ($(e.target).attr("id") !== "siteInformationPopup") {
+            $('#siteInformationPopup').modal("show");
+        }
+
+    })
+    }
+    /*End Site Data table */
+
 
     /*Start Unit Kendo Grid */
     var windowTemplate = kendo.template($("#windowTemplate").html());
@@ -366,7 +470,7 @@
                     options.skip = 0;
                     options.take = 20;
                 }
-                else { options.UnitGridData = UnitGridData; }
+                else { options.unitGridData = UnitGridData; }
                 return options;
             }
         },
@@ -379,7 +483,7 @@
                 return response._total;
             },
             model: {
-                id: "UnitID",
+                id: "unitID",
                 fields: {
                     unitID: { editable: false, nullable: true },
                     achpNo: { validation: { required: true } },

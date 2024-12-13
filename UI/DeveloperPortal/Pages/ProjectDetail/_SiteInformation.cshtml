@@ -1,0 +1,78 @@
+﻿@model DeveloperPortal.Domain.ProjectDetail.SiteInformationModel
+<style>
+    .action-link a {
+        display: flex;
+    }
+</style>
+<div class="site-summary">
+    <div class="row">
+        <div class="col-sm-8">
+            <h3 class="site-title ">@Model.SiteName - @Model.FileNumber</h3>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <span class="row-title">Address</span>
+                        <span class="row-text">@Model.SiteAddress</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row-box">
+                        <span class="row-title lelf-border"># of Buildings</span>
+                        <span class="row-text"> @Model.NoOfBuildings</span>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row-box">
+                        <span class="row-title lelf-border"> # of Units</span>
+                        <span class="row-text"> @Model.NoOfUnits</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <span class="row-title">Policy Assignee</span>
+                        <span class="row-text" style="min-width: 170px;">  @Model.AssigneeName</span>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <span class="row-title">FDO</span>
+                        <span class="row-text" style="min-width: 170px;">  @Model.AssigneeName</span>
+                    </div>
+                </div>
+            </div>
+            <h3 class="site-more-info">  More Information</h3>
+            <div class="row">
+                <div class="col-sm-12 link">
+                    <a href="#" onclick='showActionPopupClick("SitInformation","",@Model.CaseID,@Model.RefProjectSiteID)'>Site Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("BuidlingInformation","@(Model.FileNumber + " Building Information")",@Model.CaseID,@Model.RefProjectSiteID)'>Building Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("Contacts","@(Model.FileNumber + " Contacts")",@Model.CaseID,@Model.RefProjectSiteID)'>Contact Information</a>
+                    <br />
+                    <a href="#" onclick='showActionPopupClick("ImportantDates","@(Model.FileNumber + " Important Dates")",@Model.CaseID,@Model.RefProjectSiteID)'>Important Dates</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("Inspection","@(Model.FileNumber + " Inspection History")",@Model.CaseID,@Model.RefProjectSiteID)'> Inspection</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("Violations","@(Model.FileNumber + " Violations")",@Model.CaseID,@Model.RefProjectSiteID)'> Violations </a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("Documents","@(Model.FileNumber + " Documents")",@Model.CaseID,@Model.RefProjectSiteID)'>Documents</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='showActionPopupClick("Logs","@(Model.FileNumber + " Logs")",@Model.CaseID,@Model.RefProjectSiteID)'> Logs</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+            <h3 class="site-more-info">Actions</h3>
+            <div class="row">
+                <div class="col-sm-12 link action-link">
+                    @Html.Raw(Model.Actions)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

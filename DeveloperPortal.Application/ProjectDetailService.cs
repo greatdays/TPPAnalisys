@@ -107,6 +107,53 @@ namespace DeveloperPortal.Application
             return UnitCountData;
         }
 
+
+        /// <summary>
+        /// GetSiteInformations
+        /// </summary>
+        /// <param name="caseId"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public List<SiteInformationModel> GetSiteInformations(int caseId, string userName)
+        {
+            var siteInformations = new List<SiteInformationModel>();
+            var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
+                    new SqlParameter() { ParameterName = "@UserName", Value = userName }
+                };
+            AahrdevContext context = new AahrdevContext();
+            using (var dataTableAllSites = context.ExecuteStoredProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
+            {
+                if (dataTableAllSites.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dataTableAllSites.Rows.Count; i++)
+                    {
+                        SiteInformationModel siteInformation = new SiteInformationModel();
+                        siteInformation.CaseID = Convert.ToInt32(dataTableAllSites.Rows[i]["CaseID"]);
+                        siteInformation.RefProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["RefProjectSiteID"]);
+                        siteInformation.ProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectSiteID"]);
+                        siteInformation.ProjectID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectID"]);
+                        siteInformation.SiteName = dataTableAllSites.Rows[i]["SiteName"].ToString();
+                        siteInformation.FileNumber = dataTableAllSites.Rows[i]["FileNumber"].ToString();
+                        siteInformation.SiteAddress = dataTableAllSites.Rows[i]["SiteAddress"].ToString();
+                        siteInformation.AssigneeName = dataTableAllSites.Rows[i]["AssigneeName"].ToString();
+                        siteInformation.NoOfBuildings = Convert.ToInt32(dataTableAllSites.Rows[i]["NoOfBuildings"]);
+                        siteInformation.NoOfUnits = Convert.ToInt32(dataTableAllSites.Rows[i]["NoOfUnits"]);
+                        siteInformation.PolicyAnalyst = Convert.ToString(dataTableAllSites.Rows[i]["Policy Analyst"]);
+                        siteInformation.SiteCaseStatus = Convert.ToString(dataTableAllSites.Rows[i]["Site Case Status"]);
+                        siteInformation.SiteCaseType = Convert.ToString(dataTableAllSites.Rows[i]["Site Case Type"]);
+                        siteInformation.Actions = Convert.ToString(dataTableAllSites.Rows[i]["Action"]);
+                        siteInformation.DocumentControlViewModelId = Convert.ToInt32(dataTableAllSites.Rows[i]["DocumentControlViewModelId"]);
+                        siteInformation.LogsControlViewModelId = Convert.ToInt32(dataTableAllSites.Rows[i]["LogsControlViewModelId"]);
+                        siteInformation.ContactControlViewModelId = Convert.ToInt32(dataTableAllSites.Rows[i]["ContactControlViewModelId"]);
+                        siteInformations.Add(siteInformation);
+                    }
+                }
+                return siteInformations;
+            }
+        }
+
         /// <summary>
         /// Get all construction cases to be displayed on the dashboard
         /// </summary>

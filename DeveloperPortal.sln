@@ -18,11 +18,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A01021F7-7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F0AC9BCF-4B98-4DCE-B848-8AB688CCBDD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperPortal.DataAccess", "DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj", "{B24BF4AB-7A39-4B80-919E-3F2343BCE919}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.DataAccess", "DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj", "{B24BF4AB-7A39-4B80-919E-3F2343BCE919}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{7D30A531-CC26-468F-947D-664CAD05ED51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveloperPortal.Application", "DeveloperPortal.Application\DeveloperPortal.Application.csproj", "{F52D5FB3-01B0-4E21-928E-32EC5F99CE21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.Application", "DeveloperPortal.Application\DeveloperPortal.Application.csproj", "{F52D5FB3-01B0-4E21-928E-32EC5F99CE21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

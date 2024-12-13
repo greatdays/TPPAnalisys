@@ -1,4 +1,4 @@
-﻿@model DeveloperPortal.Pages.ProjectDetails.IndexModel
+﻿@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
 
 <div class="accordion" id="accfolder">
     @{
@@ -6,74 +6,115 @@
             <div class="col-sm-12">
                 <gridv>
                     <div class="card penal-details backgroundwhite dataTable-changes" id="accheader">
-                        <h2 class="card-header accordion-header">
-                            <button type="button" class="card-header-title m-0" id="gidfolderView">
-                                Project Summary
-                            </button>
-                        </h2>
+                        <div class="card-header accordion-header" style="cursor: default;    background-color: #003399 !important;">
+                            <div>
+                                <span class="card-header-title" style="    font-weight: bold;color:white">
+                                    Project Name - Central Apartments
+                                </span>
+                            </div>
+                            <div style="padding: 5px;">
+                                <button type="button" class="btn btn-primary no-access m-0">
+                                    Edit Project Information
+                                </button>
+                            </div>
+                        </div>
                         <div class="card-body table-content" id="divSummaryView" style="position: relative;">
-                            <div class="Case-deatils Case-addrees" style="border: solid 0px #ddd !important;margin-bottom: 0px; padding: 0px 15px;">
-                                <ul class="Case-addrees-ul">
-                                    <li>
-                                        <span class="bold">Project Name :</span><span class="cd-value"> Central Apartments</span> &nbsp;&nbsp;
-                                        <div class="tooltip-p">
-                                            <i class="fa fa-info-circle"></i>
-                                            <span class="tooltiptext">The following have been archived: <br></span>
+                            <div class="Case-details Case-addrees" style="border: solid 0px #ddd !important;margin-bottom: 0px; padding: 0px 15px;">
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title left-border">Address</span>
+                                                    <span class="row-text"> 2106 S CENTRAL AVE LOS ANGELES CA 90011</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> ACHP # </span>
+                                                    <span class="row-text"> F5735</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </li>
+                                        <br />
 
-                                    <li>
-                                        <span class="bold">Project Address :</span><span class="cd-value"> 2106 S CENTRAL AVE LOS ANGELES CA 90011</span>
-                                        &nbsp;&nbsp;
-                                        <div class="tooltip-s">
-                                            <i class="fa fa-info-circle"></i>
-                                            <span class="tooltiptext">The following have been archived: <br></span>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border">Project #</span>
+                                                    <span class="row-text">CNCP202491</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> Type of Occupancy </span>
+                                                    <span class="row-text"> Special Needs</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </li>
-                                    <li id="liComment2" class="display-none">
-                                        <span class="bold">Label :</span><span class="cd-value text-color-red" id="spnCommentCategory2"></span>
-                                        &nbsp;&nbsp;
-                                    </li>
-
-
-                                </ul>
-                                <div class="Case-addrees-line-2">
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border">Project #</span>
+                                                    <span class="row-text">CNCP202491</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> Type of Occupancy </span>
+                                                    <span class="row-text"> Special Needs</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border">Status</span>
+                                                    <span class="row-text">Ready for Design Review</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> Covenant Expiration Date </span>
+                                                    <span class="row-text"> N/A</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border">Type of Construction Project</span>
+                                                    <span class="row-text">New Construction Project </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> HIMS # </span>
+                                                    <span class="row-text">19-126539</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border">RCS Assignee</span>
+                                                    <span class="row-text">Paul Munz </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row-box">
+                                                    <span class="row-title lelf-border"> LA County Assessors </span>
+                                                    <span class="row-text">5119003002</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <ul class="Case-addrees-ul">
-                                    <li><span class="bold">Project # :</span><span class="cd-value">CNCP2172294</span></li>
-                                    <li><span class="bold">Status :</span><span class="cd-value case-status">Ready for Design Review</span></li>
-
-                                    <li><span class="bold">Type of Construction Project :</span><span class="cd-value">New Construction Project  </span></li>
-
-                                    <li><span class="bold">Assignee :</span><span class="cd-value">Paul Munz</span></li>
-
-
-                                </ul>
-                                <ul class="Case-addrees-ul">
-                                    <li><span class="bold">ACHP File Number :</span><span class="cd-value"><a target="_blank" href="http://achp2/IDM/Authentication/RedirectToOtherApplication?AppKey=PropMgmt&amp;AppURL=http://ccris2/Property/&amp;TabName=AcHPDetails&amp;parameters=apn=5119003002,projectSiteID=2144">F7965</a></span></li>
-
-                                    <li><span class="bold">Type of Occupancy :</span><span class="cd-value">Special Needs</span></li>
-                                    <li><span class="bold">Covenant Expiration Date :</span><span class="cd-value"></span></li>
-                                </ul>
-                                <ul class="Case-addrees-ul">
-                                    <li>
-                                        <span class="bold">HIMS Number : <span class="fa fa-edit" style="cursor:pointer;" onclick="javascript: fnGetHimsLoanNumber('0');"></span></span>
-                                        <span class="cd-value">19-126539</span>
-                                    </li>
-                                </ul>
-
-                                <div id="la-county-assessors">
-                                    <ul class="Case-addrees-ul">
-                                        <li>
-                                            <span class="bold">LA County Assessors :</span>
-                                            <span class="cd-value">
-                                                <a href="javascript: void(0);" onclick="javascript: fnGetLACountyAssessors('5119003002');">5119003002</a>
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <input type="hidden" id="IsFavouriteCase" data-bind="False">
                             </div>
                         </div>
                     </div>

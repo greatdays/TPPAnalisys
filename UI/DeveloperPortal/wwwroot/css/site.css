@@ -2802,7 +2802,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 
     .pagination li.paginate_button.active a {
         color: #fff !important;
-        background: #001D80;
+        background: #003399;
     }
 
     .pagination li.paginate_button a {
@@ -2811,9 +2811,9 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
         padding: .5rem .75rem;
         margin-left: -1px;
         line-height: 1.25;
-        color: #0c4f88 !important;
+        color: #003399 !important;
         background-color: #fff;
-        border: 1px solid #dee2e6;
+        border: 1px solid #003399   ;
     }
 
 .dataTables_paginate.paging_simple_numbers {
@@ -4730,11 +4730,11 @@ div#propertyMap {
     }
 
         .card .card-header.uparrow:before, .card .card-header.downarrow:before {
-            color: #006381 !important;
+            color: #003399 !important;
         }
 
     .card .card-header .card-header-title {
-        color: #006381;
+        color: #003399;
     }
 
     .card .card-header button.card-header-title {

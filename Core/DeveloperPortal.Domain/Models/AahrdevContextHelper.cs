@@ -8,6 +8,8 @@ using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.Data.SqlClient;
 using System.Reflection.Metadata;
+using System.Data.Entity.Core.EntityClient;
+using System.Data;
 
 namespace DeveloperPortal.DataAccess
 {
@@ -53,6 +55,47 @@ namespace DeveloperPortal.DataAccess
             List <uspGetUnitsForComplianceMetrixResult> result = context.Set<uspGetUnitsForComplianceMetrixResult>().FromSqlRaw($"EXEC AAHPCC.uspGetUnitsForComplianceMetrix @CaseId, @projectID",param).ToList();
             return result;
         }
+
+        /// <summary>
+        /// Execute stored procedure based on spname with parameter list.
+        /// </summary>
+        /// <param name="spName">stored procedure name.</param>
+        /// <param name="spParameterList">stored procedure parameter list.</param>
+        /// <returns>
+        /// Returns stored procedure result data.
+        /// </returns>
+        public DataTable ExecuteStoredProcedure(string spName, List<SqlParameter> spParameterList)
+        {
+            // get connection string.
+            AahrdevContext context = new AahrdevContext();
+            var conectionString=   context.Database.GetConnectionString();
+            using (SqlConnection sqlConn = new SqlConnection(conectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(spName, sqlConn)
+                {
+                    CommandTimeout = 0,
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                // assign parameter values to stored procedure.
+                if (null != spParameterList && spParameterList.Count > 0)
+                {
+                    foreach (SqlParameter spParameter in spParameterList)
+                    {
+                        if (!string.IsNullOrEmpty(Convert.ToString(spParameter.Value)))
+                            sqlCommand.Parameters.AddWithValue(spParameter.ParameterName, spParameter.Value);
+                        else
+                            sqlCommand.Parameters.AddWithValue(spParameter.ParameterName, DBNull.Value);
+                    }
+                }
+                // fill stored procedure data to datatable.
+                var resultData = new DataTable();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(sqlCommand);
+                sqlDataAdapter.Fill(resultData);
+                return resultData; // returns.
+            }
+        }
+
 
     }
 

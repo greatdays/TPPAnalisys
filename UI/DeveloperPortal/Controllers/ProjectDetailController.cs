@@ -3,6 +3,9 @@ using DeveloperPortal.DataAccess;
 using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -61,6 +64,8 @@ namespace DeveloperPortal.Controllers
 
         }
 
+
+        
         private static List<UnitDataModel> SortData(GridRequestModel gridRequestModel, List<UnitDataModel> unitModels)
         {
             if (gridRequestModel!= null && gridRequestModel.Sort != null && gridRequestModel.Sort.Count > 0)
@@ -194,9 +199,104 @@ namespace DeveloperPortal.Controllers
             }
         }
 
-       
+
         #endregion
+
+        #region Project Site Information
+
+        /// <summary>
+        /// GetSiteInformations
+        /// </summary>
+        /// <param name="caseId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetSiteInformations(SiteInformationParamModel paramModel, int start, int length, int draw)
+        {
+
+            var total = 0;
+            var siteInformations = paramModel.SiteInformationData;
+            var projectDetailService = new ProjectDetailService();
+            if (paramModel.SiteInformationData == null || paramModel.SiteInformationData.Count == 0)
+            {
+                siteInformations = projectDetailService.GetSiteInformations(paramModel.CaseId, "");
+            }
+
+            if (siteInformations != null && siteInformations.Any())
+            {
+                total = siteInformations.Count;
+            }
+
+            var totlaSiteList = siteInformations.Select(x => x.FileNumber).ToList();
+            var siteData = new List<SiteDataModel>();
+            if (length > 0)
+            {
+                var SelectedsiteData = siteInformations.Skip(start).Take(length).ToList();
+                if (SelectedsiteData.Any())
+                {
+                    foreach (var siteInformation in SelectedsiteData)
+                    {
+                        siteInformation.Actions = siteInformation.Actions.Replace("&lt;", "<").Replace("&gt;", ">");
+                        siteData.Add(new SiteDataModel()
+                        {
+                            Id = siteInformation.CaseID,
+                            ProjectId = siteInformation.ProjectID,
+                            DocumentControlViewModelId = siteInformation.DocumentControlViewModelId,
+                            LogsControlViewModelId = siteInformation.LogsControlViewModelId,
+                            ContactControlViewModelId = siteInformation.ContactControlViewModelId,
+                            SiteName = siteInformation.SiteName,
+                            FileNumber = siteInformation.FileNumber,
+                            SiteInfomationData = this.RenderViewAsync("../ProjectDetail/_SiteInformation", siteInformation,true).Result
+                        });
+                    }
+                    siteData[0].SiteList = totlaSiteList;
+                    siteData[0].SiteInformationData = siteInformations;
+                }
+            }
+            return Json(new { draw = draw, data = siteData, recordsTotal = total, recordsFiltered = total });
+
+        }
+
+        #endregion
+
+
+          
     }
 
+    public static class ControllerExtensions
+    {
+        public static async Task<string> RenderViewAsync<TModel>(this Controller controller, string viewName, TModel model, bool partial = false)
+        {
+            if (string.IsNullOrEmpty(viewName))
+            {
+                viewName = controller.ControllerContext.ActionDescriptor.ActionName;
+            }
+
+            controller.ViewData.Model = model;
+
+            using (var writer = new StringWriter())
+            {
+                IViewEngine viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
+                ViewEngineResult viewResult = viewEngine.FindView(controller.ControllerContext, viewName, !partial);
+
+                if (viewResult.Success == false)
+                {
+                    return $"A view with the name {viewName} could not be found";
+                }
+
+                ViewContext viewContext = new ViewContext(
+                    controller.ControllerContext,
+                    viewResult.View,
+                    controller.ViewData,
+                    controller.TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+
+                return writer.GetStringBuilder().ToString();
+            }
+        }
+    }
 
 }
