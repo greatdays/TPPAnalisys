@@ -1,6 +1,6 @@
 ﻿using DeveloperPortal.Application;
 using DeveloperPortal.DataAccess;
-using DeveloperPortal.Domain.Models;
+//using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -42,7 +42,8 @@ namespace DeveloperPortal.Controllers
             }
             if (unitModels.Count == 0)
             {
-                unitModels = projectDetailService.GetUnitMaxtrixDetails(gridRequestModel);
+                //Ananth commented for testing
+                //unitModels = projectDetailService.GetUnitMaxtrixDetails(gridRequestModel);
             }
             TotalUnitDataModel totalUnitDetail = null;
             var buildingDropDownList = new List<UnitBuildingModel>();
@@ -258,8 +259,13 @@ namespace DeveloperPortal.Controllers
 
         #endregion
 
+        public JsonResult RenderContactById(string projectId, int controlViewModelId)
+        {
+            ProjectDetailService detailService = new ProjectDetailService();
+            detailService.GetControlViewModelById(controlViewModelId);
+            return Json("{'data':'12'}");
+        }
 
-          
     }
 
     public static class ControllerExtensions

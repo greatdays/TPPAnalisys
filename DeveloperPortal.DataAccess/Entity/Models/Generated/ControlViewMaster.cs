@@ -54,29 +54,29 @@ public partial class ControlViewMaster
 
     public string? JsonConfig { get; set; }
 
-    public virtual ControlMaster Control { get; set; } = null!;
+    public virtual ControlMaster ControlMaster { get; set; } = null!;
 
-    public virtual Custom_DisplayConfig? CustomDisplayConfig { get; set; }
+    public virtual Custom_DisplayConfig? Custom_DisplayConfig { get; set; }
 
-    public virtual Links_DisplayConfig? LinkDisplayConfig { get; set; }
+    public virtual Links_DisplayConfig? Links_DisplayConfig { get; set; }
 
-    public virtual News_DisplayConfig? NewsDisplayConfig { get; set; }
+    public virtual News_DisplayConfig? News_DisplayConfig { get; set; }
 
-    public virtual SPDetailView_DisplayConfig? SPDetailDisplayConfig { get; set; }
+    public virtual SPDetailView_DisplayConfig? SPDetailView_DisplayConfig { get; set; }
 
-    public virtual SPGridView_DisplayConfig? SPGridDisplayConfig { get; set; }
+    public virtual SPGridView_DisplayConfig? SPGridView_DisplayConfig { get; set; }
 
-    public virtual SPGroupView_DisplayConfig? SPGroupDisplayConfig { get; set; }
+    public virtual SPGroupView_DisplayConfig? SPGroupView_DisplayConfig { get; set; }
 
-    public virtual SPMatrixView_DisplayConfig? SPMatrixDisplayConfig { get; set; }
+    public virtual SPMatrixView_DisplayConfig? SPMatrixView_DisplayConfig { get; set; }
 
     public virtual ICollection<TabControlViewMap> TabControlViewMaps { get; set; } = new List<TabControlViewMap>();
 
-    public virtual WFLog_DisplayConfig? WFLogDisplayConfig { get; set; }
+    public virtual WFLog_DisplayConfig? WFLog_DisplayConfig { get; set; }
 
-    public virtual WFNavigation_DisplayConfig? WFNavigationDisplayConfig { get; set; }
+    public virtual WFNavigation_DisplayConfig? WFNavigation_DisplayConfig { get; set; }
 
-    public virtual WSDetailView_DisplayConfig? WSDetailDisplayConfig { get; set; }
+    public virtual WSDetailView_DisplayConfig? WSDetailView_DisplayConfig { get; set; }
 
-    public virtual WSGridView_DisplayConfig? WSGridViewDisplayConfig { get; set; }
+    public virtual WSGridView_DisplayConfig? WSGridView_DisplayConfig { get; set; }
 }

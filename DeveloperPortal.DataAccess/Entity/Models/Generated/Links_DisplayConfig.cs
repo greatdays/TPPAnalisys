@@ -44,7 +44,7 @@ public partial class Links_DisplayConfig
 
     public virtual ICollection<ControlViewMaster> ControlViewMasters { get; set; } = new List<ControlViewMaster>();
 
-    public virtual Links_Image? Image { get; set; }
+    public virtual Links_Images? Links_Images { get; set; }
 
-    public virtual ICollection<Links_LinkDetail> Links_LinkDetails { get; set; } = new List<Links_LinkDetail>();
+    public virtual ICollection<Links_LinkDetails> Links_LinkDetails { get; set; } = new List<Links_LinkDetails>();
 }

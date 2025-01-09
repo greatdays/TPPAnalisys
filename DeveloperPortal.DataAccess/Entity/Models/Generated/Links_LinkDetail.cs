@@ -3,8 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class Links_LinkDetail
+public partial class Links_LinkDetails
 {
+    public Links_LinkDetails()
+    {
+        this.Links_Trackings = new HashSet<Links_Tracking>();
+    }
+
     /// <summary>
     /// Primary Key of the table
     /// </summary>
@@ -61,7 +66,7 @@ public partial class Links_LinkDetail
 
     public virtual Links_DisplayConfig DisplayConfig { get; set; } = null!;
 
-    public virtual Links_Image? Image { get; set; }
+    public virtual Links_Images? Links_Images { get; set; }
 
     public virtual ICollection<Links_Tracking> Links_Trackings { get; set; } = new List<Links_Tracking>();
 }

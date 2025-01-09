@@ -32,7 +32,7 @@ namespace DeveloperPortal.Models.Helper
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var idmModel = new IDMUser()
                 {
-                    AppKey = _config["ThisApplication:AppKey"].ToString(),// ConfigurationManager.AppSettings["IDMAppKey"].ToString(),
+                    AppKey = _config["ThisApplication:Application"].ToString(),// ConfigurationManager.AppSettings["IDMAppKey"].ToString(),
                     Provider = "SQL",
                     UserName = idmUser.UserName,
                     FirstName = idmUser.FirstName,

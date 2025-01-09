@@ -17,5 +17,5 @@ public partial class AppConfig
 
     public DateTime? CreatedOn { get; set; }
 
-    public virtual ApplicationMaster Application { get; set; } = null!;
+    public virtual ApplicationMaster ApplicationMaster { get; set; } = null!;
 }

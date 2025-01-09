@@ -25,7 +25,7 @@ public partial class Links_Tracking
     /// </summary>
     public DateTime? LastClick { get; set; }
 
-    public virtual Links_LinkDetail LinkDetails { get; set; } = null!;
+    public virtual Links_LinkDetails LinkDetails { get; set; } = null!;
 
     public virtual ICollection<Links_Log> Links_Logs { get; set; } = new List<Links_Log>();
 }

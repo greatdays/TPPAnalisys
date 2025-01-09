@@ -42,4 +42,5 @@ public partial class Comment
     public string? ServiceTrackingID { get; set; }
 
     public virtual ICollection<AssnComment> AssnComments { get; set; } = new List<AssnComment>();
+    public virtual AssnComment AssnComment { get; set; }
 }

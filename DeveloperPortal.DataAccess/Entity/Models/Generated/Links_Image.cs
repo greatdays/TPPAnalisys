@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class Links_Image
+public partial class Links_Images
 {
     /// <summary>
     /// Primary Key of the table
@@ -27,11 +27,11 @@ public partial class Links_Image
     /// </summary>
     public int? Width { get; set; }
 
-    public virtual ICollection<Links_Image> InverseParent { get; set; } = new List<Links_Image>();
+    public virtual ICollection<Links_Images> InverseParent { get; set; } = new List<Links_Images>();
 
     public virtual ICollection<Links_DisplayConfig> Links_DisplayConfigs { get; set; } = new List<Links_DisplayConfig>();
 
-    public virtual ICollection<Links_LinkDetail> Links_LinkDetails { get; set; } = new List<Links_LinkDetail>();
+    public virtual ICollection<Links_LinkDetails> Links_LinkDetails { get; set; } = new List<Links_LinkDetails>();
 
-    public virtual Links_Image? Parent { get; set; }
+    public virtual Links_Images? Parent { get; set; }
 }

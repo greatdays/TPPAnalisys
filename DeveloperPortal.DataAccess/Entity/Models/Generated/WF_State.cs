@@ -5,6 +5,12 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class WF_State
 {
+    public WF_State()
+    {
+        this.WF_Action = new HashSet<WF_Action>();
+        this.WF_Action1 = new HashSet<WF_Action>();
+    }
+
     public int Id { get; set; }
 
     public int DefinitionID { get; set; }
@@ -25,11 +31,11 @@ public partial class WF_State
 
     public int? AutoDefaultStatusDays { get; set; }
 
-    public virtual WF_Action? AutoNextAction { get; set; }
+    public virtual WF_Action? WF_Action2 { get; set; }
 
-    public virtual WF_Definition Definition { get; set; } = null!;
+    public virtual WF_Definition WF_Definition { get; set; } = null!;
 
-    public virtual ICollection<WF_Action> WF_ActionDestinationStates { get; set; } = new List<WF_Action>();
+    public virtual ICollection<WF_Action> WF_Action { get; set; } = new List<WF_Action>();
 
-    public virtual ICollection<WF_Action> WF_ActionSourceStates { get; set; } = new List<WF_Action>();
+    public virtual ICollection<WF_Action> WF_Action1 { get; set; } = new List<WF_Action>();
 }

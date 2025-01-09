@@ -1,6 +1,8 @@
 ﻿using DeveloperPortal.Application;
 using DeveloperPortal.DataAccess;
-using DeveloperPortal.Domain.Models;
+using DeveloperPortal.Domain.Dashboard;
+
+//using DeveloperPortal.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -19,11 +21,12 @@ namespace DeveloperPortal.Controllers
         public IConfigurationRoot Configuration { get; set; }
         public List<string?> DashboardData { get; private set; }
 
-        [HttpPost]
-        public List<AllConstructionCases> GetMyProjectData()
+         //Ananth commented for testing
+          [HttpPost]
+        public List<DashboardDataModel> GetMyProjectData()
         {
             Dashboard dashboard = new Dashboard();
-            List<AllConstructionCases> list = dashboard.GetAllConstructionCasesForUser();
+            List<DashboardDataModel> list = dashboard.GetAllConstructionCasesForUser();
             return list;
         }
 
@@ -42,8 +45,8 @@ namespace DeveloperPortal.Controllers
             else
             {
                 //dt = GetAllConstructionCases();
-                Dashboard dashboard = new Dashboard();
-                List<uspRoGetAllConstructionCasesResult> list = dashboard.GetAllConstructionCases();
+                Dashboard dashboard = new Dashboard(); //Ananth commented for testing
+                List<DashboardDataModel> list = dashboard.GetAllConstructionCases(); //Ananth commented for testing
                 //List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
 
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);

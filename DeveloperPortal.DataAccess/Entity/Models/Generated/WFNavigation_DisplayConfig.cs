@@ -15,5 +15,5 @@ public partial class WFNavigation_DisplayConfig
 
     public virtual ICollection<ControlViewMaster> ControlViewMasters { get; set; } = new List<ControlViewMaster>();
 
-    public virtual WF_Definition WFDefinition { get; set; } = null!;
+    public virtual WF_Definition WF_Definition { get; set; } = null!;
 }

@@ -27,7 +27,7 @@ public partial class WF_Definition
 
     public virtual ICollection<WFNavigation_DisplayConfig> WFNavigation_DisplayConfigs { get; set; } = new List<WFNavigation_DisplayConfig>();
 
-    public virtual ICollection<WF_Action> WF_Actions { get; set; } = new List<WF_Action>();
+    public virtual ICollection<WF_Action> WF_Action { get; set; } = new List<WF_Action>();
 
-    public virtual ICollection<WF_State> WF_States { get; set; } = new List<WF_State>();
+    public virtual ICollection<WF_State> WF_State { get; set; } = new List<WF_State>();
 }

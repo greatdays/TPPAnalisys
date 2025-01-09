@@ -1,8 +1,12 @@
 ﻿using DeveloperPortal.DataAccess;
+using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.Domain.Models;
+using DeveloperPortal.DataAccess.Entity.ViewModel;
+
+//using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -19,6 +23,7 @@ namespace DeveloperPortal.Application
         /// </summary>
         /// <param name="gridRequestModel"></param>
         /// <returns></returns>
+        /* Ananth commented for testing
         public List<UnitDataModel> GetUnitMaxtrixDetails(GridRequestModel gridRequestModel)
         {
             var resultList = new List<UnitDataModel>();
@@ -58,7 +63,7 @@ namespace DeveloperPortal.Application
                 }).ToList();
             }
             return resultList;
-        }
+        }*/
 
         /// <summary>
         ///  SetUnitCountDetails
@@ -122,8 +127,11 @@ namespace DeveloperPortal.Application
                     new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
                     new SqlParameter() { ParameterName = "@UserName", Value = userName }
                 };
-            AahrdevContext context = new AahrdevContext();
-            using (var dataTableAllSites = context.ExecuteStoredProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
+            //AahrdevContext context = new AahrdevContext();
+            AAHREntities context = new AAHREntities();
+            context.Set<List<SiteInformationModel>>().FromSql($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}");
+            //context.Database.ExecuteSqlRaw("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters);
+            /*using (var dataTableAllSites = context.Database.ExecuteStoredProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
             {
                 if (dataTableAllSites.Rows.Count > 0)
                 {
@@ -151,18 +159,33 @@ namespace DeveloperPortal.Application
                     }
                 }
                 return siteInformations;
-            }
+            }*/
+        
+            return siteInformations;
         }
 
         /// <summary>
         /// Get all construction cases to be displayed on the dashboard
         /// </summary>
         /// <returns>List</returns>
-        private async Task<List<uspGetUnitsForComplianceMetrixResult>> uspGetUnitsForComplianceMetrix(int caseId, int projectId)
+        /*private async Task<List<uspGetUnitsForComplianceMetrixResult>> uspGetUnitsForComplianceMetrix(int caseId, int projectId)
         {
             AahrdevContext context = new AahrdevContext();
             List<uspGetUnitsForComplianceMetrixResult> result = await context.uspGetUnitsForComplianceMetrix(caseId, projectId);
             return result;
+        }*/
+
+        public void GetControlViewModelById(int controlViewModelId)
+        {//Ananth
+            //AahrdevContext context = new AahrdevContext();
+            AAHREntities context = new AAHREntities();
+            ControlViewMaster controlView = context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
+
+            ControlViewModel controlViewModel = new ControlViewModel();
+            if (controlView != null)
+            {
+                controlViewModel.Populate(controlView, null);
+            }
         }
     }
 }

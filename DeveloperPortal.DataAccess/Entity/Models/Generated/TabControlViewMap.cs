@@ -27,9 +27,9 @@ public partial class TabControlViewMap
 
     public int? ViewOrder { get; set; }
 
-    public virtual ControlViewMaster ControlView { get; set; } = null!;
+    public virtual ControlViewMaster ControlViewMaster { get; set; } = null!;
 
     public virtual TabMaster Tab { get; set; } = null!;
 
-    public virtual ICollection<RoleMaster> Roles { get; set; } = new List<RoleMaster>();
+    public virtual ICollection<RoleMaster> RoleMasters { get; set; } = new List<RoleMaster>();
 }

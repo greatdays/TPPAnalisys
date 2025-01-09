@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,40 @@ namespace DeveloperPortal.DataAccess.Entity.Data;
 
 public partial class AAHREntities : DbContext
 {
+    public interface IAuditable
+    {
+        string CreatedBy { get; set; }
+        DateTime CreatedOn { get; set; }
+        string ModifiedBy { get; set; }
+        Nullable<System.DateTime> ModifiedOn { get; set; }
+    }
+
+    public int SaveChanges(string username)
+    {//copied from D:\Ananth\Git\Repos\AffordableAndAccessibleHousing\Common\ComCon.Comment\EntityModels\Comment.Context.cs
+        IEnumerable<DbEntityEntry<IAuditable>> changeSet = (IEnumerable<DbEntityEntry<IAuditable>>)ChangeTracker.Entries<IAuditable>();
+        if (changeSet != null)
+        {
+            foreach (DbEntityEntry<IAuditable> entry in changeSet.Where(c => c.State != System.Data.Entity.EntityState.Unchanged)) //System.Data.Entity.Infrastructure.
+            {
+                switch (entry.State)
+                {
+                    case System.Data.Entity.EntityState.Added:
+                        entry.Entity.CreatedBy = username;
+                        entry.Entity.CreatedOn = DateTime.Now;
+                        entry.Entity.ModifiedBy = username;
+                        entry.Entity.ModifiedOn = DateTime.Now;
+                        break;
+
+                    case System.Data.Entity.EntityState.Modified:
+                        entry.Entity.ModifiedBy = username;
+                        entry.Entity.ModifiedOn = DateTime.Now;
+                        break;
+                }
+            }
+        }
+        return base.SaveChanges();
+    }
+
     public AAHREntities()
     {
     }
@@ -40,7 +75,7 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<AffordableOnlyOwner> AffordableOnlyOwners { get; set; }
 
-    public virtual DbSet<AppConfig> AppConfigs { get; set; }
+    public virtual DbSet<DeveloperPortal.DataAccess.Entity.Models.Generated.AppConfig> AppConfigs { get; set; }
 
     public virtual DbSet<ApplicationMaster> ApplicationMasters { get; set; }
 
@@ -240,7 +275,7 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<CfgNextRun> CfgNextRuns { get; set; }
 
-    public virtual DbSet<Comment> Comments { get; set; }
+    public virtual DbSet<DeveloperPortal.DataAccess.Entity.Models.Generated.Comment> Comments { get; set; }
 
     public virtual DbSet<ContactIdentifier> ContactIdentifiers { get; set; }
 
@@ -358,9 +393,9 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<Links_DisplayConfig> Links_DisplayConfigs { get; set; }
 
-    public virtual DbSet<Links_Image> Links_Images { get; set; }
+    public virtual DbSet<Links_Images> Links_Images { get; set; }
 
-    public virtual DbSet<Links_LinkDetail> Links_LinkDetails { get; set; }
+    public virtual DbSet<Links_LinkDetails> Links_LinkDetails { get; set; }
 
     public virtual DbSet<Links_Log> Links_Logs { get; set; }
 
@@ -1701,7 +1736,7 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<AppConfig>(entity =>
+        modelBuilder.Entity<DeveloperPortal.DataAccess.Entity.Models.Generated.AppConfig>(entity =>
         {
             entity.ToTable("AppConfig", "CC");
 
@@ -1711,7 +1746,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Description).HasMaxLength(200);
             entity.Property(e => e.Name).HasMaxLength(100);
 
-            entity.HasOne(d => d.Application).WithMany(p => p.AppConfigs)
+            entity.HasOne(d => d.ApplicationMaster).WithMany(p => p.AppConfigs)
                 .HasForeignKey(d => d.ApplicationID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AppConfig_ApplicationMaster");
@@ -4437,7 +4472,7 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Comment>(entity =>
+        modelBuilder.Entity<DeveloperPortal.DataAccess.Entity.Models.Generated.Comment>(entity =>
         {
             entity.ToTable("Comment", "CC");
 
@@ -4739,52 +4774,52 @@ public partial class AAHREntities : DbContext
                 .HasMaxLength(50)
                 .HasComment("This Name will be in sync with specific control's View Config Name. This is a redundnat field copied explicitly to make Tab & View Config assignment easy.");
 
-            entity.HasOne(d => d.Control).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.ControlMaster).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.ControlId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ControlViewMaster_ControlMaster");
 
-            entity.HasOne(d => d.CustomDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.Custom_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.CustomDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_C_D");
 
-            entity.HasOne(d => d.LinkDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.Links_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.LinkDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_Links_DC");
 
-            entity.HasOne(d => d.NewsDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.News_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.NewsDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_News_DC");
 
-            entity.HasOne(d => d.SPDetailDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.SPDetailView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.SPDetailDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_SPDV_DC");
 
-            entity.HasOne(d => d.SPGridDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.SPGridView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.SPGridDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_SPGV_DC");
 
-            entity.HasOne(d => d.SPGroupDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.SPGroupView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.SPGroupDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_SPGroupView_DisplayConfig");
 
-            entity.HasOne(d => d.SPMatrixDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.SPMatrixView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.SPMatrixDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_SPMV_DC");
 
-            entity.HasOne(d => d.WFLogDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.WFLog_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.WFLogDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_WFLog_DC");
 
-            entity.HasOne(d => d.WFNavigationDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.WFNavigation_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.WFNavigationDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_WFN_DC");
 
-            entity.HasOne(d => d.WSDetailDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.WSDetailView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.WSDetailDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_WSDetailView_DisplayConfig");
 
-            entity.HasOne(d => d.WSGridViewDisplayConfig).WithMany(p => p.ControlViewMasters)
+            entity.HasOne(d => d.WSGridView_DisplayConfig).WithMany(p => p.ControlViewMasters)
                 .HasForeignKey(d => d.WSGridViewDisplayConfigId)
                 .HasConstraintName("FK_ControlViewMaster_WSGridView_DisplayConfig");
         });
@@ -7019,12 +7054,12 @@ public partial class AAHREntities : DbContext
                 .HasDefaultValue("");
             entity.Property(e => e.NoOfLinkToDisplay).HasComment("This field is used to store how many links you want to display.");
 
-            entity.HasOne(d => d.Image).WithMany(p => p.Links_DisplayConfigs)
+            entity.HasOne(d => d.Links_Images).WithMany(p => p.Links_DisplayConfigs)
                 .HasForeignKey(d => d.ImageId)
                 .HasConstraintName("FK_Links_DisplayConfLImg");
         });
 
-        modelBuilder.Entity<Links_Image>(entity =>
+        modelBuilder.Entity<Links_Images>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Images");
 
@@ -7042,7 +7077,7 @@ public partial class AAHREntities : DbContext
                 .HasConstraintName("FK_Links_Images_Links_Images1");
         });
 
-        modelBuilder.Entity<Links_LinkDetail>(entity =>
+        modelBuilder.Entity<Links_LinkDetails>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Links");
 
@@ -7077,7 +7112,7 @@ public partial class AAHREntities : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Links_LinkDetails_Links_DC");
 
-            entity.HasOne(d => d.Image).WithMany(p => p.Links_LinkDetails)
+            entity.HasOne(d => d.Links_Images).WithMany(p => p.Links_LinkDetails)
                 .HasForeignKey(d => d.ImageId)
                 .HasConstraintName("FK_Links_LinkDetails_LI");
         });
@@ -8730,9 +8765,10 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
 
-            entity.HasOne(d => d.Action).WithMany(p => p.LutImportantDates)
+            //TODO: Check this out - Ananth. Commented since LutImportantDates didn't exist in the references
+            /*entity.HasOne(d => d.Action).WithMany(p => p.LutImportantDates)
                 .HasForeignKey(d => d.ActionID)
-                .HasConstraintName("FK_LutImportantDate_WF_Action");
+                .HasConstraintName("FK_LutImportantDate_WF_Action");*/
 
             entity.HasOne(d => d.CaseType).WithMany(p => p.LutImportantDates)
                 .HasForeignKey(d => d.CaseTypeID)
@@ -15373,7 +15409,7 @@ public partial class AAHREntities : DbContext
                 .HasComment("Optional Parameter to specify the locatin where control should be rendered. This should be in sync with sections on Tab.");
             entity.Property(e => e.TabId).HasComment("This ID represents Tab on which associated control will be rendered. It connects to Tab Master.");
 
-            entity.HasOne(d => d.ControlView).WithMany(p => p.TabControlViewMaps)
+            entity.HasOne(d => d.ControlViewMaster).WithMany(p => p.TabControlViewMaps)
                 .HasForeignKey(d => d.ControlViewId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TabControlViewMap_CV");
@@ -15383,7 +15419,7 @@ public partial class AAHREntities : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TabControlViewMap_TabMaste");
 
-            entity.HasMany(d => d.Roles).WithMany(p => p.TabControlViews)
+            entity.HasMany(d => d.RoleMasters).WithMany(p => p.TabControlViews)
                 .UsingEntity<Dictionary<string, object>>(
                     "AssnTabControlRole",
                     r => r.HasOne<RoleMaster>().WithMany()
@@ -16434,7 +16470,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.NavigationStyle).HasMaxLength(50);
 
-            entity.HasOne(d => d.WFDefinition).WithMany(p => p.WFNavigation_DisplayConfigs)
+            entity.HasOne(d => d.WF_Definition).WithMany(p => p.WFNavigation_DisplayConfigs)
                 .HasForeignKey(d => d.WFDefinitionID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WFNavigation_DC_WF_Def");
@@ -16456,28 +16492,28 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.CaseConditionParam).HasMaxLength(200);
             entity.Property(e => e.Name).HasMaxLength(50);
 
-            entity.HasOne(d => d.ActionView).WithMany(p => p.WF_Actions)
+            entity.HasOne(d => d.WF_ActionView).WithMany(p => p.WF_Actions)
                 .HasForeignKey(d => d.ActionViewID)
                 .HasConstraintName("FK_WF_Action_WF_ActionView");
 
-            entity.HasOne(d => d.CaseCondition).WithMany(p => p.WF_Actions)
+            entity.HasOne(d => d.WF_CaseCondition).WithMany(p => p.WF_Actions)
                 .HasForeignKey(d => d.CaseConditionID)
                 .HasConstraintName("FK_WF_Action_WF_CaseCondition");
 
-            entity.HasOne(d => d.Definition).WithMany(p => p.WF_Actions)
+            entity.HasOne(d => d.WF_Definition).WithMany(p => p.WF_Action)
                 .HasForeignKey(d => d.DefinitionID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WF_Action_WF_Definition");
 
-            entity.HasOne(d => d.DestinationState).WithMany(p => p.WF_ActionDestinationStates)
+            entity.HasOne(d => d.WF_State1).WithMany(p => p.WF_Action) //DestinationState -- WF_ActionDestinationStates
                 .HasForeignKey(d => d.DestinationStateID)
                 .HasConstraintName("FK_WF_Action_WF_State_Dest");
 
-            entity.HasOne(d => d.SourceState).WithMany(p => p.WF_ActionSourceStates)
+            entity.HasOne(d => d.WF_State).WithMany(p => p.WF_Action1) //SourceState -- WF_ActionSourceStates
                 .HasForeignKey(d => d.SourceStateID)
                 .HasConstraintName("FK_WF_Action_WF_State_Source");
 
-            entity.HasMany(d => d.Roles).WithMany(p => p.WFActions)
+            entity.HasMany(d => d.RoleMasters).WithMany(p => p.WFActions)
                 .UsingEntity<Dictionary<string, object>>(
                     "WF_AssnWFActionAccessRole",
                     r => r.HasOne<RoleMaster>().WithMany()
@@ -16494,7 +16530,8 @@ public partial class AAHREntities : DbContext
                         j.ToTable("WF_AssnWFActionAccessRole", "CC");
                     });
 
-            entity.HasMany(d => d.RolesNavigation).WithMany(p => p.WFActionsNavigation)
+            //TODO: Unable to find RolesNavigation property reference in WF_Action
+            entity.HasMany(d => d.RoleMasters1).WithMany(p => p.WFActionsNavigation)
                 .UsingEntity<Dictionary<string, object>>(
                     "WF_AssnWFActionAssigneeRole",
                     r => r.HasOne<RoleMaster>().WithMany()
@@ -16569,11 +16606,11 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
             entity.Property(e => e.Type).HasMaxLength(10);
 
-            entity.HasOne(d => d.AutoNextAction).WithMany(p => p.WF_States)
+            entity.HasOne(d => d.WF_Action2).WithMany(p => p.WF_State2)//AutoNextAction
                 .HasForeignKey(d => d.AutoNextActionID)
                 .HasConstraintName("FK_WF_State_WF_Action");
 
-            entity.HasOne(d => d.Definition).WithMany(p => p.WF_States)
+            entity.HasOne(d => d.WF_Definition).WithMany(p => p.WF_State)
                 .HasForeignKey(d => d.DefinitionID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_WF_State_WF_Definition1");
