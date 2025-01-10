@@ -7,6 +7,7 @@ using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,6 +19,11 @@ namespace DeveloperPortal.Application
 {
     public class ProjectDetailService
     {
+        IConfiguration _config;
+        public ProjectDetailService(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
         /// <summary>
         /// GetUnitMaxtrixDetails
         /// </summary>
@@ -181,7 +187,7 @@ namespace DeveloperPortal.Application
             AAHREntities context = new AAHREntities();
             ControlViewMaster controlView = context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
 
-            ControlViewModel controlViewModel = new ControlViewModel();
+            ControlViewModel controlViewModel = new ControlViewModel(_config);
             if (controlView != null)
             {
                 controlViewModel.Populate(controlView, null);

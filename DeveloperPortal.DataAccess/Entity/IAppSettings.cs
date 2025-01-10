@@ -13,17 +13,21 @@ namespace DeveloperPortal.DataAccess.Entity
     {
     }
 
-    public static class AppConfig
+    public class AppConfig
     {
-        private static IConfiguration _config;
-        
+        private IConfiguration _config;
+
+        public AppConfig(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
         /// <summary>
         /// Retrieve a setting from SQL Server.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="application"></param>
         /// <returns></returns>
-        private static List<AppConfigs> GetSettingFromSql()
+        private List<AppConfigs> GetSettingFromSql()
         {
             List<AppConfigs> appConfigList = new List<AppConfigs>();
             using (AAHREntities db = new AAHREntities())
@@ -48,7 +52,7 @@ namespace DeveloperPortal.DataAccess.Entity
         /// <param name="key"></param>
         /// <param name="application">Optional if application is set in App.config AppSettings</param>
         /// <returns>Returns value of the specified type</returns>
-        public static T GetConfigValue<T>(string key, string application = null)
+        public T GetConfigValue<T>(string key, string application = null)
         {
             string KeyValue = "";
             if (string.IsNullOrEmpty(application))
@@ -81,7 +85,7 @@ namespace DeveloperPortal.DataAccess.Entity
             return value;
         }
 
-        public static List<AppConfigs> GetAppConfigs()
+        public List<AppConfigs> GetAppConfigs()
         {
 
             // Try to get the value from LiteDB first

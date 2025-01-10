@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,12 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 {
     public class ControlViewModel : ActionViewModel
     {
+        IConfiguration _config;
+        public ControlViewModel(IConfiguration config) : base(config)
+        {
+            this._config = config;
+        }
+
         public string ControlName { get; set; }
         public string ControlDescription { get; set; }
         public string ControlRenderURL { get; set; }
@@ -33,7 +40,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         /// <param name="renderSection"></param>
         /// <param name="tabInfo"></param>
         /// <returns></returns>
-        internal static List<ControlViewModel> FetchControlViewList(string renderSection, TabMaster tabInfo)
+        internal List<ControlViewModel> FetchControlViewList(string renderSection, TabMaster tabInfo)
         {
             List<ControlViewModel> controlViewModelList = new List<ControlViewModel>();
             /* Get views based on role and render section */
@@ -46,7 +53,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             foreach (var controlView in controlViewsInfo)
             {
                 /* Create new model */
-                ControlViewModel controlViewModel = new ControlViewModel();
+                ControlViewModel controlViewModel = new ControlViewModel(_config);
                 controlViewModel.Populate(controlView.ControlViews, controlView.Roles?.ToList());
 
                 /* Add model to list */
@@ -104,12 +111,12 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         /// </summary>
         /// <param name="controlViewMasterName">Control view master name</param>
         /// <returns>Control view model</returns>
-        public static ControlViewModel GetControlViewModel(string controlViewMasterName)
+        public ControlViewModel GetControlViewModel(string controlViewMasterName)
         {
             using (var comconDB = new AAHREntities())
             {
                 ControlViewMaster controlView = comconDB.ControlViewMasters.FirstOrDefault(m => m.Name == controlViewMasterName);
-                ControlViewModel controlViewModel = new ControlViewModel();
+                ControlViewModel controlViewModel = new ControlViewModel(_config);
 
                 if (controlView != null)
                 {
@@ -125,12 +132,12 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         /// </summary>
         /// <param name="controlViewMasterName">Control view master name</param>
         /// <returns>Control view model</returns>
-        public static ControlViewModel GetControlViewModelById(int controlViewModelId)
+        public ControlViewModel GetControlViewModelById(int controlViewModelId)
         {
             using (var comconDB = new AAHREntities())
             {
                 ControlViewMaster controlView = comconDB.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
-                ControlViewModel controlViewModel = new ControlViewModel();
+                ControlViewModel controlViewModel = new ControlViewModel(_config);
                 if (controlView != null)
                 {
                     controlViewModel.Populate(controlView, null);

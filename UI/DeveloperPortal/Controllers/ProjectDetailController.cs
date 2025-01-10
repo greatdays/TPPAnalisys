@@ -22,6 +22,11 @@ namespace DeveloperPortal.Controllers
     //[ApiController]
     public class ProjectDetailController : Controller
     {
+        private IConfiguration _config;
+        public ProjectDetailController(IConfiguration configuration)
+        {
+                _config = configuration;
+        }
         #region My Project Information Tab
 
         /// <summary>
@@ -32,7 +37,7 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public JsonResult GetUnitDetails(GridRequestModel gridRequestModel)
         {
-            var projectDetailService = new ProjectDetailService();
+            var projectDetailService = new ProjectDetailService(_config);
             var unitModels = new List<UnitDataModel>();
             var isCalculateCount = true;
             if (gridRequestModel!= null && gridRequestModel.UnitGridData != null && gridRequestModel.UnitGridData.Any())
@@ -216,7 +221,7 @@ namespace DeveloperPortal.Controllers
 
             var total = 0;
             var siteInformations = paramModel.SiteInformationData;
-            var projectDetailService = new ProjectDetailService();
+            var projectDetailService = new ProjectDetailService(_config);
             if (paramModel.SiteInformationData == null || paramModel.SiteInformationData.Count == 0)
             {
                 siteInformations = projectDetailService.GetSiteInformations(paramModel.CaseId, "");
@@ -261,7 +266,7 @@ namespace DeveloperPortal.Controllers
 
         public JsonResult RenderContactById(string projectId, int controlViewModelId)
         {
-            ProjectDetailService detailService = new ProjectDetailService();
+            ProjectDetailService detailService = new ProjectDetailService(_config);
             detailService.GetControlViewModelById(controlViewModelId);
             return Json("{'data':'12'}");
         }

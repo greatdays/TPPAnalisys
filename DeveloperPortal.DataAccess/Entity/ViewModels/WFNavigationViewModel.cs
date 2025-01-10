@@ -2,6 +2,7 @@
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.IDM;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
     public class WFNavigationViewModel
     {
         private IHttpContextAccessor _httpContextAccessor;
+        private IConfiguration _config;
+
+        public WFNavigationViewModel(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
         #region Members
 
         public string NavigationStyle { get; set; }
@@ -46,7 +53,8 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         /// <param name="state">state of case</param>
         public WFNavigationViewModel(string navigationControl, string state)
         {
-            ControlViewModel controlView = ControlViewModel.GetControlViewModel(navigationControl);
+            ControlViewModel controlViewModel = new ControlViewModel(_config);
+            ControlViewModel controlView = controlViewModel.GetControlViewModel(navigationControl);
 
             WFNavigationViewModel wfNavigationViewModel = (WFNavigationViewModel)controlView.ControlDisplayConfig;
 

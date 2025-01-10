@@ -3,6 +3,7 @@ using DeveloperPortal.DataAccess.Entity.EntityModels.IDM;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,19 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 {
     public partial class ActionViewModel
     {
+        private IConfiguration _config;
+        AppConfig appConfig;
+        bool IsNotificationEnable;
+        public ActionViewModel(IConfiguration config)
+        {
+            _config = config;
+            appConfig = new AppConfig(_config);
+            IsNotificationEnable = appConfig.GetConfigValue<bool>("SendNotification");
+        }
         #region Variable Declaration
 
-        bool IsNotificationEnable = AppConfig.GetConfigValue<bool>("SendNotification");
+        //AppConfig appConfig = new AppConfig(_config);
+        //bool IsNotificationEnable = appConfig.GetConfigValue<bool>("SendNotification");
 
         #endregion // Variable Declaration
 
