@@ -267,10 +267,20 @@ namespace DeveloperPortal.Controllers
         public JsonResult RenderContactById(string projectId, int controlViewModelId)
         {
             ProjectDetailService detailService = new ProjectDetailService(_config);
-            detailService.GetControlViewModelById(controlViewModelId);
+            DataAccess.Entity.ViewModel.ControlViewModel controlView = detailService.GetControlViewModelById(controlViewModelId);
+            string? areaQueryString = Request.Query["area"];
+            string? Id = areaQueryString?.Split('?')[1].Replace("Id=", string.Empty); //caseId
+            
+            RenderController renderController = new RenderController();
+            //return renderController.RenderContact(controlView, Id);
+
             return Json("{'data':'12'}");
         }
 
+        //private JsonResult RenderContact(object controlView, object id)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 
     public static class ControllerExtensions

@@ -54,7 +54,7 @@ public partial class ControlViewMaster
 
     public string? JsonConfig { get; set; }
 
-    public virtual ControlMaster ControlMaster { get; set; } = null!;
+    public virtual ControlMaster ControlMaster { get; set; }
 
     public virtual Custom_DisplayConfig? Custom_DisplayConfig { get; set; }
 

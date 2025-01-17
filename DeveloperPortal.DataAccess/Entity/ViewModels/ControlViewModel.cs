@@ -70,10 +70,10 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         public void Populate(ControlViewMaster controlView, List<RoleMaster> Roles)
         {
             this.ControlViewId = controlView.Id;
-            this.ControlDisplayConfigId = controlView.GetDisplayConfigId();
-            this.ControlDisplayConfig = controlView.GetDisplayConfig();
-            this.ControlGroupConfigId = controlView.GetDisplayConfigId();
-            this.ControlGroupConfig = controlView.GetDisplayConfig();
+            this.ControlDisplayConfigId = controlView.GetDisplayConfigId(controlView);
+            this.ControlDisplayConfig = controlView.GetDisplayConfig(controlView);
+            this.ControlGroupConfigId = controlView.GetDisplayConfigId(controlView);
+            this.ControlGroupConfig = controlView.GetDisplayConfig(controlView);
             this.ViewTitle = controlView.DisplayName ?? controlView.Name;
             this.ControlName = controlView.ControlMaster.Name;
             this.ControlRenderURL = controlView.ControlMaster.RenderAction;

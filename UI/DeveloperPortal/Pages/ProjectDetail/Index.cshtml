@@ -105,8 +105,8 @@
 </div>
 <script type="text/javascript">
     var baseUrl = window.location.origin;
-    var Id = @Model.Id;
-    var ProjectId = @Model.ProjectId;
+    var Id = @Model.Id
+    var ProjectId = @Model.ProjectId
     var isEditAccess = true;
     var reloadUntiGrid = false;
     var documentControlViewModelId = 7313;
@@ -121,7 +121,7 @@
 
     var SiteInformationData = [];
     var IsLoadSiteInformationTab = false;
-
+    console.log("Model.ProjectId: " + ProjectId);
     //Load on init
     LoadProjectInformation();
    
@@ -144,7 +144,8 @@
                 LoadTabData(url, "divImportantDates");
                 break;
             case "tabProjectParticipants":
-                url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                console.log("Id: " + Id);
+                url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
                 LoadTabData(url, "divProjectParticipants");
                 break;
             case "tabPolicyContacts":

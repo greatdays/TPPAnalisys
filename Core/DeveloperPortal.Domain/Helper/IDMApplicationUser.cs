@@ -1,4 +1,5 @@
 ﻿//using ComCon.DataAccess.Models.IDM;
+//using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.Models.IDM;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -57,6 +58,24 @@ namespace DeveloperPortal.Models.Helper
 
                 return resultIDMUser;
             }
+        }
+
+        /// <summary>
+        /// This method is used to get user details based on user name
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public string GetUserByUserName(string userName)
+        {
+            if (!string.IsNullOrEmpty(userName))
+            {
+                /*TODO: Fix the db call - Ananth
+                 * using (var db = new AAHREntities())
+                {
+                    return db.vwAspNetUsers.Where(x => x.UserName == userName)?.FirstOrDefault()?.FullName;
+                }*/
+            }
+            return "";
         }
     }
 }

@@ -45,11 +45,12 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated
         /// Get display configuration ID based on Control name.
         /// </summary>
         /// <returns>displayConfigID</returns>
-        public int GetDisplayConfigId()
+        public int GetDisplayConfigId(ControlViewMaster controlViewMaster)
         {
             int displayConfigId = 0;
 
-            switch (this.ControlMaster.Name)
+            //switch (this.ControlMaster.Name)
+            switch (controlViewMaster.ControlMaster.Name)
             {
                 case "Links":
                     displayConfigId = null != LinkDisplayConfigId ? (int)LinkDisplayConfigId : 0;
@@ -122,11 +123,12 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated
         /// <returns>
         /// Display Configuration object
         /// </returns>
-        public object GetDisplayConfig()
+        public object GetDisplayConfig(ControlViewMaster controlViewMaster)
         {
             object displayConfiguration = 0;
 
-            switch (this.ControlMaster.Name)
+            //switch (this.ControlMaster.Name)
+            switch (controlViewMaster.Name)
             {
                 case "Links":
                     if (null != Links_DisplayConfig)

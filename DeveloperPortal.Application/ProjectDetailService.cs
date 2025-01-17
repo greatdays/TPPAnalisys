@@ -181,17 +181,19 @@ namespace DeveloperPortal.Application
             return result;
         }*/
 
-        public void GetControlViewModelById(int controlViewModelId)
+        public ControlViewModel GetControlViewModelById(int controlViewModelId)
         {//Ananth
             //AahrdevContext context = new AahrdevContext();
             AAHREntities context = new AAHREntities();
-            ControlViewMaster controlView = context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
+            ControlViewMaster controlView = context.ControlViewMasters.Include(x=>x.ControlMaster).FirstOrDefault(m => m.Id == controlViewModelId);
 
             ControlViewModel controlViewModel = new ControlViewModel(_config);
             if (controlView != null)
             {
                 controlViewModel.Populate(controlView, null);
             }
+
+            return controlViewModel;
         }
     }
 }
