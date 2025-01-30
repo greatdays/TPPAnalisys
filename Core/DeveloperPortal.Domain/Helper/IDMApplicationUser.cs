@@ -70,7 +70,7 @@ namespace DeveloperPortal.Models.Helper
             if (!string.IsNullOrEmpty(userName))
             {
                 /*TODO: Fix the db call - Ananth
-                 * using (var db = new AAHREntities())
+                using (var db = new AAHREntities())
                 {
                     return db.vwAspNetUsers.Where(x => x.UserName == userName)?.FirstOrDefault()?.FullName;
                 }*/

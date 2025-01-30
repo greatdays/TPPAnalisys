@@ -2,6 +2,7 @@
 using DeveloperPortal.DataAccess;
 //using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -264,17 +265,19 @@ namespace DeveloperPortal.Controllers
 
         #endregion
 
-        public JsonResult RenderContactById(string projectId, int controlViewModelId)
+        public IActionResult RenderContactById(string projectId, int controlViewModelId)
         {
             ProjectDetailService detailService = new ProjectDetailService(_config);
             DataAccess.Entity.ViewModel.ControlViewModel controlView = detailService.GetControlViewModelById(controlViewModelId);
             string? areaQueryString = Request.Query["area"];
             string? Id = areaQueryString?.Split('?')[1].Replace("Id=", string.Empty); //caseId
             
-            RenderController renderController = new RenderController();
+            RenderController renderController = new RenderController(_config);
+            PartialViewResult result = renderController.RenderContact(controlView, Id);
             //return renderController.RenderContact(controlView, Id);
+            return result;
 
-            return Json("{'data':'12'}");
+            //return Json("{'data':'12'}");
         }
 
         //private JsonResult RenderContact(object controlView, object id)

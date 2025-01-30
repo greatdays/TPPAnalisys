@@ -1,5 +1,7 @@
-﻿using DeveloperPortal.DataAccess.Entity.Models.Generated;
+﻿using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.Helper.ComCon;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -196,6 +198,14 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels.ComCon
         public int? ProjectId { get; set; }
         public int? ProjectSiteId { get; set; }
         public List<string> ValidateContactType { get; set; }
+
+        public string GetJson(string panel)
+        {
+            AAHREntities aAHREntities = new AAHREntities();
+            string json = aAHREntities.ControlMasters.FirstOrDefault(x => x.Name == "ContactInformation").StaticJsonConfig;
+            var parsed = JObject.Parse(json);
+            return parsed.SelectToken(panel).Value<string>(); ;
+        }
     }
 
     public class ExtraFields

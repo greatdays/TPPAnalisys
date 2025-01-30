@@ -1,0 +1,286 @@
+﻿@model DeveloperPortal.DataAccess.Entity.ViewModels.ComCon.ContactDisplayConfig
+@using DeveloperPortal.Models.IDM
+
+<style>
+    .master_my_team_widget .filter-elements {
+        position: initial !important;
+    }
+</style>
+
+@if (Model.ContactRender.Count() > 0)
+{
+    var contactCount = 0;
+    <table id="ContactTable_@Model.ContactDisplayConfigId" class="table" style="width:100%">
+        <thead>
+            <tr style="display:none">
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="RenderSection">
+            @foreach (var item in Model.ContactRender)
+            {
+                <tr>
+                    <td class="sorting_1">
+                        <div class="ax_defaultbox">
+                            <div class="ax-box">
+                                <div class="ax-boxleft">
+                                    <div class="topab">
+                                        @if (!string.IsNullOrEmpty(Model.CardViewLeftPanelField2))
+                                        {
+                                            <p class="usename">@item.Source</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.CardViewLeftPanelField1))
+                                        {
+                                            <p class="usename Contact-Infon-name">@item.Name</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.CardViewLeftPanelField3))
+                                        {
+                                            <p class="usename">@item.Type</p>
+                                        }
+                                        @if (Model.CardViewLeftPanelFieldList != null && Model.CardViewLeftPanelFieldList.Count > 0)
+                                        {
+                                            foreach (var extraField in Model.CardViewLeftPanelFieldList)
+                                            {
+                                                var col = item.GetType().GetProperties().Where(p => string.Equals(p.Name, extraField.Value, StringComparison.OrdinalIgnoreCase));
+                                                if (col != null)
+                                                {
+                                                    <p class="usename">
+                                                        @if (col.FirstOrDefault() != null)
+                                                        {
+                                                            <text>col.FirstOrDefault().GetValue(item);</text>
+
+                                                        }
+
+                                                    </p>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                    <div class="bottomab">
+                                        @if (item.Type.Split(',').Contains("CASP"))
+                                        {
+                                            <p class="usename"><strong>CASP # :</strong> @item.CASpNumber</p>
+                                        }
+                                        <p class="usename"><strong>Modified:</strong> @item.ModifiedOnString</p>
+                                        <p class="usename"><strong>By:</strong> @item.ModifiedBy</p>
+                                        <p class="usename"><strong>In:</strong> @item.ModifiedIn</p>
+                                        @if (item.Type.Split(',').Contains("Contractor"))
+                                        {
+                                            <p class="usename"><strong>Contractor Type:</strong> @item.ContractorType</p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="ax-boxright">
+                                    <div class="tablewithdropdown">
+                                        <table class="tableMasterwidget table-borderless">
+                                            @if (!string.IsNullOrEmpty(Model.CardViewRightPanelField1))
+                                            {
+                                                <tr>
+                                                    <td><strong>@Model.CardViewRightPanelField1:</strong></td>
+                                                    <td>@item.FullAddress</td>
+                                                </tr>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.CardViewRightPanelField2))
+                                            {
+                                                <tr>
+                                                    <td><strong>@Model.CardViewRightPanelField2:</strong></td>
+                                                    <td>@item.Unit</td>
+                                                </tr>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.CardViewRightPanelField3))
+                                            {
+                                                <tr>
+                                                    <td><strong>@Model.CardViewRightPanelField3:</strong></td>
+                                                    <td>
+                                                        <img class="mobile-icon" src="~/Images/incoming-call.png" /><a href="tel:@item.Phone">@item.Phone @(string.IsNullOrEmpty(item.PhoneExtension) ? "" : " (" + item.PhoneExtension + ")")</a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.CardViewRightPanelField4))
+                                            {
+                                                <tr>
+                                                    <td><strong>@Model.CardViewRightPanelField4:</strong></td>
+                                                    <td><img class="mobile-icon" src="~/Images/close-envelope.png" /><a href="mailto:@item.Email">@item.Email</a></td>
+                                                </tr>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.CardViewRightPanelField5))
+                                            {
+                                                <tr>
+                                                    <td class="col-md-3"><strong>@Model.CardViewRightPanelField5:</strong></td>
+
+                                                    @if (item.IsContactPublic == true)
+                                                    {
+                                                        <td class="col-md-9"> Yes </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td class="col-md-9"> No </td>
+                                                    }
+                                                </tr>
+                                            }
+                                            @if (Model.CardViewRightPanelFieldList != null && Model.CardViewRightPanelFieldList.Count > 0)
+                                            {
+                                                foreach (var extraRightField in Model.CardViewRightPanelFieldList)
+                                                {
+                                                    var col = item.GetType().GetProperties().Where(p => string.Equals(p.Name, extraRightField.Value, StringComparison.OrdinalIgnoreCase));
+                                                    if (col != null)
+                                                    {
+                                                        <tr>
+                                                            <td><strong>@extraRightField.Value:</strong></td>
+                                                            <td>@col.FirstOrDefault().GetValue(item)</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        </table>
+                                        @{
+                                            string[] sources = new string[] { "LUPAMS", "Vendor", "Billing", "HCID" };
+                                        }
+                                        @{
+                                            string[] ACHPsources = new string[] { "ACHP", "Staff" };
+                                        }
+                                        @if (Model.IsActionMenu)
+                                        {
+                                            if (ACHPsources.Contains(item.Source))
+                                            {
+                                                <div class="dropdown EditActionmenu-left">
+                                                    <button type="button" class="btn btn-primary dropdown-toggle Policy" disabled data-toggle="dropdown">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        @if (Model.IsEditAction && !sources.Contains(item.Source))
+                                                        {
+                                                            <a class="dropdown-item" href="javascript:void(0)" onclick="editContact(@item.ContactId)"><i class="fas fa-pen editcontent"></i> @(Model.EditActionDisplayName != null ? Model.EditActionDisplayName : "Edit")  </a>
+                                                        }
+                                                        @if (Model.IsDeleteAction && item.Source != "LUPAMS" && item.Source != "HCID")
+                                                        {
+                                                            <a class="dropdown-item" href="javascript:void(0)" onclick="confirmDeleteContact(@item.ContactId, '@item.Name', @item.ContactIdentifierID)"><i class="fas fa-trash-alt deletecontent"></i> @(Model.DeleteActionDisplayName != null ? Model.DeleteActionDisplayName : "Delete")</a>
+                                                        }
+                                                        @if (Model.IsCopyContactAction && !sources.Contains(item.Source))
+                                                        {
+                                                            <a class="dropdown-item" href="javascript:void(0)" onclick="GetSiteList('@item.ContactIdentifierID','@item.ContactId')"><i class="fas fa-light fa-copy" style="color: #3e5274;margin-right:3px;"></i>@(Model.CopyContactActionDisplayName != null ? Model.CopyContactActionDisplayName : "Copy Contact")  </a>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    @if (Model.IsToolBar)
+                                    {
+                                        <div class="actionlistcheck">
+                                            <ul class="ul-list">
+                                                @if (Model.IsMarkObsolete && item.Source != "LUPAMS" && item.Source != "HCID")
+                                                {
+                                                    //if (UserSession.GetUserSession().Roles.Any(x => Model.MarkObsoleteRoleList.Contains(x)))
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Mark Obsolete" data-contactconfigid="@Model.ContactDisplayConfigId" data-contactid="@item.ContactId" onclick="markObsolete(this,@item.ContactIdentifierID);">
+                                                                <img src="~/Images/right.svg" />
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                                @if (Model.IsMarkValid)
+                                                {
+                                                    //if (UserSession.GetUserSession().Roles.Any(x => Model.MarkValidRoleList.Contains(x)))
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Mark Verified" data-contactconfigid="@Model.ContactDisplayConfigId" data-contactid="@item.ContactId" data-val="true" class="@(item.IsVerified != null && (bool)item.IsVerified ? " active disabled":"")" @(item.IsVerified != null && (bool)item.IsVerified ? "disabled" : "") onclick="changeStatus(this);">
+                                                                <img src="~/Images/cancelbox.svg" />
+                                                                @if (item.IsVerified != null && (bool)item.IsVerified)
+                                                                {
+                                                                    <span class="fas fa-check checkbox"></span>
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                                @if (Model.IsMarkInValid)
+                                                {
+                                                    //if (UserSession.GetUserSession().Roles.Any(x => Model.MarkInValidRoleList.Contains(x)))
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Mark Unverified" data-contactconfigid="@Model.ContactDisplayConfigId" data-contactid="@item.ContactId" data-val="false" class="@(item.IsVerified != null && (bool)!item.IsVerified ? " active disabled":"")" @(item.IsVerified != null && (bool)!item.IsVerified ? "disabled" : "") onclick="changeStatus(this);">
+                                                                <img src="~/Images/errorbox.svg" />
+                                                                @if (item.IsVerified != null && (bool)!item.IsVerified)
+                                                                {
+                                                                    <span class="fas fa-check checkbox"></span>
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                                @if (Model.IsMarkMailForwarding)
+                                                {
+                                                    //if (UserSession.GetUserSession().Roles.Any(x => Model.MarkMailForwardingRoleList.Contains(x)))
+                                                    {
+                                                        <li>
+                                                            <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Mailing Address" data-contactconfigid="@Model.ContactDisplayConfigId" data-contactid="@item.ContactId" data-contactaddressid="@item.ContactAddressId" class="@(item.IsMarkedForMailing ? " active":"")" onclick="markForMailing(this);">
+                                                                <img src="~/Images/messagebox.svg" />
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                contactCount++;
+            }
+        </tbody>
+    </table>
+}
+
+<script>
+    //$.extend($.fn.dataTable.defaults, {
+    //    searching: false,
+    //    ordering: false
+    //});
+    $(document).ready(function () {
+        AttachDataTable@(Model.ContactDisplayConfigId)('@Model.IsPagination', '@Model.IsSearch', '@Model.PageSize');
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+        $('[data-toggle="tooltip"]').on('click', function () {
+            $(this).tooltip('hide');
+        });
+
+        /* START : AAHP-3483 check readonly purpose */
+        /*Ananth - Commented Temporarily
+        var sessionRoles = 'string.Join(",", UserSession.GetUserSession()?.Roles?.ToArray())';
+        var enabledPolicyRoles = ['Policy Staff', 'Policy Manager', 'Policy Supervisor', 'System', 'SysAdmin'];
+        var enabledConstructionRoles = "AppConfig.GetConfigValue("ConstructionEditRoles")".split(",");
+        for (var i = 0, len = enabledPolicyRoles.length; i < len; i++) {
+            if (sessionRoles.indexOf(enabledPolicyRoles[i]) > -1) {
+                $(".Policy").removeAttr('disabled');
+            }
+        }
+
+        for (var i = 0, len = enabledConstructionRoles.length; i < len; i++) {
+            if (sessionRoles.indexOf(enabledConstructionRoles[i]) > -1) {
+                $(".Policy").removeAttr('disabled');
+            }
+        }*/
+        /* END : AAHP-3483 check readonly purpose */
+    });
+
+    function AttachDataTable@(Model.ContactDisplayConfigId)(IsPaging, IsSearching, pageSize) {
+        $.fn.dataTableExt.oPagination.iFullNumbersShowPages = 3;
+        $('#ContactTable_@Model.ContactDisplayConfigId').dataTable({
+            "bPaginate": (IsPaging == "" || IsPaging == "false" || IsPaging == null) ? false : true,
+            "bInfo": (IsPaging == "" || IsPaging == "false" || IsPaging == null) ? false : true,
+            "bRetrieve": true,
+            "bFilter": (IsSearching == "" || IsSearching == "false" || IsSearching == null) ? false : true,
+            "aLengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            "iDisplayLength": pageSize,
+            "bSort": false,
+            "language": {
+                "emptyTable": "No record found"
+            }
+        });
+    }
+
+</script>

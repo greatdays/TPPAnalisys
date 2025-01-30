@@ -9,13 +9,18 @@ using System.Collections.Specialized;
 using DeveloperPortal.DataAccess.Entity.Models.Helper.ComCon;
 using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
 using DeveloperPortal.Models.Helper;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.Application.PropertySnapshot;
+using DeveloperPortal.Domain.PropertySnapshot;
+using DeveloperPortal.Constants;
+using DeveloperPortal.Application.ServiceClient;
 
 namespace DeveloperPortal.Controllers
 {
 
-    public class RenderController
+    public class RenderController : Controller
     {
-        /*
+        
         private IConfiguration _config;
         public RenderController(IConfiguration configuration)
         {
@@ -24,13 +29,16 @@ namespace DeveloperPortal.Controllers
 
         public PartialViewResult RenderContact(DataAccess.Entity.ViewModel.ControlViewModel controlView, string Id = "")
         {
+            AppConfigService appConfigService = new AppConfigService(_config);
             string strParameters = "";
             ContactDisplayConfig contactDisplayConfig = new ContactDisplayConfig();
             if (controlView.ControlViewId == 0)
             {
-                ControlViewMaster controlViewMaster = new ControlViewMaster();
+                ControlViewMaster controlViewMaster = new();
                 int controlviewid = Convert.ToInt32(Id);
-                controlViewMaster = db.ControlViewMasters.FirstOrDefault(x => x.Id == controlviewid);
+                //controlViewMaster = db.ControlViewMasters.FirstOrDefault(x => x.Id == controlviewid);
+                controlViewMaster = appConfigService.GetControlViewMasterById(controlviewid);
+
                 controlView.ControlViewId = controlViewMaster.Id;
                 controlView.JsonConfig = controlViewMaster.JsonConfig;
 
@@ -72,16 +80,20 @@ namespace DeveloperPortal.Controllers
             }
 
             //local code
-            //string propertyBaseUrl = "http://ccris2svctest/Property.Api/";
-            //BaseResponse baseResponse = CreateRequest<BaseResponse>
-            //        (new { referenceId = strPara, referenceType = contactDisplayConfig.ContextRefType, source = dataFilterSources, type = dataFilterType, isHistorical = false, apn = "null" }
-            //        , propertyBaseUrl + "api/ContactMgmt/GetAllContacts"
-            //        , ActionType.GET);
+            string propertyBaseUrl = "http://ccris2svctest/Property.Api/";
+            
+            //ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
+            Application.ServiceClient.ServiceClient serviceClient = new Application.ServiceClient.ServiceClient(_config);
 
-            BaseResponse baseResponse = CreateRequest<BaseResponse>
+            //BaseResponse baseResponse = serviceClient.CreateRequest<BaseResponse>
+            //        (new { referenceId = strPara, referenceType = contactDisplayConfig.ContextRefType, source = dataFilterSources, type = dataFilterType, isHistorical = false, apn = "null" }
+            //        , appConfigService.GetConfigValue("AreaMgmtAPIURL") + "api/ContactMgmt/GetAllContacts"
+            //        , (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
+
+            BaseResponse baseResponse = serviceClient.CreateRequest<BaseResponse>
                     (new { referenceId = strPara, referenceType = contactDisplayConfig.ContextRefType, source = dataFilterSources, type = dataFilterType, isHistorical = false, apn = "null" }
-                    , AppConfig.GetConfigValue("AreaMgmtAPIURL") + "api/ContactMgmt/GetAllContacts"
-                    , ActionType.GET);
+                    , propertyBaseUrl + "api/ContactMgmt/GetAllContacts"
+                    , (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
 
             contactDisplayConfig.ContactRender = JsonConvert.DeserializeObject<List<ContactRenderModel>>(JsonConvert.SerializeObject(baseResponse.Response));
 
@@ -94,6 +106,7 @@ namespace DeveloperPortal.Controllers
             }
 
             contactDisplayConfig.ContextRefId = strPara;
+            
 
             if (contactDisplayConfig.ContextRefType == "Case")
             {
@@ -105,12 +118,12 @@ namespace DeveloperPortal.Controllers
             }
             else if (contactDisplayConfig.ContextRefType == "Structure")
             {
-                BaseResponse apnResponse = CreateRequest<BaseResponse>(null, AppConfig.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByStructure, strPara), ActionType.GET);
+                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null, appConfigService.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByStructure, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
                 contactDisplayConfig.APN = JsonConvert.DeserializeObject<string>(JsonConvert.SerializeObject(apnResponse.Response));
             }
             else if (contactDisplayConfig.ContextRefType == "Unit")
             {
-                BaseResponse apnResponse = CreateRequest<BaseResponse>(null, AppConfig.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByUnit, strPara), ActionType.GET);
+                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null, appConfigService.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByUnit, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
                 contactDisplayConfig.APN = JsonConvert.DeserializeObject<string>(JsonConvert.SerializeObject(apnResponse.Response));
             }
             else if (contactDisplayConfig.ContextRefType == "Project")
@@ -156,8 +169,21 @@ namespace DeveloperPortal.Controllers
             contactDisplayConfig.DataFilterTypeList = strListDFT;
             contactDisplayConfig.DataFilterSourceList = strListDFS;
 
-            return PartialView("RenderContact", contactDisplayConfig);
-        }    
-*/    
+            return PartialView(@"~/Pages/ProjectDetail/RenderContact.cshtml", contactDisplayConfig);
+        }
+
+        /// <summary>
+        /// Enum for action type
+        /// </summary>
+        /// <returns>
+        /// Enum
+        /// </returns>
+        public enum ActionType
+        {
+            GET,
+            POST,
+            PUT,
+            DELETE
+        }
     }
 }

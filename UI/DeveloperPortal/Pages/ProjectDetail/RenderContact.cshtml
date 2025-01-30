@@ -1,0 +1,216 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model DeveloperPortal.DataAccess.Entity.ViewModels.ComCon.ContactDisplayConfig
+@using DeveloperPortal.Models.IDM
+
+@if (null != Model)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card penal-details backgroundwhite dataTable-changes master_my_team_widget Contactstable">
+                <div class="card-header" id="collapse_Contact">
+                    @Model.ControlName
+                </div>
+                <div class="card-body table-content" id="hide_divContact">
+                    <div class="filter-elements">
+                        <div class="left">
+                            <div class="leftbutton">
+                                @if (Model.IsAdd)
+                                {
+                                    UserSession usr = new UserSession();
+                                    //if(UserSession.GetUserSession().Roles.Any(x => Model.AddRoleList.Contains(x)))
+                                    {
+                                        <div class="dropdown">
+                                            <a class="btn btn-primary btn-sm AddNewContacticon dropdown-toggle" data-toggle="dropdown">
+                                                <span class="fas fa-plus-square"></span>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="javascript:void(0);" id="AddNewDetailedContact">Detailed</a>
+                                                <a class="dropdown-item" href="javascript:void(0);" id="AddNewContact">Simple</a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                @if (Model.IsUserFilter)
+                                {
+                                    //if (UserSession.GetUserSession().Roles.Any(x => Model.UserFilterRoleList.Contains(x)))
+                                    {
+                                        <div class="dropdown dropdownbox" id="">
+                                            <a href="JavaScript:void(0);" class="btn btn-primary btn-sm AddNewContacticon" data-toggle="dropdown"> <span class="fas fa-filter"></span></a>
+                                            <div class="dropdown-menu dropdownbox">
+                                                <!-- Nav tabs -->
+                                                <ul class="nav nav-tabs bysourecntype">
+                                                    <li class="nav-item ">
+                                                        <a class="nav-link active " role="tab" data-toggle="tab" href="JavaScript:void(0);" id="home">By Source</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" role="tab" data-toggle="tab" href="JavaScript:void(0);" id="menu">By Type</a>
+                                                    </li>
+
+                                                </ul>
+                                                <!-- Tab panes -->
+                                                <div class="tab-content" role="tablist">
+
+                                                    <div role="tabpanel" class="source_tab container tab-pane active">
+                                                        <div class="bysourcediv">
+                                                            @foreach (var item in Model.DataFilterSourceList)
+                                                            {
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="@(item.Value + 1)" name="Source" value="@item.Value">
+                                                                    <label class="custom-control-label" for="@(item.Value + 1)">
+                                                                        @item.Value
+                                                                    </label>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="type_tab container tab-pane fade">
+                                                        <div class="bysourcediv">
+                                                            @foreach (var item in Model.DataFilterTypeList)
+                                                            {
+                                                                <div class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" id="@(item.Value + 2)" name="Type" value="@item.Value">
+                                                                    <label class="custom-control-label" for="@(item.Value + 2)">
+                                                                        @item.Value
+                                                                    </label>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                    <div class="sumbitbtndiv">
+                                                        <a class="btn btn-outline-secondary" id="canceldiv" href="javascript:void(0)">Cancel</a>
+                                                        <a class="btn btn-primary ApplyFilterButton" href="javascript:void(0)" data-contactconfigid="@Model.ContactDisplayConfigId" id="ApplyFilterButton_@Model.ContactDisplayConfigId">Apply</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            @if (Model.IsHistory)
+                            {
+                                <ul id="navi" class="CurrentHistorical">
+                                    <li><a class="menu active" href="#">Current </a></li>
+                                    <li><a class="menu" href="#">Historical</a></li>
+                                </ul>
+                            }
+                        </div>
+
+                    </div>
+                    <div id="RenderSection_@Model.ContactDisplayConfigId">
+                        <partial name="RenderContactBody.cshtml" model="Model"></partial>
+                    </div>
+                </div>
+            </div>           
+        </div>
+    </div>
+
+    <div class="modal" id="ContactPopup" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" id="AddContact">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="DeleteContactPopup" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="close" data-dismiss="modal"><i class="far fa-times-circle"></i></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" class="deleteContactId" />
+                    <input type="hidden" class="deleteContactIdentifierId" />
+                    <p>
+                        Are you sure you want to delete contact '<span class="contactName"></span>'?
+                    </p>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer multi-button">
+                    <button type="button" data-dismiss="modal" class="btn btn-light">No</button>
+                    <button type="button" class="btn btn-primary" onclick="deleteContact()">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="SiteListPopup" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Copy Contact To Sites</h4>
+                    <button type="button" class="close" data-dismiss="modal"><i class="far fa-times-circle"></i></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div id="SiteListbody"></div>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer multi-button">
+                    <button type="button" data-dismiss="modal" class="btn btn-light">No</button>
+                    <button type="button" class="btn btn-primary" onclick="copyContact()">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal show" id="cnt_SuccessErrorPopup" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" style="width:40% !important;">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    @*<h4 class="modal-title">Error</h4>
+                <button type="button" class="close" data-dismiss="modal"><i class="far fa-times-circle"></i></button>*@
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p id="cnt_SuccessErrorMsg">
+                        Error occurred while Saving Contact.
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer singal-button">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('ul.nav.nav-tabs.bysourecntype li a').click(function () {
+
+            $('ul.nav.nav-tabs.bysourecntype li a').removeClass('active');
+            $(this).addClass('active');
+        });
+
+
+        $('.dropdown-menu').on('click', function (event) {
+            // The event won't be propagated up to the document NODE and
+            // therefore delegated events won't be fired
+            event.stopPropagation();
+        });
+
+
+
+        $("#SearchInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $(".ax-box").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
