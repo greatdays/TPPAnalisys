@@ -173,6 +173,8 @@
                                                 @if (Model.IsMarkObsolete && item.Source != "LUPAMS" && item.Source != "HCID")
                                                 {
                                                     //if (UserSession.GetUserSession().Roles.Any(x => Model.MarkObsoleteRoleList.Contains(x)))
+                                                    
+                                                    //if (UserSession.GetUserSession(httpContext.HttpContext).Roles.Any(x => Model.MarkObsoleteRoleList.Contains(x)))
                                                     {
                                                         <li>
                                                             <a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" title="Mark Obsolete" data-contactconfigid="@Model.ContactDisplayConfigId" data-contactid="@item.ContactId" onclick="markObsolete(this,@item.ContactIdentifierID);">
@@ -248,6 +250,22 @@
             $(this).tooltip('hide');
         });
 
+        //Calls to get roles based on 
+       /* $.ajax({
+                    url: 'Url.Action("HasRole", "ProjectDetail")',
+                    type: 'POST',
+                    success: function(response){
+                        if(response === true){
+                            $("#result").text("Functionality check passed.");
+                        } else {
+                            $("#result").text("Functionality check failed.");
+                        }
+                    },
+                    error: function(xhr, status, error){
+                        $("#result").text("An error occurred: " + error);
+                    }
+        });*/
+                
         /* START : AAHP-3483 check readonly purpose */
         /*Ananth - Commented Temporarily
         var sessionRoles = 'string.Join(",", UserSession.GetUserSession()?.Roles?.ToArray())';

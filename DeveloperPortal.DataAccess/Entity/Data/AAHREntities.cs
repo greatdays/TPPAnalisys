@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+//using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using Microsoft.EntityFrameworkCore;
@@ -22779,4 +22780,11 @@ public partial class AAHREntities : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    //Custom Code to call Stored Procedures
+    /*public async Task<List<>> GetProjectParticipantsByProjectId(int projectId)
+    {
+        var results = await Database.SqlQuery<>("PCMS.GetParticipantsByProjectId").ToListAsync();
+        return null;
+    }*/
 }

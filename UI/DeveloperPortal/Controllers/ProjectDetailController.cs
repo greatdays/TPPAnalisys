@@ -1,5 +1,8 @@
-﻿using DeveloperPortal.Application;
+﻿using ComCon.DataAccess.ViewModel;
+using DeveloperPortal.Application;
 using DeveloperPortal.DataAccess;
+using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
+
 //using DeveloperPortal.Domain.Models;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
@@ -10,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,9 +28,12 @@ namespace DeveloperPortal.Controllers
     public class ProjectDetailController : Controller
     {
         private IConfiguration _config;
-        public ProjectDetailController(IConfiguration configuration)
+        private IHttpContextAccessor _contextAccessor;
+
+        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor)
         {
-                _config = configuration;
+            _config = configuration;
+            _contextAccessor = contextAccessor;
         }
         #region My Project Information Tab
 
@@ -284,6 +291,53 @@ namespace DeveloperPortal.Controllers
         //{
         //    throw new NotImplementedException();
         //}
+        [HttpGet]
+        public bool HasRole(string key, DataAccess.Entity.ViewModels.ComCon.ContactDisplayConfig model)
+        {
+            bool hasRole = false;
+            string response = string.Empty;
+            JObject jsonObject = new JObject();
+            //JObject[] jsonObjectArray = new JObject();
+            
+
+            switch (key)
+            {
+                case "ObsoleteRole":
+                    hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkObsoleteRoleList.Contains(x));
+                    jsonObject["Role"] = key;
+                    jsonObject["hasRole"] = hasRole;
+                    break;
+                case "ValidRole":
+                    hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkValidRoleList.Contains(x));
+                    jsonObject["Role"] = key;
+                    jsonObject["hasRole"] = hasRole;
+                    break;
+                case "InvalidRole":
+                    hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkInValidRoleList.Contains(x));
+                    jsonObject["Role"] = key;
+                    jsonObject["hasRole"] = hasRole;
+                    break;
+                case "MailForwardingRole":
+                    hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkMailForwardingRoleList.Contains(x));
+                    jsonObject["Role"] = key;
+                    jsonObject["hasRole"] = hasRole;
+                    break;
+                case "All":
+                    hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkObsoleteRoleList.Contains(x));
+                    jsonObject = new JObject { 
+
+                    };
+                    jsonObject["Role"] = key;
+                    jsonObject["hasRole"] = hasRole;
+                    break;
+                default:
+                    hasRole = false;
+                    break;
+            }
+
+            //return JsonConvert;
+            return hasRole;
+        }
     }
 
     public static class ControllerExtensions
