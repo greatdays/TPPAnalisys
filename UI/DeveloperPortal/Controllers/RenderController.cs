@@ -14,6 +14,7 @@ using DeveloperPortal.Application.PropertySnapshot;
 using DeveloperPortal.Domain.PropertySnapshot;
 using DeveloperPortal.Constants;
 using DeveloperPortal.Application.ServiceClient;
+using DeveloperPortal.Application;
 
 namespace DeveloperPortal.Controllers
 {
@@ -95,6 +96,8 @@ namespace DeveloperPortal.Controllers
                     , propertyBaseUrl + "api/ContactMgmt/GetAllContacts"
                     , (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
 
+            ProjectDetailService svc = new ProjectDetailService(_config);
+            svc.GetProjectParticipantsByProjectId(strPara);
             contactDisplayConfig.ContactRender = JsonConvert.DeserializeObject<List<ContactRenderModel>>(JsonConvert.SerializeObject(baseResponse.Response));
 
             IDMApplicationUser idmApplicationUser = new IDMApplicationUser(_config);

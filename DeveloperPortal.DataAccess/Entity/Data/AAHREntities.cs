@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 //using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Runtime.CompilerServices;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperPortal.DataAccess.Entity.Data;
@@ -22782,9 +22785,19 @@ public partial class AAHREntities : DbContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
     //Custom Code to call Stored Procedures
-    /*public async Task<List<>> GetProjectParticipantsByProjectId(int projectId)
+    public async Task<List<ProjectParticipantsModel>> GetProjectParticipantsByProjectId(int projectId)
     {
-        var results = await Database.SqlQuery<>("PCMS.GetParticipantsByProjectId").ToListAsync();
-        return null;
-    }*/
+        List<ProjectParticipantsModel> results = new List<ProjectParticipantsModel>();
+        try
+        {
+            FormattableString sqlString = FormattableStringFactory.Create("EXEC PCMS.GetParticipantsByProjectId @ProjectId = {0}", projectId);
+
+            results = await Database.SqlQuery<ProjectParticipantsModel>(sqlString).ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            
+        }
+        return results;
+    }
 }
