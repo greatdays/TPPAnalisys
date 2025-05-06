@@ -1,19 +1,9 @@
-﻿using DeveloperPortal.DataAccess;
+﻿using System.Data;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.Dashboard;
-using DeveloperPortal.Domain.ProjectDetail;
-
 using Microsoft.EntityFrameworkCore;
-
-//using DeveloperPortal.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace DeveloperPortal.Application
 {
@@ -50,27 +40,38 @@ namespace DeveloperPortal.Application
 
         public List<DashboardDataModel> GetAllConstructionCasesForUser()
         {
-            var res = GetAllConstructionCasesData();
-            //var allCases = GetAllConstructionCasesData().Result;
-            var allCases = res.Result;
             List<DashboardDataModel> resultList = new List<DashboardDataModel>();
-            if (allCases != null && allCases.Count > 0)
+            try
             {
-                resultList = allCases.Select(x => new DashboardDataModel
+                var res = GetAllConstructionCasesData();
+                var allCases = res.Result;
+
+                if (allCases != null && allCases.Count > 0)
                 {
-                    Type = x.Type,
-                    CaseId = x.CaseId,
-                    SiteCases = x.SiteCases,
-                    ComplianceMatrixLink = x.ComplianceMatrixLink,
-                    PropertyDetailsLink = x.PropertyDetailsLink,
-                    Status = x.Status,
-                    AssigneeID = x.AssigneeID,
-                    Summary = x.Summary,
-                    ProjectName = x.ProjectName,
-                    ProjectAddress = x.ProjectAddress,
-                    AcHPFileProjectNumber = x.AcHPFileProjectNumber,
-                    ProblemProject = x.ProblemProject
-                }).ToList();
+                    Log.Logger.Information("Dashboard:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+
+                    resultList = allCases.Select(x => new DashboardDataModel
+                    {
+                        Type = x.Type,
+                        CaseId = x.CaseId,
+                        SiteCases = x.SiteCases,
+                        ComplianceMatrixLink = x.ComplianceMatrixLink,
+                        PropertyDetailsLink = x.PropertyDetailsLink,
+                        Status = x.Status,
+                        AssigneeID = x.AssigneeID,
+                        Summary = x.Summary,
+                        ProjectName = x.ProjectName,
+                        ProjectAddress = x.ProjectAddress,
+                        AcHPFileProjectNumber = x.AcHPFileProjectNumber,
+                        ProblemProject = x.ProblemProject
+                    }).ToList();
+                }
+                return resultList;
+            }
+            catch (Exception ex)
+            {
+
+                Log.Logger.Error("DashboardController:GetMyProjectData : exception is {Message}", ex.Message);
             }
             return resultList;
         }
