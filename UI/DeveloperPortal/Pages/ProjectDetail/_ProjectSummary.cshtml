@@ -1,4 +1,47 @@
 ﻿@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
+<style>
+    .tooltip-p .tooltip-s {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        opacity: 1 !important;
+    }
+
+
+    .tooltip-p .tooltiptext {
+        visibility: hidden;
+        width: 400px;
+        background-color: #135b79;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 5px 5px;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1 !important;
+    }
+
+    .tooltip-s .tooltiptext {
+        visibility: hidden;
+        width: 400px;
+        background-color: #135b79;
+        color: #fff;
+        text-align: left;
+        border-radius: 6px;
+        padding: 5px 5px;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1 !important;
+    }
+
+    .tooltip-p:hover .tooltiptext {
+        visibility: visible;
+    }
+
+    .tooltip-s:hover .tooltiptext {
+        visibility: visible;
+    }
+</style>
 
 <div class="accordion" id="accfolder">
     @{
@@ -8,9 +51,9 @@
                     <div class="card penal-details backgroundwhite dataTable-changes" id="accheader">
                         <div class="card-header accordion-header" style="cursor: default;    background-color: #003399 !important;">
                             <div>
-                                <span class="card-header-title" style="    font-weight: bold;color:white">
-                                    Project Name - Central Apartments
-                                </span>
+                                 <span class="card-header-title" style="    font-weight: bold;color:white">
+                                    <span class="bold">ProjectName :</span><span class="cd-value"> @Model.ProjectName</span> &nbsp;&nbsp;
+                                 </span>
                             </div>
                             <div style="padding: 5px;">
                                 <button type="button" class="btn btn-primary no-access m-0">
@@ -27,13 +70,15 @@
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title left-border">Address</span>
-                                                    <span class="row-text"> 2106 S CENTRAL AVE LOS ANGELES CA 90011</span>
+                                                    <span class="row-text"> @Model.SiteAddress</span>
+
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border"> ACHP # </span>
-                                                    <span class="row-text"> F5735</span>
+                                                    <span class="row-text">
+                                                         @Model.AcHPFileProjectNumber</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -43,22 +88,7 @@
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border">Project #</span>
-                                                    <span class="row-text">CNCP202491</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="row-box">
-                                                    <span class="row-title lelf-border"> Type of Occupancy </span>
-                                                    <span class="row-text"> Special Needs</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="row-box">
-                                                    <span class="row-title lelf-border">Project #</span>
-                                                    <span class="row-text">CNCP202491</span>
+                                                    <span class="row-text">CNCP202491  Model.AcHPFileProjectNumber</span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -73,7 +103,7 @@
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border">Status</span>
-                                                    <span class="row-text">Ready for Design Review</span>
+                                                    <span class="row-text">@Model.Status</span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -88,13 +118,13 @@
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border">Type of Construction Project</span>
-                                                    <span class="row-text">New Construction Project </span>
+                                                    <span class="row-text">@Model.CaseType </span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border"> HIMS # </span>
-                                                    <span class="row-text">19-126539</span>
+                                                    <span class="row-text">@Model.HIMSNumber</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +133,7 @@
                                             <div class="col-sm-6">
                                                 <div class="row-box">
                                                     <span class="row-title lelf-border">RCS Assignee</span>
-                                                    <span class="row-text">Paul Munz </span>
+                                                    <span class="row-text">@Model.RCSAssignee </span>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">

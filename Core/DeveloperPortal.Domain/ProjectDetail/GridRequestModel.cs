@@ -59,13 +59,12 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public int? UnitID { get; set; }
         public string UnitNum { get; set; }
         public string ACHPNo { get; set; }
-        public string Bidg { get; set; }
         public bool? ManagersUnit { get; set; }
         public string UnitType { get; set; }
         public int? LutUnitTypeID { get; set; }
         public string FloorPlanType { get; set; }
         public int? FloorPlanTypeID { get; set; }
-        public string UnitDesignation { get; set; }
+        public string? UnitDesignation { get; set; }
         public string AdditionalAccecibility { get; set; }
         public bool IsCompliant { get; set; }
         public bool IsCSA { get; set; }
@@ -78,7 +77,7 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public int? APNId { get; set; }
         public int? ProjectSiteId { get; set; }
         public int? ProjectId { get; set; }
-        public string UnitNumber { get; set; }
+        public string? UnitNumber { get; set; }
         public int? LevelId { get; set; }
         public int? LutTotalBedroomID { get; set; }
         public string TotalBedroom { get; set; } = string.Empty;
