@@ -3373,6 +3373,11 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
         border-color: #155623 !important;
     }
 
+.roundcircle > span {
+    font-size: 11px;
+    margin-top: 0.30rem;
+}
+
 .wizard .nav.nav-tabs {
     display: flex;
     align-items: center;
@@ -10817,6 +10822,11 @@ hide-acc-subscription {
 .app-circle {
     background-color: #767676;
 }
+
+.active.wizard-item > .btn-primary {
+    background-color: #001352 !important;
+}
+
 .form_btn-circle {
     width: 30px;
     height: 30px;
@@ -10910,8 +10920,9 @@ hide-acc-subscription {
     right: 50% !important;
 }
 .form-panel {
-   /* max-width: 800px;
-    width: 800px;*/
+    max-width: 900px;
+    width: 900px;
+    margin: auto;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgb(1 40 51 / 29%);
     padding-bottom: 25px;
@@ -10921,11 +10932,11 @@ hide-acc-subscription {
 }
 .form-panel-heading {
     text-align: center;
-    padding: 7px 17px;
+    padding: 10px;
     border-radius: 10px 10px 0 0;
 }
 .sub-blue {
-    background-color: var(--blue);
+    background-color: #001352;
 }
 :root {
     --dark-blue: #0C2738;
