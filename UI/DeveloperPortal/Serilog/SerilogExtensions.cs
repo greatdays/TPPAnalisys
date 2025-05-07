@@ -1,10 +1,7 @@
-﻿
-using DeveloperPortal.Serilog;
-using Serilog;
-using Serilog.Events;
+﻿using Serilog;
 using Serilog.Exceptions;
 
-namespace UNITe.AuthorisationService.WebAPI.Serilog
+namespace DeveloperPortal.Serilog
 {
     public static class SerilogExtensions
     {

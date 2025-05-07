@@ -1,8 +1,6 @@
 using DeveloperPortal;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Serialization;
+using DeveloperPortal.Serilog;
 using Serilog;
-using UNITe.AuthorisationService.WebAPI.Serilog;
 /*
 var builder = WebApplication.CreateBuilder(args);
 

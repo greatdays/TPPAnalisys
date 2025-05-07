@@ -41,37 +41,29 @@ namespace DeveloperPortal.Application
         public List<DashboardDataModel> GetAllConstructionCasesForUser()
         {
             List<DashboardDataModel> resultList = new List<DashboardDataModel>();
-            try
-            {
-                var res = GetAllConstructionCasesData();
-                var allCases = res.Result;
+            var res = GetAllConstructionCasesData();
+            var allCases = res.Result;
 
-                if (allCases != null && allCases.Count > 0)
+            if (allCases != null && allCases.Count > 0)
+            {
+            //Added this log for Serilog testing once testing done We will reomve this line
+                Log.Logger.Information("Dashboard:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+
+                resultList = allCases.Select(x => new DashboardDataModel
                 {
-                    Log.Logger.Information("Dashboard:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
-
-                    resultList = allCases.Select(x => new DashboardDataModel
-                    {
-                        Type = x.Type,
-                        CaseId = x.CaseId,
-                        SiteCases = x.SiteCases,
-                        ComplianceMatrixLink = x.ComplianceMatrixLink,
-                        PropertyDetailsLink = x.PropertyDetailsLink,
-                        Status = x.Status,
-                        AssigneeID = x.AssigneeID,
-                        Summary = x.Summary,
-                        ProjectName = x.ProjectName,
-                        ProjectAddress = x.ProjectAddress,
-                        AcHPFileProjectNumber = x.AcHPFileProjectNumber,
-                        ProblemProject = x.ProblemProject
-                    }).ToList();
-                }
-                return resultList;
-            }
-            catch (Exception ex)
-            {
-
-                Log.Logger.Error("DashboardController:GetMyProjectData : exception is {Message}", ex.Message);
+                    Type = x.Type,
+                    CaseId = x.CaseId,
+                    SiteCases = x.SiteCases,
+                    ComplianceMatrixLink = x.ComplianceMatrixLink,
+                    PropertyDetailsLink = x.PropertyDetailsLink,
+                    Status = x.Status,
+                    AssigneeID = x.AssigneeID,
+                    Summary = x.Summary,
+                    ProjectName = x.ProjectName,
+                    ProjectAddress = x.ProjectAddress,
+                    AcHPFileProjectNumber = x.AcHPFileProjectNumber,
+                    ProblemProject = x.ProblemProject
+                }).ToList();
             }
             return resultList;
         }
