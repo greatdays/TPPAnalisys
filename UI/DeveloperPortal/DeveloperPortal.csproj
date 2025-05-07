@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\js\jquery-mask-plugin\" />
   </ItemGroup>
