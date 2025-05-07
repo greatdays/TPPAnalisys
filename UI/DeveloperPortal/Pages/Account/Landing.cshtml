@@ -1,5 +1,5 @@
 ﻿@page "/"
-@model DeveloperPortal.Pages.Applicant.SignupModel
+@model DeveloperPortal.Pages.Account.SignupModel
 
 <div class="row" style="background-color: #001D80;top:0px;padding-top:2%;margin-top:-11px;">
     <div class="col-md-6" style="color: white;  background-color: #001D80;padding: 0px 50px;">
@@ -21,36 +21,40 @@
 </div>
 <div class="row">
     <div class="col-md-4">
+        </div>
+    <div class="col-md-4">
         <div class="account-section-header">
             <span>Project Developers/Owners</span>
             <ul style="padding-left:5%">
                 <li>Oversee project participants</li>
                 <li>Edit important project information</li>
             </ul>
-            <button id="btnPropertyDev" style="margin-top:5%;">I am a Property Developer</button>
+            <button id="btnSignIn" style="position: static;">Sign In</button>
+            <br />
+            <button id="btnSignUp" style="position: static;">Sign Up</button>
         </div>
     </div>
 
-    <div class="col-md-4">
+    @* <div class="col-md-4">
         <div class="account-section-header">
             <span>Architects</span>
             <ul style="padding-left:5%">
                 <li>Send and receive project plans</li>
             </ul>
-            <button id="btnArchitect">I am an Architect</button>
+             <button id="btnArchitect">I am an Architect</button> 
         </div>
     </div>
     <div class="col-md-4">
-        <div class="account-section-header">
+        <div class="account-section-header"
             <span>Certified Access Specialists (CASp)</span>
             <ul style="padding-left:5%">
                 <li>Provide consultation and inspection services</li>
             </ul>
-            <button id="btnPropertyDev2">I am a CASp</button>
+             <button id="btnPropertyDev2">I am a CASp</button> 
         </div>
-    </div>
+    </div> *@
 </div>
-<div class="row" style="margin-top:4%;">
+<div class="row" style="margin-top:4%;display:none" >
     <div class="col-md-4">
         <div class="account-section-header">
             <span>General Contractors</span>
@@ -58,7 +62,7 @@
                 <li>Schedule site inspections</li>
                 <li>Review field reports</li>
             </ul>
-            <button id="btnGenContractor">I am a General Contractor</button>
+           <button id="btnGenContractor">I am a General Contractor</button> 
         </div>
     </div>
     <div class="col-md-4">
@@ -68,7 +72,7 @@
                 <li>Facilitate housing and relocaton for tenants</li>
                 <li>Upload reloaction plans</li>
             </ul>
-            <button id="btnNac">I am a Relocation Contractor</button>
+          <button id="btnNac">I am a Relocation Contractor</button> 
         </div>
     </div>
     <div class="col-md-4">
@@ -77,15 +81,20 @@
             <ul style="padding-left:5%">
                 <li>Conduct analysis on project's accessibility</li>
             </ul>
-            <button id="btnNac">I am a NAC</button>
+           <button id="btnNac">I am a NAC</button>
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function    ( ) {
-        $('button').click(function    ( ) {
-            window.location = 'Applicant/signup';
+        $('#btnSignUp').click(function    ( ) {
+            window.location = 'Account/signup';
             return false;
         })
+        $('#btnSignIn').click(function    ( ) {
+            window.location = 'Account/Login';
+            return false;
+        })
+        
     })
 </script>

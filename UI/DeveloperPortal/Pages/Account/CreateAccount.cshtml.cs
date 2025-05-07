@@ -2,7 +2,7 @@ using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DeveloperPortal.Pages.Applicant
+namespace DeveloperPortal.Pages.Account
 {
     public class CreateAccountModel : PageModel
     {

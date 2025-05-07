@@ -96,7 +96,7 @@ namespace DeveloperPortal.Controllers
                     , propertyBaseUrl + "api/ContactMgmt/GetAllContacts"
                     , (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
 
-            ProjectDetailService svc = new ProjectDetailService(_config);
+            ProjectDetailService svc = new ProjectDetailService();
             svc.GetProjectParticipantsByProjectId(strPara);
             contactDisplayConfig.ContactRender = JsonConvert.DeserializeObject<List<ContactRenderModel>>(JsonConvert.SerializeObject(baseResponse.Response));
 

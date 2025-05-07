@@ -1,5 +1,5 @@
 ﻿@page
-@model DeveloperPortal.Pages.Applicant.AccountTypeModel
+@model DeveloperPortal.Pages.Account.AccountTypeModel
 
 <div class="form-partial-container">
     <div class="app-form-heading">
@@ -13,17 +13,31 @@
 
     <h3 style="font-size: 19px; padding-bottom: 3%; font-weight: bold;">Select your account type</h3>
     <div>
-        @Html.Label("","Account Type")
-        @Html.Label("", "*", new {@class = "asterisk"})
-        @Html.DropDownList("AccountType", new List<SelectListItem>
-        {
-        new SelectListItem(text:"Select an Account Type", value:"0"),
-        new SelectListItem(text:"Property Developer", value:"1"),
-        new SelectListItem(text:"Architect", value:"2"),
-        new SelectListItem(text:"CASp", value:"3"),
-        new SelectListItem(text:"General Contractor", value:"4"),
-        new SelectListItem(text:"NAC", value:"5"),
-        }, null, new {@class="form-control", id = "AccountType"})
+        @Html.Label("", "Account Type")
+        @Html.Label("", "*", new { @class = "asterisk" })
+
+        <div id="AccountType">
+            @*Lance Martinez: Hidden default option*@
+            <div style="display:none;">
+                @Html.RadioButton("AccountType", "0", true, new { id = "AccountType_0" })
+                @Html.Label("AccountType_0", "Select an Account Type")
+            </div>
+
+            @foreach (var item in new List<SelectListItem>
+            {
+            new SelectListItem { Text = "Property Developer", Value = "1" },
+            new SelectListItem { Text = "Architect", Value = "2" },
+            new SelectListItem { Text = "CASp", Value = "3" },
+            new SelectListItem { Text = "General Contractor", Value = "4" },
+            new SelectListItem { Text = "NAC", Value = "5" }
+            })
+            {
+                <div class="form-check">
+                    @Html.RadioButton("AccountType", item.Value, false, new { @class = "form-check-input", id = "AccountType_" + item.Value })
+                    @Html.Label("AccountType_" + item.Value, item.Text, new { @class = "form-check-label" })
+                </div>
+            }
+        </div>
     </div>
     
 

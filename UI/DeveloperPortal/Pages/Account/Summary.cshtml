@@ -1,5 +1,5 @@
 ﻿@page
-@model DeveloperPortal.Pages.Applicant.SummaryModel
+@model DeveloperPortal.Pages.Account.SummaryModel
 
 <div class="form-partial-container">
     <div class="app-form-heading">
@@ -150,7 +150,7 @@
                     console.log('response from controller: ' + data);
                     alert('success');
                     localStorage.setItem('ApplicantJson', '');
-                    window.location.href = "/Applicant/Landing";
+                    window.location.href = "/Account/Landing";
                 },
                 error: function (xhr) { }
             });

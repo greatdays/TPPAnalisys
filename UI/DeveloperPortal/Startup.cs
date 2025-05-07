@@ -1,4 +1,9 @@
-﻿using DeveloperPortal.Serilog;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing;
+using DeveloperPortal.Application;
+using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Serilog;
 
 namespace DeveloperPortal
 {
@@ -23,6 +28,7 @@ namespace DeveloperPortal
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            services.AddScoped<IProjectDetailService, DeveloperPortal.Application.ProjectDetail.ProjectDetailService>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -1,6 +1,6 @@
 ﻿@page
 @using Microsoft.Extensions.Configuration
-@model DeveloperPortal.Pages.Applicant.SignUpModel
+@model DeveloperPortal.Pages.Account.SignUpModel
 @inject IConfiguration Configuration
 
 
@@ -27,7 +27,7 @@
             <li role="presentation" class="active wizard-item" aria-disabled="false">
                 <a aria-current="step" disabled="disabled" href="#step-0" type="button" role="tab" class="btn form_btn-circle app-circle btn-default btn-primary" aria-selected="true">
                     <span class="roundcircle">
-                        <span class="fa fa-dot-circle" style="font-family: 'Font Awesome 5 Free';"></span>
+                        <span class="fas fa-circle" style="font-family: 'Font Awesome 5 Free';"></span>
                     </span>
                     <span class="round-tab app-stepper-desc signUpBreadCircles">Account Type</span>
                 </a>
@@ -114,19 +114,19 @@
                 .removeClass('disabled')
                 .removeClass('completed')
                 .attr('aria-disabled', false)
-                .find('.roundcircle > .fa').attr('class', 'fa fa-dot-circle').attr('style', "font-family: 'Font Awesome 5 Free'");
+                .find('.roundcircle > span').attr('class', 'fas fa-circle').attr('style', "font-family: 'Font Awesome 5 Free'");
 
             $parent.prevAll().addClass('completed')                
                 .removeClass('active')
                 .removeClass('disabled')
                 .attr('aria-disabled', false)
                 .find('.roundcircle').append('<span class="sr-only">Complete</span>')
-                .find('.fa').attr('class', 'fa fa-check').addClass('dashboard-font-awesome-completed-step'); //added style to enable tick mark in white font
+                .find('.fas').attr('class', 'fa fa-check').addClass('dashboard-font-awesome-completed-step'); //added style to enable tick mark in white font
 
             $parent.nextAll().addClass('disabled')                
                 .removeClass('active')
                 .removeClass('completed')
-                .find('.roundcircle > .fa').attr('class', 'fa');
+                .find('.roundcircle > span').attr('class', 'fa');
 
             $parent.next().attr('aria-disabled', false);
             $parent.next().nextAll().attr('aria-disabled', true);
