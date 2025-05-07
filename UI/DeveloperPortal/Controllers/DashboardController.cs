@@ -1,14 +1,9 @@
-﻿using DeveloperPortal.Application;
-using DeveloperPortal.DataAccess;
+﻿using System.Data;
+using DeveloperPortal.Application;
 using DeveloperPortal.Domain.Dashboard;
-
-//using DeveloperPortal.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Data;
+using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,11 +15,21 @@ namespace DeveloperPortal.Controllers
     {
         public IConfigurationRoot Configuration { get; set; }
         public List<string?> DashboardData { get; private set; }
+        readonly ILogger<DashboardController> _logger;
 
-         //Ananth commented for testing
-          [HttpPost]
+
+        // Here we are using Dependency Injection to inject the Configuration object
+        public DashboardController(IConfiguration config, IHttpContextAccessor httpConfig, ILogger<DashboardController> logger, IDiagnosticContext diagnosticContext)
+        {
+            _logger = logger;
+        }
+
+        //Ananth commented for testing
+        [HttpPost]
         public List<DashboardDataModel> GetMyProjectData()
         {
+            //below code will be remove after test ticket AQT0007949
+            _logger.LogInformation("DashboardController:GetMyProjectData : Test serilog in UI layer");
             Dashboard dashboard = new Dashboard();
             List<DashboardDataModel> list = dashboard.GetAllConstructionCasesForUser();
             return list;
@@ -34,6 +39,7 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public JsonResult GetProjectData()
         {
+
             string? dashboardCategory = Request.Form["name"].FirstOrDefault();
             object objDashboardData = HttpContext.Session.GetString("DashboardData");
             DataTable dt = new DataTable();

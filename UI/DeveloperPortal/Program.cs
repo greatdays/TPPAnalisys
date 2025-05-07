@@ -1,6 +1,6 @@
 using DeveloperPortal;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Serialization;
+using DeveloperPortal.Serilog;
+using Serilog;
 /*
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,8 +57,18 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStartup<Startup>();
-            });
+        .ConfigureSerilog()
+        .ConfigureWebHostDefaults(webBuilder =>
+        {
+            webBuilder
+                .UseStartup<Startup>();
+
+        }).ConfigureLogging((logging) =>
+        {
+            logging.AddSerilog();
+                
+        });
+
+
 }
+

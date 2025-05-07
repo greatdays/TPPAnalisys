@@ -1,19 +1,9 @@
-﻿using DeveloperPortal.DataAccess;
+﻿using System.Data;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.Dashboard;
-using DeveloperPortal.Domain.ProjectDetail;
-
 using Microsoft.EntityFrameworkCore;
-
-//using DeveloperPortal.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace DeveloperPortal.Application
 {
@@ -50,12 +40,15 @@ namespace DeveloperPortal.Application
 
         public List<DashboardDataModel> GetAllConstructionCasesForUser()
         {
-            var res = GetAllConstructionCasesData();
-            //var allCases = GetAllConstructionCasesData().Result;
-            var allCases = res.Result;
             List<DashboardDataModel> resultList = new List<DashboardDataModel>();
+            var res = GetAllConstructionCasesData();
+            var allCases = res.Result;
+
             if (allCases != null && allCases.Count > 0)
             {
+            //Added this log for Serilog testing once testing done We will reomve this line
+                Log.Logger.Information("Dashboard:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+
                 resultList = allCases.Select(x => new DashboardDataModel
                 {
                     Type = x.Type,

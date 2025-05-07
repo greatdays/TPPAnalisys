@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Routing;
 using DeveloperPortal.Application;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Serilog;
 
 namespace DeveloperPortal
 {
@@ -20,7 +21,6 @@ namespace DeveloperPortal
             services.AddHttpContextAccessor();
             services.AddDistributedMemoryCache();
             services.AddControllersWithViews();
-            //builder.Services.addconf
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
@@ -41,6 +41,7 @@ namespace DeveloperPortal
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
