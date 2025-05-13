@@ -22800,4 +22800,20 @@ public partial class AAHREntities : DbContext
         }
         return results;
     }
+
+    // Custom Generic Method to Call Stored Procedures
+    public async Task<List<T>> ExecuteStoredProcedureAsync<T>(string sqlString) where T : class
+    {
+        List<T> results = new List<T>();
+        try
+        {
+            var sql = FormattableStringFactory.Create(sqlString);
+            results = await Database.SqlQuery<T>(sql).ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            // Ideally log the exception here
+        }
+        return results;
+    }
 }

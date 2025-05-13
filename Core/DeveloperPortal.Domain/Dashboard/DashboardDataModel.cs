@@ -22,6 +22,9 @@ namespace DeveloperPortal.Domain.Dashboard
         public string ModifiedOn { get; set; }
         public string AcHPFileProjectNumber { get; set; }
         public string ProblemProject { get; set; }
+        public string OccpancyType { get; set; }
+        public int NoofSites { get; set; }
+        public int TotalUnits { get; set; }
 
     }
 }

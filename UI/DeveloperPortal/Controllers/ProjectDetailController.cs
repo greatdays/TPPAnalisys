@@ -1,40 +1,35 @@
-﻿using ComCon.DataAccess.ViewModel;
-using DeveloperPortal.Application;
-using DeveloperPortal.DataAccess;
-using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
-
-//using DeveloperPortal.Domain.Models;
+﻿using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DeveloperPortal.Controllers
 {
-    //[Route("api/[controller]")]
-    //[ApiController]
     public class ProjectDetailController : Controller
     {
+        #region Construtor
+
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
+        private IProjectDetailService _projectDetailService;
 
-        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor)
+        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService)
         {
             _config = configuration;
             _contextAccessor = contextAccessor;
+            _projectDetailService = projectDetailService;
         }
+
+        #endregion
+
         #region My Project Information Tab
 
         /// <summary>
@@ -45,7 +40,6 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public JsonResult GetUnitDetails(GridRequestModel gridRequestModel)
         {
-            var projectDetailService = new ProjectDetailService(_config);
             var unitModels = new List<UnitDataModel>();
             var isCalculateCount = true;
             if (gridRequestModel!= null && gridRequestModel.UnitGridData != null && gridRequestModel.UnitGridData.Any())
@@ -55,14 +49,13 @@ namespace DeveloperPortal.Controllers
             }
             if (unitModels.Count == 0)
             {
-                //Ananth commented for testing
-                //unitModels = projectDetailService.GetUnitMaxtrixDetails(gridRequestModel);
+                unitModels = _projectDetailService.GetUnitMatrixDetails(gridRequestModel);
             }
             TotalUnitDataModel totalUnitDetail = null;
             var buildingDropDownList = new List<UnitBuildingModel>();
             if (isCalculateCount)
             {
-                totalUnitDetail = projectDetailService.SetUnitCountDetails(unitModels);
+                totalUnitDetail = _projectDetailService.SetUnitCountDetails(unitModels);
                 buildingDropDownList = unitModels.Select(unit => new UnitBuildingModel { ACHPNo = unit.ACHPNo, CaseId = unit.CaseId, BuildingId = unit.BuildingId }).Distinct().ToList();
 
             }
@@ -77,9 +70,7 @@ namespace DeveloperPortal.Controllers
             return Json(new { data = data, unitGridData = unitModels, buildingDropDownList = buildingDropDownList, aggregates = new Dictionary<string, Dictionary<string, string>>(), _total = unitModels.Count, isGrouped = false, totalUnitsCount = totalUnitDetail });
 
         }
-
-
-        
+                
         private static List<UnitDataModel> SortData(GridRequestModel gridRequestModel, List<UnitDataModel> unitModels)
         {
             if (gridRequestModel!= null && gridRequestModel.Sort != null && gridRequestModel.Sort.Count > 0)
@@ -219,51 +210,50 @@ namespace DeveloperPortal.Controllers
         #region Project Site Information
 
         /// <summary>
-        /// GetSiteInformations
+        /// GetSiteInformation
         /// </summary>
         /// <param name="caseId"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetSiteInformations(SiteInformationParamModel paramModel, int start, int length, int draw)
+        public JsonResult GetSiteInformations([FromForm] SiteInformationParamModel paramModel, [FromForm] int start, [FromForm] int length, [FromForm] int draw)
         {
 
             var total = 0;
-            var siteInformations = paramModel.SiteInformationData;
-            var projectDetailService = new ProjectDetailService(_config);
+            var siteInformation = paramModel.SiteInformationData;
             if (paramModel.SiteInformationData == null || paramModel.SiteInformationData.Count == 0)
             {
-                siteInformations = projectDetailService.GetSiteInformations(paramModel.CaseId, "");
+                siteInformation = _projectDetailService.GetSiteInformation(paramModel.CaseId, "");
             }
 
-            if (siteInformations != null && siteInformations.Any())
+            if (siteInformation != null && siteInformation.Any())
             {
-                total = siteInformations.Count;
+                total = siteInformation.Count;
             }
 
-            var totlaSiteList = siteInformations.Select(x => x.FileNumber).ToList();
+            var totalSiteList = siteInformation.Select(x => x.FileNumber).ToList();
             var siteData = new List<SiteDataModel>();
             if (length > 0)
             {
-                var SelectedsiteData = siteInformations.Skip(start).Take(length).ToList();
-                if (SelectedsiteData.Any())
+                var selectedsiteData = siteInformation.Skip(start).Take(length).ToList();
+                if (selectedsiteData.Any())
                 {
-                    foreach (var siteInformation in SelectedsiteData)
+                    foreach (var siteIData in selectedsiteData)
                     {
-                        siteInformation.Actions = siteInformation.Actions.Replace("&lt;", "<").Replace("&gt;", ">");
+                        siteIData.Actions = siteIData.Actions.Replace("&lt;", "<").Replace("&gt;", ">");
                         siteData.Add(new SiteDataModel()
                         {
-                            Id = siteInformation.CaseID,
-                            ProjectId = siteInformation.ProjectID,
-                            DocumentControlViewModelId = siteInformation.DocumentControlViewModelId,
-                            LogsControlViewModelId = siteInformation.LogsControlViewModelId,
-                            ContactControlViewModelId = siteInformation.ContactControlViewModelId,
-                            SiteName = siteInformation.SiteName,
-                            FileNumber = siteInformation.FileNumber,
-                            SiteInfomationData = this.RenderViewAsync("../ProjectDetail/_SiteInformation", siteInformation,true).Result
+                            Id = siteIData.CaseID,
+                            ProjectId = siteIData.ProjectID,
+                            DocumentControlViewModelId = siteIData.DocumentControlViewModelId,
+                            LogsControlViewModelId = siteIData.LogsControlViewModelId,
+                            ContactControlViewModelId = siteIData.ContactControlViewModelId,
+                            SiteName = siteIData.SiteName,
+                            FileNumber = siteIData.FileNumber,
+                            SiteInfomationData = this.RenderViewAsync("../ProjectDetail/_SiteInformation", siteIData,true).Result
                         });
                     }
-                    siteData[0].SiteList = totlaSiteList;
-                    siteData[0].SiteInformationData = siteInformations;
+                    siteData[0].SiteList = totalSiteList;
+                    siteData[0].SiteInformationData = siteInformation;
                 }
             }
             return Json(new { draw = draw, data = siteData, recordsTotal = total, recordsFiltered = total });
@@ -274,8 +264,7 @@ namespace DeveloperPortal.Controllers
 
         public IActionResult RenderContactById(string projectId, int controlViewModelId)
         {
-            ProjectDetailService detailService = new ProjectDetailService(_config);
-            DataAccess.Entity.ViewModel.ControlViewModel controlView = detailService.GetControlViewModelById(controlViewModelId);
+            DataAccess.Entity.ViewModel.ControlViewModel controlView = _projectDetailService.GetControlViewModelById(controlViewModelId);
             string? areaQueryString = Request.Query["area"];
             string? Id = areaQueryString?.Split('?')[1].Replace("Id=", string.Empty); //caseId
             
