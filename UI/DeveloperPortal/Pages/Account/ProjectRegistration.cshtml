@@ -1,32 +1,30 @@
 ﻿@page
 @model DeveloperPortal.Pages.Account.ProjectRegistrationModel
 <div class="form-partial-container">
-    <div class="app-form-heading">
-        <h2>Project Registration</h2>
-    </div>
-    <hr />
+    <fieldset style="margin-bottom: 1em;">
+        <div class="app-form-heading" style="margin-bottom: 0">
+            <h3 class="signup-step-header">Provide Your AcHP Number(s)</h3>
+        </div>
+        <div class="text-danger-custom" style="padding-bottom:3%">
+            All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+        </div>
+        <div class="detail-container">
+            <span>If you do not know your AcHP Number, please contact your assigned RCS.</span>
+            <div class="row" style="padding-bottom:1rem;"></div>
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="input-group" id="divAdd">
+                        @Html.TextBox("AcHPNumber", "", new { @class = "form-control", @placeholder = "AcHP Number" })
 
-    <div class="text-danger" style="padding-bottom:3%">
-        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
-    </div>
-
-    <fieldset>
-        <legend class="app-form-heading">Provide Your AcHP Number(s)</legend>
-        <span>If you do not know your AcHP Number, please contact your assigned RCS.</span>
-        <div class="row" style="padding-bottom:5rem;"></div>
-        <div class="row justify-content-md-center">
-            <div class="col-md-6 text-center">
-                <div class="input-group" id="divAdd">
-                    @Html.TextBox("AcHPNumber","", new { @class = "form-control", @placeholder="AcHP Number"})
-
-                    <div class="input-group-append">
-                        <button id="btnAdd" class="btn btn-primary btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
+                        <div class="input-group-append">
+                            <button id="btnAdd" class="btn btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
+                        </div>
                     </div>
-                    
-                    
                 </div>
             </div>
         </div>
+        
+        
         <span style="padding-top:5%;display:inline-block"></span>
         <span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: auto; margin-right: auto;display: block;"></span>
         <span id="spnLoading" class="sr-only">Loading...</span>
@@ -34,11 +32,10 @@
            
         </div>
     </fieldset>
-    <hr />
 
     <div class="row" style="padding-bottom:5%">
         <div class="col-md-4">
-            <button class="btn-primary-outline prevBtn float-left btn-secondary-custom">Back</button>
+            <button class="btn-primary-outline prevBtn float-left">Back</button>
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
@@ -72,7 +69,7 @@
             var achp = $('#AcHPNumber').val();
 
             if(achp != ''){
-                $('#divAdd').next('.text-danger').remove();
+                $('#divAdd').next('.text-danger-custom').remove();
 
                 $('#cm_loader').attr("hidden", false);
                 $('#spnLoading').show();
@@ -80,8 +77,8 @@
                 setTimeout(AddClick, 300);
             }
             else{
-                $('#divAdd').next('.text-danger').remove();
-                $('#divAdd').after("<span class='text-danger' style='float:left' id='ctlAdd'>Please enter a ACHP Number</span>");
+                $('#divAdd').next('.text-danger-custom').remove();
+                $('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>Please enter a ACHP Number</span>");
             }
             
             //var children = $('#divProjects').children().length;
@@ -179,8 +176,8 @@
                 }
                 else
                 {
-                    $('#divAdd').next('.text-danger').remove();
-                    $('#divAdd').after("<span class='text-danger' style='float:left' id='ctlAdd'>No data found</span>");
+                    $('#divAdd').next('.text-danger-custom').remove();
+                    $('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>No data found</span>");
                 }
 
                 return streetName;

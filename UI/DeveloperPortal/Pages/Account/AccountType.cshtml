@@ -2,46 +2,33 @@
 @model DeveloperPortal.Pages.Account.AccountTypeModel
 
 <div class="form-partial-container">
-    <div class="app-form-heading">
-        <h2>Account Type</h2>
-    </div>
-    <hr />
-
-    <div class="text-danger" style="padding-bottom:3%">
+    <h3 class="signup-step-header">Select your account type</h3>
+    <div class="text-danger-custom">
         All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
     </div>
 
-    <h3 style="font-size: 19px; padding-bottom: 3%; font-weight: bold;">Select your account type</h3>
-    <div>
-        @Html.Label("", "Account Type")
-        @Html.Label("", "*", new { @class = "asterisk" })
-
-        <div id="AccountType">
-            @*Lance Martinez: Hidden default option*@
-            <div style="display:none;">
-                @Html.RadioButton("AccountType", "0", true, new { id = "AccountType_0" })
-                @Html.Label("AccountType_0", "Select an Account Type")
-            </div>
-
-            @foreach (var item in new List<SelectListItem>
-            {
-            new SelectListItem { Text = "Property Developer", Value = "1" },
-            new SelectListItem { Text = "Architect", Value = "2" },
-            new SelectListItem { Text = "CASp", Value = "3" },
-            new SelectListItem { Text = "General Contractor", Value = "4" },
-            new SelectListItem { Text = "NAC", Value = "5" }
-            })
-            {
-                <div class="form-check">
-                    @Html.RadioButton("AccountType", item.Value, false, new { @class = "form-check-input", id = "AccountType_" + item.Value })
-                    @Html.Label("AccountType_" + item.Value, item.Text, new { @class = "form-check-label" })
-                </div>
-            }
+    <div id="AccountType">
+        @*Lance Martinez: Hidden default option*@
+        <div style="display:none;">
+            @Html.RadioButton("AccountType", "0", true, new { id = "AccountType_0" })
+            @Html.Label("AccountType_0", "Select an Account Type")
         </div>
-    </div>
-    
 
-    <hr />
+        @foreach (var item in new List<SelectListItem>
+        {
+        new SelectListItem { Text = "Property Developer", Value = "1" },
+        new SelectListItem { Text = "Architect", Value = "2" },
+        new SelectListItem { Text = "CASp", Value = "3" },
+        new SelectListItem { Text = "General Contractor", Value = "4" },
+        new SelectListItem { Text = "NAC", Value = "5" }
+        })
+        {
+            <div class="form-check">
+                @Html.RadioButton("AccountType", item.Value, false, new { @class = "form-check-input", id = "AccountType_" + item.Value })
+                @Html.Label("AccountType_" + item.Value, item.Text, new { @class = "form-check-label" })
+            </div>
+        }
+    </div>
 
     <div class="row" style="padding-bottom:5%">
         <div class="col-md-4">
@@ -61,12 +48,12 @@
             var message = 'Please select an account type';
             //alert(ctlVal);
             if (ctlVal != '0') {
-                $(this).next('.text-danger').remove();
+                $(this).next('.text-danger-custom').remove();
             }
             else
             {
-                $(ctl).next('.text-danger').remove();
-                $(ctl).after("<span class='text-danger' id='ctl" + ctlId + "'>" + message + "</span>");
+                $(ctl).next('.text-danger-custom').remove();
+                $(ctl).after("<span class='text-danger-custom' id='ctl" + ctlId + "'>" + message + "</span>");
             }
         });
     });

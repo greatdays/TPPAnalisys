@@ -10521,6 +10521,14 @@ a#_myhousing_bcrumb {
     padding: 15px 5%;
 }
 
+.detail-container .edit-button {
+    background-color: #6a6a6a;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    font-size: 15.5px;
+}
+
 .ss-label {
     font-size: 19px !important;
     color: gray !important;
@@ -10815,16 +10823,46 @@ hide-acc-subscription {
         left: 15%;
     
     }
-.account-section-header>ul>li{
-    padding-top:5%;
+    .account-section-header>ul>li{
+        padding-top:5%;
+    }
+
+#signup-header {
+    margin-top: 0.5em;
+    margin-bottom: 0;
+    color: black;
+    font-weight: 600;
+    font-size: 35px;
 }
+
+.signup-step-header {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+#AccountType {
+    margin-top: 20px;
+    margin-bottom: 1.5em;
+    padding: 1.5em;
+    background-color: #f9f9f9;
+    border-radius: 7px;
+}
+
+    #AccountType .form-check{
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+        color: black;
+        font-size: 15px;
+        font-weight: 600;
+    }
 
 .app-circle {
     background-color: #767676;
 }
 
 .active.wizard-item > .btn-primary {
-    background-color: #001352 !important;
+    background-color: #307CD1 !important;
+    border: none;
 }
 
 .form_btn-circle {
@@ -10851,6 +10889,32 @@ hide-acc-subscription {
 .flex-list {
     list-style: none;
 }
+
+.nextBtn {
+    background-color: #307CD1 !important;
+    border: none !important;
+    font-size: 18px;
+    padding: 10px 20px !important;
+}
+
+.prevBtn {
+    border: none;
+    font-size: 18px;
+    padding: 10px 20px !important;
+    border-radius: 5px;
+}
+
+#btnSubmit {
+    background: green;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+}
+
+.text-danger-custom {
+    color: #b10000;
+}
+
 #Sign_progressbar li {
     list-style-type: none;
     font-size: 15px;
@@ -10880,8 +10944,15 @@ hide-acc-subscription {
 .signUpBreadCircles {
     display: flex;
     justify-content: center;
-    margin-top: 5px;
+    margin-top: 15px;
+    font-size: 13px;
 }
+
+.active .signUpBreadCircles {
+    color: black;
+    font-weight: 600;
+}
+
 .app-stepper-desc {
     color: #757575;
 }
@@ -10892,6 +10963,7 @@ hide-acc-subscription {
     width: 50% !important;
     left: 50% !important;
 }
+
 #Sign_progressbar li:after {
     content: '';
     width: 100%;
@@ -10920,8 +10992,8 @@ hide-acc-subscription {
     right: 50% !important;
 }
 .form-panel {
-    max-width: 900px;
-    width: 900px;
+    max-width: 1000px;
+    width: 1000px;
     margin: auto;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgb(1 40 51 / 29%);
@@ -10934,6 +11006,7 @@ hide-acc-subscription {
     text-align: center;
     padding: 10px;
     border-radius: 10px 10px 0 0;
+    color: black;
 }
 .sub-blue {
     background-color: #001352;
@@ -10951,7 +11024,7 @@ h1.white-text{
     font-size:1.3rem;
 }
 .setup-content {
-    margin: 0 5%;
+    margin: 0 7%;
 }
 .app-form-heading {
     font-size: 18px !important;
@@ -11017,12 +11090,24 @@ h1.white-text{
     padding: 1% 1%;
 }
 
+#AcHPNumber {
+    border: 1px solid #858585 !important;
+}
+
 #AcHPNumber:focus {
     border-color: #66afe9 !important;
     outline: 0 !important;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6) !important;
 }
+
+#btnAdd {
+    background-color: #307CD1;
+    border-color: #307CD1;
+    color: white;
+    font-size: 15.5px;
+}
+
 .btn-secondary-custom {
     width: 5rem;
     height: 2rem;
@@ -11076,4 +11161,20 @@ h1.white-text{
 .padding-zero {
     padding: 0px !important;
 }
+
+.radio-label {
+    font-size: 18px; 
+    margin-right: 1rem;
+}
+
+.detail-container {
+    padding: 1.5em;
+    background: #f9f9f9;
+    margin-bottom: 2em;
+    border-radius: 7px;
+}
+
+    .detail-container .form-control {
+        border: 1px solid #cbcbcb !important;
+    }
 /*Signup Page CSS - End*/

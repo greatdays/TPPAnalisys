@@ -17,13 +17,13 @@
 </style>
 
 <div class="form-panel white-bg mvcvue">
-    <div class="form-panel-heading sub-blue">
-        <h1 class="white-text">Create an Account</h1>
+    <div class="form-panel-heading">
+        <h1 id="signup-header">Create an Account</h1>
     </div>
     <input id="curformValid" type="hidden" />
 
     <div role="navigation" aria-label="Breadcrumb" class="setup-panel">
-        <ul id="Sign_progressbar" class="filter-flex-container-2 flex-list nav nav-tabs noprint" style="margin-bottom: 50px;">
+        <ul id="Sign_progressbar" class="filter-flex-container-2 flex-list nav nav-tabs noprint" style="margin-bottom: 5.5em;">
             <li role="presentation" class="active wizard-item" aria-disabled="false">
                 <a aria-current="step" disabled="disabled" href="#step-0" type="button" role="tab" class="btn form_btn-circle app-circle btn-default btn-primary" aria-selected="true">
                     <span class="roundcircle">
@@ -362,7 +362,7 @@
                     break;
             }
 
-            var errCtls = curStep.find("span.text-danger");
+            var errCtls = curStep.find("span.text-danger-custom");
             console.log('errCtls.length:' + errCtls.length);
 
             if (errCtls.length > 0) { 

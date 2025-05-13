@@ -2,56 +2,57 @@
 @model DeveloperPortal.Pages.Account.ContactMethodsModel
 
 <div class="form-partial-container">
-    <div class="app-form-heading">
-        <h2>Contact Methods</h2>
-    </div>
-    <hr />
-
-    <div class="text-danger" style="padding-bottom:3%">
-        All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
-    </div>
-
     <fieldset>
-        <legend class="app-form-heading">Phone Number</legend>
-        <div class="row">
-            <div class="col-md-4">
-                @Html.Label("","Phone Type")
-                @Html.Label("", "*", new {@class = "asterisk"})
+        <legend class="app-form-heading" style="margin-bottom: 0;">Phone Number</legend>
+        <div class="text-danger-custom" style="padding-bottom:3%">
+            All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+        </div>
+        <div class="form_body detail-container">
+            <div class="row">
+                <div class="col-md-4 app-input-descr">
+                    @Html.Label("", "Phone Type")
+                    @Html.Label("", "*", new { @class = "asterisk" })
+                </div>
+                <div class="col-md-4 app-input-descr">
+                    @Html.Label("", "Phone Number")
+                    @Html.Label("", "*", new { @class = "asterisk" })
+                </div>
+                <div class="col-md-4 app-input-descr">
+                    @Html.Label("", "Extension")
+                </div>
             </div>
-            <div class="col-md-4">
-                @Html.Label("","Phone Number")
-                @Html.Label("", "*", new {@class = "asterisk"})
-            </div>
-            <div class="col-md-4">
-                @Html.Label("","Extension")
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.DropDownList("PhoneType", new List<SelectListItem>{
+                    new SelectListItem(text:"Select a Phone Type", value:"0")
+                    }, null, new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBox("PhoneNumber", "", new { @class = "form-control" })
+                </div>
+                <div class="col-md-4">
+                    @Html.TextBox("Extension", "", new { @class = "form-control" })
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                @Html.DropDownList("PhoneType", new List<SelectListItem>{
-                new SelectListItem(text:"Select a Phone Type", value:"0")
-                },null, new {@class="form-control"})
-            </div>
-            <div class="col-md-4">
-                @Html.TextBox("PhoneNumber","", new { @class = "form-control"})
-            </div>
-            <div class="col-md-4">
-                @Html.TextBox("Extension","", new { @class = "form-control"})
-            </div>
-        </div>
+        
     </fieldset>
-    <hr />
+
     <fieldset>
         <legend class="app-form-heading">Mailing Address</legend>
-        <div class="form_body">
+        <div class="form_body detail-container" style="margin-bottom: 0;">
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "P.O.Box?", new { @class = "app-input-descr control-label required-label font-weight-bold" })
                     @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.RadioButton("POBox", "No") No
-                    @Html.RadioButton("POBox", "Yes") Yes
+                    <label class="radio-label">
+                        @Html.RadioButton("POBox", "No") No
+                    </label>
+                    <label class="radio-label">
+                        @Html.RadioButton("POBox", "Yes") Yes
+                    </label>
                 </div>
             </div>
             <div id="divPOBoxNo" style="width:100%">
@@ -141,18 +142,20 @@
                     @Html.TextBox("ZipCode","", new { @class = "form-control"})
                 </div>
             </div>
-            <hr />
-            <div class="row" style="padding-bottom:5%">
-                <div class="col-md-4">
-                    <button class="btn-primary-outline prevBtn float-left btn-secondary-custom">Back</button>
-                </div>
-                <div class="col-md-4"></div>
-                <div class="col-md-4">
-                    <button class="main-btn nextBtn float-right">Next</button>
-                </div>
-            </div>
+
+            
         </div>
     </fieldset>
+
+    <div class="row" style="padding-bottom:5%; margin-top: 2.5em;">
+        <div class="col-md-4">
+            <button class="btn-primary-outline prevBtn float-left">Back</button>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <button class="main-btn nextBtn float-right">Next</button>
+        </div>
+    </div>
 </div>
 <script>
     $(document).ready(function () {
