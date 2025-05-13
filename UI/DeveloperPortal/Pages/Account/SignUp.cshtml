@@ -70,26 +70,26 @@
                     <partial name="AccountType" model="accountTypeModel"></partial>
                 }
             </div>
-            <div class="setup-content" id="step-1">
+            <div class="setup-content" id="step-1" style="display: none;">
                 @{
                     string api = Configuration["AAHRApiSettings:PropertyApiURL"];
                     var accountModel = new CreateAccountModel(Configuration);
                     <partial name="CreateAccount" model="accountModel"></partial>
                 }
             </div>
-            <div class="setup-content" id="step-2" role="tabpanel">
+            <div class="setup-content" id="step-2" role="tabpanel" style="display: none">
                 @{
                     var contactModel = new ContactMethodsModel();
                     <partial name="ContactMethods" model="contactModel"></partial>
                 }
             </div>
-            <div class="setup-content" id="step-3" role="tabpanel">
+            <div class="setup-content" id="step-3" role="tabpanel" style="display: none">
                 @{
                     var projRegistrationModel = new ProjectRegistrationModel();
                     <partial name="ProjectRegistration" model="projRegistrationModel"></partial>
                 }
             </div>
-            <div class="setup-content" id="step-4" role="tabpanel">
+            <div class="setup-content" id="step-4" role="tabpanel" style="display: none">
                 @{
                     //IConfiguration config = null;
                     var summaryModel = new SummaryModel(Configuration);
