@@ -2,12 +2,12 @@
 @model DeveloperPortal.Pages.Account.ContactMethodsModel
 
 <div class="form-partial-container">
-    <fieldset>
+    <fieldset style="margin-bottom: 2.5em;">
         <legend class="app-form-heading" style="margin-bottom: 0;">Phone Number</legend>
         <div class="text-danger-custom" style="padding-bottom:3%">
             All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
         </div>
-        <div class="form_body detail-container">
+        <div class="form_body">
             <div class="row">
                 <div class="col-md-4 app-input-descr">
                     @Html.Label("", "Phone Type")
@@ -35,12 +35,13 @@
                 </div>
             </div>
         </div>
-        
     </fieldset>
+
+    <hr style="margin-bottom: 4em;">
 
     <fieldset>
         <legend class="app-form-heading">Mailing Address</legend>
-        <div class="form_body detail-container" style="margin-bottom: 0;">
+        <div class="form_body" style="margin-bottom: 0;">
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "P.O.Box?", new { @class = "app-input-descr control-label required-label font-weight-bold" })
@@ -147,7 +148,7 @@
         </div>
     </fieldset>
 
-    <div class="row" style="padding-bottom:5%; margin-top: 2.5em;">
+    <div class="row" style="padding-bottom:5%; margin-top: 3em;">
         <div class="col-md-4">
             <button class="btn-primary-outline prevBtn float-left">Back</button>
         </div>

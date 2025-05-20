@@ -5,13 +5,12 @@
     <div class="app-form-heading" style="margin-bottom: 0">
         <h3 class="signup-step-header">Your Information</h3>
     </div>
-
     <div class="text-danger-custom" style="padding-bottom:3%">
         All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
     </div>
 
     <fieldset>
-        <div class="form_body detail-container">
+        <div class="form_body" style="margin-bottom: 2em;">
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Your Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
@@ -38,13 +37,14 @@
                     @Html.TextBox("LastName","", new { @class = "form-control"})
                 </div>
             </div>
-
         </div>
     </fieldset>
 
+    <hr style="margin-bottom: 4em;">
+
     <fieldset>
         <legend class="app-form-heading">Company Information</legend>
-        <div class="form_body detail-container">
+        <div class="form_body" style="margin-bottom: 2em;">
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Company Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
@@ -66,9 +66,11 @@
         </div>
     </fieldset>
 
+    <hr style="margin-bottom: 4em;">
+
     <fieldset>
         <legend class="app-form-heading">Login ID and Password</legend>
-        <div class="form_body detail-container" style="margin-bottom: 2em;">
+        <div class="form_body" style="margin-bottom: 2em;">
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Email", new { @class = "app-input-descr control-label required-label font-weight-bold" })
@@ -113,8 +115,6 @@
                     I agree to the <a href="#" style="text-decoration:underline">Terms and Conditions</a> @Html.Label("", "*", new {@class = "asterisk"})
                     <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
                 </label>
-            </div>
-            <div>
             </div>
         </div>
     </fieldset>

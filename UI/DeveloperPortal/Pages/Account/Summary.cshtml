@@ -1,12 +1,11 @@
 ﻿@page
 @model DeveloperPortal.Pages.Account.SummaryModel
 
-<div class="form-partial-container">
+<div class="form-partial-container" style="color: black;">
     <div class="app-form-heading">
-        <h2 class="signup-step-header" style="margin-bottom: 1em;">Summary</h2>
+        <h2 class="signup-step-header" style="margin-bottom: 2em;">Summary</h2>
     </div>
-
-    <fieldset class="detail-container">
+    <fieldset style="margin-bottom: 2em;">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <legend class="app-form-heading">Your Information</legend>
@@ -50,7 +49,9 @@
         </div>
     </fieldset>
 
-    <fieldset class="detail-container">
+    <hr style="margin-bottom: 4em;">
+
+    <fieldset style="margin-bottom: 2em;">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <legend class="app-form-heading">Contact Methods</legend>
@@ -78,7 +79,9 @@
         </div>
     </fieldset>
 
-    <fieldset class="detail-container" style="margin-bottom: 3em;">
+    <hr style="margin-bottom: 4em;">
+
+    <fieldset style="margin-bottom: 5em;">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <legend class="app-form-heading">Project Registration</legend>
@@ -105,7 +108,7 @@
 <script>
     $(document).ready(function(){
         console.log('Summary');
-         
+
         $('#btnEditYourInfo').on('click', function () { $('a[href="#step-1"]').click() })
         $('#btnEditContactMethods').on('click', function () { $('a[href="#step-2"]').click(); })
         $('#btnEditProjectRegistration').on('click', function () { $('a[href="#step-3"]').click(); })

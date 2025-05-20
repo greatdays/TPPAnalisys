@@ -10521,7 +10521,7 @@ a#_myhousing_bcrumb {
     padding: 15px 5%;
 }
 
-.detail-container .edit-button {
+fieldset .edit-button {
     background-color: #6a6a6a;
     color: white;
     padding: 5px 10px;
@@ -10855,6 +10855,10 @@ hide-acc-subscription {
         font-size: 15px;
         font-weight: 600;
     }
+
+fieldset .form_body label {
+    color: black;
+}
 
 .app-circle {
     background-color: #767676;

@@ -5,25 +5,22 @@
         <div class="app-form-heading" style="margin-bottom: 0">
             <h3 class="signup-step-header">Provide Your AcHP Number(s)</h3>
         </div>
-        <div class="text-danger-custom" style="padding-bottom:3%">
+        <div class="text-danger-custom" style="padding-bottom:4%">
             All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
         </div>
-        <div class="detail-container">
-            <span>If you do not know your AcHP Number, please contact your assigned RCS.</span>
-            <div class="row" style="padding-bottom:1rem;"></div>
-            <div class="row">
-                <div class="col-md-6 text-center">
-                    <div class="input-group" id="divAdd">
-                        @Html.TextBox("AcHPNumber", "", new { @class = "form-control", @placeholder = "AcHP Number" })
+        <span style="color: black">If you do not know your AcHP Number, please contact your assigned RCS.</span>
+        <div class="row" style="padding-bottom:1rem;"></div>
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <div class="input-group" id="divAdd">
+                    @Html.TextBox("AcHPNumber", "", new { @class = "form-control", @placeholder = "AcHP Number" })
 
-                        <div class="input-group-append">
-                            <button id="btnAdd" class="btn btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
-                        </div>
+                    <div class="input-group-append">
+                        <button id="btnAdd" class="btn btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
                     </div>
                 </div>
             </div>
         </div>
-        
         
         <span style="padding-top:5%;display:inline-block"></span>
         <span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: auto; margin-right: auto;display: block;"></span>
@@ -165,7 +162,7 @@
                 console.log('response:' + response);
                 if (response != '[]') {
                     streetName = streetName.replace(/LOS ANGELES.*/g, ""); // remove city, state and zip
-                    console.log('response from controller: ' + data);
+                    // console.log('response from controller: ' + data);
                     //alert('success: '+ data);
 
                     var ctlIndex = GetControlIndex();
