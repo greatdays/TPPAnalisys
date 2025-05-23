@@ -1,20 +1,96 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.Account.SignupModel
 
-<div class="row" style="background-color: #001D80;top:0px;padding-top:2%;margin-top:-11px;">
-    <div class="col-md-6" style="color: white;  background-color: #001D80;padding: 0px 50px;">
-        <span style="font-size: 320%;display:inline-block">Welcome to the AcHP Construction/Retrofit Third-Party Portal</span>
-        <span style="display:inline-block;font-size:130%">This is your one stop shop for uploading and receiving property files</span>
-        <span style="display:inline-block;font-size:80%;margin-top:15%;padding-bottom:2%">This website is not to be confused for our Affordable and Accessible <b><a href="#" style="color:#fff;text-decoration:underline">Housing Registry</a></b></span>
+
+<header class="landing-banner">
+    <div>
+        <h1>Welcome to the AcHP Construction/ Retrofit Third-Party Portal</h1>
+        <p>This is your one stop shop for uploading and receiving property files</p>
     </div>
-    <div class="col-md-6" style="margin-top: -20px; margin-bottom: 10px;">
-        <div style="background:url(../Images/imgManWriting.jpg) no-repeat;width:100%;height:98%;background-size:cover">
-            <img style="width:100px;float:right " src="/Images/imgAccessibility.png">
+</header>
+
+<form id="landing-signup">
+    <h2>Create the Right Account For You</h2>
+
+    @* first and last *@
+    <div class="landing-signup-row">
+        <div class="landing-signup-field">
+            <label for="first-name" class="sr-only">First Name</label>
+            <input id="first-name"
+                   name="firstName"
+                   type="text"
+                   placeholder="First Name"
+                   required
+                   autocomplete="given-name">
+        </div>
+        <div class="landing-signup-field">
+            <label for="last-name" class="sr-only">Last Name</label>
+            <input id="last-name"
+                   name="lastName"
+                   type="text"
+                   placeholder="Last Name"
+                   required
+                   autocomplete="family-name">
         </div>
     </div>
-</div>
 
-<div class="row">
+    @* email *@
+    <div class="landing-signup-field">
+        <label for="email" class="sr-only">Email Address</label>
+        <input id="email"
+               name="email"
+               type="email"
+               placeholder="Email Address"
+               required
+               autocomplete="email">
+    </div>
+
+    @* phone *@
+    <div class="landing-signup-field">
+        <label for="phone" class="sr-only">Phone Number</label>
+        <input id="phone"
+               name="phone"
+               type="tel"
+               placeholder="Phone Number"
+               required
+               autocomplete="tel">
+    </div>
+
+    @* position *@
+    <div class="landing-signup-field">
+        <label for="position" class="sr-only" style="">Select Position</label>
+        <select id="position" name="position" required>
+            <option value="" disabled selected>Select Position</option>
+            <option value="architect">Architect</option>
+            <option value="engineer">Engineer</option>
+            <option value="contractor">Contractor</option>
+            <!-- …other roles… -->
+        </select>
+    </div>
+
+    @* password *@
+    <div class="landing-signup-field">
+        <label for="password" class="sr-only">Password</label>
+        <input id="password"
+               name="password"
+               type="password"
+               placeholder="Password"
+               required
+               autocomplete="new-password">
+    </div>
+
+    @* create *@
+    <div class="landing-signup-actions">
+        <button type="submit"
+                class="landing-signup-button">
+            Create Your Account
+        </button>
+    </div>
+
+    <p>Already have an account? <span style="color: darkred; font-weight; bold;">Sign in</span></p>
+</form>
+
+@* <div class="row">
     <div class="col-md-12" style="font-weight:bold;text-align:center;margin: 25px 0px;font-size: 20px;">
         Create The Right Account For You
     </div>
@@ -34,25 +110,6 @@
             <button id="btnSignUp" style="position: static;">Sign Up</button>
         </div>
     </div>
-
-    @* <div class="col-md-4">
-        <div class="account-section-header">
-            <span>Architects</span>
-            <ul style="padding-left:5%">
-                <li>Send and receive project plans</li>
-            </ul>
-             <button id="btnArchitect">I am an Architect</button> 
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="account-section-header"
-            <span>Certified Access Specialists (CASp)</span>
-            <ul style="padding-left:5%">
-                <li>Provide consultation and inspection services</li>
-            </ul>
-             <button id="btnPropertyDev2">I am a CASp</button> 
-        </div>
-    </div> *@
 </div>
 <div class="row" style="margin-top:4%;display:none" >
     <div class="col-md-4">
@@ -84,7 +141,8 @@
            <button id="btnNac">I am a NAC</button>
         </div>
     </div>
-</div>
+</div> *@
+
 <script>
     $(document).ready(function    ( ) {
         $('#btnSignUp').click(function    ( ) {
