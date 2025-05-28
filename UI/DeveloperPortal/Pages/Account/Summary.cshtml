@@ -105,7 +105,42 @@
         </div>
     </div>
 </div>
+
 <script>
+     $(document).ready(function(){ 
+         console.log('summary'); 
+
+         $('#btnEditYourInfo').on('click', function () { $('a[href="#step-1"]').click() }) 
+         $('#btnEditContactMethods').on('click', function () { $('a[href="#step-2"]').click(); }) 
+         $('#btnEditProjectRegistration').on('click', function () { $('a[href="#step-3"]').click(); })
+
+        $('#btnSubmit').on('click', function(){
+           var applicantJson = localStorage.getItem('ApplicantJson');
+
+             $.ajax({
+                url: "/Account/CreateAccount",
+                type: 'POST',
+               contentType: 'application/x-www-form-urlencoded', // sending JSON
+                data: { data: applicantJson}, // this is already a JSON string
+                success: function (data) {
+                    localStorage.setItem('ApplicantJson', '');
+                    $('#successModal').fadeIn();
+                    $('#goToDashboardBtn').on('click', function () {
+                        window.location.href = "/Dashboard";
+                    });
+                },
+               error: function (xhr, status, error) {
+                   console.error("AJAX error:", status, error);
+                   console.error("Response:", xhr.responseText);
+               }
+            });
+         });
+     });
+</script>
+
+
+@*ORIGINAL SCRIPT*@
+@* <script>
     $(document).ready(function(){
         console.log('Summary');
 
@@ -115,28 +150,9 @@
 
         //Your Information data
         $('#btnSubmit').on('click', function(){
-            //onclick="location.href='@@Url.Action(CreateAccount, Account)
-            //var dataObject =
-            /*var yourInfo = localStorage.getItem('YourInfo');
-            var contactInfo = localStorage.getItem('ContactInfo');
-            var projList = localStorage.getItem('ProjectList');*/
 
             var applicantJson = localStorage.getItem('ApplicantJson');
             var stringifiedJson = JSON.stringify(applicantJson);
-
-            /*var array = [];
-            array.push(yourInfo);
-            array.push(contactInfo);
-            array.push(projList);
-
-            var dataObject = JSON.stringify({
-                'param': array
-            });
-            var json = "{['YourInfo': {" + yourInfo + "} ]}";
-            console.log('ajax call..');
-            console.log('array: ' + json);
-
-            dataObject = JSON.stringify(json);*/
 
             $.ajax({
                 url: "/Account/CreateAccount",
@@ -158,6 +174,4 @@
             });
         });//button click
     });//ready
-</script>
-@{
-}
+</script> *@
