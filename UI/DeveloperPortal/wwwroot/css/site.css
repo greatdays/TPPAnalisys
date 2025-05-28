@@ -2802,7 +2802,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 
     .pagination li.paginate_button.active a {
         color: #fff !important;
-        background: #003399;
+        background: #2C3E5C;
     }
 
     .pagination li.paginate_button a {
@@ -2811,9 +2811,9 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
         padding: .5rem .75rem;
         margin-left: -1px;
         line-height: 1.25;
-        color: #003399 !important;
+        color: #2C3E5C !important;
         background-color: #fff;
-        border: 1px solid #003399   ;
+        border: 1px solid #2C3E5C;
     }
 
 .dataTables_paginate.paging_simple_numbers {
@@ -2897,6 +2897,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 
 .dataTables_length select.form-control {
     margin: 0 10px;
+    border: 1px solid #8E8E8E !important;
 }
 
 .Succes-text {
@@ -2913,7 +2914,8 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
 }
 
     .dataTables_filter input.form-control.input-sm {
-        margin-left: 10px;
+        margin: 0 10px;
+        border: 1px solid #8E8E8E !important;
     }
 
 .list-type-none {
