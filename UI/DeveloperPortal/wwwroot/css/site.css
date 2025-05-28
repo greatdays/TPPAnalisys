@@ -330,8 +330,8 @@ body {
 
 .title {
     font-weight: 700;
-    padding:15px 0px;
-    color:black;
+    padding: 15px 0px 0px 10px;
+    color: black;
 }
 
 h1.title {
@@ -2906,6 +2906,7 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
     list-style: none;
     border-radius: .25rem;
     margin-bottom: 0;
+    margin-top: 6px;
 }
 
     .pagination li.paginate_button:first-child a {

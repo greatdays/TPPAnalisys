@@ -21,6 +21,15 @@ body {
     margin-bottom: 60px;
 }
 
+.edit-project-button {
+    float: right;
+    margin-bottom: 8px;
+    background-color: #2C3E5C;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 /* application styles */
 .dashboard-summary-container {
     width: 100%;
