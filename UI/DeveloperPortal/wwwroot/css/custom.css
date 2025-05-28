@@ -21,6 +21,15 @@ body {
     margin-bottom: 60px;
 }
 
+.edit-project-button {
+    float: right;
+    margin-bottom: 8px;
+    background-color: #2C3E5C;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 /* application styles */
 .dashboard-summary-container {
     width: 100%;
@@ -31,14 +40,14 @@ body {
 }
 
 .dashboard-summary-header {
-    background-color: #001D80;
-    color: #fff;
-    padding: 8px;
+    background-color: white;
+    font-weight: 600;
+    padding: 12px;
     width: 100%;
     display: inline-block;
     border: solid 1px #ccc !IMPORTANT;
     border-radius: 6PX 6px 0px 0px;
-    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.24);
+    box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.10);
     padding-left: 15px;
 }
 
