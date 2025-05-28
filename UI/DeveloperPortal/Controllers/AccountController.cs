@@ -220,7 +220,7 @@ namespace DeveloperPortal.Controllers
                         IDMApplicationUser applicationUser = new IDMApplicationUser(_config);
                         IDMUser idmuser = new IDMUser();
                         idmuser.FirstName = signupModel.FirstName;
-                        idmuser.MiddleName = signupModel.MiddleName;
+                        idmuser.MiddleName = signupModel.MiddleName ?? string.Empty;
                         idmuser.LastName = signupModel.LastName;
                         idmuser.Password = signupModel.Password;
                         idmuser.Email = signupModel.EmailId;

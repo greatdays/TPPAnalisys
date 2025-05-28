@@ -1,5 +1,5 @@
 ﻿@page "/"
-@model DeveloperPortal.Pages.Account.SignupModel
+@model DeveloperPortal.Pages.Account.SignUpModel
 
 
 <header class="landing-banner">
@@ -10,138 +10,32 @@
 </header>
 
 <form id="landing-signup">
-    <h2>Create the Right Account For You</h2>
+    <h2>Sign In to Your Account</h2>
 
-    @* first and last *@
-    <div class="landing-signup-row">
-        <div class="landing-signup-field">
-            <label for="first-name" class="sr-only">First Name</label>
-            <input id="first-name"
-                   name="firstName"
-                   type="text"
-                   placeholder="First Name"
-                   required
-                   autocomplete="given-name">
-        </div>
-        <div class="landing-signup-field">
-            <label for="last-name" class="sr-only">Last Name</label>
-            <input id="last-name"
-                   name="lastName"
-                   type="text"
-                   placeholder="Last Name"
-                   required
-                   autocomplete="family-name">
-        </div>
-    </div>
-
-    @* email *@
     <div class="landing-signup-field">
         <label for="email" class="sr-only">Email Address</label>
-        <input id="email"
-               name="email"
-               type="email"
-               placeholder="Email Address"
-               required
-               autocomplete="email">
+        <input id="email" name="email" type="email" placeholder="Email Address" required autocomplete="email">
     </div>
 
-    @* phone *@
-    <div class="landing-signup-field">
-        <label for="phone" class="sr-only">Phone Number</label>
-        <input id="phone"
-               name="phone"
-               type="tel"
-               placeholder="Phone Number"
-               required
-               autocomplete="tel">
-    </div>
-
-    @* position *@
-    <div class="landing-signup-field">
-        <label for="position" class="sr-only" style="">Select Position</label>
-        <select id="position" name="position" required>
-            <option value="" disabled selected>Select Position</option>
-            <option value="architect">Architect</option>
-            <option value="engineer">Engineer</option>
-            <option value="contractor">Contractor</option>
-            <!-- …other roles… -->
-        </select>
-    </div>
-
-    @* password *@
     <div class="landing-signup-field">
         <label for="password" class="sr-only">Password</label>
-        <input id="password"
-               name="password"
-               type="password"
-               placeholder="Password"
-               required
-               autocomplete="new-password">
+        <input id="password" name="password" type="password" placeholder="Password" required autocomplete="new-password">
     </div>
 
-    @* create *@
+    <p class="forgot-password"><a href="#">Forgot Your Password?</a></p>
+
     <div class="landing-signup-actions">
-        <button type="submit"
-                class="landing-signup-button">
-            Create Your Account
-        </button>
+        <button type="submit" class="landing-signin-button" id="btnSignIn">Sign In</button>
     </div>
 
-    <p>Already have an account? <span style="color: darkred; font-weight; bold;">Sign in</span></p>
+    <p class="divider">Or</p>
+    
+    <div class="landing-signup-actions">
+        <button type="submit" class="landing-signup-button" id="btnSignUp">Sign Up</button>
+    </div>
+    
 </form>
 
-@* <div class="row">
-    <div class="col-md-12" style="font-weight:bold;text-align:center;margin: 25px 0px;font-size: 20px;">
-        Create The Right Account For You
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        </div>
-    <div class="col-md-4">
-        <div class="account-section-header">
-            <span>Project Developers/Owners</span>
-            <ul style="padding-left:5%">
-                <li>Oversee project participants</li>
-                <li>Edit important project information</li>
-            </ul>
-            <button id="btnSignIn" style="position: static;">Sign In</button>
-            <br />
-            <button id="btnSignUp" style="position: static;">Sign Up</button>
-        </div>
-    </div>
-</div>
-<div class="row" style="margin-top:4%;display:none" >
-    <div class="col-md-4">
-        <div class="account-section-header">
-            <span>General Contractors</span>
-            <ul style="padding-left:5%">
-                <li>Schedule site inspections</li>
-                <li>Review field reports</li>
-            </ul>
-           <button id="btnGenContractor">I am a General Contractor</button> 
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="account-section-header">
-            <span>Relocation Contractors</span>
-            <ul style="padding-left:5%">
-                <li>Facilitate housing and relocaton for tenants</li>
-                <li>Upload reloaction plans</li>
-            </ul>
-          <button id="btnNac">I am a Relocation Contractor</button> 
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="account-section-header">
-            <span>Neutral Accessesibility Consultant (NAC)</span>
-            <ul style="padding-left:5%">
-                <li>Conduct analysis on project's accessibility</li>
-            </ul>
-           <button id="btnNac">I am a NAC</button>
-        </div>
-    </div>
-</div> *@
 
 <script>
     $(document).ready(function    ( ) {
@@ -153,6 +47,7 @@
             window.location = 'Account/Login';
             return false;
         })
-        
+
     })
 </script>
+
