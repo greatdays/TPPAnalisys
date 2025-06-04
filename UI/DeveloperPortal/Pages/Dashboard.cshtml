@@ -5,6 +5,56 @@
     table.dataTable.stripe > tbody > tr.odd > *, table.dataTable.display > tbody > tr.odd > * {
         box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
     }
+
+    /* Prevent layout shift when modal opens */
+    html {
+        overflow-y: scroll;
+    }
+
+    body.modal-open {
+        padding-right: 0 !important;
+    }
+
+    .modal-dialog {
+        max-width: 700px;
+    }
+
+    .modal-content {
+        color: #000; /* Ensure default text is black */
+    }
+
+    .text-end {
+        text-align: right !important;
+    }
+
+    .btn-add,
+    .btn-submit {
+        background-color: #002c77 !important;
+        color: white !important;
+        border-color: #002c77 !important;
+    }
+
+        .btn-add:hover,
+        .btn-add:focus,
+        .btn-add:active,
+        .btn-submit:hover,
+        .btn-submit:focus,
+        .btn-submit:active {
+            background-color: #002c77 !important;
+            color: white !important;
+            border-color: #002c77 !important;
+            box-shadow: none !important;
+        }
+
+    .btn-delete {
+        border: 1px solid #ff5e5e;
+        color: #ff5e5e;
+    }
+
+    .form-label.required::after {
+        content: " *";
+        color: red;
+    }
 </style>
 @* <div class="page-header-box padding-15">
     <div class="welcome-box">
@@ -135,15 +185,53 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #001D80;color: #fff;">
-                <h4 class="modal-title ActioModalTitle popup-title" id="myModalLabel" style="color:#fff">Edit Project(s)</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+                <h5 class="modal-title ActioModalTitle popup-title" id="myModalLabel" style="color:#fff">Edit Project(s)</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
 
             </div>
             <div class="modal-body ActioModalBody">
-                <!-- Render Action Partial -->
-                All fields marked with asterisk (*) are required!
+                <p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
 
-                Provide your AcHP Number(s)
+                <!-- Section Heading -->
+                <h5>Provide your AcHP Number(s)</h5>
+                <p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p>
+                <br />
+                <form id="projectForm" onsubmit="handleSubmit(event)">
+
+                    <!-- 👇 Centered AcHP Input and Project List -->
+                    <div class="d-flex justify-content-center">
+                        <div class="w-100" style="max-width: 500px;">
+                            <div class="mb-3 row">
+                                <label for="acHpInput" class="form-label fw-bold required">AcHP Number</label>
+                            
+                                <div class="input-group">
+                                    <input type="text" id="acHpInput" class="form-control border-end-0 rounded-end-0" placeholder="AcHP Number" required>
+                                    <button class="btn btn-add shadow-none border-start-0 rounded-start-0 px-4" type="button" onclick="addProject()">Add</button>
+                                </div>
+
+                                <div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
+                                <div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
+                            </div>
+
+                            <span style="padding-top:5%;display:inline-block"></span>
+                           
+                            <span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" 
+
+                            style="margin-left: auto;margin-right: auto;display: block;"></span>
+                             
+                            <div id="divProjects" class="mb-3">
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- 👆 End of Centered Section -->
+
+                    <hr>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-submit">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -155,11 +243,7 @@
     <script>
         $(document).ready(function () {
             PopulateMyProjectData();
-             // PopulateData('tblNewProjects', 'NewProjects');
-             // PopulateData('tblPlanReview', 'PlanReview');
-             // PopulateData('tblSiteInspection', 'SiteInspection')
-             // PopulateData('tblNACInspection', 'NACInspection');
-             // PopulateData('tblCompletedCert', 'CompletedCert');
+          document.getElementById('cm_loader').style.display = 'none'
         });
         function PopulateMyProjectData() {
             $('#tblMyProjects').DataTable({
@@ -181,7 +265,7 @@
                 columns: [
                     {
                         data: 'acHPFileProjectNumber',
-                        render: function (data, type, row, meta) { 
+                        render: function (data, type, row, meta) {
                             // render event defines the markup of the cell text
                             if (row.caseId) {
                                 if (row.caseId.match(/href="([^"]*)/)) {
@@ -246,6 +330,90 @@
 
         function DisplayModal(){
             $('#ActionModal').modal('show');
+            document.getElementById('acHpError').style.display = 'none';
+            document.getElementById('noData').style.display = 'none';
+            document.getElementById("acHpInput").value = '';
+            document.getElementById('divProjects').innerHTML = '';
         }
+
+
+        function addProject() {
+            const input = document.getElementById("acHpInput");
+            const value = input.value.trim();
+              document.getElementById("noData").style.display = "none";
+            if (value === '') {
+          document.getElementById("acHpError").style.display = "block";
+          return;
+        } else {
+          document.getElementById("acHpError").style.display = "none";
+          setTimeout(AddClick, 300);
+          document.getElementById('cm_loader').style.display = 'inline-block'          
+        }
+        }
+        
+        function AddClick(){
+            var ctlIndex = GetControlIndex();
+            console.log('ProjCount: ' + ctlIndex);
+            const input = document.getElementById("acHpInput");
+            const achpNumber = input.value.trim();
+            console.log('achp#: ' + achpNumber);
+            var addr = GetACHPDetail(achpNumber);
+            $('#btnDel' + ctlIndex).on('click', function () {
+                var ctlId = $(this).attr('id');
+                var idx = ctlId.replace('btnDel', '');
+                var divId = 'div' + idx;
+                $('#' + divId).remove();
+            })
+
+          document.getElementById('cm_loader').style.display = 'none'
+
+            $('.btn.btn-primary').attr("disabled", false);
+           
+        }
+
+        function GetACHPDetail(achpNumber){
+            $.ajax({
+                url: "/Account/GetACHPDetails",
+                type: 'POST',
+                async: false,
+                dataType: 'json',
+                contentType: 'application/json',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                data: "achpNumber=" + achpNumber,
+                success: function (data) {
+                    var retJson = JSON.parse(data);
+                    var respCode = retJson.ResponseCode;
+                    var streetName = retJson.StreetName;
+                    var retAchp = retJson.AchpNumber;
+                    var response = retJson.Response;
+                    console.log('response:' + response);
+                    if (response != '[]') {
+                        document.getElementById("noData").style.display = "none";
+
+                        streetName = streetName.replace(/LOS ANGELES.*/g, ""); // remove city, state and zip
+
+                        var ctlIndex = GetControlIndex();
+                        var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
+                        var divACHPWithAddr = '<div class="col-md-10 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
+                        var divDel = '<div class="col-md-2 text-right border-no-left row-padding"><button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
+                        $('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>")
+                    }
+                    else
+                    {
+                        document.getElementById("noData").style.display = "block";
+                    }
+
+                    return streetName;
+
+                },
+                error: function (xhr) { }
+            })
+        }
+
+
+
+
     </script>
 }
