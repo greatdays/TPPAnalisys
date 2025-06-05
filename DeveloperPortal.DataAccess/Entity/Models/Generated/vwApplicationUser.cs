@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwApplicationUser
+public partial class VwApplicationUser
 {
     public int ApplicationId { get; set; }
 

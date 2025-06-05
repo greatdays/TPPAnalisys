@@ -9,7 +9,7 @@ public partial class AccountDeactivationLog
 
     public int AccountDeactivationId { get; set; }
 
-    public string? IDMUsename { get; set; }
+    public string? Idmusename { get; set; }
 
     public int? ContactIdentifierId { get; set; }
 

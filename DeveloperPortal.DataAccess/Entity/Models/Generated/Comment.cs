@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Comment
 {
-    public int CommentID { get; set; }
+    public int CommentId { get; set; }
 
     public string CommentText { get; set; } = null!;
 
@@ -13,7 +13,7 @@ public partial class Comment
 
     public bool? IsWorklog { get; set; }
 
-    public string? JSONAttribute { get; set; }
+    public string? Jsonattribute { get; set; }
 
     public bool? IsDeleted { get; set; }
 
@@ -39,8 +39,7 @@ public partial class Comment
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public virtual ICollection<AssnComment> AssnComments { get; set; } = new List<AssnComment>();
-    public virtual AssnComment AssnComment { get; set; }
 }

@@ -7,7 +7,7 @@ public partial class ProjectSiteSnapLog
 {
     public int ProjectSiteSnapLogId { get; set; }
 
-    public int? ProjectSiteSnapID { get; set; }
+    public int? ProjectSiteSnapId { get; set; }
 
     public string? Attributes { get; set; }
 
@@ -25,7 +25,7 @@ public partial class ProjectSiteSnapLog
 
     public DateTime? LogCreatedOn { get; set; }
 
-    public string? CloseDateReasonByOPM { get; set; }
+    public string? CloseDateReasonByOpm { get; set; }
 
     public DateTime? ApplicationStartDate { get; set; }
 

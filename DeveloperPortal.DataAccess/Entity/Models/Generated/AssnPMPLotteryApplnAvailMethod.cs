@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPLotteryApplnAvailMethod
+public partial class AssnPmplotteryApplnAvailMethod
 {
-    public int AssnPMPLotteryApplnAvailMethodID { get; set; }
+    public int AssnPmplotteryApplnAvailMethodId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? LutLotteryApplnAvailMethodID { get; set; }
+    public int? LutLotteryApplnAvailMethodId { get; set; }
 
     public string? SpecialNote { get; set; }
 
@@ -23,5 +23,5 @@ public partial class AssnPMPLotteryApplnAvailMethod
 
     public virtual LutLotteryApplnAvailMethod? LutLotteryApplnAvailMethod { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 }

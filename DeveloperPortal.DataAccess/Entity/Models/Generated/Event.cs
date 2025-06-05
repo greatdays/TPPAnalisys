@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Event
 {
-    public int EventID { get; set; }
+    public int EventId { get; set; }
 
     public string? Title { get; set; }
 
@@ -21,11 +21,11 @@ public partial class Event
 
     public string? ReferenceType { get; set; }
 
-    public string? ReferenceID { get; set; }
+    public string? ReferenceId { get; set; }
 
     public string? ReferenceStatus { get; set; }
 
-    public string? ReferenceAPN { get; set; }
+    public string? ReferenceApn { get; set; }
 
     public string? EventLocation { get; set; }
 

@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ListingSnap
 {
-    public int ListingSnapID { get; set; }
+    public int ListingSnapId { get; set; }
 
-    public int ListingID { get; set; }
+    public int ListingId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int? ListingTypeID { get; set; }
+    public int? ListingTypeId { get; set; }
 
     public string? Status { get; set; }
 
@@ -21,7 +21,7 @@ public partial class ListingSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual ICollection<HRMApplication> HRMApplications { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> Hrmapplications { get; set; } = new List<Hrmapplication>();
 
     public virtual ICollection<ProjectSiteSnap> ProjectSiteSnaps { get; set; } = new List<ProjectSiteSnap>();
 }

@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LAServiceArea2012
+public partial class LaserviceArea2012
 {
-    public int OBJECTID_1 { get; set; }
+    public int Objectid1 { get; set; }
 
-    public string? SPA_NAME { get; set; }
+    public string? SpaName { get; set; }
 
-    public string? ABBV { get; set; }
+    public string? Abbv { get; set; }
 
-    public string? LABEL { get; set; }
+    public string? Label { get; set; }
 
-    public short? OBJECTID { get; set; }
+    public short? Objectid { get; set; }
 
-    public short? SPA_2012 { get; set; }
+    public short? Spa2012 { get; set; }
 
-    public decimal? ShapeSTAre { get; set; }
+    public decimal? ShapeStare { get; set; }
 
-    public decimal? ShapeSTLen { get; set; }
+    public decimal? ShapeStlen { get; set; }
 }

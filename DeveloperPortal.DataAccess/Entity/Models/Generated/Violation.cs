@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Violation
 {
-    public int ViolationID { get; set; }
+    public int ViolationId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int LutViolationID { get; set; }
+    public int LutViolationId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public string? Remedy { get; set; }
 
@@ -33,7 +33,7 @@ public partial class Violation
 
     public decimal? MarkerLongitude { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public bool IsDeleted { get; set; }
 

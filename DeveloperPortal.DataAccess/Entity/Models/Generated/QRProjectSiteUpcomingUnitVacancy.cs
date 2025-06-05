@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRProjectSiteUpcomingUnitVacancy
+public partial class QrprojectSiteUpcomingUnitVacancy
 {
-    public int QRProjectSiteUpcomingUnitVacancyID { get; set; }
+    public int QrprojectSiteUpcomingUnitVacancyId { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int ProjectSiteUpcomingUnitVacancyID { get; set; }
+    public int ProjectSiteUpcomingUnitVacancyId { get; set; }
 
     public bool IsUnitBecomeVacant { get; set; }
 

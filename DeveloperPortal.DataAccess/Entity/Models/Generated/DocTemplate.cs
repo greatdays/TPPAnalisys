@@ -11,12 +11,12 @@ public partial class DocTemplate
     /// <summary>
     /// Primary Key Identity column for the DocTemplate table
     /// </summary>
-    public int DocTemplateID { get; set; }
+    public int DocTemplateId { get; set; }
 
     /// <summary>
     /// Type of TMS document
     /// </summary>
-    public int CfgDocumentID { get; set; }
+    public int CfgDocumentId { get; set; }
 
     /// <summary>
     /// Uploaded MS Word template
@@ -61,7 +61,7 @@ public partial class DocTemplate
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<DocumentEntity> DocumentEntities { get; set; } = new List<DocumentEntity>();
 }

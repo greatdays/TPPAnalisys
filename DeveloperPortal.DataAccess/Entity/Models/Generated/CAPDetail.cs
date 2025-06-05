@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class CAPDetail
+public partial class Capdetail
 {
-    public int CAPDetailsID { get; set; }
+    public int CapdetailsId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
     public DateTime? ReportDate { get; set; }
 
@@ -15,21 +15,21 @@ public partial class CAPDetail
 
     public string? PolicyAnalyst { get; set; }
 
-    public string? IEPAnalyst { get; set; }
+    public string? Iepanalyst { get; set; }
 
-    public DateTime? CAPSentDate { get; set; }
+    public DateTime? CapsentDate { get; set; }
 
-    public DateTime? CAPIssueDate { get; set; }
+    public DateTime? CapissueDate { get; set; }
 
-    public DateTime? CAPDueDate { get; set; }
+    public DateTime? CapdueDate { get; set; }
 
     public string? Owner { get; set; }
 
-    public string? PM { get; set; }
+    public string? Pm { get; set; }
 
-    public string? CAPCurrentStatus { get; set; }
+    public string? CapcurrentStatus { get; set; }
 
-    public DateTime? CAPCompliedDate { get; set; }
+    public DateTime? CapcompliedDate { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -39,21 +39,25 @@ public partial class CAPDetail
 
     public DateTime ModifiedOn { get; set; }
 
-    public DateTime? CAPReceivedDate { get; set; }
+    public DateTime? CapreceivedDate { get; set; }
 
-    public DateTime? CAPClosureDate { get; set; }
+    public DateTime? CapclosureDate { get; set; }
 
     public int? LutWithdrawReasonId { get; set; }
 
-    public int? LutCAPCloseReasonId { get; set; }
+    public int? LutCapcloseReasonId { get; set; }
 
     public string? OtherReason { get; set; }
 
-    public string? CAPSummary { get; set; }
+    public string? Capsummary { get; set; }
 
-    public virtual ICollection<CAPItemDetail> CAPItemDetails { get; set; } = new List<CAPItemDetail>();
+    public int? LutCapchecklistItemId { get; set; }
 
-    public virtual LutCAPCloseReason? LutCAPCloseReason { get; set; }
+    public virtual ICollection<CapitemDetail> CapitemDetails { get; set; } = new List<CapitemDetail>();
+
+    public virtual LutCapchecklistItem? LutCapchecklistItem { get; set; }
+
+    public virtual LutCapcloseReason? LutCapcloseReason { get; set; }
 
     public virtual LutWithdrawReason? LutWithdrawReason { get; set; }
 

@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnCoursePrerequisiteCourse
 {
-    public int AssnCourseCourseID { get; set; }
+    public int AssnCourseCourseId { get; set; }
 
-    public int CourseID { get; set; }
+    public int CourseId { get; set; }
 
-    public int PrerequisiteCourseID { get; set; }
+    public int PrerequisiteCourseId { get; set; }
 
     public virtual Course Course { get; set; } = null!;
 

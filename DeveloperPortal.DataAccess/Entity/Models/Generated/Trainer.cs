@@ -11,7 +11,7 @@ public partial class Trainer
     /// <summary>
     /// Primary Key Identity column for the Trainer table
     /// </summary>
-    public int TrainerID { get; set; }
+    public int TrainerId { get; set; }
 
     /// <summary>
     /// trainer first name

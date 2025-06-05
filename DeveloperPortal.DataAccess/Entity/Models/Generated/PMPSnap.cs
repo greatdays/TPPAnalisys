@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPSnap
+public partial class Pmpsnap
 {
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int PMPID { get; set; }
+    public int Pmpid { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int? LutConstructionTypeID { get; set; }
+    public int? LutConstructionTypeId { get; set; }
 
-    public int? LutCESTypeID { get; set; }
+    public int? LutCestypeId { get; set; }
 
     public DateTime? PreliminaryCertificateDate { get; set; }
 
@@ -27,7 +27,7 @@ public partial class PMPSnap
 
     public bool IsComplyAdmRequirement { get; set; }
 
-    public bool IsComplyLAHSACES { get; set; }
+    public bool IsComplyLahsaces { get; set; }
 
     public string? VacancyPolicyDesc { get; set; }
 
@@ -35,7 +35,7 @@ public partial class PMPSnap
 
     public string? WaitListAddInfo { get; set; }
 
-    public string? WaitListDescForHOPWA { get; set; }
+    public string? WaitListDescForHopwa { get; set; }
 
     public bool IsComplyWaitList { get; set; }
 
@@ -71,7 +71,7 @@ public partial class PMPSnap
 
     public string? SpecificPopulationApply { get; set; }
 
-    public bool IsCWLNoPlanAffirmativeMarketing { get; set; }
+    public bool IsCwlnoPlanAffirmativeMarketing { get; set; }
 
     public bool? IsTenantRightsToReturn { get; set; }
 
@@ -81,61 +81,63 @@ public partial class PMPSnap
 
     public int? ReturningTenantHearningUnits { get; set; }
 
-    public string? ReturningTenantOccupyAUs { get; set; }
+    public string? ReturningTenantOccupyAus { get; set; }
 
-    public bool? IsProjectUseUHA { get; set; }
+    public bool? IsProjectUseUha { get; set; }
+
+    public bool IsLocked { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual ICollection<AssnPMPAgencySnap> AssnPMPAgencySnaps { get; set; } = new List<AssnPMPAgencySnap>();
+    public virtual ICollection<AssnPmpagencySnap> AssnPmpagencySnaps { get; set; } = new List<AssnPmpagencySnap>();
 
-    public virtual ICollection<AssnPMPLotteryApplnAvailMethodSnap> AssnPMPLotteryApplnAvailMethodSnaps { get; set; } = new List<AssnPMPLotteryApplnAvailMethodSnap>();
+    public virtual ICollection<AssnPmplotteryApplnAvailMethodSnap> AssnPmplotteryApplnAvailMethodSnaps { get; set; } = new List<AssnPmplotteryApplnAvailMethodSnap>();
 
-    public virtual ICollection<AssnPMPLotterySubmitMethodSnap> AssnPMPLotterySubmitMethodSnaps { get; set; } = new List<AssnPMPLotterySubmitMethodSnap>();
+    public virtual ICollection<AssnPmplotterySubmitMethodSnap> AssnPmplotterySubmitMethodSnaps { get; set; } = new List<AssnPmplotterySubmitMethodSnap>();
 
-    public virtual ICollection<AssnPMPOutreachTargetAudienceSnap> AssnPMPOutreachTargetAudienceSnaps { get; set; } = new List<AssnPMPOutreachTargetAudienceSnap>();
+    public virtual ICollection<AssnPmpoutreachTargetAudienceSnap> AssnPmpoutreachTargetAudienceSnaps { get; set; } = new List<AssnPmpoutreachTargetAudienceSnap>();
 
-    public virtual ICollection<AssnPMPProjSiteAccessibleUnitFeatureSnap> AssnPMPProjSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPMPProjSiteAccessibleUnitFeatureSnap>();
+    public virtual ICollection<AssnPmpprojSiteAccessibleUnitFeatureSnap> AssnPmpprojSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPmpprojSiteAccessibleUnitFeatureSnap>();
 
-    public virtual ICollection<AssnPMPProjTypeSiteAttrSnap> AssnPMPProjTypeSiteAttrSnaps { get; set; } = new List<AssnPMPProjTypeSiteAttrSnap>();
+    public virtual ICollection<AssnPmpprojTypeSiteAttrSnap> AssnPmpprojTypeSiteAttrSnaps { get; set; } = new List<AssnPmpprojTypeSiteAttrSnap>();
 
-    public virtual ICollection<AssnPMPScatteredSiteSnap> AssnPMPScatteredSiteSnaps { get; set; } = new List<AssnPMPScatteredSiteSnap>();
+    public virtual ICollection<AssnPmpscatteredSiteSnap> AssnPmpscatteredSiteSnaps { get; set; } = new List<AssnPmpscatteredSiteSnap>();
 
-    public virtual ICollection<AssnPMPSitesOutreachSnap> AssnPMPSitesOutreachSnaps { get; set; } = new List<AssnPMPSitesOutreachSnap>();
+    public virtual ICollection<AssnPmpsitesOutreachSnap> AssnPmpsitesOutreachSnaps { get; set; } = new List<AssnPmpsitesOutreachSnap>();
 
-    public virtual ICollection<AssnPMPUnitFeatureSnap> AssnPMPUnitFeatureSnaps { get; set; } = new List<AssnPMPUnitFeatureSnap>();
+    public virtual ICollection<AssnPmpunitFeatureSnap> AssnPmpunitFeatureSnaps { get; set; } = new List<AssnPmpunitFeatureSnap>();
 
-    public virtual LutCESType? LutCESType { get; set; }
+    public virtual LutCestype? LutCestype { get; set; }
 
     public virtual LutConstructionType? LutConstructionType { get; set; }
 
     public virtual LutLegalEntityType? LutLegalEntityType { get; set; }
 
-    public virtual PMP PMP { get; set; } = null!;
+    public virtual Pmp Pmp { get; set; } = null!;
 
-    public virtual ICollection<PMPAddnlMarketingEffortSnap> PMPAddnlMarketingEffortSnaps { get; set; } = new List<PMPAddnlMarketingEffortSnap>();
+    public virtual ICollection<PmpaddnlMarketingEffortSnap> PmpaddnlMarketingEffortSnaps { get; set; } = new List<PmpaddnlMarketingEffortSnap>();
 
-    public virtual ICollection<PMPAgencySnap> PMPAgencySnaps { get; set; } = new List<PMPAgencySnap>();
+    public virtual ICollection<PmpagencySnap> PmpagencySnaps { get; set; } = new List<PmpagencySnap>();
 
-    public virtual ICollection<PMPOutreachAndAffimativeMarketingSnap> PMPOutreachAndAffimativeMarketingSnaps { get; set; } = new List<PMPOutreachAndAffimativeMarketingSnap>();
+    public virtual ICollection<PmpoutreachAndAffimativeMarketingSnap> PmpoutreachAndAffimativeMarketingSnaps { get; set; } = new List<PmpoutreachAndAffimativeMarketingSnap>();
 
-    public virtual ICollection<PMPOutreachOrganisationSnap> PMPOutreachOrganisationSnaps { get; set; } = new List<PMPOutreachOrganisationSnap>();
+    public virtual ICollection<PmpoutreachOrganisationSnap> PmpoutreachOrganisationSnaps { get; set; } = new List<PmpoutreachOrganisationSnap>();
 
-    public virtual ICollection<PMPPSHClientServingOrganizationSnap> PMPPSHClientServingOrganizationSnaps { get; set; } = new List<PMPPSHClientServingOrganizationSnap>();
+    public virtual ICollection<PmpprojectSiteSnap> PmpprojectSiteSnaps { get; set; } = new List<PmpprojectSiteSnap>();
 
-    public virtual ICollection<PMPProjectSiteSnap> PMPProjectSiteSnaps { get; set; } = new List<PMPProjectSiteSnap>();
+    public virtual ICollection<PmppshclientServingOrganizationSnap> PmppshclientServingOrganizationSnaps { get; set; } = new List<PmppshclientServingOrganizationSnap>();
 
-    public virtual ICollection<PMPSiteAddressSnap> PMPSiteAddressSnaps { get; set; } = new List<PMPSiteAddressSnap>();
+    public virtual ICollection<PmpsiteAddressSnap> PmpsiteAddressSnaps { get; set; } = new List<PmpsiteAddressSnap>();
 
-    public virtual ICollection<PMPUnitInfoSummarySnap> PMPUnitInfoSummarySnaps { get; set; } = new List<PMPUnitInfoSummarySnap>();
+    public virtual ICollection<PmpunitInfoSummarySnap> PmpunitInfoSummarySnaps { get; set; } = new List<PmpunitInfoSummarySnap>();
 
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual PropSnapshot PropSnapshot { get; set; } = null!;
 
-    public virtual ICollection<ReviewPMPLogSnap> ReviewPMPLogSnaps { get; set; } = new List<ReviewPMPLogSnap>();
+    public virtual ICollection<ReviewPmplogSnap> ReviewPmplogSnaps { get; set; } = new List<ReviewPmplogSnap>();
 
     public virtual ServiceRequest ServiceRequest { get; set; } = null!;
 }

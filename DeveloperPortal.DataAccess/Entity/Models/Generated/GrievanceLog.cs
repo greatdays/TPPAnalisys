@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class GrievanceLog
 {
-    public int GrievanceLogID { get; set; }
+    public int GrievanceLogId { get; set; }
 
     public string? GrievanceLogNumber { get; set; }
 
-    public int? ProjSitePropSnapShotID { get; set; }
+    public int? ProjSitePropSnapShotId { get; set; }
 
     public bool IsReasonableAccommodation { get; set; }
 
@@ -17,7 +17,7 @@ public partial class GrievanceLog
 
     public bool IsFairHousingComplaint { get; set; }
 
-    public int LutUserTypeID { get; set; }
+    public int LutUserTypeId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -27,23 +27,23 @@ public partial class GrievanceLog
 
     public string? ApplicantAddress { get; set; }
 
-    public int? UnitProjectSiteID { get; set; }
+    public int? UnitProjectSiteId { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public DateTime? GrievanceDate { get; set; }
 
     public string? GrievanceDetail { get; set; }
 
-    public int? LutGrievanceStatusID { get; set; }
+    public int? LutGrievanceStatusId { get; set; }
 
     public string? PropertyAction { get; set; }
 
     public DateTime? DeterminationDate { get; set; }
 
-    public int? LutDeterminationStatusID { get; set; }
+    public int? LutDeterminationStatusId { get; set; }
 
-    public int? LutDevelopmentCategoryID { get; set; }
+    public int? LutDevelopmentCategoryId { get; set; }
 
     public string? DeterminationDetail { get; set; }
 
@@ -55,9 +55,9 @@ public partial class GrievanceLog
 
     public bool IsFairHousingComplaintFiled { get; set; }
 
-    public bool IsHUDCompliantFiled { get; set; }
+    public bool IsHudcompliantFiled { get; set; }
 
-    public bool IsHCIDLACompliantFiled { get; set; }
+    public bool IsHcidlacompliantFiled { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -107,7 +107,7 @@ public partial class GrievanceLog
 
     public string? FinalDeterminationName { get; set; }
 
-    public int? LutFinalDeterminationTitleID { get; set; }
+    public int? LutFinalDeterminationTitleId { get; set; }
 
     public string? FinalDeterminationTitleOther { get; set; }
 
@@ -117,7 +117,7 @@ public partial class GrievanceLog
 
     public string? WithdrawalReason { get; set; }
 
-    public int? LutGrievanceSubmitTypeID { get; set; }
+    public int? LutGrievanceSubmitTypeId { get; set; }
 
     public virtual ICollection<AssnGrievanceTypeQuestion> AssnGrievanceTypeQuestions { get; set; } = new List<AssnGrievanceTypeQuestion>();
 
@@ -137,9 +137,9 @@ public partial class GrievanceLog
 
     public virtual PropSnapshot? ProjSitePropSnapShot { get; set; }
 
-    public virtual ICollection<QRAssnGrievanceTypeQuestion> QRAssnGrievanceTypeQuestions { get; set; } = new List<QRAssnGrievanceTypeQuestion>();
+    public virtual ICollection<QrassnGrievanceTypeQuestion> QrassnGrievanceTypeQuestions { get; set; } = new List<QrassnGrievanceTypeQuestion>();
 
-    public virtual ICollection<QRAssnGrievanceTypeSubQuestion> QRAssnGrievanceTypeSubQuestions { get; set; } = new List<QRAssnGrievanceTypeSubQuestion>();
+    public virtual ICollection<QrassnGrievanceTypeSubQuestion> QrassnGrievanceTypeSubQuestions { get; set; } = new List<QrassnGrievanceTypeSubQuestion>();
 
     public virtual ProjectSite? UnitProjectSite { get; set; }
 

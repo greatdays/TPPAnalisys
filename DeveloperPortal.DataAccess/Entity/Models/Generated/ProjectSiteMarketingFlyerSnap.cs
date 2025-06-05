@@ -13,7 +13,7 @@ public partial class ProjectSiteMarketingFlyerSnap
 
     public string? DeveloperName { get; set; }
 
-    public string? PMCompanyName { get; set; }
+    public string? PmcompanyName { get; set; }
 
     public DateOnly? LotteryDate { get; set; }
 

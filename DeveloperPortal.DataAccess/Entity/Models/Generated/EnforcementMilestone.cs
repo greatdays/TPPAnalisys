@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EnforcementMilestone
 {
-    public int EnforcementMilestoneID { get; set; }
+    public int EnforcementMilestoneId { get; set; }
 
-    public int? CaseID { get; set; }
+    public int? CaseId { get; set; }
 
     public DateOnly? EnforcementCaseOpenDate { get; set; }
 
@@ -17,7 +17,7 @@ public partial class EnforcementMilestone
 
     public DateOnly? ComplianceDueDate { get; set; }
 
-    public string? RCAPCorrections { get; set; }
+    public string? Rcapcorrections { get; set; }
 
     public DateOnly? ExtensionToComplyDueDate { get; set; }
 
@@ -53,7 +53,7 @@ public partial class EnforcementMilestone
 
     public DateOnly? DatePolicyComplianceDecertified { get; set; }
 
-    public DateOnly? DatePolicyCertificationRe_Issued { get; set; }
+    public DateOnly? DatePolicyCertificationReIssued { get; set; }
 
     public DateOnly? EnfComplianceAchievedDate { get; set; }
 

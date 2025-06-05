@@ -3,23 +3,31 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwStructureLog
+public partial class VwStructureLog
 {
-    public string? FileNumber { get; set; }
+    public int ProjectId { get; set; }
 
-    public string? FileGroup { get; set; }
+    public int? PsProjectId { get; set; }
 
-    public int? PS_ProjectId { get; set; }
+    public string? ProjectName { get; set; }
 
-    public int StructureLogID { get; set; }
+    public string? PsFileNumber { get; set; }
 
-    public int? StructureID { get; set; }
+    public string? PsHimsnumber { get; set; }
 
-    public int? RefBuildingID { get; set; }
+    public string? PsPrimaryApn { get; set; }
 
-    public int APNID { get; set; }
+    public string? PsSiteAddress { get; set; }
 
-    public int? LutStructureTypeID { get; set; }
+    public int StructureLogId { get; set; }
+
+    public int? StructureId { get; set; }
+
+    public int? RefBuildingId { get; set; }
+
+    public int Apnid { get; set; }
+
+    public int? LutStructureTypeId { get; set; }
 
     public string? Description { get; set; }
 
@@ -35,7 +43,7 @@ public partial class vwStructureLog
 
     public string? Source { get; set; }
 
-    public string? SourceRefID { get; set; }
+    public string? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -47,7 +55,7 @@ public partial class vwStructureLog
 
     public string? Label { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public int? TotalUnits { get; set; }
 

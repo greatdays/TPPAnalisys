@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAffordableApplicationCloseDateNotification
+public partial class VwAffordableApplicationCloseDateNotification
 {
-    public int ProjectSiteSnapID { get; set; }
+    public int ProjectSiteSnapId { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
     public int ShowNotification { get; set; }
 

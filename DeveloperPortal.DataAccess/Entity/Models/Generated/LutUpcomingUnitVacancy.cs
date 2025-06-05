@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutUpcomingUnitVacancy
 {
-    public int LutUpcomingUnitVacancyID { get; set; }
+    public int LutUpcomingUnitVacancyId { get; set; }
 
     public string UpcomingUnitVacancy { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutUpcomingUnitVacancy
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<QRUpcomingUnitVacancy> QRUpcomingUnitVacancies { get; set; } = new List<QRUpcomingUnitVacancy>();
+    public virtual ICollection<QrupcomingUnitVacancy> QrupcomingUnitVacancies { get; set; } = new List<QrupcomingUnitVacancy>();
 
     public virtual ICollection<UpcomingUnitVacancy> UpcomingUnitVacancies { get; set; } = new List<UpcomingUnitVacancy>();
 }

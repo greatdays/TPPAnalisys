@@ -8,9 +8,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class InspectionNotification
 {
-    public int InspectionNotificationID { get; set; }
+    public int InspectionNotificationId { get; set; }
 
-    public int InspectionID { get; set; }
+    public int InspectionId { get; set; }
 
     public string? InspectorUserName { get; set; }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutTransferWaitListReason
 {
-    public int LutTransferWaitListReasonID { get; set; }
+    public int LutTransferWaitListReasonId { get; set; }
 
     public string? Reason { get; set; }
 
@@ -23,7 +23,7 @@ public partial class LutTransferWaitListReason
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitLists { get; set; } = new List<AUTransferWaitList>();
+    public virtual ICollection<AutransferWaitList> AutransferWaitLists { get; set; } = new List<AutransferWaitList>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitLists { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitLists { get; set; } = new List<QrautransferWaitList>();
 }

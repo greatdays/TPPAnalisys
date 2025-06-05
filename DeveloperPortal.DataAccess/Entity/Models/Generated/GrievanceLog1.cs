@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class GrievanceLog1
 {
-    public int GrievanceLogID { get; set; }
+    public int GrievanceLogId { get; set; }
 
-    public int GrievanceID { get; set; }
+    public int GrievanceId { get; set; }
 
-    public int LutGrievanceLogTypeID { get; set; }
+    public int LutGrievanceLogTypeId { get; set; }
 
     public string? LogText { get; set; }
 

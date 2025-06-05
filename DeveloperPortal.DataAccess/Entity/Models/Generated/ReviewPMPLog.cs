@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class ReviewPMPLog
+public partial class ReviewPmplog
 {
-    public int ReviewPMPLogID { get; set; }
+    public int ReviewPmplogId { get; set; }
 
     public int? CaseId { get; set; }
 
@@ -17,7 +17,7 @@ public partial class ReviewPMPLog
 
     public string? UserEmail { get; set; }
 
-    public bool? IsAcHPStaff { get; set; }
+    public bool? IsAcHpstaff { get; set; }
 
     public bool IsPrelimaryCertUpload { get; set; }
 
@@ -25,7 +25,7 @@ public partial class ReviewPMPLog
 
     public string? PrelimaryCertUploadByUserFullName { get; set; }
 
-    public string? PrelimaryCertGUID { get; set; }
+    public string? PrelimaryCertGuid { get; set; }
 
     public DateTime? DatePrelimaryCertificate { get; set; }
 
@@ -35,7 +35,7 @@ public partial class ReviewPMPLog
 
     public string? FinalCertUploadByUserFullName { get; set; }
 
-    public string? FinalCertGUID { get; set; }
+    public string? FinalCertGuid { get; set; }
 
     public DateTime? DateFinalCertificate { get; set; }
 

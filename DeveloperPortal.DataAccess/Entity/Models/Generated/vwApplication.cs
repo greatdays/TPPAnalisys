@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwApplication
+public partial class VwApplication
 {
     public int ApplicationId { get; set; }
 
@@ -15,15 +15,15 @@ public partial class vwApplication
 
     public DateTime? ModifiedOn { get; set; }
 
-    public string? JWTAccessCode { get; set; }
+    public string? JwtaccessCode { get; set; }
 
-    public string? JWTSharedSecrete { get; set; }
+    public string? JwtsharedSecrete { get; set; }
 
-    public bool? EnableJWTSecurity { get; set; }
+    public bool? EnableJwtsecurity { get; set; }
 
     public bool? IsPublic { get; set; }
 
-    public string? ApplicationURL { get; set; }
+    public string? ApplicationUrl { get; set; }
 
     public string? ConnectionString { get; set; }
 

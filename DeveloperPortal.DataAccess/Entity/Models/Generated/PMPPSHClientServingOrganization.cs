@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPPSHClientServingOrganization
+public partial class PmppshclientServingOrganization
 {
-    public int PMPPSHClientServingOrganizationId { get; set; }
+    public int PmppshclientServingOrganizationId { get; set; }
 
-    public int PMPId { get; set; }
+    public int Pmpid { get; set; }
 
     public string? OrganizationName { get; set; }
 
@@ -33,5 +33,5 @@ public partial class PMPPSHClientServingOrganization
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual PMP PMP { get; set; } = null!;
+    public virtual Pmp Pmp { get; set; } = null!;
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class allapn
+public partial class Allapn
 {
     public long Apn { get; set; }
 
@@ -31,7 +31,7 @@ public partial class allapn
 
     public byte[] Timestamp { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public string? LutResidHotelTypeCd { get; set; }
 
@@ -43,13 +43,13 @@ public partial class allapn
 
     public int? ScepUnitCount { get; set; }
 
-    public DateOnly? DateRHDetermination { get; set; }
+    public DateOnly? DateRhdetermination { get; set; }
 
     public DateOnly? DateEllisDetermination { get; set; }
 
     public string? LutEllisTypeCd { get; set; }
 
-    public short? RHTransientUnitCnt { get; set; }
+    public short? RhtransientUnitCnt { get; set; }
 
-    public short? RHUnitCnt { get; set; }
+    public short? RhunitCnt { get; set; }
 }

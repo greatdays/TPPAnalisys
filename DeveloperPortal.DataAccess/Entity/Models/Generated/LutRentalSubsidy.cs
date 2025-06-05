@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutRentalSubsidy
 {
-    public int LutRentalSubsidyID { get; set; }
+    public int LutRentalSubsidyId { get; set; }
 
     public string? RentalSubsidy { get; set; }
 
@@ -21,11 +21,11 @@ public partial class LutRentalSubsidy
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnQRRentalSubsidy> AssnQRRentalSubsidies { get; set; } = new List<AssnQRRentalSubsidy>();
+    public virtual ICollection<AssnQrrentalSubsidy> AssnQrrentalSubsidies { get; set; } = new List<AssnQrrentalSubsidy>();
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual ICollection<UnitAttribute> UnitAttributes { get; set; } = new List<UnitAttribute>();
 }

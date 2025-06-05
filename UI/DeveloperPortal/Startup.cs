@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Routing;
-using DeveloperPortal.Application;
+﻿using DeveloperPortal.Application.ProjectDetail;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Repository;
 using DeveloperPortal.Serilog;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperPortal
 {
@@ -28,7 +29,22 @@ namespace DeveloperPortal
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            services.AddScoped<IProjectDetailService, DeveloperPortal.Application.ProjectDetail.ProjectDetailService>();
+
+
+    //        services.AddDbContext<AAHREntities>(options =>
+    //options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+    //       .EnableSensitiveDataLogging()
+    //       .LogTo(Console.WriteLine));
+
+    //        services.AddScoped<AAHREntitiesHelper>();
+
+            services.AddDataAccess();
+            
+            services.AddScoped<IAppConfigService, AppConfigService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IApnpinService, ApnpinService>();
+            services.AddScoped<IProjectDetailService, ProjectDetailService>();
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -54,12 +70,12 @@ namespace DeveloperPortal
             {
                 endpoints.MapRazorPages(); // Correctly map Razor Pages
                 endpoints.MapControllerRoute(name: "default",
-                pattern: "{controller=Dashboard}/{action=GetProjectData}");
+                pattern: "{controller=DashboardService}/{action=GetProjectData}");
             });
                // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",
-              //  pattern: "{controller=Dashboard}/{action=GetProjectData}");
+              //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
 
             app.UseEndpoints(endpoints =>
             {

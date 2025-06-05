@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLotteryApplnAvailMethod
 {
-    public int LutLotteryApplnAvailMethodID { get; set; }
+    public int LutLotteryApplnAvailMethodId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutLotteryApplnAvailMethod
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPLotteryApplnAvailMethodSnap> AssnPMPLotteryApplnAvailMethodSnaps { get; set; } = new List<AssnPMPLotteryApplnAvailMethodSnap>();
+    public virtual ICollection<AssnPmplotteryApplnAvailMethodSnap> AssnPmplotteryApplnAvailMethodSnaps { get; set; } = new List<AssnPmplotteryApplnAvailMethodSnap>();
 
-    public virtual ICollection<AssnPMPLotteryApplnAvailMethod> AssnPMPLotteryApplnAvailMethods { get; set; } = new List<AssnPMPLotteryApplnAvailMethod>();
+    public virtual ICollection<AssnPmplotteryApplnAvailMethod> AssnPmplotteryApplnAvailMethods { get; set; } = new List<AssnPmplotteryApplnAvailMethod>();
 }

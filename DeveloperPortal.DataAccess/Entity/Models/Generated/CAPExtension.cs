@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class CAPExtension
+public partial class Capextension
 {
-    public int CAPExtensionID { get; set; }
+    public int CapextensionId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
     public int ExtnCount { get; set; }
 
@@ -21,7 +21,7 @@ public partial class CAPExtension
 
     public string? Reason { get; set; }
 
-    public string CAPStatus { get; set; } = null!;
+    public string Capstatus { get; set; } = null!;
 
     public string RequestedBy { get; set; } = null!;
 

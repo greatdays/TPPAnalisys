@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnPropertyDistance
 {
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutDistanceTypeID { get; set; }
+    public int LutDistanceTypeId { get; set; }
 
-    public int LutDistanceID { get; set; }
+    public int LutDistanceId { get; set; }
 
     public virtual LutDistance LutDistance { get; set; } = null!;
 

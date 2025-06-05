@@ -3,69 +3,69 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QROccupancyUnit
+public partial class QroccupancyUnit
 {
-    public int QROccupancyUnitID { get; set; }
+    public int QroccupancyUnitId { get; set; }
 
-    public int? QuarterlyReportID { get; set; }
+    public int? QuarterlyReportId { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public string? UnitNum { get; set; }
 
-    public int? BuildingID { get; set; }
+    public int? BuildingId { get; set; }
 
-    public int? LevelID { get; set; }
+    public int? LevelId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
     public string? HouseNum { get; set; }
 
     public string? HouseFracNum { get; set; }
 
-    public string? LutPreDirCD { get; set; }
+    public string? LutPreDirCd { get; set; }
 
     public string? StreetName { get; set; }
 
-    public string? LutStreetTypeCD { get; set; }
+    public string? LutStreetTypeCd { get; set; }
 
     public string? PostDirCd { get; set; }
 
     public string? City { get; set; }
 
-    public string? LutStateCD { get; set; }
+    public string? LutStateCd { get; set; }
 
     public string? Zip { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
-    public int? LutTotalBedroomsID { get; set; }
+    public int? LutTotalBedroomsId { get; set; }
 
-    public int? LutTotalBathroomsID { get; set; }
+    public int? LutTotalBathroomsId { get; set; }
 
-    public int? LutAMIID { get; set; }
+    public int? LutAmiid { get; set; }
 
-    public int? LutRentalSubsidyID { get; set; }
+    public int? LutRentalSubsidyId { get; set; }
 
-    public bool? IsCESUnit { get; set; }
+    public bool? IsCesunit { get; set; }
 
     public bool? IsOccupied { get; set; }
 
-    public int? PreviousProjSitePropSnapShotID { get; set; }
+    public int? PreviousProjSitePropSnapShotId { get; set; }
 
-    public int? PreviousUnitPropSnapShotID { get; set; }
+    public int? PreviousUnitPropSnapShotId { get; set; }
 
     public DateOnly? RelocationDate { get; set; }
 
-    public bool? IsAvailabeFromAUTransferList { get; set; }
+    public bool? IsAvailabeFromAutransferList { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
-    public int? CurrentProjSitePropSnapShotID { get; set; }
+    public int? CurrentProjSitePropSnapShotId { get; set; }
 
-    public bool? IsAvailableFromAUWaitList { get; set; }
+    public bool? IsAvailableFromAuwaitList { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public bool? IsStartTargetedMarket { get; set; }
 
@@ -91,7 +91,7 @@ public partial class QROccupancyUnit
 
     public DateOnly? MoveOutDate { get; set; }
 
-    public int? LutTenantSelectedFromID { get; set; }
+    public int? LutTenantSelectedFromId { get; set; }
 
     public string? OtherReferralSource { get; set; }
 
@@ -109,15 +109,15 @@ public partial class QROccupancyUnit
 
     public DateOnly? LeaseAddendumExpirationDate { get; set; }
 
-    public bool? IsLeaseAddendumProvidedToAcHP { get; set; }
+    public bool? IsLeaseAddendumProvidedToAcHp { get; set; }
 
-    public int? LutOccupancyReasonID { get; set; }
+    public int? LutOccupancyReasonId { get; set; }
 
     public string? OtherOccupancyReason { get; set; }
 
     public DateOnly? TenantMovedToAnotherUnitDate { get; set; }
 
-    public int? LutLeaseAddendumNotExecuteReasonID { get; set; }
+    public int? LutLeaseAddendumNotExecuteReasonId { get; set; }
 
     public string? OtherLeaseAddendumNotExecuteReason { get; set; }
 
@@ -133,7 +133,7 @@ public partial class QROccupancyUnit
 
     public string? PreviousLiveInProperty { get; set; }
 
-    public virtual ICollection<AssnQRRentalSubsidy> AssnQRRentalSubsidies { get; set; } = new List<AssnQRRentalSubsidy>();
+    public virtual ICollection<AssnQrrentalSubsidy> AssnQrrentalSubsidies { get; set; } = new List<AssnQrrentalSubsidy>();
 
     public virtual Structure? Building { get; set; }
 
@@ -143,7 +143,7 @@ public partial class QROccupancyUnit
 
     public virtual Level? Level { get; set; }
 
-    public virtual LutAMI? LutAMI { get; set; }
+    public virtual LutAmi? LutAmi { get; set; }
 
     public virtual LutLeaseAddendumNotExecuteReason? LutLeaseAddendumNotExecuteReason { get; set; }
 

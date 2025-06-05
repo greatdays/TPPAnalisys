@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class BackgroundCheck
 {
-    public int BackgroundCheckID { get; set; }
+    public int BackgroundCheckId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
     public string DeveloperPropMgmt { get; set; } = null!;
 
@@ -17,11 +17,11 @@ public partial class BackgroundCheck
 
     public DateOnly Deadline { get; set; }
 
-    public int? LutFollowUpTypeID { get; set; }
+    public int? LutFollowUpTypeId { get; set; }
 
-    public string? BGCComment { get; set; }
+    public string? Bgccomment { get; set; }
 
-    public DateOnly? BGCSentDate { get; set; }
+    public DateOnly? BgcsentDate { get; set; }
 
     public DateOnly? AnalystReviewDueDate { get; set; }
 
@@ -39,9 +39,9 @@ public partial class BackgroundCheck
 
     public DateTime? DeletedOn { get; set; }
 
-    public virtual ICollection<AssnBGCNonCoveredProperty> AssnBGCNonCoveredProperties { get; set; } = new List<AssnBGCNonCoveredProperty>();
-
     public virtual ICollection<AssnBackgroundCheck> AssnBackgroundChecks { get; set; } = new List<AssnBackgroundCheck>();
+
+    public virtual ICollection<AssnBgcnonCoveredProperty> AssnBgcnonCoveredProperties { get; set; } = new List<AssnBgcnonCoveredProperty>();
 
     public virtual ICollection<BackgroundCheckReport> BackgroundCheckReports { get; set; } = new List<BackgroundCheckReport>();
 

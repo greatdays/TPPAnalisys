@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPLotterySubmitMethod
+public partial class AssnPmplotterySubmitMethod
 {
-    public int AssnPMPLotterySubmitMethodID { get; set; }
+    public int AssnPmplotterySubmitMethodId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? LutLotterySubmitMethodID { get; set; }
+    public int? LutLotterySubmitMethodId { get; set; }
 
     public string? SpecialNote { get; set; }
 
@@ -23,5 +23,5 @@ public partial class AssnPMPLotterySubmitMethod
 
     public virtual LutLotterySubmitMethod? LutLotterySubmitMethod { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 }

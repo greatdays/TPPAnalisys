@@ -11,7 +11,7 @@ public partial class LutDocumentCategory
     /// <summary>
     /// Primary Key Identity column for the LutDocumentCategory table
     /// </summary>
-    public int LutDocumentCategoryID { get; set; }
+    public int LutDocumentCategoryId { get; set; }
 
     /// <summary>
     /// Main category for the document
@@ -61,7 +61,7 @@ public partial class LutDocumentCategory
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public bool IsUserCategory { get; set; }
 

@@ -19,7 +19,7 @@ public partial class LutWithdrawReason
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<CAPDetail> CAPDetails { get; set; } = new List<CAPDetail>();
+    public virtual ICollection<Capdetail> Capdetails { get; set; } = new List<Capdetail>();
 
     public virtual ICollection<EnforcementOrderReviewDetail> EnforcementOrderReviewDetails { get; set; } = new List<EnforcementOrderReviewDetail>();
 }

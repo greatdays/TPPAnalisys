@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAccessLog
+public partial class VwAccessLog
 {
-    public int AccessLogID { get; set; }
+    public int AccessLogId { get; set; }
 
     public string? AppKey { get; set; }
 

@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnOutreachTargetAudience
 {
-    public int AssnTargetAudienceID { get; set; }
+    public int AssnTargetAudienceId { get; set; }
 
-    public int OutreachID { get; set; }
+    public int OutreachId { get; set; }
 
-    public int LutTargetAudienceID { get; set; }
+    public int LutTargetAudienceId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

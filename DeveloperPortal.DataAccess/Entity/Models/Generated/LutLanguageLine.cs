@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLanguageLine
 {
-    public int LutLanguageLineID { get; set; }
+    public int LutLanguageLineId { get; set; }
 
     public string LanguageLine { get; set; } = null!;
 

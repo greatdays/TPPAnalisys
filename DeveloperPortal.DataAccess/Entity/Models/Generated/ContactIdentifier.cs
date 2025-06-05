@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ContactIdentifier
 {
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
-    public int ContactID { get; set; }
+    public int ContactId { get; set; }
 
     public string? ContactType { get; set; }
 
@@ -41,7 +41,7 @@ public partial class ContactIdentifier
 
     public string? PhoneNumber { get; set; }
 
-    public string? Phone_Ext { get; set; }
+    public string? PhoneExt { get; set; }
 
     public string? PhoneHome { get; set; }
 
@@ -55,7 +55,7 @@ public partial class ContactIdentifier
 
     public string? Status { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public string? Attributes { get; set; }
 
@@ -103,13 +103,13 @@ public partial class ContactIdentifier
 
     public string? PictureMain { get; set; }
 
-    public string? IDMUserName { get; set; }
+    public string? IdmuserName { get; set; }
 
     public bool? IsReviewRequired { get; set; }
 
-    public string? apn { get; set; }
+    public string? Apn { get; set; }
 
-    public int? RefContactID { get; set; }
+    public int? RefContactId { get; set; }
 
     public bool? IsEmployee { get; set; }
 
@@ -123,13 +123,13 @@ public partial class ContactIdentifier
 
     public string? MiddleName { get; set; }
 
-    public bool? ISClarityHMISSystem { get; set; }
+    public bool? IsclarityHmissystem { get; set; }
 
-    public string? HMISNo { get; set; }
+    public string? Hmisno { get; set; }
 
     public bool? IsAltContact { get; set; }
 
-    public int? AltContactReferenceID { get; set; }
+    public int? AltContactReferenceId { get; set; }
 
     public int? AltContactReferenceSort { get; set; }
 
@@ -165,9 +165,9 @@ public partial class ContactIdentifier
 
     public virtual ICollection<ContactNameChangeLog> ContactNameChangeLogs { get; set; } = new List<ContactNameChangeLog>();
 
-    public virtual ICollection<HRMApplication> HRMApplicationContactIdentifiers { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> HrmapplicationContactIdentifiers { get; set; } = new List<Hrmapplication>();
 
-    public virtual ICollection<HRMApplication> HRMApplicationHAContactIndentifiers { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> HrmapplicationHacontactIndentifiers { get; set; } = new List<Hrmapplication>();
 
     public virtual LutPhoneType1? LutPhoneTypeCdNavigation { get; set; }
 

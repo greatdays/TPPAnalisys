@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutSiteSurveyGroup
 {
-    public int LutSiteSurveyGroupID { get; set; }
+    public int LutSiteSurveyGroupId { get; set; }
 
     public string SiteSurveyGroup { get; set; } = null!;
 

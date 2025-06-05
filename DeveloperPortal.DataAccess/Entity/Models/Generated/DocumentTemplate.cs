@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class DocumentTemplate
 {
-    public int DocumentTemplateID { get; set; }
+    public int DocumentTemplateId { get; set; }
 
-    public int? LutTemplateID { get; set; }
+    public int? LutTemplateId { get; set; }
 
-    public string? TMSName { get; set; }
+    public string? Tmsname { get; set; }
 
     public string? Description { get; set; }
 

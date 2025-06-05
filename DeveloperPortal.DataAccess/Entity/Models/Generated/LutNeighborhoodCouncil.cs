@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutNeighborhoodCouncil
 {
-    public int? ID { get; set; }
+    public int? Id { get; set; }
 
     public string LayerYearDescription { get; set; } = null!;
 
@@ -19,7 +19,7 @@ public partial class LutNeighborhoodCouncil
 
     public string? GeometryType { get; set; }
 
-    public string? coordinates { get; set; }
+    public string? Coordinates { get; set; }
 
-    public string WKT { get; set; } = null!;
+    public string Wkt { get; set; } = null!;
 }

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPLog
+public partial class Pmplog
 {
-    public int PMPLogId { get; set; }
+    public int PmplogId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int? PropSnapshotID { get; set; }
+    public int? PropSnapshotId { get; set; }
 
-    public int? LutConstructionTypeID { get; set; }
+    public int? LutConstructionTypeId { get; set; }
 
-    public int? LutCESTypeID { get; set; }
+    public int? LutCestypeId { get; set; }
 
     public string? AdmObjSelectionCriteria { get; set; }
 
@@ -29,7 +29,7 @@ public partial class PMPLog
 
     public string? WaitListAddInfo { get; set; }
 
-    public string? WaitListDescForHOPWA { get; set; }
+    public string? WaitListDescForHopwa { get; set; }
 
     public bool IsComplyWaitList { get; set; }
 
@@ -71,7 +71,7 @@ public partial class PMPLog
 
     public string? SpecificPopulationApply { get; set; }
 
-    public bool IsCWLNoPlanAffirmativeMarketing { get; set; }
+    public bool IsCwlnoPlanAffirmativeMarketing { get; set; }
 
     public bool? IsTenantRightsToReturn { get; set; }
 
@@ -81,7 +81,9 @@ public partial class PMPLog
 
     public int? ReturningTenantHearningUnits { get; set; }
 
-    public string? ReturningTenantOccupyAUs { get; set; }
+    public string? ReturningTenantOccupyAus { get; set; }
 
-    public bool? IsProjectUseUHA { get; set; }
+    public bool? IsProjectUseUha { get; set; }
+
+    public bool IsLocked { get; set; }
 }

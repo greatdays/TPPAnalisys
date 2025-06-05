@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class SiteAddressLog
 {
-    public int SiteAddressLogID { get; set; }
+    public int SiteAddressLogId { get; set; }
 
-    public int SiteAddressID { get; set; }
+    public int SiteAddressId { get; set; }
 
-    public int? RefSiteAddressID { get; set; }
+    public int? RefSiteAddressId { get; set; }
 
-    public string? PIN { get; set; }
+    public string? Pin { get; set; }
 
     public string? HouseNum { get; set; }
 

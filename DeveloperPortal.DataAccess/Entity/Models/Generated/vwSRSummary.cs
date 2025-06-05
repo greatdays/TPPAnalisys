@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwSRSummary
+public partial class VwSrsummary
 {
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
-    public int CaseTypeID { get; set; }
+    public int CaseTypeId { get; set; }
 
     public string? CaseNo { get; set; }
 
     public string CaseType { get; set; } = null!;
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
     public string? ProjectName { get; set; }
 
-    public int RefProjectID { get; set; }
+    public int RefProjectId { get; set; }
 
-    public int RefProjectSiteID { get; set; }
+    public int RefProjectSiteId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -39,11 +39,11 @@ public partial class vwSRSummary
 
     public string? YearStart { get; set; }
 
-    public string? AcHPFileProjectNumber { get; set; }
+    public string? AcHpfileProjectNumber { get; set; }
 
-    public string? PrimaryAPN { get; set; }
+    public string? PrimaryApn { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
     public string Region { get; set; } = null!;
 

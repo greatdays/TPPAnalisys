@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EventReminder
 {
-    public int EventReminderID { get; set; }
+    public int EventReminderId { get; set; }
 
-    public int EventID { get; set; }
+    public int EventId { get; set; }
 
-    public int LutEventReminderTypeID { get; set; }
+    public int LutEventReminderTypeId { get; set; }
 
     public DateTime ReminderTime { get; set; }
 
-    public int? NotificationTemplateID { get; set; }
+    public int? NotificationTemplateId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

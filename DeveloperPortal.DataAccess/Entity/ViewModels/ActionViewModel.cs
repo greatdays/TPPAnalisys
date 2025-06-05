@@ -79,7 +79,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 
                     if (!string.IsNullOrEmpty(comment))
                     {
-                        //Add Comment against passed Refrence Type
+                        //Add CommentDetails against passed Refrence Type
                         if ((!string.IsNullOrEmpty(refrenceId) || refrenceType == ReferenceTypeConstants.CaseLog)
                             && !string.IsNullOrEmpty(refrenceType)
                             && refrenceType != ReferenceTypeConstants.Case)
@@ -87,41 +87,41 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                             switch (refrenceType)
                             {
                                 case ReferenceTypeConstants.CaseLog:
-                                    int caseLogId = currentCase.CaseLogs.LastOrDefault().CaseLogID;
-                                    Comment.SaveComment(caseLogId.ToString(), CommentModel.ReferenceType.CaseLog, comment, username, commentJsonAttribute);
+                                    int caseLogId = currentCase.CaseLogs.LastOrDefault().CaseLogId;
+                                    CommentDetails.SaveComment(caseLogId.ToString(), CommentModel.ReferenceType.CaseLog, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.ServiceRequest:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.ServiceRequest, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.ServiceRequest, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.Inspection:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.Inspection, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.Inspection, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.Violation:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.Violation, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.Violation, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.Notice:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.Notice, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.Notice, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.Contact:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.Contact, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.Contact, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.PropSnapshot:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.PropSnapshot, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.PropSnapshot, comment, username, commentJsonAttribute);
                                     break;
                                 case ReferenceTypeConstants.GMCheckList:
-                                    Comment.SaveComment(refrenceId, CommentModel.ReferenceType.GMCheckList, comment, username, commentJsonAttribute);
+                                    CommentDetails.SaveComment(refrenceId, CommentModel.ReferenceType.GMCheckList, comment, username, commentJsonAttribute);
                                     break;
                             }
                         }
                         //Add comment against caseId
-                        //ComCon.Comment.Comment.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), ComCon.Comment.Models.ReferenceType.CaseLog, comment, username);
-                        Comment.SaveComment(Convert.ToString(currentCase.CaseID), CommentModel.ReferenceType.Case, comment, username, commentJsonAttribute);
+                        //ComCon.CommentDetails.CommentDetails.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), ComCon.CommentDetails.Models.ReferenceType.CaseLog, comment, username);
+                        CommentDetails.SaveComment(Convert.ToString(currentCase.CaseId), CommentModel.ReferenceType.Case, comment, username, commentJsonAttribute);
 
                     }
                     if (!string.IsNullOrEmpty(workLog))
                     {
-                        //ComCon.Comment.Comment.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), ComCon.Comment.Models.ReferenceType.CaseLog, workLog, username, IsWorklog: true);
-                        Comment.SaveComment(Convert.ToString(currentCase.CaseID), CommentModel.ReferenceType.Case, workLog, username, worklogJsonAttribute, IsWorklog: true);
+                        //ComCon.CommentDetails.CommentDetails.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), ComCon.CommentDetails.Models.ReferenceType.CaseLog, workLog, username, IsWorklog: true);
+                        CommentDetails.SaveComment(Convert.ToString(currentCase.CaseId), CommentModel.ReferenceType.Case, workLog, username, worklogJsonAttribute, IsWorklog: true);
                     }
 
                     /* Send Notification */
@@ -169,11 +169,11 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 
                         if (!string.IsNullOrEmpty(comment))
                         {
-                            Comment.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), CommentModel.ReferenceType.CaseLog, comment, username);
+                            CommentDetails.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogId), CommentModel.ReferenceType.CaseLog, comment, username);
                         }
                         if (!string.IsNullOrEmpty(workLog))
                         {
-                            Comment.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), CommentModel.ReferenceType.CaseLog, workLog, username, IsWorklog: true);
+                            CommentDetails.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogId), CommentModel.ReferenceType.CaseLog, workLog, username, IsWorklog: true);
                         }
                     }
                     else
@@ -198,7 +198,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             CaseLog caseLog = new CaseLog();
             caseLog.Action = this.ActionName;
             caseLog.FromState = currentCase.Status;
-            caseLog.LastAssigneeID = currentCase.AssigneeID;
+            caseLog.LastAssigneeId = currentCase.AssigneeId;
             caseLog.LastAssigneeName = currentCase.AssigneeName;
             caseLog.CaseComment = comment;
             caseLog.WorkLog = workLog;
@@ -206,49 +206,49 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             /* Update assignee */
             if (!string.IsNullOrEmpty(this.AssigneeId))
             {
-                currentCase.AssigneeID = this.AssigneeId;
+                currentCase.AssigneeId = this.AssigneeId;
                 currentCase.AssigneeName = this.AssigneeName ?? this.AssigneeId;
             }
-            caseLog.NewAssigneeID = currentCase.AssigneeID;
+            caseLog.NewAssigneeId = currentCase.AssigneeId;
             caseLog.NewAssigneeName = currentCase.AssigneeName;
 
             /* Get Workflow definition and update case status */
             using (var comconDB = new AAHREntities())
             {
-                int wfDefinitionId = Convert.ToInt32(currentCase.CaseType.WfDefinitionID);
-                WF_Definition wfDefinition = comconDB.WF_Definitions.Find(wfDefinitionId);
+                int wfDefinitionId = Convert.ToInt32(currentCase.CaseType.WfDefinitionId);
+                WfDefinition wfDefinition = comconDB?.WfDefinitions?.Find(wfDefinitionId);
 
                 if (null != wfDefinition)
                 {
                     //Get Current State of the case
-                    int currentCaseStatusID = wfDefinition.WF_State.FirstOrDefault(m => m.Name == currentCase.Status).Id;
+                    //int currentCaseStatusID = wfDefinition.WfStates.FirstOrDefault(m => m.Name == currentCase.Status).Id;
 
-                    /* Get new destination state */
-                    var action = wfDefinition
-                                        .WF_Action.Where(m => m.Name == this.ActionName && m.SourceStateID == currentCaseStatusID).FirstOrDefault();
-                    var state = action != null ? action.WF_State : null;
-                    currentCase.Status = state != null ? state.Name : currentCase.Status;
+                    ///* Get new destination state */
+                    //var action = wfDefinition
+                    //                    .WfActions.Where(m => m.Name == this.ActionName && m.SourceStateId == currentCaseStatusID).FirstOrDefault();
+                    //var state = action != null ? action.WfStates : null;
+                    //currentCase.Status = state != null ? state.Name : currentCase.Status;
 
-                    /* Update Case log */
-                    caseLog.ToState = currentCase.Status;
-                    this.CaseStatus = currentCase.Status;
+                    ///* Update Case log */
+                    //caseLog.ToState = currentCase.Status;
+                    //this.CaseStatus = currentCase.Status;
 
-                    /*Get Due Days and IsTask from State table*/
-                    if (action != null)
-                    {
-                        if (action.SourceStateID != action.DestinationStateID)
-                        {
-                            currentCase.MaxStatusDays = state.DueDays;
-                            currentCase.IsTask = state.IsTask;
-                            currentCase.StatusModifiedOn = DateOnly.FromDateTime(DateTime.Now);
+                    ///*Get Due Days and IsTask from State table*/
+                    //if (action != null)
+                    //{
+                    //    if (action.SourceStateId != action.DestinationStateId)
+                    //    {
+                    //        currentCase.MaxStatusDays = state.DueDays;
+                    //        currentCase.IsTask = state.IsTask;
+                    //        currentCase.StatusModifiedOn = DateOnly.FromDateTime(DateTime.Now);
 
-                            //set automatic schedular properties
-                            currentCase.IsAuto = state.IsAuto;
-                            currentCase.AutoMaxStatusDays = state.AutoDefaultStatusDays;
-                            currentCase.AutoNextAction = state.WF_Action2 != null ? state.WF_Action2.Name : null;
-                            currentCase.AutoStautsModifiedOn = DateTime.Now;
-                        }
-                    }
+                    //        //set automatic schedular properties
+                    //        currentCase.IsAuto = state.IsAuto;
+                    //        currentCase.AutoMaxStatusDays = state.AutoDefaultStatusDays;
+                    //        currentCase.AutoNextAction = state.WF_Action2 != null ? state.WF_Action2.Name : null;
+                    //        currentCase.AutoStautsModifiedOn = DateTime.Now;
+                    //    }
+                    //}
                 }
                 else
                 {
@@ -301,11 +301,11 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                 CaseLog caseLog = new CaseLog();
                 caseLog.Action = actionName;
                 caseLog.FromState = currentCase.Status;
-                caseLog.LastAssigneeID = currentCase.AssigneeID;
+                caseLog.LastAssigneeId = currentCase.AssigneeId;
                 caseLog.LastAssigneeName = currentCase.AssigneeName;
                 if (!string.IsNullOrEmpty(newAssigneeID) && !string.IsNullOrEmpty(newAssigneeName))
                 {
-                    caseLog.LastAssigneeID = newAssigneeID;
+                    caseLog.LastAssigneeId = newAssigneeID;
                     caseLog.LastAssigneeName = newAssigneeName;
                 }
                 currentCase.CaseLogs.Add(caseLog);
@@ -313,7 +313,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 
                 if (!string.IsNullOrEmpty(comment))
                 {
-                    Comment.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogID), CommentModel.ReferenceType.CaseLog, comment, username);
+                    CommentDetails.SaveComment(Convert.ToString(currentCase.CaseLogs.LastOrDefault().CaseLogId), CommentModel.ReferenceType.CaseLog, comment, username);
                 }
             }
         }

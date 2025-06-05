@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutDeniedConsentUserType
 {
-    public int LutDeniedConsentUserTypeID { get; set; }
+    public int LutDeniedConsentUserTypeId { get; set; }
 
     public string? Name { get; set; }
 

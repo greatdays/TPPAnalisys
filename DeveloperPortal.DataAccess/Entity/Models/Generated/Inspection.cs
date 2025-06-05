@@ -8,15 +8,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class Inspection
 {
-    public int InspectionID { get; set; }
+    public int InspectionId { get; set; }
 
-    public int? PropSnapshotID { get; set; }
+    public int? PropSnapshotId { get; set; }
 
-    public int? LocationID { get; set; }
+    public int? LocationId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int? LutInspectionTypeID { get; set; }
+    public int? LutInspectionTypeId { get; set; }
 
     public DateTime? InspectedOn { get; set; }
 
@@ -26,11 +26,11 @@ public partial class Inspection
 
     public string? InspectionResult { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
-    public int? EventID { get; set; }
+    public int? EventId { get; set; }
 
-    public int? MainInspectionID { get; set; }
+    public int? MainInspectionId { get; set; }
 
     public string? Attributes { get; set; }
 

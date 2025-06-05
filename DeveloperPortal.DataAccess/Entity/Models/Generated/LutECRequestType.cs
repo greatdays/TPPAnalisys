@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutECRequestType
+public partial class LutEcrequestType
 {
-    public int LutECRequestTypeID { get; set; }
+    public int LutEcrequestTypeId { get; set; }
 
-    public string ECRequestType { get; set; } = null!;
+    public string EcrequestType { get; set; } = null!;
 
     public bool? IsAbsolute { get; set; }
 
@@ -25,7 +25,7 @@ public partial class LutECRequestType
 
     public virtual ICollection<EffectiveCommunication> EffectiveCommunications { get; set; } = new List<EffectiveCommunication>();
 
-    public virtual ICollection<LutECType> LutECTypes { get; set; } = new List<LutECType>();
+    public virtual ICollection<LutEctype> LutEctypes { get; set; } = new List<LutEctype>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 }

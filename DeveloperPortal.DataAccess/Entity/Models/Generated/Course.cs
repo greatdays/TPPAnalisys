@@ -11,7 +11,7 @@ public partial class Course
     /// <summary>
     /// Primary Key Identity column for the Course table
     /// </summary>
-    public int CourseID { get; set; }
+    public int CourseId { get; set; }
 
     /// <summary>
     /// an unquie code for the course
@@ -31,7 +31,7 @@ public partial class Course
     /// <summary>
     /// From inital design , do not use.
     /// </summary>
-    public int LutAudienceCD { get; set; }
+    public int LutAudienceCd { get; set; }
 
     /// <summary>
     /// Course start provide since
@@ -71,11 +71,11 @@ public partial class Course
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public bool? IsRequiresLinkedProperties { get; set; }
 
-    public int? LutCourseTypeID { get; set; }
+    public int? LutCourseTypeId { get; set; }
 
     public bool? IsNoCertificateExpiration { get; set; }
 

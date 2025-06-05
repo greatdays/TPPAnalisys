@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPPSHClientServingOrganizationSnap
+public partial class PmppshclientServingOrganizationSnap
 {
-    public int PMPPSHClientServingOrganizationSnapID { get; set; }
+    public int PmppshclientServingOrganizationSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
     public string? OrganizationName { get; set; }
 
@@ -29,5 +29,5 @@ public partial class PMPPSHClientServingOrganizationSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 }

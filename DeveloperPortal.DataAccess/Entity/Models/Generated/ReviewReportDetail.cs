@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ReviewReportDetail
 {
-    public int ReviewReportDetailID { get; set; }
+    public int ReviewReportDetailId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
     public DateOnly? ReportDate { get; set; }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAspNetRole
+public partial class VwAspNetRole
 {
     public int RoleId { get; set; }
 

@@ -8,7 +8,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class LutCertificateType
 {
-    public int LutCertificateTypeID { get; set; }
+    public int LutCertificateTypeId { get; set; }
 
     public string ComplianceType { get; set; } = null!;
 
@@ -22,7 +22,7 @@ public partial class LutCertificateType
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 }

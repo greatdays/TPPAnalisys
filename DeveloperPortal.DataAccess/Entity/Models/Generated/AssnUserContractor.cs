@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnUserContractor
 {
-    public int UserID { get; set; }
+    public int UserId { get; set; }
 
     public string? ContractorName { get; set; }
 

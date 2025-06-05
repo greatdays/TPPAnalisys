@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutOutOfScopeType
 {
-    public int LutOutOfScopeTypeID { get; set; }
+    public int LutOutOfScopeTypeId { get; set; }
 
     public string? Name { get; set; }
 

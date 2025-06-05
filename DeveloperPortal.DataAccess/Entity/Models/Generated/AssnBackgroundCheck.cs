@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnBackgroundCheck
 {
-    public int AssnBackgroundCheckID { get; set; }
+    public int AssnBackgroundCheckId { get; set; }
 
-    public int BackgroundCheckID { get; set; }
+    public int BackgroundCheckId { get; set; }
 
-    public int PropSnapShotID { get; set; }
+    public int PropSnapShotId { get; set; }
 
     public bool IsDeleted { get; set; }
 

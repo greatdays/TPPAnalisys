@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPAgency
+public partial class Pmpagency
 {
-    public int PMPAgencyID { get; set; }
+    public int PmpagencyId { get; set; }
 
-    public string? PMPAgencyName { get; set; }
+    public string? PmpagencyName { get; set; }
 
-    public string? PMPAgencyContactName { get; set; }
+    public string? PmpagencyContactName { get; set; }
 
-    public string? PMPAgencyAddress { get; set; }
+    public string? PmpagencyAddress { get; set; }
 
-    public string? PMPAgencyPhoneNumber { get; set; }
+    public string? PmpagencyPhoneNumber { get; set; }
 
-    public string? PMPAgencyEmail { get; set; }
+    public string? PmpagencyEmail { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -25,5 +25,5 @@ public partial class PMPAgency
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPAgency> AssnPMPAgencies { get; set; } = new List<AssnPMPAgency>();
+    public virtual ICollection<AssnPmpagency> AssnPmpagencies { get; set; } = new List<AssnPmpagency>();
 }

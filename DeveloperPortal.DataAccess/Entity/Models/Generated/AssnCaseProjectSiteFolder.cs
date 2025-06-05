@@ -5,19 +5,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnCaseProjectSiteFolder
 {
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
-    public int ProjectID { get; set; }
+    public int ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? FolderName { get; set; }
 
-    public string? FolderID { get; set; }
+    public string? FolderId { get; set; }
 
     public string? FolderLink { get; set; }
 
-    public string? FolderJSON { get; set; }
+    public string? FolderJson { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

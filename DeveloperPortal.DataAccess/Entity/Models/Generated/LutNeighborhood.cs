@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutNeighborhood
 {
-    public int NeighborhoodID { get; set; }
+    public int NeighborhoodId { get; set; }
 
     public string Type { get; set; } = null!;
 
@@ -13,13 +13,13 @@ public partial class LutNeighborhood
 
     public string? Location { get; set; }
 
-    public int? ParentNeighborhoodID { get; set; }
+    public int? ParentNeighborhoodId { get; set; }
 
     public string? GeoJsonGeometryType { get; set; }
 
     public string? GeoJsonCoordinates { get; set; }
 
-    public string? WKT { get; set; }
+    public string? Wkt { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -29,5 +29,5 @@ public partial class LutNeighborhood
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid? RowID { get; set; }
+    public Guid? RowId { get; set; }
 }

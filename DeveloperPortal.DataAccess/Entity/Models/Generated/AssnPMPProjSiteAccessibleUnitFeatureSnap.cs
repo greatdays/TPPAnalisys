@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPProjSiteAccessibleUnitFeatureSnap
+public partial class AssnPmpprojSiteAccessibleUnitFeatureSnap
 {
-    public int AssnPMPProjSiteAccessibleUnitFeatureSnapID { get; set; }
+    public int AssnPmpprojSiteAccessibleUnitFeatureSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutAccessibleUnitFeatureID { get; set; }
+    public int LutAccessibleUnitFeatureId { get; set; }
 
     public string? SpecialNote { get; set; }
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public partial class AssnPMPProjSiteAccessibleUnitFeatureSnap
 
     public virtual LutAccessibleUnitFeature LutAccessibleUnitFeature { get; set; } = null!;
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 
     public virtual ProjectSiteAttribute ProjectSiteAttribute { get; set; } = null!;
 }

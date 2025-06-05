@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutProjectSiteQuestion
 {
-    public int LutProjectSiteQuestionID { get; set; }
+    public int LutProjectSiteQuestionId { get; set; }
 
     public string Question { get; set; } = null!;
 
@@ -33,7 +33,7 @@ public partial class LutProjectSiteQuestion
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnHRMApplicationPropQuestion> AssnHRMApplicationPropQuestions { get; set; } = new List<AssnHRMApplicationPropQuestion>();
+    public virtual ICollection<AssnHrmapplicationPropQuestion> AssnHrmapplicationPropQuestions { get; set; } = new List<AssnHrmapplicationPropQuestion>();
 
     public virtual ICollection<AssnProjectSiteQuestion> AssnProjectSiteQuestions { get; set; } = new List<AssnProjectSiteQuestion>();
 }

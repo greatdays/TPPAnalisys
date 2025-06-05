@@ -5,19 +5,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnPropertyAccountContactSnapShot1
 {
-    public int ID { get; set; }
+    public int Id { get; set; }
 
     public DateTime CaptureDate { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
     public string? FileNumber { get; set; }
 
     public string? LinkType { get; set; }
 
-    public int? ContactID { get; set; }
+    public int? ContactId { get; set; }
 
-    public int? LutContactTypeID { get; set; }
+    public int? LutContactTypeId { get; set; }
 
     public string? ContactType { get; set; }
 

@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class PropAttribute
 {
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int LutPropAttributeID { get; set; }
+    public int LutPropAttributeId { get; set; }
 
     public string FlagValue { get; set; } = null!;
 

@@ -8,19 +8,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class ServiceRequest
 {
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
-    public int LutServiceRequestTypeID { get; set; }
+    public int LutServiceRequestTypeId { get; set; }
 
     public string? ServiceRequestNumber { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
-    public int? LutComplianceStatusID { get; set; }
+    public int? LutComplianceStatusId { get; set; }
 
-    public int? LutInspectionStatusID { get; set; }
+    public int? LutInspectionStatusId { get; set; }
 
     public bool? IsLocked { get; set; }
 
@@ -38,11 +38,11 @@ public partial class ServiceRequest
 
     public DateTime? ModifiedOn { get; set; }
 
-    public int? LutProgramCycleID { get; set; }
+    public int? LutProgramCycleId { get; set; }
 
-    public virtual ICollection<AssnSRCAPChecklistItemStatus> AssnSRCAPChecklistItemStatuses { get; set; } = new List<AssnSRCAPChecklistItemStatus>();
+    public virtual ICollection<AssnSrcapchecklistItemStatus> AssnSrcapchecklistItemStatuses { get; set; } = new List<AssnSrcapchecklistItemStatus>();
 
-    public virtual ICollection<AssnSRReviewReportItemStatus> AssnSRReviewReportItemStatuses { get; set; } = new List<AssnSRReviewReportItemStatus>();
+    public virtual ICollection<AssnSrreviewReportItemStatus> AssnSrreviewReportItemStatuses { get; set; } = new List<AssnSrreviewReportItemStatus>();
 
     public virtual ICollection<AuditVisitDetail> AuditVisitDetails { get; set; } = new List<AuditVisitDetail>();
 
@@ -52,13 +52,13 @@ public partial class ServiceRequest
 
     public virtual ICollection<BidPackage> BidPackageSiteCaseServiceRequests { get; set; } = new List<BidPackage>();
 
-    public virtual ICollection<CAPDetail> CAPDetails { get; set; } = new List<CAPDetail>();
+    public virtual ICollection<Capdetail> Capdetails { get; set; } = new List<Capdetail>();
 
-    public virtual ICollection<CAPExtension> CAPExtensions { get; set; } = new List<CAPExtension>();
-
-    public virtual ICollection<CCDetail> CCDetails { get; set; } = new List<CCDetail>();
+    public virtual ICollection<Capextension> Capextensions { get; set; } = new List<Capextension>();
 
     public virtual Case Case { get; set; } = null!;
+
+    public virtual ICollection<Ccdetail> Ccdetails { get; set; } = new List<Ccdetail>();
 
     public virtual ICollection<Certificate> Certificates { get; set; } = new List<Certificate>();
 
@@ -70,7 +70,7 @@ public partial class ServiceRequest
 
     public virtual ICollection<Extension> Extensions { get; set; } = new List<Extension>();
 
-    public virtual ICollection<HRMApplication> HRMApplications { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> Hrmapplications { get; set; } = new List<Hrmapplication>();
 
     public virtual ICollection<ImportantDate> ImportantDates { get; set; } = new List<ImportantDate>();
 
@@ -92,9 +92,9 @@ public partial class ServiceRequest
 
     public virtual ICollection<NoticeOfObligation> NoticeOfObligations { get; set; } = new List<NoticeOfObligation>();
 
-    public virtual ICollection<PMPSnap> PMPSnaps { get; set; } = new List<PMPSnap>();
+    public virtual ICollection<Pmp> Pmps { get; set; } = new List<Pmp>();
 
-    public virtual ICollection<PMP> PMPs { get; set; } = new List<PMP>();
+    public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 
     public virtual ICollection<PolicyComplianceDetail> PolicyComplianceDetails { get; set; } = new List<PolicyComplianceDetail>();
 
@@ -108,7 +108,7 @@ public partial class ServiceRequest
 
     public virtual ICollection<ServiceRequestContact> ServiceRequestContacts { get; set; } = new List<ServiceRequestContact>();
 
-    public virtual ICollection<ServiceRequestGMCheckList> ServiceRequestGMCheckLists { get; set; } = new List<ServiceRequestGMCheckList>();
+    public virtual ICollection<ServiceRequestGmcheckList> ServiceRequestGmcheckLists { get; set; } = new List<ServiceRequestGmcheckList>();
 
     public virtual ICollection<SurveyReport> SurveyReports { get; set; } = new List<SurveyReport>();
 

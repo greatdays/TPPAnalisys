@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPProjTypeSiteAttr
+public partial class AssnPmpprojTypeSiteAttr
 {
-    public int AssnPMPProjTypeSiteAttrID { get; set; }
+    public int AssnPmpprojTypeSiteAttrId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutPMPProjTypeID { get; set; }
+    public int LutPmpprojTypeId { get; set; }
 
     public string? SpecialNote { get; set; }
 
@@ -21,7 +21,7 @@ public partial class AssnPMPProjTypeSiteAttr
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual LutPMPProjType LutPMPProjType { get; set; } = null!;
+    public virtual LutPmpprojType LutPmpprojType { get; set; } = null!;
 
     public virtual ProjectSiteAttribute ProjectSiteAttribute { get; set; } = null!;
 }

@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnBidScopeOfWork
 {
-    public int AssnBidScopeOfWorkID { get; set; }
+    public int AssnBidScopeOfWorkId { get; set; }
 
-    public int BidPackageID { get; set; }
+    public int BidPackageId { get; set; }
 
-    public int LutScopeItemID { get; set; }
+    public int LutScopeItemId { get; set; }
 
     public string? Location { get; set; }
 

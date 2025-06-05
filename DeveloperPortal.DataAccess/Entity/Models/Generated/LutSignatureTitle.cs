@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutSignatureTitle
 {
-    public int LutSignatureTitleID { get; set; }
+    public int LutSignatureTitleId { get; set; }
 
     public string SignatureTitle { get; set; } = null!;
 
@@ -25,5 +25,5 @@ public partial class LutSignatureTitle
 
     public virtual ICollection<FairHousing> FairHousings { get; set; } = new List<FairHousing>();
 
-    public virtual ICollection<QRFairHousing> QRFairHousings { get; set; } = new List<QRFairHousing>();
+    public virtual ICollection<QrfairHousing> QrfairHousings { get; set; } = new List<QrfairHousing>();
 }

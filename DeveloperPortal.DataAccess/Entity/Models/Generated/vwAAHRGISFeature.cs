@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAAHRGISFeature
+public partial class VwAahrgisfeature
 {
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? ProjectName { get; set; }
 
@@ -15,7 +15,7 @@ public partial class vwAAHRGISFeature
 
     public bool? IsCoveredProperty { get; set; }
 
-    public decimal? LAT { get; set; }
+    public decimal? Lat { get; set; }
 
-    public decimal? lon { get; set; }
+    public decimal? Lon { get; set; }
 }

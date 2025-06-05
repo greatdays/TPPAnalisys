@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnWalkInApplicationDeclineReason
 {
-    public int AssnWalkInApplicationDeclineReasonID { get; set; }
+    public int AssnWalkInApplicationDeclineReasonId { get; set; }
 
-    public int AUWaitListID { get; set; }
+    public int AuwaitListId { get; set; }
 
-    public int LutApplicationDeclineReasonID { get; set; }
+    public int LutApplicationDeclineReasonId { get; set; }
 
     public string? Text { get; set; }
 
@@ -23,7 +23,7 @@ public partial class AssnWalkInApplicationDeclineReason
 
     public string? ModifiedBy { get; set; }
 
-    public virtual AUWaitList AUWaitList { get; set; } = null!;
+    public virtual AuwaitList AuwaitList { get; set; } = null!;
 
     public virtual LutApplicationDeclineReason LutApplicationDeclineReason { get; set; } = null!;
 }

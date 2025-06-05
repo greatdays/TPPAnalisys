@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnInspectionViolation
 {
-    public int InspectionID { get; set; }
+    public int InspectionId { get; set; }
 
-    public int ViolationID { get; set; }
+    public int ViolationId { get; set; }
 
     public string? Operation { get; set; }
 

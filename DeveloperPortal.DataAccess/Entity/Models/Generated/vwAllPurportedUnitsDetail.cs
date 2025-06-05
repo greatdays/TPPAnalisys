@@ -3,31 +3,31 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAllPurportedUnitsDetail
+public partial class VwAllPurportedUnitsDetail
 {
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string UnitNum { get; set; } = null!;
 
     public string IsAccessible { get; set; } = null!;
 
-    public string? No__of_Bedrooms { get; set; }
+    public string? NoOfBedrooms { get; set; }
 
-    public string Accessibility_Feature { get; set; } = null!;
+    public string AccessibilityFeature { get; set; } = null!;
 
-    public string Affordability_Level_AMI { get; set; } = null!;
+    public string AffordabilityLevelAmi { get; set; } = null!;
 
-    public string Funding_Restriction { get; set; } = null!;
+    public string FundingRestriction { get; set; } = null!;
 
-    public string Program_Eligibility { get; set; } = null!;
+    public string ProgramEligibility { get; set; } = null!;
 
-    public bool IsCES { get; set; }
+    public bool IsCes { get; set; }
 
-    public bool Occupant_Disabled { get; set; }
+    public bool OccupantDisabled { get; set; }
 
-    public bool Lease_Addendum { get; set; }
+    public bool LeaseAddendum { get; set; }
 
     public DateOnly? LeaseAddendumExecutedDate { get; set; }
 
-    public DateOnly? Move_In_Date { get; set; }
+    public DateOnly? MoveInDate { get; set; }
 }

@@ -7,6 +7,8 @@ public partial class LutApplicableAccessibilityStandard
 {
     public int LutApplicableAccessibilityStandardId { get; set; }
 
+    public string? Key { get; set; }
+
     public string? Name { get; set; }
 
     public bool? IsDeleted { get; set; }

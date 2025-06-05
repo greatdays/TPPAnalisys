@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutStopWorkOrderReasonType
 {
-    public int LutStopWorkOrderReasonTypeID { get; set; }
+    public int LutStopWorkOrderReasonTypeId { get; set; }
 
     public string? Name { get; set; }
 

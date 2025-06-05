@@ -8,19 +8,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class AuditVisitDetail
 {
-    public int AuditVisitDetailID { get; set; }
+    public int AuditVisitDetailId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int? CaseLogID { get; set; }
+    public int? CaseLogId { get; set; }
 
     public string? VisitType { get; set; }
 
     public DateTime? ScheduleDate { get; set; }
 
-    public string ContactHistoryID { get; set; } = null!;
+    public string ContactHistoryId { get; set; } = null!;
 
     public string? VisitLocation { get; set; }
 
@@ -38,7 +38,7 @@ public partial class AuditVisitDetail
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public string? Attributes { get; set; }
 

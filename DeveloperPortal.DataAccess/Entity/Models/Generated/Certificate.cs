@@ -8,15 +8,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class Certificate
 {
-    public int CertificateID { get; set; }
+    public int CertificateId { get; set; }
 
-    public int? AchpProjectID { get; set; }
+    public int? AchpProjectId { get; set; }
 
-    public int LutCertificateTypeID { get; set; }
+    public int LutCertificateTypeId { get; set; }
 
     public string? CertificationNum { get; set; }
 
-    public int? CaseID { get; set; }
+    public int? CaseId { get; set; }
 
     public DateOnly? IssueDate { get; set; }
 
@@ -32,9 +32,9 @@ public partial class Certificate
 
     public DateTime ModifiedOn { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -44,7 +44,7 @@ public partial class Certificate
 
     public string? Title { get; set; }
 
-    public int? OrganizationID { get; set; }
+    public int? OrganizationId { get; set; }
 
     public virtual Case? Case { get; set; }
 

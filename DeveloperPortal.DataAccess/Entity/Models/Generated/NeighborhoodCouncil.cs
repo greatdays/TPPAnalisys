@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class NeighborhoodCouncil
 {
-    public int? ID { get; set; }
+    public int? Id { get; set; }
 
     public string LayerInfo { get; set; } = null!;
 
@@ -17,9 +17,9 @@ public partial class NeighborhoodCouncil
 
     public string? GeometryType { get; set; }
 
-    public string? coordinates { get; set; }
+    public string? Coordinates { get; set; }
 
-    public string? WKT { get; set; }
+    public string? Wkt { get; set; }
 
     public DateOnly? CreatedOn { get; set; }
 

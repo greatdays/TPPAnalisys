@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class UnitSnap
 {
-    public int UnitSnapID { get; set; }
+    public int UnitSnapId { get; set; }
 
-    public int ProjectSiteSnapID { get; set; }
+    public int ProjectSiteSnapId { get; set; }
 
-    public int UnitID { get; set; }
+    public int UnitId { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
-    public int UnitPropSnapshotID { get; set; }
+    public int UnitPropSnapshotId { get; set; }
 
     public string? UnitNo { get; set; }
 
@@ -21,23 +21,23 @@ public partial class UnitSnap
 
     public string? SiteAddress { get; set; }
 
-    public int? UnitAttributeID { get; set; }
+    public int? UnitAttributeId { get; set; }
 
-    public int? TotalBedroomID { get; set; }
+    public int? TotalBedroomId { get; set; }
 
-    public int? TotalBathroomID { get; set; }
+    public int? TotalBathroomId { get; set; }
 
     public bool? IsOccupiedByDisabled { get; set; }
 
     public bool? IsOccupied { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
-    public int? LutAMIID { get; set; }
+    public int? LutAmiid { get; set; }
 
     public string? OtherRentalsubsidy { get; set; }
 
-    public bool? IsCES { get; set; }
+    public bool? IsCes { get; set; }
 
     public int? IsAddendumSigned { get; set; }
 
@@ -63,21 +63,21 @@ public partial class UnitSnap
 
     public string? PreviousTenantMoved { get; set; }
 
-    public int? PreviousProjSitePropSnapShotID { get; set; }
+    public int? PreviousProjSitePropSnapShotId { get; set; }
 
-    public int? PreviousUnitPropSnapShotID { get; set; }
+    public int? PreviousUnitPropSnapShotId { get; set; }
 
     public DateOnly? RelocationDate { get; set; }
 
-    public bool? IsAvailableFromTransferAUWaitList { get; set; }
+    public bool? IsAvailableFromTransferAuwaitList { get; set; }
 
-    public int? CurrentProjSitePropSnapShotID { get; set; }
+    public int? CurrentProjSitePropSnapShotId { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
-    public bool? IsAvailableFromAUWaitList { get; set; }
+    public bool? IsAvailableFromAuwaitList { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public bool? IsStartTargetedMarket { get; set; }
 
@@ -101,7 +101,7 @@ public partial class UnitSnap
 
     public DateOnly? MovedInDate { get; set; }
 
-    public int? LutTenantSelectedFromID { get; set; }
+    public int? LutTenantSelectedFromId { get; set; }
 
     public string? OtherReferralSource { get; set; }
 
@@ -119,19 +119,19 @@ public partial class UnitSnap
 
     public DateOnly? LeaseAddendumExpirationDate { get; set; }
 
-    public bool? IsLeaseAddendumProvidedToAcHP { get; set; }
+    public bool? IsLeaseAddendumProvidedToAcHp { get; set; }
 
-    public int? LutOccupancyReasonID { get; set; }
+    public int? LutOccupancyReasonId { get; set; }
 
     public string? OtherOccupancyReason { get; set; }
 
     public DateOnly? TenantMovedToAnotherUnitDate { get; set; }
 
-    public int? LutLeaseAddendumNotExecuteReasonID { get; set; }
+    public int? LutLeaseAddendumNotExecuteReasonId { get; set; }
 
     public string? OtherLeaseAddendumNotExecuteReason { get; set; }
 
-    public int? LutFixedFloatingUnitID { get; set; }
+    public int? LutFixedFloatingUnitId { get; set; }
 
     public int? LutAccessibilityComplianceStatusId { get; set; }
 

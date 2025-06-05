@@ -11,7 +11,7 @@ public partial class CfgNextRun
     /// <summary>
     /// Primary Key Identity column for the CfgNextRun table
     /// </summary>
-    public int CfgNextRunID { get; set; }
+    public int CfgNextRunId { get; set; }
 
     /// <summary>
     /// Description for this record
@@ -46,7 +46,7 @@ public partial class CfgNextRun
     /// <summary>
     /// The date that the sequence reset
     /// </summary>
-    public string? LastResetYYMMDD { get; set; }
+    public string? LastResetYymmdd { get; set; }
 
     /// <summary>
     /// formula use for computer logic
@@ -91,11 +91,11 @@ public partial class CfgNextRun
     /// <summary>
     /// Unique ID in system
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public string? SeqTable { get; set; }
 
-    public string? SeqUID { get; set; }
+    public string? SeqUid { get; set; }
 
     public string? SeqField { get; set; }
 

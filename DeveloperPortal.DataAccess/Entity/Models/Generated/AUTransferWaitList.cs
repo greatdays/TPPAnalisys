@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AUTransferWaitList
+public partial class AutransferWaitList
 {
-    public int AUTransferWaitListID { get; set; }
+    public int AutransferWaitListId { get; set; }
 
-    public string? AUTWLNumber { get; set; }
+    public string? Autwlnumber { get; set; }
 
-    public int? ProjSitePropSnapShotID { get; set; }
+    public int? ProjSitePropSnapShotId { get; set; }
 
-    public int? CurrentUnitProjectSiteID { get; set; }
+    public int? CurrentUnitProjectSiteId { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -23,29 +23,35 @@ public partial class AUTransferWaitList
 
     public DateTime? TransferRequestDate { get; set; }
 
-    public bool? IsPreviousAUWaitList { get; set; }
+    public bool? IsPreviousAuwaitList { get; set; }
 
     public DateTime? AccessibilieWaitListDate { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
     public string? AccessibilityRequest { get; set; }
 
-    public int? LutTotalBedroomID { get; set; }
+    public bool? IsTenantRequestRarmpendingTransfer { get; set; }
 
-    public int? LutTotalBathroomID { get; set; }
+    public DateTime? DateRarmrequestPlacedOnRarmlog { get; set; }
+
+    public int? LutTotalBedroomId { get; set; }
+
+    public int? LutTotalBathroomId { get; set; }
 
     public bool IsTransferred { get; set; }
 
     public DateTime? MovedInDate { get; set; }
 
-    public int? MoveInProjectSiteID { get; set; }
+    public int? MoveInProjectSiteId { get; set; }
 
-    public int? MoveInUnitPropSnapShotID { get; set; }
+    public int? MoveInUnitPropSnapShotId { get; set; }
 
-    public int? LutTransferWaitListReasonID { get; set; }
+    public int? LutTransferWaitListReasonId { get; set; }
 
     public DateTime? ReasonDate { get; set; }
+
+    public string? DeterminationExplanation { get; set; }
 
     public string? Comment { get; set; }
 
@@ -75,5 +81,5 @@ public partial class AUTransferWaitList
 
     public virtual PropSnapshot? MoveInUnitPropSnapShot { get; set; }
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitLists { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitLists { get; set; } = new List<QrautransferWaitList>();
 }

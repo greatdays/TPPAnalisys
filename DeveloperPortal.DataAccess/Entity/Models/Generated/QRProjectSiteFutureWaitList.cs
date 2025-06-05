@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRProjectSiteFutureWaitList
+public partial class QrprojectSiteFutureWaitList
 {
-    public int QRProjectSiteFutureWaitListID { get; set; }
+    public int QrprojectSiteFutureWaitListId { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int ProjectSiteFutureWaitListID { get; set; }
+    public int ProjectSiteFutureWaitListId { get; set; }
 
     public bool? IsWaitListOpenInFuture { get; set; }
 
-    public int? NoOfApplicantOnCUWL { get; set; }
+    public int? NoOfApplicantOnCuwl { get; set; }
 
-    public int? NoOfApplicantOnCUWLSeekAH { get; set; }
+    public int? NoOfApplicantOnCuwlseekAh { get; set; }
 
     public bool? IsPlanToConductOutReach { get; set; }
 

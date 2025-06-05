@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnGrievanceTypeMultiSelectOption
 {
-    public int GrievanceTypeID { get; set; }
+    public int GrievanceTypeId { get; set; }
 
-    public int LutMultiSelectOptionsID { get; set; }
+    public int LutMultiSelectOptionsId { get; set; }
 
     public string? MoreDetails { get; set; }
 

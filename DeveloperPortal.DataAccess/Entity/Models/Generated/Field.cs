@@ -9,9 +9,9 @@ public partial class Field
 
     public int? FormId { get; set; }
 
-    public int? ParentID { get; set; }
+    public int? ParentId { get; set; }
 
-    public int? ReferenceID { get; set; }
+    public int? ReferenceId { get; set; }
 
     public string? UniqueId { get; set; }
 
@@ -37,7 +37,7 @@ public partial class Field
 
     public int? FieldOrder { get; set; }
 
-    public string? FieldJSON { get; set; }
+    public string? FieldJson { get; set; }
 
     public int? MaxLength { get; set; }
 
@@ -141,7 +141,7 @@ public partial class Field
 
     public bool? IsAssigneeDropdown { get; set; }
 
-    public bool? IsJSON { get; set; }
+    public bool? IsJson { get; set; }
 
     public virtual Form? Form { get; set; }
 

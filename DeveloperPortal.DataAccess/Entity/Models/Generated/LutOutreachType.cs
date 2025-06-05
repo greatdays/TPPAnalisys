@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutOutreachType
 {
-    public int LutOutreachTypeID { get; set; }
+    public int LutOutreachTypeId { get; set; }
 
     public string? Description { get; set; }
 
@@ -23,7 +23,7 @@ public partial class LutOutreachType
 
     public int? SortOrder { get; set; }
 
-    public virtual ICollection<PMPOutreachOrganisationSnap> PMPOutreachOrganisationSnaps { get; set; } = new List<PMPOutreachOrganisationSnap>();
+    public virtual ICollection<PmpoutreachOrganisationSnap> PmpoutreachOrganisationSnaps { get; set; } = new List<PmpoutreachOrganisationSnap>();
 
-    public virtual ICollection<PMPOutreachOrganisation> PMPOutreachOrganisations { get; set; } = new List<PMPOutreachOrganisation>();
+    public virtual ICollection<PmpoutreachOrganisation> PmpoutreachOrganisations { get; set; } = new List<PmpoutreachOrganisation>();
 }

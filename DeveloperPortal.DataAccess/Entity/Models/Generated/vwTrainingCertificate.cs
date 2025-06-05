@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwTrainingCertificate
+public partial class VwTrainingCertificate
 {
-    public int TrainingRegistryID { get; set; }
+    public int TrainingRegistryId { get; set; }
 
-    public int TrainingSessionID { get; set; }
+    public int TrainingSessionId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
-    public int? OrganizationID { get; set; }
+    public int? OrganizationId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -19,25 +19,25 @@ public partial class vwTrainingCertificate
 
     public string? Email { get; set; }
 
-    public int CourseID { get; set; }
+    public int CourseId { get; set; }
 
     public string CourseName { get; set; } = null!;
 
-    public int LutAudienceCD { get; set; }
+    public int LutAudienceCd { get; set; }
 
     public string AudienceCategory { get; set; } = null!;
 
-    public int? LutCourseTypeID { get; set; }
+    public int? LutCourseTypeId { get; set; }
 
     public string CourseTypeName { get; set; } = null!;
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public string CaseStatus { get; set; } = null!;
 
-    public int DocumentEntityID { get; set; }
+    public int DocumentEntityId { get; set; }
 
-    public int DocTemplateID { get; set; }
+    public int DocTemplateId { get; set; }
 
     public string? DocumentNum { get; set; }
 
@@ -61,5 +61,5 @@ public partial class vwTrainingCertificate
 
     public string? CreatedBy { get; set; }
 
-    public Guid? RowID { get; set; }
+    public Guid? RowId { get; set; }
 }

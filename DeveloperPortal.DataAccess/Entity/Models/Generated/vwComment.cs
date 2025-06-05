@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwComment
+public partial class VwComment
 {
-    public int CommentID { get; set; }
+    public int CommentId { get; set; }
 
-    public string ReferenceID { get; set; } = null!;
+    public string ReferenceId { get; set; } = null!;
 
     public string ReferenceType { get; set; } = null!;
 
@@ -17,7 +17,7 @@ public partial class vwComment
 
     public bool? IsWorklog { get; set; }
 
-    public string? JSONAttribute { get; set; }
+    public string? Jsonattribute { get; set; }
 
     public bool? IsDeleted { get; set; }
 

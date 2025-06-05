@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnSRCAPChecklistItemStatus
+public partial class AssnSrcapchecklistItemStatus
 {
-    public int AssnSRCAPChecklistItemStatusID { get; set; }
+    public int AssnSrcapchecklistItemStatusId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutCAPChecklistItemId { get; set; }
+    public int LutCapchecklistItemId { get; set; }
 
-    public int LutCAPChecklistSubItemId { get; set; }
+    public int LutCapchecklistSubItemId { get; set; }
 
     public string Status { get; set; } = null!;
 
@@ -27,13 +27,13 @@ public partial class AssnSRCAPChecklistItemStatus
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public bool? IsCompliantBeforeCAP { get; set; }
+    public bool? IsCompliantBeforeCap { get; set; }
 
-    public virtual LutCAPChecklistItem LutCAPChecklistItem { get; set; } = null!;
+    public virtual LutCapchecklistItem LutCapchecklistItem { get; set; } = null!;
 
-    public virtual LutCAPChecklistSubItem LutCAPChecklistSubItem { get; set; } = null!;
+    public virtual LutCapchecklistSubItem LutCapchecklistSubItem { get; set; } = null!;
 
     public virtual ServiceRequest ServiceRequest { get; set; } = null!;
 }

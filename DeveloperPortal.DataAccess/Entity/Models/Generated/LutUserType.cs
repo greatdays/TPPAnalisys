@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutUserType
 {
-    public int LutUserTypeID { get; set; }
+    public int LutUserTypeId { get; set; }
 
     public string UserType { get; set; } = null!;
 
@@ -25,13 +25,13 @@ public partial class LutUserType
 
     public virtual ICollection<GrievanceLog> GrievanceLogs { get; set; } = new List<GrievanceLog>();
 
-    public virtual ICollection<LutRARequestType> LutRARequestTypes { get; set; } = new List<LutRARequestType>();
+    public virtual ICollection<LutRarequestType> LutRarequestTypes { get; set; } = new List<LutRarequestType>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogs { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ICollection<ReasonableAccommodation> ReasonableAccommodations { get; set; } = new List<ReasonableAccommodation>();
 }

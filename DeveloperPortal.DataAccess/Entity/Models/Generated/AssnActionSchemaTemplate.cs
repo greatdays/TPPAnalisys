@@ -11,7 +11,7 @@ public partial class AssnActionSchemaTemplate
 
     public int TemplateId { get; set; }
 
-    public virtual WF_Action Action { get; set; } = null!;
+    public virtual WfAction Action { get; set; } = null!;
 
     public virtual NotificationSchema Schema { get; set; } = null!;
 

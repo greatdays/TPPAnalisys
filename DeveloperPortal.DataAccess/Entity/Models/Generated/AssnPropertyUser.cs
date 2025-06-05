@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnPropertyUser
 {
-    public int LutPropertyDistrictID { get; set; }
+    public int LutPropertyDistrictId { get; set; }
 
-    public string? IDMUser { get; set; }
+    public string? Idmuser { get; set; }
 
     public string? AssociationType { get; set; }
 

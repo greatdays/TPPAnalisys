@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EventNote
 {
-    public int EventNoteID { get; set; }
+    public int EventNoteId { get; set; }
 
-    public int EventID { get; set; }
+    public int EventId { get; set; }
 
     public string NoteDescription { get; set; } = null!;
 

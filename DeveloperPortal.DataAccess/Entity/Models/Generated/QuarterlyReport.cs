@@ -5,19 +5,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class QuarterlyReport
 {
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int? PropSnapShotID { get; set; }
+    public int? PropSnapShotId { get; set; }
 
     public int? Year { get; set; }
 
     public string? Quarter { get; set; }
 
-    public int? SubmittedCaseLogID { get; set; }
+    public int? SubmittedCaseLogId { get; set; }
 
-    public int? ReviewedCaseLogID { get; set; }
+    public int? ReviewedCaseLogId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -29,29 +29,29 @@ public partial class QuarterlyReport
 
     public virtual PropSnapshot? PropSnapShot { get; set; }
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitLists { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitLists { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitLists { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitLists { get; set; } = new List<QrauwaitList>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 
-    public virtual ICollection<QRFairHousing> QRFairHousings { get; set; } = new List<QRFairHousing>();
+    public virtual ICollection<QrfairHousing> QrfairHousings { get; set; } = new List<QrfairHousing>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogs { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QRProjectSiteFutureWaitList> QRProjectSiteFutureWaitLists { get; set; } = new List<QRProjectSiteFutureWaitList>();
+    public virtual ICollection<QrprojectSiteFutureWaitList> QrprojectSiteFutureWaitLists { get; set; } = new List<QrprojectSiteFutureWaitList>();
 
-    public virtual ICollection<QRProjectSiteNoChangeReport> QRProjectSiteNoChangeReports { get; set; } = new List<QRProjectSiteNoChangeReport>();
+    public virtual ICollection<QrprojectSiteNoChangeReport> QrprojectSiteNoChangeReports { get; set; } = new List<QrprojectSiteNoChangeReport>();
 
-    public virtual ICollection<QRProjectSiteUpcomingUnitVacancy> QRProjectSiteUpcomingUnitVacancies { get; set; } = new List<QRProjectSiteUpcomingUnitVacancy>();
+    public virtual ICollection<QrprojectSiteUpcomingUnitVacancy> QrprojectSiteUpcomingUnitVacancies { get; set; } = new List<QrprojectSiteUpcomingUnitVacancy>();
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
-    public virtual ICollection<QRUpcomingUnitVacancy> QRUpcomingUnitVacancies { get; set; } = new List<QRUpcomingUnitVacancy>();
+    public virtual ICollection<QrupcomingUnitVacancy> QrupcomingUnitVacancies { get; set; } = new List<QrupcomingUnitVacancy>();
 
-    public virtual ICollection<QRUtilizationSurvey> QRUtilizationSurveys { get; set; } = new List<QRUtilizationSurvey>();
+    public virtual ICollection<QrutilizationSurvey> QrutilizationSurveys { get; set; } = new List<QrutilizationSurvey>();
 
     public virtual CaseLog? ReviewedCaseLog { get; set; }
 

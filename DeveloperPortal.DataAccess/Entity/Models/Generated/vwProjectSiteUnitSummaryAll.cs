@@ -3,29 +3,29 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwProjectSiteUnitSummaryAll
+public partial class VwProjectSiteUnitSummaryAll
 {
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
-    public string? LowestAMI { get; set; }
+    public string? LowestAmi { get; set; }
 
     public int? MobilityUnitCnt { get; set; }
 
     public int? SensoryUnitCnt { get; set; }
 
-    public int? MobilitywHVUnitCnt { get; set; }
+    public int? MobilitywHvunitCnt { get; set; }
 
     public int? AdaptableUnitCnt { get; set; }
 
     public int? EnhancedSensoryUnitCnt { get; set; }
 
-    public int? _0Bedroom { get; set; }
+    public int? _0bedroom { get; set; }
 
-    public int? _1Bedroom { get; set; }
+    public int? _1bedroom { get; set; }
 
-    public int? _2Bedroom { get; set; }
+    public int? _2bedroom { get; set; }
 
-    public int? _3Bedroom { get; set; }
+    public int? _3bedroom { get; set; }
 
     public int? _4orMoreBedroom { get; set; }
 

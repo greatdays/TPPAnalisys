@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnRentalSubsidy
 {
-    public int AssnRentalSubsidyID { get; set; }
+    public int AssnRentalSubsidyId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int LutRentalSubsidyID { get; set; }
+    public int LutRentalSubsidyId { get; set; }
 
     public bool IsDeleted { get; set; }
 

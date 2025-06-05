@@ -8,7 +8,7 @@ public partial class LutProjectSiteStatus
     /// <summary>
     /// Primary Key Identity column for the Holiday table
     /// </summary>
-    public int LutProjectSiteStatusID { get; set; }
+    public int LutProjectSiteStatusId { get; set; }
 
     /// <summary>
     /// Description of status
@@ -48,9 +48,9 @@ public partial class LutProjectSiteStatus
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public virtual ICollection<PMPProjectSiteSnap> PMPProjectSiteSnaps { get; set; } = new List<PMPProjectSiteSnap>();
+    public virtual ICollection<PmpprojectSiteSnap> PmpprojectSiteSnaps { get; set; } = new List<PmpprojectSiteSnap>();
 
     public virtual ICollection<ProjectSite> ProjectSites { get; set; } = new List<ProjectSite>();
 }

@@ -3,21 +3,21 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRAUWaitList
+public partial class QrauwaitList
 {
-    public int QRAUWaitListID { get; set; }
+    public int QrauwaitListId { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int AUWaitListID { get; set; }
+    public int AuwaitListId { get; set; }
 
-    public string? AUWaitListNumber { get; set; }
+    public string? AuwaitListNumber { get; set; }
 
-    public int? HRMApplicationID { get; set; }
+    public int? HrmapplicationId { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
-    public int? LutApplicationTypeID { get; set; }
+    public int? LutApplicationTypeId { get; set; }
 
     public DateTime? ApplicationDateTime { get; set; }
 
@@ -27,17 +27,17 @@ public partial class QRAUWaitList
 
     public string? LastName { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public int? LotteryPosition { get; set; }
 
     public string? WaitListPosition { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
-    public int? LutTotalBedroomID { get; set; }
+    public int? LutTotalBedroomId { get; set; }
 
-    public int? LutTotalBathroomID { get; set; }
+    public int? LutTotalBathroomId { get; set; }
 
     public string? AccessibilityRequest { get; set; }
 
@@ -45,19 +45,19 @@ public partial class QRAUWaitList
 
     public DateTime? MovedInDate { get; set; }
 
-    public int? MoveInUnitProjectSiteID { get; set; }
+    public int? MoveInUnitProjectSiteId { get; set; }
 
-    public int? MoveInUnitPropSnapShotID { get; set; }
+    public int? MoveInUnitPropSnapShotId { get; set; }
 
     public string? ApplicantMovedUnit { get; set; }
 
-    public DateTime? TenantAUTransferDate { get; set; }
+    public DateTime? TenantAutransferDate { get; set; }
 
-    public bool? IsTenantMadeRA { get; set; }
+    public bool? IsTenantMadeRa { get; set; }
 
-    public DateTime? TenantMadeRADate { get; set; }
+    public DateTime? TenantMadeRadate { get; set; }
 
-    public string? NatureOfRARequests { get; set; }
+    public string? NatureOfRarequests { get; set; }
 
     public string? ApplicantNotMovedReason { get; set; }
 
@@ -75,7 +75,7 @@ public partial class QRAUWaitList
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual AUWaitList AUWaitList { get; set; } = null!;
+    public virtual AuwaitList AuwaitList { get; set; } = null!;
 
     public virtual PropSnapshot? CurrentUnitPropSnapShot { get; set; }
 
