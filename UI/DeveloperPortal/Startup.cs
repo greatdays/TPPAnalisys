@@ -70,7 +70,7 @@ namespace DeveloperPortal
             {
                 endpoints.MapRazorPages(); // Correctly map Razor Pages
                 endpoints.MapControllerRoute(name: "default",
-                pattern: "{controller=DashboardService}/{action=GetProjectData}");
+               pattern: "{controller=Dashboard}/{action=GetProjectData}");
             });
                // app.MapRazorPages();
 
