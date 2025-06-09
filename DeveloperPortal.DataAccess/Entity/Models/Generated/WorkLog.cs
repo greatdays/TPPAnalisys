@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class WorkLog
 {
-    public int WorkLogID { get; set; }
+    public int WorkLogId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int? LutWorkLogTypeID { get; set; }
+    public int? LutWorkLogTypeId { get; set; }
 
     public string? Description { get; set; }
 

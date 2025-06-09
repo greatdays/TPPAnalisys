@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutTemplate1
 {
-    public int LutTemplateID { get; set; }
+    public int LutTemplateId { get; set; }
 
     public string? TemplateName { get; set; }
 

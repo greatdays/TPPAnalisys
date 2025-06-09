@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnLutDistanceTypeSnap
 {
-    public int AssnDistanceTypeSnapID { get; set; }
+    public int AssnDistanceTypeSnapId { get; set; }
 
-    public int ProjectSiteSnapID { get; set; }
+    public int ProjectSiteSnapId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutDistanceTypeID { get; set; }
+    public int LutDistanceTypeId { get; set; }
 
-    public int LutDistanceID { get; set; }
+    public int LutDistanceId { get; set; }
 
     public string? CreatedBy { get; set; }
 

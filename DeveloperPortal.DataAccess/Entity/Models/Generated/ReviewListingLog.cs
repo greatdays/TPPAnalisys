@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ReviewListingLog
 {
-    public int ReviewListingLogID { get; set; }
+    public int ReviewListingLogId { get; set; }
 
     public int? CaseId { get; set; }
 
@@ -17,7 +17,7 @@ public partial class ReviewListingLog
 
     public string? UserEmail { get; set; }
 
-    public bool? IsAcHPStaff { get; set; }
+    public bool? IsAcHpstaff { get; set; }
 
     public string? Attributes { get; set; }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutPreDir
 {
-    public string LutPreDirCD { get; set; } = null!;
+    public string LutPreDirCd { get; set; } = null!;
 
     public string CreatedBy { get; set; } = null!;
 

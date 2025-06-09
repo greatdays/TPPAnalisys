@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutFHACFiledSource
+public partial class LutFhacfiledSource
 {
-    public int LutFHACFiledSourceID { get; set; }
+    public int LutFhacfiledSourceId { get; set; }
 
-    public string FHACFiledSource { get; set; } = null!;
+    public string FhacfiledSource { get; set; } = null!;
 
     public bool IsAbsolute { get; set; }
 
@@ -23,7 +23,7 @@ public partial class LutFHACFiledSource
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnFHACFiledDate> AssnFHACFiledDates { get; set; } = new List<AssnFHACFiledDate>();
+    public virtual ICollection<AssnFhacfiledDate> AssnFhacfiledDates { get; set; } = new List<AssnFhacfiledDate>();
 
-    public virtual ICollection<AssnQRFHACFiledDate> AssnQRFHACFiledDates { get; set; } = new List<AssnQRFHACFiledDate>();
+    public virtual ICollection<AssnQrfhacfiledDate> AssnQrfhacfiledDates { get; set; } = new List<AssnQrfhacfiledDate>();
 }

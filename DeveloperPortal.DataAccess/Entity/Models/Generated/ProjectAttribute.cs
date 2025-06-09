@@ -5,21 +5,21 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectAttribute
 {
-    public int ProjectAttributeID { get; set; }
+    public int ProjectAttributeId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public string? ProjectName { get; set; }
 
     public bool? AnySeniorSite { get; set; }
 
-    public string? AcHPAssociatedAccessorParcelNumberAPN { get; set; }
+    public string? AcHpassociatedAccessorParcelNumberApn { get; set; }
 
-    public string? HIMSAssociatedAssessorParcelNumberAPN { get; set; }
+    public string? HimsassociatedAssessorParcelNumberApn { get; set; }
 
     public bool? SharedParkingLots { get; set; }
 
-    public string? AssignedRCS { get; set; }
+    public string? AssignedRcs { get; set; }
 
     public string? Status { get; set; }
 
@@ -27,27 +27,27 @@ public partial class ProjectAttribute
 
     public bool? AssignedReidentialParking { get; set; }
 
-    public string? AcHPFileNumber { get; set; }
+    public string? AcHpfileNumber { get; set; }
 
     public string? LutApplicableAccessibilityStandardId { get; set; }
 
     public int? TotalNumberofMobilityUnitsRequired { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
-    public bool? ListedonAHUPProductionSchedule { get; set; }
+    public bool? ListedonAhupproductionSchedule { get; set; }
 
     public double? MobiltyUnitsPercentageRequired { get; set; }
 
     public double? PercentageofCertifiedAccessibleSensoryUnits { get; set; }
 
-    public bool? IsthisaPreCSADevelopment { get; set; }
+    public bool? IsthisaPreCsadevelopment { get; set; }
 
-    public double? AHUPScore { get; set; }
+    public double? Ahupscore { get; set; }
 
-    public int? AHUPProductionScheduleYear { get; set; }
+    public int? AhupproductionScheduleYear { get; set; }
 
-    public bool? IsthisaPreVSADevelopment { get; set; }
+    public bool? IsthisaPreVsadevelopment { get; set; }
 
     public int? TotalUnits { get; set; }
 
@@ -67,41 +67,43 @@ public partial class ProjectAttribute
 
     public string? LutFundingId { get; set; }
 
-    public int? MaximumMobilityCSACount { get; set; }
+    public int? MaximumMobilityCsacount { get; set; }
 
-    public int? MaximumMobilityVCACount { get; set; }
+    public int? MaximumMobilityVcacount { get; set; }
 
-    public int? MaximumHearingandVisionCSACount { get; set; }
+    public int? MaximumHearingandVisionCsacount { get; set; }
 
-    public int? MaximumHearingandVisionVCACount { get; set; }
+    public int? MaximumHearingandVisionVcacount { get; set; }
 
-    public int? LutFHAStandardId { get; set; }
+    public int? LutFhastandardId { get; set; }
 
-    public string? LutNacRecomadationID { get; set; }
+    public string? LutNacRecomadationId { get; set; }
 
-    public int? LutAHUPScoreID { get; set; }
+    public int? LutAhupscoreId { get; set; }
 
     public bool? IsExistingProject { get; set; }
 
     public string? ProjectDescription { get; set; }
 
-    public bool? EAPProject { get; set; }
+    public bool? Eapproject { get; set; }
 
     public bool? ModularProject { get; set; }
 
     public bool? ProjectWithScatteredSites { get; set; }
 
-    public string? AdditionalRCS { get; set; }
+    public string? AdditionalRcs { get; set; }
 
     public string? ResponseToRetrofitSurveyEmailContent { get; set; }
 
-    public int? LutSiteSurveyGroupID { get; set; }
+    public int? LutSiteSurveyGroupId { get; set; }
 
-    public string? PrimaryHIMSNumber { get; set; }
+    public string? PrimaryHimsnumber { get; set; }
 
-    public string? AssociatedHIMSNumbers { get; set; }
+    public string? AssociatedHimsnumbers { get; set; }
 
     public DateTime? CovenantExpirationDate { get; set; }
+
+    public string? ProjectStatusLabel { get; set; }
 
     public virtual PropSnapshot PropSnapshot { get; set; } = null!;
 }

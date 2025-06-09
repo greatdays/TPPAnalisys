@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutCAPCloseReason
+public partial class LutCapcloseReason
 {
-    public int LutCAPCloseReasonId { get; set; }
+    public int LutCapcloseReasonId { get; set; }
 
     public string? Reason { get; set; }
 
@@ -19,5 +19,5 @@ public partial class LutCAPCloseReason
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<CAPDetail> CAPDetails { get; set; } = new List<CAPDetail>();
+    public virtual ICollection<Capdetail> Capdetails { get; set; } = new List<Capdetail>();
 }

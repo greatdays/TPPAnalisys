@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnComment
 {
-    public int CommentID { get; set; }
+    public int CommentId { get; set; }
 
-    public string ReferenceID { get; set; } = null!;
+    public string ReferenceId { get; set; } = null!;
 
     public string ReferenceType { get; set; } = null!;
 

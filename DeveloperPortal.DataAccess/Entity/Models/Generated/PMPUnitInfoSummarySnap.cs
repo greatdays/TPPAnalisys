@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPUnitInfoSummarySnap
+public partial class PmpunitInfoSummarySnap
 {
-    public int PMPUnitInfoSummarySnapID { get; set; }
+    public int PmpunitInfoSummarySnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public string? AMI { get; set; }
+    public string? Ami { get; set; }
 
     public string? BedRoomSize { get; set; }
 
@@ -21,5 +21,5 @@ public partial class PMPUnitInfoSummarySnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 }

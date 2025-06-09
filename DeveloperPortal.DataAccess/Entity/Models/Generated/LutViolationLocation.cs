@@ -8,7 +8,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class LutViolationLocation
 {
-    public int LutViolationLocationID { get; set; }
+    public int LutViolationLocationId { get; set; }
 
     public string Name { get; set; } = null!;
 

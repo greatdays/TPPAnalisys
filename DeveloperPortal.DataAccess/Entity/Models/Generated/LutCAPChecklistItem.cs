@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutCAPChecklistItem
+public partial class LutCapchecklistItem
 {
-    public int LutCAPChecklistItemId { get; set; }
+    public int LutCapchecklistItemId { get; set; }
 
     public string Item { get; set; } = null!;
 
@@ -23,9 +23,11 @@ public partial class LutCAPChecklistItem
 
     public string ModifiedBy { get; set; } = null!;
 
-    public virtual ICollection<AssnSRCAPChecklistItemStatus> AssnSRCAPChecklistItemStatuses { get; set; } = new List<AssnSRCAPChecklistItemStatus>();
+    public virtual ICollection<AssnSrcapchecklistItemStatus> AssnSrcapchecklistItemStatuses { get; set; } = new List<AssnSrcapchecklistItemStatus>();
 
-    public virtual ICollection<LUTCAPLanguage> LUTCAPLanguages { get; set; } = new List<LUTCAPLanguage>();
+    public virtual ICollection<Capdetail> Capdetails { get; set; } = new List<Capdetail>();
 
-    public virtual ICollection<LutCAPChecklistSubItem> LutCAPChecklistSubItems { get; set; } = new List<LutCAPChecklistSubItem>();
+    public virtual ICollection<LutCapchecklistSubItem> LutCapchecklistSubItems { get; set; } = new List<LutCapchecklistSubItem>();
+
+    public virtual ICollection<Lutcaplanguage> Lutcaplanguages { get; set; } = new List<Lutcaplanguage>();
 }

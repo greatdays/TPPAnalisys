@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ContactIdentifierLog
 {
-    public int ContactIdentifierLogID { get; set; }
+    public int ContactIdentifierLogId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
-    public int ContactID { get; set; }
+    public int ContactId { get; set; }
 
     public string? ContactType { get; set; }
 
@@ -43,7 +43,7 @@ public partial class ContactIdentifierLog
 
     public string? PhoneNumber { get; set; }
 
-    public string? Phone_Ext { get; set; }
+    public string? PhoneExt { get; set; }
 
     public string? PhoneHome { get; set; }
 
@@ -57,7 +57,7 @@ public partial class ContactIdentifierLog
 
     public string? Status { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public string? Attributes { get; set; }
 
@@ -107,13 +107,13 @@ public partial class ContactIdentifierLog
 
     public string? PictureMain { get; set; }
 
-    public string? IDMUserName { get; set; }
+    public string? IdmuserName { get; set; }
 
     public bool? IsReviewRequired { get; set; }
 
-    public string? apn { get; set; }
+    public string? Apn { get; set; }
 
-    public int? RefContactID { get; set; }
+    public int? RefContactId { get; set; }
 
     public bool? IsEmployee { get; set; }
 
@@ -127,13 +127,13 @@ public partial class ContactIdentifierLog
 
     public string? MiddleName { get; set; }
 
-    public bool? ISClarityHMISSystem { get; set; }
+    public bool? IsclarityHmissystem { get; set; }
 
-    public string? HMISNo { get; set; }
+    public string? Hmisno { get; set; }
 
     public bool? IsAltContact { get; set; }
 
-    public int? AltContactReferenceID { get; set; }
+    public int? AltContactReferenceId { get; set; }
 
     public int? AltContactReferenceSort { get; set; }
 

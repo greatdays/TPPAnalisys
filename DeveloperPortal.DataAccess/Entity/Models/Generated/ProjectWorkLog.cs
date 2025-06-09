@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectWorkLog
 {
-    public int WorkLogID { get; set; }
+    public int WorkLogId { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string Reason { get; set; } = null!;
 
@@ -27,13 +27,13 @@ public partial class ProjectWorkLog
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public int LutWorkLogTypeID { get; set; }
+    public int LutWorkLogTypeId { get; set; }
 
-    public int? ContactIdentifierID { get; set; }
+    public int? ContactIdentifierId { get; set; }
 
-    public int? HousingAdvocateID { get; set; }
+    public int? HousingAdvocateId { get; set; }
 
     public virtual ContactIdentifier? ContactIdentifier { get; set; }
 

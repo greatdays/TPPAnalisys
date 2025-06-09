@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Organization
 {
-    public int OrganizationID { get; set; }
+    public int OrganizationId { get; set; }
 
     public string? Name { get; set; }
 
@@ -33,7 +33,7 @@ public partial class Organization
 
     public string? PictureMain { get; set; }
 
-    public string? IDMUserName { get; set; }
+    public string? IdmuserName { get; set; }
 
     public bool IsReviewRequired { get; set; }
 
@@ -53,7 +53,7 @@ public partial class Organization
 
     public DateTime? ModifiedOn { get; set; }
 
-    public string? TTY { get; set; }
+    public string? Tty { get; set; }
 
     public string? Description { get; set; }
 
@@ -73,9 +73,9 @@ public partial class Organization
 
     public virtual ICollection<OrganizationAddress> OrganizationAddresses { get; set; } = new List<OrganizationAddress>();
 
-    public virtual ICollection<PMPOutreachOrganisationSnap> PMPOutreachOrganisationSnaps { get; set; } = new List<PMPOutreachOrganisationSnap>();
+    public virtual ICollection<PmpoutreachOrganisationSnap> PmpoutreachOrganisationSnaps { get; set; } = new List<PmpoutreachOrganisationSnap>();
 
-    public virtual ICollection<PMPOutreachOrganisation> PMPOutreachOrganisations { get; set; } = new List<PMPOutreachOrganisation>();
+    public virtual ICollection<PmpoutreachOrganisation> PmpoutreachOrganisations { get; set; } = new List<PmpoutreachOrganisation>();
 
     public virtual ICollection<ProjectWorkLog> ProjectWorkLogs { get; set; } = new List<ProjectWorkLog>();
 

@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Notice
 {
-    public int NoticeID { get; set; }
+    public int NoticeId { get; set; }
 
-    public int LutNoticeTypeID { get; set; }
+    public int LutNoticeTypeId { get; set; }
 
-    public int? ContactIdentifierID { get; set; }
+    public int? ContactIdentifierId { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public int ComplianceDays { get; set; }
 
@@ -31,7 +31,7 @@ public partial class Notice
 
     public DateOnly? DateComplianceDue { get; set; }
 
-    public string? NoticeURL { get; set; }
+    public string? NoticeUrl { get; set; }
 
     public bool? IsReturned { get; set; }
 

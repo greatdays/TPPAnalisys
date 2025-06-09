@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutApplicationDeclineReason
 {
-    public int LutApplicationDeclineReasonID { get; set; }
+    public int LutApplicationDeclineReasonId { get; set; }
 
     public string DeclineReason { get; set; } = null!;
 

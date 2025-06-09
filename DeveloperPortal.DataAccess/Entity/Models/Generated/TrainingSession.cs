@@ -11,12 +11,12 @@ public partial class TrainingSession
     /// <summary>
     /// Primary Key Identity column for the TrainingSession table
     /// </summary>
-    public int TrainingSessionID { get; set; }
+    public int TrainingSessionId { get; set; }
 
     /// <summary>
     /// Course for the training session
     /// </summary>
-    public int CourseID { get; set; }
+    public int CourseId { get; set; }
 
     /// <summary>
     /// human readable code for the training session
@@ -56,7 +56,7 @@ public partial class TrainingSession
     /// <summary>
     /// status for the training session
     /// </summary>
-    public int LutTrainingSessionStatusID { get; set; }
+    public int LutTrainingSessionStatusId { get; set; }
 
     /// <summary>
     /// 1 = reserve for private
@@ -101,7 +101,7 @@ public partial class TrainingSession
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual Course Course { get; set; } = null!;
 

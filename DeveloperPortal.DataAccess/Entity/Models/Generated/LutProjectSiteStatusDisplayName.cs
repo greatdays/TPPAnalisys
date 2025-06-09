@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutProjectSiteStatusDisplayName
 {
-    public int LutProjectSiteStatusDisplayNameID { get; set; }
+    public int LutProjectSiteStatusDisplayNameId { get; set; }
 
     public string ProjectSiteStatus { get; set; } = null!;
 

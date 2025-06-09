@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLanguageTranslation
 {
-    public int LutLanguageTranslationID { get; set; }
+    public int LutLanguageTranslationId { get; set; }
 
     public string LanguageTranslation { get; set; } = null!;
 
@@ -23,5 +23,5 @@ public partial class LutLanguageTranslation
 
     public virtual ICollection<EffectiveCommunication> EffectiveCommunications { get; set; } = new List<EffectiveCommunication>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 }

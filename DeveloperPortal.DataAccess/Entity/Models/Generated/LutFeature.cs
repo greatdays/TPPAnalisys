@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutFeature
 {
-    public int LutFeatureID { get; set; }
+    public int LutFeatureId { get; set; }
 
     public string? FeatureArea { get; set; }
 
@@ -31,7 +31,7 @@ public partial class LutFeature
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPUnitFeatureSnap> AssnPMPUnitFeatureSnaps { get; set; } = new List<AssnPMPUnitFeatureSnap>();
+    public virtual ICollection<AssnPmpunitFeatureSnap> AssnPmpunitFeatureSnaps { get; set; } = new List<AssnPmpunitFeatureSnap>();
 
     public virtual ICollection<AssnPropertyFeature> AssnPropertyFeatures { get; set; } = new List<AssnPropertyFeature>();
 

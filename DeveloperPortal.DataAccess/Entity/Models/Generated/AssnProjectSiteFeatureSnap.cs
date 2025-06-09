@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnProjectSiteFeatureSnap
 {
-    public int AssnProjectSitefeatureSnapID { get; set; }
+    public int AssnProjectSitefeatureSnapId { get; set; }
 
-    public int ProjectSiteSnapID { get; set; }
+    public int ProjectSiteSnapId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutFeatureID { get; set; }
+    public int LutFeatureId { get; set; }
 
     public string? CreatedBy { get; set; }
 

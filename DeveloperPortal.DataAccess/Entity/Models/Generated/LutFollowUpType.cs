@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutFollowUpType
 {
-    public int LutFollowUpTypeID { get; set; }
+    public int LutFollowUpTypeId { get; set; }
 
     public string FollowUpType { get; set; } = null!;
 

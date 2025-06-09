@@ -11,7 +11,7 @@ public partial class LutTrainingSessionStatus
     /// <summary>
     /// Primary Key Identity column for the LutTrainingSessionStatus table
     /// </summary>
-    public int LutTrainingSessionStatusID { get; set; }
+    public int LutTrainingSessionStatusId { get; set; }
 
     /// <summary>
     /// Training session status
@@ -46,7 +46,7 @@ public partial class LutTrainingSessionStatus
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<TrainingSession> TrainingSessions { get; set; } = new List<TrainingSession>();
 }

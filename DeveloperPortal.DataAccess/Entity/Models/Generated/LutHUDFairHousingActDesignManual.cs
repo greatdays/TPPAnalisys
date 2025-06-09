@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutHUDFairHousingActDesignManual
+public partial class LutHudfairHousingActDesignManual
 {
-    public int LutHUDFairHousingActDesignManualId { get; set; }
+    public int LutHudfairHousingActDesignManualId { get; set; }
 
     public string? Name { get; set; }
 

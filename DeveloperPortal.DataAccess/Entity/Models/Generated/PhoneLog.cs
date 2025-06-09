@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class PhoneLog
 {
-    public int PhoneLogID { get; set; }
+    public int PhoneLogId { get; set; }
 
     public DateOnly ReceivedDate { get; set; }
 
     public string CallerName { get; set; } = null!;
 
-    public int LutLanguageLineID { get; set; }
+    public int LutLanguageLineId { get; set; }
 
     public string PhoneNo { get; set; } = null!;
 
@@ -19,11 +19,11 @@ public partial class PhoneLog
 
     public string? Email { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? CallerType { get; set; }
 
-    public int LutCallTypeID { get; set; }
+    public int LutCallTypeId { get; set; }
 
     public string? OtherCallType { get; set; }
 
@@ -31,7 +31,7 @@ public partial class PhoneLog
 
     public DateOnly ResponseDate { get; set; }
 
-    public int ResponderID { get; set; }
+    public int ResponderId { get; set; }
 
     public string Outcome { get; set; } = null!;
 

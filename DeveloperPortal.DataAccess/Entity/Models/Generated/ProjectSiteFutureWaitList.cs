@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectSiteFutureWaitList
 {
-    public int ProjectSiteFutureWaitListID { get; set; }
+    public int ProjectSiteFutureWaitListId { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
     public bool? IsWaitListOpenInFuture { get; set; }
 
-    public int? NoOfApplicantOnCUWL { get; set; }
+    public int? NoOfApplicantOnCuwl { get; set; }
 
-    public int? NoOfApplicantOnCUWLSeekAH { get; set; }
+    public int? NoOfApplicantOnCuwlseekAh { get; set; }
 
     public bool? IsPlanToConductOutReach { get; set; }
 
@@ -31,5 +31,5 @@ public partial class ProjectSiteFutureWaitList
 
     public virtual PropSnapshot ProjSitePropSnapShot { get; set; } = null!;
 
-    public virtual ICollection<QRProjectSiteFutureWaitList> QRProjectSiteFutureWaitLists { get; set; } = new List<QRProjectSiteFutureWaitList>();
+    public virtual ICollection<QrprojectSiteFutureWaitList> QrprojectSiteFutureWaitLists { get; set; } = new List<QrprojectSiteFutureWaitList>();
 }

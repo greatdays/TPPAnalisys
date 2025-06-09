@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPProjTypeSiteAttrSnap
+public partial class AssnPmpprojTypeSiteAttrSnap
 {
-    public int AssnPMPProjTypeSiteAttrSnapID { get; set; }
+    public int AssnPmpprojTypeSiteAttrSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutPMPProjTypeID { get; set; }
+    public int LutPmpprojTypeId { get; set; }
 
     public string? SpecialNote { get; set; }
 
@@ -19,9 +19,9 @@ public partial class AssnPMPProjTypeSiteAttrSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual LutPMPProjType LutPMPProjType { get; set; } = null!;
+    public virtual LutPmpprojType LutPmpprojType { get; set; } = null!;
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 
     public virtual ProjectSiteAttribute ProjectSiteAttribute { get; set; } = null!;
 }

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutOutcome
 {
-    public int LutOutcomeID { get; set; }
+    public int LutOutcomeId { get; set; }
 
     public string Outcome { get; set; } = null!;
 

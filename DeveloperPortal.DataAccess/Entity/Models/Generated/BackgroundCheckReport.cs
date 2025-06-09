@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class BackgroundCheckReport
 {
-    public int BackgroundCheckReportID { get; set; }
+    public int BackgroundCheckReportId { get; set; }
 
-    public int BackgroundCheckID { get; set; }
+    public int BackgroundCheckId { get; set; }
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
     public string? FileGroup { get; set; }
 
@@ -23,7 +23,7 @@ public partial class BackgroundCheckReport
 
     public string? PropMgmtCompany { get; set; }
 
-    public int? HIMsConstructionPercent { get; set; }
+    public int? HimsConstructionPercent { get; set; }
 
     public string? IsOccupied { get; set; }
 
@@ -37,27 +37,27 @@ public partial class BackgroundCheckReport
 
     public string? RegistryPropertyListing { get; set; }
 
-    public string? LFHTAOwner { get; set; }
+    public string? Lfhtaowner { get; set; }
 
-    public string? LFHTAADACoordinator { get; set; }
+    public string? Lfhtaadacoordinator { get; set; }
 
-    public string? LFHTAGrievanceCoordinator { get; set; }
+    public string? LfhtagrievanceCoordinator { get; set; }
 
-    public string? LFHTARegionalManager { get; set; }
+    public string? LfhtaregionalManager { get; set; }
 
-    public string? LFHTAPropertyManager { get; set; }
+    public string? LfhtapropertyManager { get; set; }
 
     public string? LastQuarterlyReport { get; set; }
 
-    public string? VCAUtilizationSurvey { get; set; }
+    public string? VcautilizationSurvey { get; set; }
 
     public string? ConventionalUnitWaitingList { get; set; }
 
-    public string? VCAReceipt { get; set; }
+    public string? Vcareceipt { get; set; }
 
     public string? RevisedPoliciesDistribution { get; set; }
 
-    public string? AdoptionNComplianceSelfCertification { get; set; }
+    public string? AdoptionNcomplianceSelfCertification { get; set; }
 
     public string? PropertyManagementPlan { get; set; }
 

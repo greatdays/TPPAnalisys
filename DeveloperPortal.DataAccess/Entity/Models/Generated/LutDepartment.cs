@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutDepartment
 {
-    public int LutDepartmentID { get; set; }
+    public int LutDepartmentId { get; set; }
 
     public string Description { get; set; } = null!;
 

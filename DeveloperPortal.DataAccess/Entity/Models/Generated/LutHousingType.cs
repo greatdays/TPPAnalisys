@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutHousingType
 {
-    public int LutHousingTypeID { get; set; }
+    public int LutHousingTypeId { get; set; }
 
     public string? HousingType { get; set; }
 

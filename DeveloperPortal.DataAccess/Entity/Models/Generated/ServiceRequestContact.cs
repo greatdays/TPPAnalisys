@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ServiceRequestContact
 {
-    public int ServiceRequestContactID { get; set; }
+    public int ServiceRequestContactId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutContactTypeID { get; set; }
+    public int LutContactTypeId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string? AssociationType { get; set; }
 

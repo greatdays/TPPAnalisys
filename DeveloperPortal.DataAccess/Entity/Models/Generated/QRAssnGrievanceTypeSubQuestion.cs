@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRAssnGrievanceTypeSubQuestion
+public partial class QrassnGrievanceTypeSubQuestion
 {
-    public int QRAssnGrievanceTypeSubQuestionId { get; set; }
+    public int QrassnGrievanceTypeSubQuestionId { get; set; }
 
     public int? AssnGrievanceTypeSubQuestionId { get; set; }
 
@@ -37,7 +37,7 @@ public partial class QRAssnGrievanceTypeSubQuestion
 
     public DateTime? ModifiedOn { get; set; }
 
-    public int? QRGrievanceLogId { get; set; }
+    public int? QrgrievanceLogId { get; set; }
 
     public virtual AssnGrievanceTypeSubQuestion? AssnGrievanceTypeSubQuestion { get; set; }
 
@@ -49,5 +49,5 @@ public partial class QRAssnGrievanceTypeSubQuestion
 
     public virtual LutGrievanceType? LutGrievanceType { get; set; }
 
-    public virtual QRGrievanceLog? QRGrievanceLog { get; set; }
+    public virtual QrgrievanceLog? QrgrievanceLog { get; set; }
 }

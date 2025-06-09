@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class ServiceRequestGMCheckList
+public partial class ServiceRequestGmcheckList
 {
-    public int SRGMCheckListID { get; set; }
+    public int SrgmcheckListId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutGMCheckListID { get; set; }
+    public int LutGmcheckListId { get; set; }
 
     public string? Answer { get; set; }
 
@@ -21,7 +21,7 @@ public partial class ServiceRequestGMCheckList
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual LutGMCheckList LutGMCheckList { get; set; } = null!;
+    public virtual LutGmcheckList LutGmcheckList { get; set; } = null!;
 
     public virtual ServiceRequest ServiceRequest { get; set; } = null!;
 }

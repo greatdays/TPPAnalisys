@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAAHRPublicContact
+public partial class VwAahrpublicContact
 {
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
     public string? FileNumber { get; set; }
 
     public int NoDefaultOwner { get; set; }
 
-    public int DefaultOwnerContactID { get; set; }
+    public int DefaultOwnerContactId { get; set; }
 
     public string OwnerContact { get; set; } = null!;
 
@@ -39,33 +39,33 @@ public partial class vwAAHRPublicContact
 
     public string OwnerZip { get; set; } = null!;
 
-    public bool? NoDefaultPM { get; set; }
+    public bool? NoDefaultPm { get; set; }
 
-    public int DefaultPMContactID { get; set; }
+    public int DefaultPmcontactId { get; set; }
 
-    public string PMContact { get; set; } = null!;
+    public string Pmcontact { get; set; } = null!;
 
-    public string PMContactName { get; set; } = null!;
+    public string PmcontactName { get; set; } = null!;
 
-    public string PMCompanyName { get; set; } = null!;
+    public string PmcompanyName { get; set; } = null!;
 
-    public string PMEmail { get; set; } = null!;
+    public string Pmemail { get; set; } = null!;
 
-    public string PMPhone { get; set; } = null!;
+    public string Pmphone { get; set; } = null!;
 
-    public string PMAddress { get; set; } = null!;
+    public string Pmaddress { get; set; } = null!;
 
-    public string PMHouseNum { get; set; } = null!;
+    public string PmhouseNum { get; set; } = null!;
 
-    public string PMHouseFracNum { get; set; } = null!;
+    public string PmhouseFracNum { get; set; } = null!;
 
-    public string PMStreet { get; set; } = null!;
+    public string Pmstreet { get; set; } = null!;
 
-    public string PMUnit { get; set; } = null!;
+    public string Pmunit { get; set; } = null!;
 
-    public string PMCity { get; set; } = null!;
+    public string Pmcity { get; set; } = null!;
 
-    public string PMState { get; set; } = null!;
+    public string Pmstate { get; set; } = null!;
 
-    public string PMZip { get; set; } = null!;
+    public string Pmzip { get; set; } = null!;
 }

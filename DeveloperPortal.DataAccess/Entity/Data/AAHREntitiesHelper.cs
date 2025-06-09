@@ -6,11 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace DeveloperPortal.DataAccess.Entity.Data
 {
     public partial class AAHREntitiesHelper: DbContext
     {
+
+        private readonly IConfiguration _configuration;
+
+        public AAHREntitiesHelper(DbContextOptions<AAHREntitiesHelper> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
         public virtual DbSet<AllConstructionData> AllConstructionData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,7 +49,12 @@ namespace DeveloperPortal.DataAccess.Entity.Data
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=43devdb10;Initial Catalog=AAHRDev;Integrated Security=true;user id=appACHP;password=BDpwD7@cHP;TrustServerCertificate=true");
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+        }
     }
 }

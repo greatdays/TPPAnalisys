@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutContactType
 {
-    public int LutContactTypeID { get; set; }
+    public int LutContactTypeId { get; set; }
 
-    public string? LutContactTypeCD { get; set; }
+    public string? LutContactTypeCd { get; set; }
 
     public string ContactType { get; set; } = null!;
 
@@ -45,7 +45,7 @@ public partial class LutContactType
 
     public virtual ICollection<AssnPropContact> AssnPropContacts { get; set; } = new List<AssnPropContact>();
 
-    public virtual ICollection<HRMApplication> HRMApplications { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> Hrmapplications { get; set; } = new List<Hrmapplication>();
 
     public virtual ICollection<ServiceRequestContact> ServiceRequestContacts { get; set; } = new List<ServiceRequestContact>();
 }

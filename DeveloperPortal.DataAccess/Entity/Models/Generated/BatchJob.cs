@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class BatchJob
 {
-    public int BatchJobID { get; set; }
+    public int BatchJobId { get; set; }
 
     public string? BatchNo { get; set; }
 
-    public int LutBatchTypeID { get; set; }
+    public int LutBatchTypeId { get; set; }
 
-    public int LutBatchStatusID { get; set; }
+    public int LutBatchStatusId { get; set; }
 
     public string? OutputName { get; set; }
 
@@ -27,7 +27,7 @@ public partial class BatchJob
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public string? BatchJobAttributes { get; set; }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutServiceRequestType
 {
-    public int LutServiceRequestTypeID { get; set; }
+    public int LutServiceRequestTypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -40,7 +40,7 @@ public partial class LutServiceRequestType
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
 
-    public Guid? ApplicationGUID { get; set; }
+    public Guid? ApplicationGuid { get; set; }
 
     public virtual ICollection<AssnServiceRequestTypeViolation> AssnServiceRequestTypeViolations { get; set; } = new List<AssnServiceRequestTypeViolation>();
 

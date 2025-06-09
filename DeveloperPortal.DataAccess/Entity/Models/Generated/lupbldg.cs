@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class lupbldg
+public partial class Lupbldg
 {
     public long Apn { get; set; }
 
@@ -33,7 +33,7 @@ public partial class lupbldg
 
     public int? RcnMainAmt { get; set; }
 
-    public string? LupSysUserID { get; set; }
+    public string? LupSysUserId { get; set; }
 
     public DateTime? LupTimestmp { get; set; }
 
@@ -43,5 +43,5 @@ public partial class lupbldg
 
     public byte[] Timestamp { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 }

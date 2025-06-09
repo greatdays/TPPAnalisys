@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class PolicyComplianceReminder
 {
-    public int PolicyComplianceReminderID { get; set; }
+    public int PolicyComplianceReminderId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
     public string? ReminderLog { get; set; }
 
@@ -29,7 +29,7 @@ public partial class PolicyComplianceReminder
 
     public string ModifedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ServiceRequest ServiceRequest { get; set; } = null!;
 }

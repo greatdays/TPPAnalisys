@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPAgencySnap
+public partial class PmpagencySnap
 {
-    public int PMPAgencySnapID { get; set; }
+    public int PmpagencySnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int PMPAgencyID { get; set; }
+    public int PmpagencyId { get; set; }
 
-    public string? PMPAgencyName { get; set; }
+    public string? PmpagencyName { get; set; }
 
-    public string? PMPAgencyContactName { get; set; }
+    public string? PmpagencyContactName { get; set; }
 
-    public string? PMPAgencyAddress { get; set; }
+    public string? PmpagencyAddress { get; set; }
 
-    public string? PMPAgencyPhoneNumber { get; set; }
+    public string? PmpagencyPhoneNumber { get; set; }
 
-    public string? PMPAgencyEmail { get; set; }
+    public string? PmpagencyEmail { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 }

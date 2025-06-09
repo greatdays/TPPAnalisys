@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Structure
 {
-    public int StructureID { get; set; }
+    public int StructureId { get; set; }
 
-    public int? RefBuildingID { get; set; }
+    public int? RefBuildingId { get; set; }
 
-    public int APNID { get; set; }
+    public int Apnid { get; set; }
 
-    public int? LutStructureTypeID { get; set; }
+    public int? LutStructureTypeId { get; set; }
 
     public string? Description { get; set; }
 
@@ -27,7 +27,7 @@ public partial class Structure
 
     public string? Source { get; set; }
 
-    public string? SourceRefID { get; set; }
+    public string? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -39,7 +39,7 @@ public partial class Structure
 
     public string? Label { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public int? TotalUnits { get; set; }
 
@@ -53,7 +53,7 @@ public partial class Structure
 
     public string? BuildingFileNumber { get; set; }
 
-    public virtual APN APN { get; set; } = null!;
+    public virtual Apn Apn { get; set; } = null!;
 
     public virtual ICollection<Level> Levels { get; set; } = new List<Level>();
 
@@ -63,7 +63,7 @@ public partial class Structure
 
     public virtual ICollection<PropSnapshot> PropSnapshots { get; set; } = new List<PropSnapshot>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();
 

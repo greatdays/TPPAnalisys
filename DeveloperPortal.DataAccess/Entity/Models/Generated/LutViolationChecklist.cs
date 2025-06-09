@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutViolationChecklist
 {
-    public int LutViolationChecklistID { get; set; }
+    public int LutViolationChecklistId { get; set; }
 
     public string Name { get; set; } = null!;
 

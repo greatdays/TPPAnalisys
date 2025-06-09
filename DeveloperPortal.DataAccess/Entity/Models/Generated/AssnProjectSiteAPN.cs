@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnProjectSiteAPN
+public partial class AssnProjectSiteApn
 {
-    public int AssnProjectSiteAPNID { get; set; }
+    public int AssnProjectSiteApnid { get; set; }
 
     public int? ProjectSiteId { get; set; }
 
-    public string? APNNo { get; set; }
+    public string? Apnno { get; set; }
 
-    public bool? IsAcHP { get; set; }
+    public bool? IsAcHp { get; set; }
 
-    public bool? IsHIMS { get; set; }
+    public bool? IsHims { get; set; }
 }

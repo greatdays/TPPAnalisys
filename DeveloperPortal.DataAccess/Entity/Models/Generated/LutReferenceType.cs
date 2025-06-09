@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutReferenceType
 {
-    public int LutReferenceTypeID { get; set; }
+    public int LutReferenceTypeId { get; set; }
 
     public string? ReferenceType { get; set; }
 

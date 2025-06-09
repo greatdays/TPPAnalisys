@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutGrievanceStatus
 {
-    public int LutGrievanceStatusID { get; set; }
+    public int LutGrievanceStatusId { get; set; }
 
     public string GrievanceStatus { get; set; } = null!;
 
@@ -23,5 +23,5 @@ public partial class LutGrievanceStatus
 
     public virtual ICollection<GrievanceLog> GrievanceLogs { get; set; } = new List<GrievanceLog>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogs { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class replacementapn
+public partial class Replacementapn
 {
-    public string? hims { get; set; }
+    public string? Hims { get; set; }
 
-    public int? LutSiteCD { get; set; }
+    public int? LutSiteCd { get; set; }
 
-    public long? apnid { get; set; }
+    public long? Apnid { get; set; }
 
-    public long? newapnid { get; set; }
+    public long? Newapnid { get; set; }
 }

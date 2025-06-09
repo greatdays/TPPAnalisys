@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class StructureAttributeLog
 {
-    public int StructureAttributeLogID { get; set; }
+    public int StructureAttributeLogId { get; set; }
 
-    public int StructureAttributeID { get; set; }
+    public int StructureAttributeId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public string? HIMSAPN { get; set; }
+    public string? Himsapn { get; set; }
 
-    public string? AcHPAssociatedAPN { get; set; }
+    public string? AcHpassociatedApn { get; set; }
 
     public string? LutVoilationChecklistId { get; set; }
 
@@ -43,31 +43,31 @@ public partial class StructureAttributeLog
 
     public DateOnly? DateOf1stPlanCheckSubmission { get; set; }
 
-    public DateOnly? DateOfMostRecentTCO { get; set; }
+    public DateOnly? DateOfMostRecentTco { get; set; }
 
-    public DateOnly? DateOMostRecentBuildingPermit { get; set; }
+    public DateOnly? DateOmostRecentBuildingPermit { get; set; }
 
     public DateOnly? DateOfMostRecentPlanCheckSubmission { get; set; }
 
     public DateOnly? DateOfCurrentPlanCheckSubmission { get; set; }
 
-    public DateOnly? DateOf1stTCO { get; set; }
+    public DateOnly? DateOf1stTco { get; set; }
 
     public DateOnly? DateOfCurrentBuildingPermitNumber { get; set; }
 
     public string? CurrentBuldingPermitNumber { get; set; }
 
-    public DateOnly? LADBSIssuedTCODate { get; set; }
+    public DateOnly? LadbsissuedTcodate { get; set; }
 
     public DateOnly? DateOfCurrentCofO { get; set; }
 
     public DateOnly? DateOfRetrofitPlanCheckSubmission { get; set; }
 
-    public DateOnly? DateOfCofOPostRetrofit { get; set; }
+    public DateOnly? DateOfCofOpostRetrofit { get; set; }
 
     public DateOnly? DateOfBuildingPermitFinaled { get; set; }
 
-    public string? DBSRetrofitBuildingPermitNumber { get; set; }
+    public string? DbsretrofitBuildingPermitNumber { get; set; }
 
     public DateOnly? DateOf1stBuildingPermit { get; set; }
 
@@ -77,7 +77,7 @@ public partial class StructureAttributeLog
 
     public string? MobilityDesignatedUnitNumbers { get; set; }
 
-    public string? FHA_11ADesignatedUnitNumbers { get; set; }
+    public string? Fha11adesignatedUnitNumbers { get; set; }
 
     public int? UnitDesignationTotal { get; set; }
 
@@ -137,13 +137,13 @@ public partial class StructureAttributeLog
 
     public DateTime? ModifiedOn { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
-    public int? LutFHAStandardId { get; set; }
+    public int? LutFhastandardId { get; set; }
 
-    public DateTime? DateOfFCO { get; set; }
+    public DateTime? DateOfFco { get; set; }
 
-    public int? LutStructureTypeID { get; set; }
+    public int? LutStructureTypeId { get; set; }
 
     public string? OtherStructureType { get; set; }
 
@@ -153,27 +153,27 @@ public partial class StructureAttributeLog
 
     public string? FirstPlanCheckSubmissionForConversionToResidential { get; set; }
 
-    public DateTime? DateOf1stTCOForConversionToResidential { get; set; }
+    public DateTime? DateOf1stTcoforConversionToResidential { get; set; }
 
-    public DateTime? DateOf1stCoFOForConversionToResidential { get; set; }
+    public DateTime? DateOf1stCoFoforConversionToResidential { get; set; }
 
     public DateTime? DateOfCurrentBuildingPermitFinaled { get; set; }
 
-    public DateOnly? ClearedByAcHPForTCO { get; set; }
+    public DateOnly? ClearedByAcHpforTco { get; set; }
 
     public bool? RecommendedForCertification { get; set; }
 
-    public int? LutBuildingTypeID { get; set; }
+    public int? LutBuildingTypeId { get; set; }
 
     public string? DesignatedManagerUnits { get; set; }
 
-    public string? ModificationsGrantedByLADBSUnitsBuildings { get; set; }
+    public string? ModificationsGrantedByLadbsunitsBuildings { get; set; }
 
     public string? BuildingDescription { get; set; }
 
     public string? HistoricBuildingPermitNumber { get; set; }
 
-    public DateTime? HistoricBuildingCofODate { get; set; }
+    public DateTime? HistoricBuildingCofOdate { get; set; }
 
     public DateTime? HistoricBuildingPermitApplicationDate { get; set; }
 
@@ -187,5 +187,5 @@ public partial class StructureAttributeLog
 
     public int? CommercialVehicleChargingStations { get; set; }
 
-    public string? LADBSjson { get; set; }
+    public string? Ladbsjson { get; set; }
 }

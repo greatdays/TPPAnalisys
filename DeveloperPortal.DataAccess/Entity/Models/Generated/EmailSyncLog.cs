@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EmailSyncLog
 {
-    public int EmailSyncLogID { get; set; }
+    public int EmailSyncLogId { get; set; }
 
     public string IdentifierType { get; set; } = null!;
 
-    public int IdentifierID { get; set; }
+    public int IdentifierId { get; set; }
 
     public string MailType { get; set; } = null!;
 

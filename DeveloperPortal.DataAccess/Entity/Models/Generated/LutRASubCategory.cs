@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutRASubCategory
+public partial class LutRasubCategory
 {
-    public int LutRASubCategoryID { get; set; }
+    public int LutRasubCategoryId { get; set; }
 
-    public int LutRACategoryID { get; set; }
+    public int LutRacategoryId { get; set; }
 
-    public string RASubCategory { get; set; } = null!;
+    public string RasubCategory { get; set; } = null!;
+
+    public string? Description { get; set; }
 
     public bool? IsAbsolute { get; set; }
 
@@ -25,9 +27,9 @@ public partial class LutRASubCategory
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual LutRACategory LutRACategory { get; set; } = null!;
+    public virtual LutRacategory LutRacategory { get; set; } = null!;
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ICollection<ReasonableAccommodation> ReasonableAccommodations { get; set; } = new List<ReasonableAccommodation>();
 }

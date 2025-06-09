@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class TAssnPropContact
+public partial class TassnPropContact
 {
-    public int AssnPropContactID { get; set; }
+    public int AssnPropContactId { get; set; }
 
     public string? IdentifierType { get; set; }
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
-    public int? UnitID { get; set; }
+    public int? UnitId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
-    public int LutContactTypeID { get; set; }
+    public int LutContactTypeId { get; set; }
 
     public DateOnly? AssociatedFrom { get; set; }
 
@@ -41,9 +41,9 @@ public partial class TAssnPropContact
 
     public DateTime? ModifiedOn { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public bool IsPrimaryAssnType { get; set; }
 

@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnGrievanceMilestonesDate
 {
-    public int GrievanceID { get; set; }
+    public int GrievanceId { get; set; }
 
-    public int LutGrievanceMilestonesID { get; set; }
+    public int LutGrievanceMilestonesId { get; set; }
 
     public DateOnly MilestoneDate { get; set; }
 

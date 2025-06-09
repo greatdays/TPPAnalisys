@@ -1,17 +1,34 @@
-﻿using System.Data;
-using DeveloperPortal.DataAccess.Entity.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using DeveloperPortal.Application.Common;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models;
+using DeveloperPortal.DataAccess.Repository.Implementation;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Dashboard;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using Serilog;
 
-namespace DeveloperPortal.Application
+namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
-    public class Dashboard
+    public class DashboardService : IDashboardService
     {
-        public List<DashboardDataModel> GetAllConstructionCases()
+
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+        private readonly IApnpinRepository _apnpinRepository;
+
+
+        public DashboardService(IStoredProcedureExecutor storedProcedureExecutor, IApnpinRepository apnpinRepository)
         {
-            var result = GetAllConstructionCasesData().Result;
+            _storedProcedureExecutor = storedProcedureExecutor;
+            _apnpinRepository = apnpinRepository;
+        }
+
+
+
+        public async Task<List<DashboardDataModel>> GetAllConstructionCases()
+        {
+            var result = await GetAllConstructionCasesData();
 
             List<DashboardDataModel> resultList = new List<DashboardDataModel>();
             if (result != null && result.Count > 0)
@@ -38,16 +55,16 @@ namespace DeveloperPortal.Application
         }
 
 
-        public List<DashboardDataModel> GetAllConstructionCasesForUser()
+        public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUser()
         {
             List<DashboardDataModel> resultList = new List<DashboardDataModel>();
-            var res = GetAllConstructionCasesData();
-            var allCases = res.Result;
+            var res = await GetAllConstructionCasesData();
+            var allCases = res;
 
             if (allCases != null && allCases.Count > 0)
             {
             //Added this log for Serilog testing once testing done We will reomve this line
-                Log.Logger.Information("Dashboard:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+                Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
 
                 resultList = allCases.Select(x => new DashboardDataModel
                 {
@@ -75,21 +92,22 @@ namespace DeveloperPortal.Application
         /// <returns>List</returns>
         private async Task<List<AllConstructionData>> GetAllConstructionCasesData()
         {
-            //AahrdevContext context = new AahrdevContext();
-            List<AllConstructionData> result = new List<AllConstructionData>();
+            List < AllConstructionData > obj = new List < AllConstructionData >();
             try
             {
-                AAHREntitiesHelper context = new AAHREntitiesHelper();
-                //List<uspRoGetAllConstructionCasesResult> result = await context.uspRoGetAllConstructionCases();
-                result = context.AllConstructionData.FromSql($"EXEC [AAHPCC].[uspRoGetAllConstructionCases]").ToList();
+                //var data =    await _apnpinRepository.GetAllApnpinsAsync();
+                return await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(StoredProcedureNames.SP_uspRoGetAllConstructionCases);
             }
             catch (Exception e)
             {
-                //TODO:add logging - Ananth
                 Console.WriteLine(e);
+                return new List<AllConstructionData>();
             }
+        }
 
-            return result;
+        Task<List<AllConstructionData>> IDashboardService.GetAllConstructionCasesData()
+        {
+            return GetAllConstructionCasesData();
         }
     }
 }

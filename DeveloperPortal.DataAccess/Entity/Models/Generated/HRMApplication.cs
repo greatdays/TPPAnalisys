@@ -3,25 +3,25 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class HRMApplication
+public partial class Hrmapplication
 {
-    public int HRMApplicationID { get; set; }
+    public int HrmapplicationId { get; set; }
 
-    public int ListingID { get; set; }
+    public int ListingId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutContactTypeID { get; set; }
+    public int LutContactTypeId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string? ApplicationNumber { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
     public string? AltPhone { get; set; }
 
-    public string? AltLutPhoneTypeCD { get; set; }
+    public string? AltLutPhoneTypeCd { get; set; }
 
     public string? AltArea { get; set; }
 
@@ -33,9 +33,9 @@ public partial class HRMApplication
 
     public decimal? IncomeHousehold { get; set; }
 
-    public int? LutTotalBathroomsID { get; set; }
+    public int? LutTotalBathroomsId { get; set; }
 
-    public int? LutTotalBedroomsID { get; set; }
+    public int? LutTotalBedroomsId { get; set; }
 
     public bool? MemberAgeOver55 { get; set; }
 
@@ -61,7 +61,7 @@ public partial class HRMApplication
 
     public DateTime? UnSubscriptionDate { get; set; }
 
-    public int? CancelReasonID { get; set; }
+    public int? CancelReasonId { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -71,19 +71,19 @@ public partial class HRMApplication
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public bool? IsDeleted { get; set; }
 
     public string? Comment { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public int? LotteryResult { get; set; }
 
     public string? ConventionalWaitListPosition { get; set; }
 
-    public int? HAContactIndentifierId { get; set; }
+    public int? HacontactIndentifierId { get; set; }
 
     public int? ListingSnapId { get; set; }
 
@@ -119,19 +119,27 @@ public partial class HRMApplication
 
     public string? StreetTypeCd { get; set; }
 
-    public string? HMISNumber { get; set; }
+    public string? Hmisnumber { get; set; }
 
     public string? FullAddress { get; set; }
 
-    public virtual ICollection<AUWaitList> AUWaitLists { get; set; } = new List<AUWaitList>();
+    public bool? IsDeclined { get; set; }
 
-    public virtual ICollection<AssnHRMApplicationPropQuestion> AssnHRMApplicationPropQuestions { get; set; } = new List<AssnHRMApplicationPropQuestion>();
+    public string? FirstName { get; set; }
+
+    public string? MiddleName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public virtual ICollection<AssnHrmapplicationPropQuestion> AssnHrmapplicationPropQuestions { get; set; } = new List<AssnHrmapplicationPropQuestion>();
+
+    public virtual ICollection<AuwaitList> AuwaitLists { get; set; } = new List<AuwaitList>();
 
     public virtual ContactIdentifier ContactIdentifier { get; set; } = null!;
 
-    public virtual ContactIdentifier? HAContactIndentifier { get; set; }
+    public virtual ContactIdentifier? HacontactIndentifier { get; set; }
 
-    public virtual ICollection<HRMApplicationAdditionalQuestion> HRMApplicationAdditionalQuestions { get; set; } = new List<HRMApplicationAdditionalQuestion>();
+    public virtual ICollection<HrmapplicationAdditionalQuestion> HrmapplicationAdditionalQuestions { get; set; } = new List<HrmapplicationAdditionalQuestion>();
 
     public virtual Listing Listing { get; set; } = null!;
 

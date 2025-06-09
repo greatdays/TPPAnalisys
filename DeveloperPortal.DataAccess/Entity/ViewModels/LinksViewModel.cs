@@ -48,7 +48,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
         /// Copy Display configuration data into View Model.
         /// </summary>
         /// <param name="linksDisplayConfiguration">Display Configuration entity</param>
-        internal void FetchDisplayConfiguration(Links_DisplayConfig linksDisplayConfiguration)
+        internal void FetchDisplayConfiguration(LinksDisplayConfig linksDisplayConfiguration)
         {
             /* Copy Display Config */
             this.Title = linksDisplayConfiguration.Name;
@@ -64,7 +64,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                  * - ViewOrder
                  * - NoOfLinksToDisplay
                  * */
-            List<Links_LinkDetails> linkDetails = linksDisplayConfiguration.Links_LinkDetails
+            List<LinksLinkDetail> linkDetails = linksDisplayConfiguration.LinksLinkDetails
                                                       .Where(l => l.IsActive == true)
                                                       .OrderBy(l => l.ViewOrder)
                                                       .Take(noOfLinkToDisplay)
@@ -84,21 +84,21 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                     /* Fetch Icon details */
                     if (true == linksDisplayConfiguration.IsDisplayIcon)
                     {
-                        Links_Images linkImages = null;
+                        LinksImage linkImages = null;
 
                         /* Check if same icon or specific icons are required. */
                         if (true == linksDisplayConfiguration.IsDisplayIcon)
                         {
                             /* Copy from Display configureation */
-                            linkImages = linksDisplayConfiguration.Links_Images;
+                            linkImages = linksDisplayConfiguration.Image;
                         }
                         else
                         {
                             /* Copy from individual Link detail */
-                            linkImages = linkDetail.Links_Images;
+                            linkImages = linkDetail.Image;
                         }
                         /* Copy Icon detail */
-                        if (null != linkDetail.Links_Images)
+                        if (null != linkDetail.Image)
                         {
                             linkItem.ImageURL = linkImages.ImageName; //TODO: Need to rename as URL instead of name
                             linkItem.ImageHeight = (int)linkImages.Height;

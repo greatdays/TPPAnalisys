@@ -5,23 +5,23 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class FloorPlanType
 {
-    public int FloorPlanTypeID { get; set; }
+    public int FloorPlanTypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public int ProjectID { get; set; }
+    public int ProjectId { get; set; }
 
-    public int PropsnapShotID { get; set; }
+    public int PropsnapShotId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
     public double? SquareFeet { get; set; }
 
-    public int LutTotalBedroomID { get; set; }
+    public int LutTotalBedroomId { get; set; }
 
-    public int LutTotalBathroomID { get; set; }
+    public int LutTotalBathroomId { get; set; }
 
     public bool? IsDeleted { get; set; }
 

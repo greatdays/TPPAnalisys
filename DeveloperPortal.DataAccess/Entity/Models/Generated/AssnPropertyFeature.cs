@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnPropertyFeature
 {
-    public int AssnPropertyFeatureID { get; set; }
+    public int AssnPropertyFeatureId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutFeatureID { get; set; }
+    public int LutFeatureId { get; set; }
 
     public string? CreatedBy { get; set; }
 

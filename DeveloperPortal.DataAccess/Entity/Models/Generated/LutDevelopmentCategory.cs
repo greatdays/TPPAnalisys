@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutDevelopmentCategory
 {
-    public int LutDevelopmentCategoryID { get; set; }
+    public int LutDevelopmentCategoryId { get; set; }
 
     public string DevelopmentCategory { get; set; } = null!;
 
@@ -23,5 +23,5 @@ public partial class LutDevelopmentCategory
 
     public virtual ICollection<GrievanceLog> GrievanceLogs { get; set; } = new List<GrievanceLog>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogs { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 }

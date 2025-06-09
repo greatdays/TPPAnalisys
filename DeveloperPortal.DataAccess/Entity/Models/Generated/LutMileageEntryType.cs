@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutMileageEntryType
 {
-    public int LutMileageEntryTypeID { get; set; }
+    public int LutMileageEntryTypeId { get; set; }
 
     public string? Name { get; set; }
 

@@ -5,19 +5,19 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class BatchJobDetailLog
 {
-    public int BatchJobDetailLogID { get; set; }
+    public int BatchJobDetailLogId { get; set; }
 
-    public int BatchJobDetailID { get; set; }
+    public int BatchJobDetailId { get; set; }
 
-    public int BatchJobID { get; set; }
+    public int BatchJobId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
-    public int? LutBatchStatusID { get; set; }
+    public int? LutBatchStatusId { get; set; }
 
-    public int? DocTemplateID { get; set; }
+    public int? DocTemplateId { get; set; }
 
-    public int? DocumentEntityID { get; set; }
+    public int? DocumentEntityId { get; set; }
 
     public string? OutputName { get; set; }
 
@@ -37,13 +37,13 @@ public partial class BatchJobDetailLog
 
     public string? RefKeyValue2 { get; set; }
 
-    public int? OwnerContactHistoryID { get; set; }
+    public int? OwnerContactHistoryId { get; set; }
 
-    public int? PMContactHistoryID { get; set; }
+    public int? PmcontactHistoryId { get; set; }
 
-    public int? NotificationTemplateID { get; set; }
+    public int? NotificationTemplateId { get; set; }
 
-    public int? NotificationLogsID { get; set; }
+    public int? NotificationLogsId { get; set; }
 
     public string? Comment { get; set; }
 
@@ -65,5 +65,5 @@ public partial class BatchJobDetailLog
 
     public string? LogApp { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 }

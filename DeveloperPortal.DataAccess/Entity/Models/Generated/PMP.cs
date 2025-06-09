@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMP
+public partial class Pmp
 {
-    public int PMPID { get; set; }
+    public int Pmpid { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int? LutConstructionTypeID { get; set; }
+    public int? LutConstructionTypeId { get; set; }
 
-    public int? LutCESTypeID { get; set; }
+    public int? LutCestypeId { get; set; }
 
     public DateTime? PreliminaryCertificateDate { get; set; }
 
@@ -25,7 +25,7 @@ public partial class PMP
 
     public bool IsComplyAdmRequirement { get; set; }
 
-    public bool IsComplyLAHSACES { get; set; }
+    public bool IsComplyLahsaces { get; set; }
 
     public string? VacancyPolicyDesc { get; set; }
 
@@ -33,7 +33,7 @@ public partial class PMP
 
     public string? WaitListAddInfo { get; set; }
 
-    public string? WaitListDescForHOPWA { get; set; }
+    public string? WaitListDescForHopwa { get; set; }
 
     public bool IsComplyWaitList { get; set; }
 
@@ -77,7 +77,7 @@ public partial class PMP
 
     public string? SpecificPopulationApply { get; set; }
 
-    public bool IsCWLNoPlanAffirmativeMarketing { get; set; }
+    public bool IsCwlnoPlanAffirmativeMarketing { get; set; }
 
     public bool? IsTenantRightsToReturn { get; set; }
 
@@ -87,29 +87,31 @@ public partial class PMP
 
     public int? ReturningTenantHearningUnits { get; set; }
 
-    public string? ReturningTenantOccupyAUs { get; set; }
+    public string? ReturningTenantOccupyAus { get; set; }
 
-    public bool? IsProjectUseUHA { get; set; }
+    public bool? IsProjectUseUha { get; set; }
 
-    public virtual ICollection<AssnPMPAgency> AssnPMPAgencies { get; set; } = new List<AssnPMPAgency>();
+    public bool IsLocked { get; set; }
 
-    public virtual ICollection<AssnPMPLotteryApplnAvailMethod> AssnPMPLotteryApplnAvailMethods { get; set; } = new List<AssnPMPLotteryApplnAvailMethod>();
+    public virtual ICollection<AssnPmpagency> AssnPmpagencies { get; set; } = new List<AssnPmpagency>();
 
-    public virtual ICollection<AssnPMPLotterySubmitMethod> AssnPMPLotterySubmitMethods { get; set; } = new List<AssnPMPLotterySubmitMethod>();
+    public virtual ICollection<AssnPmplotteryApplnAvailMethod> AssnPmplotteryApplnAvailMethods { get; set; } = new List<AssnPmplotteryApplnAvailMethod>();
 
-    public virtual ICollection<AssnPMPScatteredSite> AssnPMPScatteredSites { get; set; } = new List<AssnPMPScatteredSite>();
+    public virtual ICollection<AssnPmplotterySubmitMethod> AssnPmplotterySubmitMethods { get; set; } = new List<AssnPmplotterySubmitMethod>();
 
-    public virtual ICollection<AssnPMPSitesOutreach> AssnPMPSitesOutreaches { get; set; } = new List<AssnPMPSitesOutreach>();
+    public virtual ICollection<AssnPmpscatteredSite> AssnPmpscatteredSites { get; set; } = new List<AssnPmpscatteredSite>();
+
+    public virtual ICollection<AssnPmpsitesOutreach> AssnPmpsitesOutreaches { get; set; } = new List<AssnPmpsitesOutreach>();
 
     public virtual LutLegalEntityType? LutLegalEntityType { get; set; }
 
-    public virtual ICollection<PMPAddnlMarketingEffort> PMPAddnlMarketingEfforts { get; set; } = new List<PMPAddnlMarketingEffort>();
+    public virtual ICollection<PmpaddnlMarketingEffort> PmpaddnlMarketingEfforts { get; set; } = new List<PmpaddnlMarketingEffort>();
 
-    public virtual ICollection<PMPOutreachOrganisation> PMPOutreachOrganisations { get; set; } = new List<PMPOutreachOrganisation>();
+    public virtual ICollection<PmpoutreachOrganisation> PmpoutreachOrganisations { get; set; } = new List<PmpoutreachOrganisation>();
 
-    public virtual ICollection<PMPPSHClientServingOrganization> PMPPSHClientServingOrganizations { get; set; } = new List<PMPPSHClientServingOrganization>();
+    public virtual ICollection<PmppshclientServingOrganization> PmppshclientServingOrganizations { get; set; } = new List<PmppshclientServingOrganization>();
 
-    public virtual ICollection<PMPSnap> PMPSnaps { get; set; } = new List<PMPSnap>();
+    public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 
     public virtual ServiceRequest ServiceRequest { get; set; } = null!;
 }

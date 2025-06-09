@@ -47,7 +47,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             var controlViewsInfo = tabInfo.TabControlViewMaps
                                     .Where(m => m.RenderSection == renderSection)
                                     .OrderBy(m => m.ViewOrder)
-                                    .Select(m => new { ControlViews = m.ControlViewMaster, Roles = m.RoleMasters })
+                                    .Select(m => new { ControlViews = m.ControlView, Roles = m.Roles })
                                     .ToList();
 
             foreach (var controlView in controlViewsInfo)
@@ -75,9 +75,9 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             this.ControlGroupConfigId = controlView.GetDisplayConfigId(controlView);
             this.ControlGroupConfig = controlView.GetDisplayConfig(controlView);
             this.ViewTitle = controlView.DisplayName ?? controlView.Name;
-            this.ControlName = controlView.ControlMaster.Name;
-            this.ControlRenderURL = controlView.ControlMaster.RenderAction;
-            this.ControlDescription = controlView.ControlMaster.Description;
+            this.ControlName = controlView.Control.Name;
+            this.ControlRenderURL = controlView.Control.RenderAction;
+            this.ControlDescription = controlView.Control.Description;
             this.ViewComments = controlView.Comments;
             this.JsonConfig = controlView.JsonConfig;
             // Split Render Url

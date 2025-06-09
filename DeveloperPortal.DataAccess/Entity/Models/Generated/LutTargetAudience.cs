@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutTargetAudience
 {
-    public int LutTargetAudienceID { get; set; }
+    public int LutTargetAudienceId { get; set; }
 
     public string? Name { get; set; }
 
@@ -23,5 +23,5 @@ public partial class LutTargetAudience
 
     public virtual ICollection<AssnOutreachTargetAudience> AssnOutreachTargetAudiences { get; set; } = new List<AssnOutreachTargetAudience>();
 
-    public virtual ICollection<AssnPMPOutreachTargetAudienceSnap> AssnPMPOutreachTargetAudienceSnaps { get; set; } = new List<AssnPMPOutreachTargetAudienceSnap>();
+    public virtual ICollection<AssnPmpoutreachTargetAudienceSnap> AssnPmpoutreachTargetAudienceSnaps { get; set; } = new List<AssnPmpoutreachTargetAudienceSnap>();
 }

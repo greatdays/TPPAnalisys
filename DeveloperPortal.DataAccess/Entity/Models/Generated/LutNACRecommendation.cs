@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutNACRecommendation
+public partial class LutNacrecommendation
 {
-    public int LutNACRecommendationID { get; set; }
+    public int LutNacrecommendationId { get; set; }
 
     public string? Title { get; set; }
 

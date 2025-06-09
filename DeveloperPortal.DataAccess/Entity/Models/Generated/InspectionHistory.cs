@@ -8,13 +8,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class InspectionHistory
 {
-    public int InspectionHistoryID { get; set; }
+    public int InspectionHistoryId { get; set; }
 
-    public int InspectionID { get; set; }
+    public int InspectionId { get; set; }
 
-    public int? LutCancelReasonID { get; set; }
+    public int? LutCancelReasonId { get; set; }
 
-    public int? LutScheduleReasonID { get; set; }
+    public int? LutScheduleReasonId { get; set; }
 
     /// <summary>
     /// Primary key of the table

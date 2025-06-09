@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class OrganizationAddress
 {
-    public int OrganizationAddressID { get; set; }
+    public int OrganizationAddressId { get; set; }
 
-    public int OrganizationID { get; set; }
+    public int OrganizationId { get; set; }
 
     public string? HouseNum { get; set; }
 

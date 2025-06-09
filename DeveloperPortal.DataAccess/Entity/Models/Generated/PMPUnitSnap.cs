@@ -3,37 +3,37 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPUnitSnap
+public partial class PmpunitSnap
 {
-    public int PMPUnitSnapID { get; set; }
+    public int PmpunitSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int UnitID { get; set; }
+    public int UnitId { get; set; }
 
-    public int? RefUnitID { get; set; }
+    public int? RefUnitId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
-    public int? APNID { get; set; }
+    public int? Apnid { get; set; }
 
-    public int? BuildingID { get; set; }
+    public int? BuildingId { get; set; }
 
-    public int? LevelID { get; set; }
+    public int? LevelId { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? UnitNum { get; set; }
 
     public string? Status { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
-    public int? LutUnitAccessibiltyTypeID { get; set; }
+    public int? LutUnitAccessibiltyTypeId { get; set; }
 
     public bool? IsUpdated { get; set; }
 
@@ -47,13 +47,13 @@ public partial class PMPUnitSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual APN? APN { get; set; }
+    public virtual Apn? Apn { get; set; }
 
     public virtual Level? Level { get; set; }
 
     public virtual LutUnitAccessibiltyType? LutUnitAccessibiltyType { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 
     public virtual Project? Project { get; set; }
 

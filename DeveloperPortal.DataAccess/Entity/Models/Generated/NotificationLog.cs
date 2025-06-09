@@ -27,9 +27,9 @@ public partial class NotificationLog
 
     public int? RefrenceId { get; set; }
 
-    public string? MailCC { get; set; }
+    public string? MailCc { get; set; }
 
-    public string? MailBCC { get; set; }
+    public string? MailBcc { get; set; }
 
     public virtual ICollection<BatchJobDetail> BatchJobDetails { get; set; } = new List<BatchJobDetail>();
 }

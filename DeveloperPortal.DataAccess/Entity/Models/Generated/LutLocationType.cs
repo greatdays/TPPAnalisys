@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLocationType
 {
-    public int LutLocationTypeID { get; set; }
+    public int LutLocationTypeId { get; set; }
 
     public string? Name { get; set; }
 

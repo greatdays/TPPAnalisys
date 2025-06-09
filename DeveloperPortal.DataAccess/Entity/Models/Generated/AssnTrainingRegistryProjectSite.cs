@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnTrainingRegistryProjectSite
 {
-    public int AssnTrainingRegistryProjectSiteID { get; set; }
+    public int AssnTrainingRegistryProjectSiteId { get; set; }
 
-    public int TrainingRegistryID { get; set; }
+    public int TrainingRegistryId { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
     public DateTime CreatedOn { get; set; }
 

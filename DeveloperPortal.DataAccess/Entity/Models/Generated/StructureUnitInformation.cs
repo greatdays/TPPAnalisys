@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class StructureUnitInformation
 {
-    public int ID { get; set; }
+    public int Id { get; set; }
 
     public int? Total { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public int ProjectId { get; set; }
 
@@ -17,9 +17,9 @@ public partial class StructureUnitInformation
 
     public int StructureId { get; set; }
 
-    public int LUTUnitType { get; set; }
+    public int LutunitType { get; set; }
 
-    public int LUTTotalBedroomID { get; set; }
+    public int LuttotalBedroomId { get; set; }
 
     public bool? IsDeleted { get; set; }
 }

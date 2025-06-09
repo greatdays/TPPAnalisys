@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutCAPChecklistSubItem
+public partial class LutCapchecklistSubItem
 {
-    public int LutCAPChecklistSubItemId { get; set; }
+    public int LutCapchecklistSubItemId { get; set; }
 
-    public int LutCAPChecklistItemId { get; set; }
+    public int LutCapchecklistItemId { get; set; }
 
     public string SubItem { get; set; } = null!;
 
     public string? Description { get; set; }
 
-    public string? DMSSubCategory { get; set; }
+    public string? DmssubCategory { get; set; }
 
     public bool? IsDeleted { get; set; }
 
@@ -27,7 +27,7 @@ public partial class LutCAPChecklistSubItem
 
     public string ModifiedBy { get; set; } = null!;
 
-    public virtual ICollection<AssnSRCAPChecklistItemStatus> AssnSRCAPChecklistItemStatuses { get; set; } = new List<AssnSRCAPChecklistItemStatus>();
+    public virtual ICollection<AssnSrcapchecklistItemStatus> AssnSrcapchecklistItemStatuses { get; set; } = new List<AssnSrcapchecklistItemStatus>();
 
-    public virtual LutCAPChecklistItem LutCAPChecklistItem { get; set; } = null!;
+    public virtual LutCapchecklistItem LutCapchecklistItem { get; set; } = null!;
 }

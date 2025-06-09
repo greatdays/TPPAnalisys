@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutGrievantType
 {
-    public int LutGrievantTypeID { get; set; }
+    public int LutGrievantTypeId { get; set; }
 
     public string OptionText { get; set; } = null!;
 

@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnProblemCase
 {
-    public int AssnProblemCaseID { get; set; }
+    public int AssnProblemCaseId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public string CommentText { get; set; } = null!;
 

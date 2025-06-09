@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class APN
+public partial class Apn
 {
-    public int APNID { get; set; }
+    public int Apnid { get; set; }
 
-    public int? RefAPNID { get; set; }
+    public int? RefApnid { get; set; }
 
-    public string? APN1 { get; set; }
+    public string? Apn1 { get; set; }
 
     public decimal? Lat { get; set; }
 
@@ -31,11 +31,11 @@ public partial class APN
 
     public int? PrefSiteAddressId { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
 
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual ICollection<PropSnapshot> PropSnapshots { get; set; } = new List<PropSnapshot>();
 

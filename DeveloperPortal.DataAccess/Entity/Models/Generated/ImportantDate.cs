@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ImportantDate
 {
-    public int ImportantDateID { get; set; }
+    public int ImportantDateId { get; set; }
 
-    public int? LutImportantDateID { get; set; }
+    public int? LutImportantDateId { get; set; }
 
     public DateTime? Date { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

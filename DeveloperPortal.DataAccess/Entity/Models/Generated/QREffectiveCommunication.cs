@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QREffectiveCommunication
+public partial class QreffectiveCommunication
 {
-    public int QREffectiveCommunicationID { get; set; }
+    public int QreffectiveCommunicationId { get; set; }
 
     public string? EffectiveCommunicationNumber { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int? EffectiveCommunicationID { get; set; }
+    public int? EffectiveCommunicationId { get; set; }
 
-    public int LutUserTypeID { get; set; }
+    public int LutUserTypeId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -21,25 +21,25 @@ public partial class QREffectiveCommunication
 
     public string? LastName { get; set; }
 
-    public int? UnitProjectSiteID { get; set; }
+    public int? UnitProjectSiteId { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public string? Address { get; set; }
 
     public DateTime? RequestDate { get; set; }
 
-    public int? LutECRequestTypeID { get; set; }
+    public int? LutEcrequestTypeId { get; set; }
 
-    public int? LutECTypeID { get; set; }
+    public int? LutEctypeId { get; set; }
 
-    public int? LutLanguageTranslationID { get; set; }
+    public int? LutLanguageTranslationId { get; set; }
 
-    public int? LutLanguageID { get; set; }
+    public int? LutLanguageId { get; set; }
 
     public string? RequestDescription { get; set; }
 
-    public int? LutDeterminationStatusID { get; set; }
+    public int? LutDeterminationStatusId { get; set; }
 
     public DateTime? DeterminationDate { get; set; }
 
@@ -87,9 +87,9 @@ public partial class QREffectiveCommunication
 
     public virtual LutDeterminationStatus? LutDeterminationStatus { get; set; }
 
-    public virtual LutECRequestType? LutECRequestType { get; set; }
+    public virtual LutEcrequestType? LutEcrequestType { get; set; }
 
-    public virtual LutECType? LutECType { get; set; }
+    public virtual LutEctype? LutEctype { get; set; }
 
     public virtual LutLanguage? LutLanguage { get; set; }
 

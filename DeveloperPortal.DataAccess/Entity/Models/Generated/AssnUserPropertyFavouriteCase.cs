@@ -7,7 +7,7 @@ public partial class AssnUserPropertyFavouriteCase
 {
     public string UserName { get; set; } = null!;
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
