@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutWorkLogType
 {
-    public int LutWorkLogTypeID { get; set; }
+    public int LutWorkLogTypeId { get; set; }
 
     public string WorkLogType { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public partial class LutWorkLogType
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<ProjectWorkLog> ProjectWorkLogs { get; set; } = new List<ProjectWorkLog>();
 }

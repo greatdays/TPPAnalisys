@@ -1,13 +1,16 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using System.Data;
+using DeveloperPortal.Application.Common;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity.Models;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.DataAccess.Entity.ViewModel;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Data;
 
 namespace DeveloperPortal.Application.ProjectDetail
 {
@@ -16,10 +19,12 @@ namespace DeveloperPortal.Application.ProjectDetail
         #region Constructor
 
         IConfiguration _config;
-        
-        public ProjectDetailService(IConfiguration configuration)
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+
+        public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor)
         {
             _config = configuration;
+            _storedProcedureExecutor = storedProcedureExecutor;
         }
         
         #endregion
@@ -91,10 +96,10 @@ namespace DeveloperPortal.Application.ProjectDetail
             return projectSummaryModel;
         }
 
-        public List<string> GetProjectAssessors(int projectId)
+        public List<string> GetProjectAssessors(int ProjectId)
         {
             //List<string> result = null;
-            //BaseResponse baseResponse = CreateRequest<BaseResponse>(new { projectId }, $"{baseUrl}Construction/GetProjectAssessors", ActionType.GET);
+            //BaseResponse baseResponse = CreateRequest<BaseResponse>(new { ProjectId }, $"{baseUrl}Construction/GetProjectAssessors", ActionType.GET);
             //if (HttpStatusCode.OK == baseResponse.ResponseCode)
             //{
             //    result = JsonConvert.DeserializeObject<List<string>>(Convert.ToString(baseResponse.Response));
@@ -116,36 +121,36 @@ namespace DeveloperPortal.Application.ProjectDetail
                 return resultList;
             }
 
-            var metrixData = uspGetUnitsForComplianceMetrix(gridRequestModel.CaseId, gridRequestModel.ProjectId);
-            if (metrixData != null && metrixData.Count > 0)
-            {
-                resultList = metrixData.Select(x => new UnitDataModel
-                {
-                    APNId = x.APNId,
-                    SiteAddressID = x.SiteAddressID,
-                    ProjectSiteId = x.ProjectSiteId,
-                    ProjectId = x.ProjectId,
-                    LevelId = x.LevelId,
-                    BuildingId = x.BuildingId ?? 0,
-                    CaseId = x.CaseId,
-                    ServiceRequestId = x.ServiceRequestId,
-                    PropSnapshotID = x.PropSnapshotID ?? 0,
-                    ACHPNo = x.ACHPNo,
-                    UnitID = x.UnitID,
-                    UnitNum = x.UnitNum,
-                    TotalBedroom = x.TotalBedroom,
-                    LutTotalBedroomID = x.LutTotalBedroomID,
-                    FloorPlanType = x.FloorPlanType,
-                    FloorPlanTypeID = x.FloorPlanTypeID,
-                    UnitType = x.UnitType,
-                    LutUnitTypeID = x.LutUnitTypeID,
-                    ManagersUnit = x.ManagersUnit,
-                    IsCSA = x.IsCSA ?? false,
-                    IsVCA = x.IsVCA ?? false,
-                    AdditionalAccecibility = x.AdditionalAccecibility,
-                    IsCompliant = x.IsCompliant ?? false
-                }).ToList();
-            }
+            //var metrixData =  uspGetUnitsForComplianceMetrix(gridRequestModel.CaseId, gridRequestModel.ProjectId);
+            //if (metrixData != null && metrixData.Count > 0)
+            //{
+            //    resultList = metrixData.Select(x => new UnitDataModel
+            //    {
+            //        APNId = x.APNId,
+            //        SiteAddressID = x.SiteAddressID,
+            //        ProjectSiteId = x.ProjectSiteId,
+            //        ProjectId = x.ProjectId,
+            //        LevelId = x.LevelId,
+            //        BuildingId = x.BuildingId ?? 0,
+            //        CaseId = x.CaseId,
+            //        ServiceRequestId = x.ServiceRequestId,
+            //        PropSnapshotID = x.PropSnapshotID ?? 0,
+            //        ACHPNo = x.ACHPNo,
+            //        UnitID = x.UnitID,
+            //        UnitNum = x.UnitNum,
+            //        TotalBedroom = x.TotalBedroom,
+            //        LutTotalBedroomID = x.LutTotalBedroomID,
+            //        FloorPlanType = x.FloorPlanType,
+            //        FloorPlanTypeID = x.FloorPlanTypeID,
+            //        UnitType = x.UnitType,
+            //        LutUnitTypeID = x.LutUnitTypeID,
+            //        ManagersUnit = x.ManagersUnit,
+            //        IsCSA = x.IsCSA ?? false,
+            //        IsVCA = x.IsVCA ?? false,
+            //        AdditionalAccecibility = x.AdditionalAccecibility,
+            //        IsCompliant = x.IsCompliant ?? false
+            //    }).ToList();
+            //}
             return resultList;
         }
 
@@ -213,7 +218,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             //AahrdevContext context = new AahrdevContext();
             AAHREntities context = new AAHREntities();
             
-            var dd= context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}").Result;
+           // var dd= context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}").Result;
             context.Set<List<SiteInformationModel>>().FromSql($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}");
             //context.Database.ExecuteSqlRaw("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters);
             /*using (var dataTableAllSites = context.Database.ExecuteStoredProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
@@ -226,7 +231,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                         siteInformation.CaseID = Convert.ToInt32(dataTableAllSites.Rows[i]["CaseID"]);
                         siteInformation.RefProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["RefProjectSiteID"]);
                         siteInformation.ProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectSiteID"]);
-                        siteInformation.ProjectID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectID"]);
+                        siteInformation.ProjectId = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectId"]);
                         siteInformation.SiteName = dataTableAllSites.Rows[i]["SiteName"].ToString();
                         siteInformation.FileNumber = dataTableAllSites.Rows[i]["FileNumber"].ToString();
                         siteInformation.SiteAddress = dataTableAllSites.Rows[i]["SiteAddress"].ToString();
@@ -257,7 +262,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         public ControlViewModel GetControlViewModelById(int controlViewModelId)
         {   
             AAHREntities context = new AAHREntities();
-            ControlViewMaster controlView = context.ControlViewMasters.Include(x => x.ControlMaster).FirstOrDefault(m => m.Id == controlViewModelId);
+            ControlViewMaster controlView = context.ControlViewMasters.Include(x => x.Control).FirstOrDefault(m => m.Id == controlViewModelId);
 
             ControlViewModel controlViewModel = new ControlViewModel(_config);
             if (controlView != null)
@@ -281,14 +286,15 @@ namespace DeveloperPortal.Application.ProjectDetail
 
 
 
-        public void GetProjectParticipantsByProjectId(string projectId)
-        {
-            AAHREntities context = new AAHREntities();
-            int projId = 0;
-            int.TryParse(projectId, out projId);
-            var projectParticipants = context.GetProjectParticipantsByProjectId(projId);
-            List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
-        }
+        //public void GetProjectParticipantsByProjectId(string ProjectId)
+        //{
+        //    AAHREntities context = new AAHREntities();
+        //    int projId = 0;
+        //    int.TryParse(ProjectId, out projId);
+
+        //    var projectParticipants = context.GetProjectParticipantsByProjectId(projId);
+        //    List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
+        //}
 
 
         #region Private Methods
@@ -296,11 +302,12 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// Get all construction cases to be displayed on the dashboard
         /// </summary>
         /// <returns>List</returns>
-        private List<uspGetUnitsForComplianceMetrix> uspGetUnitsForComplianceMetrix(int caseId, int projectId)
-        {
-            AAHREntities context = new AAHREntities();
-            return context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHPCC].[uspGetUnitsForComplianceMetrix] @CaseId = {caseId}, @projectId= {projectId}").Result;
-        }
+        //private async Task<List<uspGetUnitsForComplianceMetrix>> uspGetUnitsForComplianceMetrix(int caseId, int ProjectId)
+        //{
+        //    AAHREntities context = new AAHREntities();
+        //    return await _unitOfWork.StoredProcedure.ExecuteStoredProcAsync<AllConstructionData>(StoredProcedureNames.SP_uspRoGetAllConstructionCases);
+        //   // return context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHPCC].[uspGetUnitsForComplianceMetrix] @CaseId = {caseId}, @ProjectId= {ProjectId}").Result;
+        //}
 
 
         private DataTable ExecuteStoreProcedure(string procedureName, List<SqlParameter> parameters)

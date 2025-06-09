@@ -8,7 +8,7 @@ public partial class Region
     /// <summary>
     /// Primary Key Identity column for the Neighborhood table
     /// </summary>
-    public int RegionID { get; set; }
+    public int RegionId { get; set; }
 
     /// <summary>
     /// N = Neighborhood, R = Region
@@ -28,7 +28,7 @@ public partial class Region
     /// <summary>
     /// Neighborhood belongs to which region
     /// </summary>
-    public int? ParentNeighborhoodID { get; set; }
+    public int? ParentNeighborhoodId { get; set; }
 
     /// <summary>
     /// Geographic Json type
@@ -43,7 +43,7 @@ public partial class Region
     /// <summary>
     /// Well know text for the geometry
     /// </summary>
-    public string? WKT { get; set; }
+    public string? Wkt { get; set; }
 
     /// <summary>
     /// Created by date
@@ -68,7 +68,7 @@ public partial class Region
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<ProjectSite> ProjectSites { get; set; } = new List<ProjectSite>();
 }

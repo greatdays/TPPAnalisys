@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutTotalBathroom
 {
-    public int LutTotalBathroomsID { get; set; }
+    public int LutTotalBathroomsId { get; set; }
 
     public string? Description { get; set; }
 
@@ -21,21 +21,21 @@ public partial class LutTotalBathroom
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitLists { get; set; } = new List<AUTransferWaitList>();
+    public virtual ICollection<AutransferWaitList> AutransferWaitLists { get; set; } = new List<AutransferWaitList>();
 
-    public virtual ICollection<AUWaitList> AUWaitLists { get; set; } = new List<AUWaitList>();
+    public virtual ICollection<AuwaitList> AuwaitLists { get; set; } = new List<AuwaitList>();
 
-    public virtual ICollection<HRMApplication> HRMApplications { get; set; } = new List<HRMApplication>();
+    public virtual ICollection<Hrmapplication> Hrmapplications { get; set; } = new List<Hrmapplication>();
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitLists { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitLists { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitLists { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitLists { get; set; } = new List<QrauwaitList>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ICollection<ReasonableAccommodation> ReasonableAccommodations { get; set; } = new List<ReasonableAccommodation>();
 

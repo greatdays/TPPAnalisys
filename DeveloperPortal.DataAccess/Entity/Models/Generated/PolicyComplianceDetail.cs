@@ -8,15 +8,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class PolicyComplianceDetail
 {
-    public int PolicyComplianceDetailID { get; set; }
+    public int PolicyComplianceDetailId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int? CaseID { get; set; }
+    public int? CaseId { get; set; }
 
     public string? OwnerContactName { get; set; }
 
-    public string? PMContactName { get; set; }
+    public string? PmcontactName { get; set; }
 
     public string? ProjectName { get; set; }
 
@@ -48,7 +48,7 @@ public partial class PolicyComplianceDetail
 
     public DateTime ModifiedOn { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual Case? Case { get; set; }
 

@@ -14,7 +14,7 @@ public partial class ApplicationMaster
 
     public string? Description { get; set; }
 
-    public Guid? ApplicationGUID { get; set; }
+    public Guid? ApplicationGuid { get; set; }
 
     public virtual ICollection<AppConfig> AppConfigs { get; set; } = new List<AppConfig>();
 
@@ -24,7 +24,7 @@ public partial class ApplicationMaster
 
     public virtual ICollection<TabMaster> TabMasters { get; set; } = new List<TabMaster>();
 
-    public virtual ICollection<WF_Definition> WF_Definitions { get; set; } = new List<WF_Definition>();
+    public virtual ICollection<WfDefinition> WfDefinitions { get; set; } = new List<WfDefinition>();
 
     public virtual ICollection<ApplicationMaster> Applications { get; set; } = new List<ApplicationMaster>();
 

@@ -5,21 +5,21 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class WorkOrder
 {
-    public int WorkOrderID { get; set; }
+    public int WorkOrderId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
-    public int? PackageID { get; set; }
+    public int? PackageId { get; set; }
 
-    public int? ContractorID { get; set; }
+    public int? ContractorId { get; set; }
 
     public string? ContractorInstruction { get; set; }
 
     public decimal? EstimatedCost { get; set; }
 
-    public decimal? TotalWOCost { get; set; }
+    public decimal? TotalWocost { get; set; }
 
     public DateTime? DateAward { get; set; }
 
@@ -31,11 +31,11 @@ public partial class WorkOrder
 
     public decimal? EncumberedAmount { get; set; }
 
-    public decimal? WOTalliedAmount { get; set; }
+    public decimal? WotalliedAmount { get; set; }
 
     public decimal? InvoiceAmount { get; set; }
 
-    public DateTime? WCDueDate { get; set; }
+    public DateTime? WcdueDate { get; set; }
 
     public DateTime? ExtendedDueDate { get; set; }
 

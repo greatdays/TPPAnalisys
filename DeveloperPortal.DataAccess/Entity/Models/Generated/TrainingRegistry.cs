@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class TrainingRegistry
 {
-    public int TrainingRegistryID { get; set; }
+    public int TrainingRegistryId { get; set; }
 
-    public int TrainingSessionID { get; set; }
+    public int TrainingSessionId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -19,9 +19,9 @@ public partial class TrainingRegistry
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -31,9 +31,9 @@ public partial class TrainingRegistry
 
     public string? Title { get; set; }
 
-    public int? OrganizationID { get; set; }
+    public int? OrganizationId { get; set; }
 
-    public int? DuplicateOfTrainingRegistryID { get; set; }
+    public int? DuplicateOfTrainingRegistryId { get; set; }
 
     public virtual ICollection<AssnTrainingRegistryProjectSite> AssnTrainingRegistryProjectSites { get; set; } = new List<AssnTrainingRegistryProjectSite>();
 

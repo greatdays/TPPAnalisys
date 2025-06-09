@@ -92,7 +92,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             this.NavigationStyle = displayConfiguration.NavigationStyle;
 
             /* Check if Workflow is no state */
-            if (0 == displayConfiguration.WF_Definition.WF_State.Count)
+            if (0 == displayConfiguration.WF_Definition.WfStates.Count)
             {
                 this.isNoStateWorkflow = true;
             }
@@ -106,18 +106,18 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             List<string> rolesFromSession = userSession.GetUserSession().Roles;
 
             /* Fetch Actions */
-            var actions = displayConfiguration.WF_Definition.WF_Action
+            var actions = displayConfiguration.WF_Definition.WfActions
                             .Where(m => m.IsVisible == true && m.IsDeleted == false)
                             .OrderBy(m => m.ViewOrder);
 
             /* Fetch Navigation Items */
-            foreach (WF_Action action in actions)
+            foreach (WfAction action in actions)
             {
                 /* Apply Role */
-                if (0 != action.RoleMasters1.Count && rolesFromSession != null)
+                if (0 != action.Roles.Count && rolesFromSession != null)
                 {
                     /* if current role is not permiited, move to next action */
-                    if (false == action.RoleMasters1.Select(r => r.Name.Trim()).Any
+                    if (false == action.Roles.Select(r => r.Name.Trim()).Any
                             (role => rolesFromSession.Contains(role.Trim())))
                     {
                         continue;
@@ -181,7 +181,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
 
         private void ApplyCaseCondition(NavigationItem navigationItem, Case currentCase = null)
         {
-            string assigneeID = currentCase != null ? currentCase.AssigneeID : string.Empty;
+            string assigneeID = currentCase != null ? currentCase.AssigneeId : string.Empty;
             UserSession userSession = new UserSession(_httpContextAccessor);
 
             switch (navigationItem.Condition.Trim())
@@ -271,36 +271,36 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
             /// Constructor to initialize based on Action.
             /// </summary>
             /// <param name="action"></param>
-            public NavigationItem(WF_Action action)
+            public NavigationItem(WfAction action)
             {
                 /* Copy Action Name */
                 this.ActionName = action.Name;
                 this.DisplayName = false == string.IsNullOrEmpty(action.DisplayName) ? action.DisplayName : action.Name;
 
                 /* Copy state Name */
-                this.SourceState = null != action.WF_State1 ? action.WF_State1.Name : null;
-                this.DestinationState = null != action.WF_State ? action.WF_State.Name : null;
+                this.SourceState = null != action.SourceState ? action.SourceState.Name : null;
+                this.DestinationState = null != action.DestinationState ? action.DestinationState.Name : null;
 
                 /* Copy condition */
-                this.Condition = null != action.WF_CaseCondition
-                                ? action.WF_CaseCondition.Condition : null;
+                this.Condition = null != action.CaseCondition
+                                ? action.CaseCondition.Condition : null;
 
                 /* Copy condition Param */
                 this.ConditionParam = null != action.CaseConditionParam
                                 ? action.CaseConditionParam : null;
 
                 this.IsBulk = action.IsBulk.HasValue ? action.IsBulk.Value : false;
-                this.IsAuto = (action.WF_State == null) ? false : action.WF_State.IsAuto;
-                this.FormId = null != action.WF_ActionView ? action.WF_ActionView.FormId : null;
+                this.IsAuto = (action.SourceState == null) ? false : action.SourceState.IsAuto;
+                this.FormId = null != action.ActionView ? action.ActionView.FormId : null;
 
                 /* Copy Action & View information */
-                if (null != action.WF_ActionView)
+                if (null != action.ActionView)
                 {
-                    this.Area = action.WF_ActionView.Area;
-                    this.Controller = action.WF_ActionView.Controller;
-                    this.Action = action.WF_ActionView.Action;
-                    this.IsWindow = action.WF_ActionView.IsWindow;
-                    this.Parameters = action.WF_ActionView.Parameters;
+                    this.Area = action.ActionView.Area;
+                    this.Controller = action.ActionView.Controller;
+                    this.Action = action.ActionView.Action;
+                    this.IsWindow = action.ActionView.IsWindow;
+                    this.Parameters = action.ActionView.Parameters;
                 }
             }
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwProjectAttributeLog
+public partial class VwProjectAttributeLog
 {
     public string? FileNumber { get; set; }
 
@@ -11,25 +11,33 @@ public partial class vwProjectAttributeLog
 
     public int ProjectId { get; set; }
 
-    public int? PS_ProjectId { get; set; }
+    public int? PsProjectId { get; set; }
 
-    public int ProjectAttributeLogID { get; set; }
+    public string? PsFileNumber { get; set; }
 
-    public int? ProjectAttributeID { get; set; }
+    public string? PsHimsnumber { get; set; }
 
-    public int? PropSnapshotID { get; set; }
+    public string? PsPrimaryApn { get; set; }
+
+    public string? PsSiteAddress { get; set; }
+
+    public int ProjectAttributeLogId { get; set; }
+
+    public int? ProjectAttributeId { get; set; }
+
+    public int? PropSnapshotId { get; set; }
 
     public string? ProjectName { get; set; }
 
     public bool? AnySeniorSite { get; set; }
 
-    public string? AcHPAssociatedAccessorParcelNumberAPN { get; set; }
+    public string? AcHpassociatedAccessorParcelNumberApn { get; set; }
 
-    public string? HIMSAssociatedAssessorParcelNumberAPN { get; set; }
+    public string? HimsassociatedAssessorParcelNumberApn { get; set; }
 
     public bool? SharedParkingLots { get; set; }
 
-    public string? AssignedRCS { get; set; }
+    public string? AssignedRcs { get; set; }
 
     public string? Status { get; set; }
 
@@ -37,27 +45,27 @@ public partial class vwProjectAttributeLog
 
     public bool? AssignedReidentialParking { get; set; }
 
-    public string? AcHPFileNumber { get; set; }
+    public string? AcHpfileNumber { get; set; }
 
     public string? LutApplicableAccessibilityStandardId { get; set; }
 
     public int? TotalNumberofMobilityUnitsRequired { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
-    public bool? ListedonAHUPProductionSchedule { get; set; }
+    public bool? ListedonAhupproductionSchedule { get; set; }
 
     public double? MobiltyUnitsPercentageRequired { get; set; }
 
     public double? PercentageofCertifiedAccessibleSensoryUnits { get; set; }
 
-    public bool? IsthisaPreCSADevelopment { get; set; }
+    public bool? IsthisaPreCsadevelopment { get; set; }
 
-    public double? AHUPScore { get; set; }
+    public double? Ahupscore { get; set; }
 
-    public int? AHUPProductionScheduleYear { get; set; }
+    public int? AhupproductionScheduleYear { get; set; }
 
-    public bool? IsthisaPreVSADevelopment { get; set; }
+    public bool? IsthisaPreVsadevelopment { get; set; }
 
     public int? TotalUnits { get; set; }
 
@@ -77,13 +85,13 @@ public partial class vwProjectAttributeLog
 
     public string? LutFundingId { get; set; }
 
-    public int? MaximumMobilityCSACount { get; set; }
+    public int? MaximumMobilityCsacount { get; set; }
 
-    public int? MaximumMobilityVCACount { get; set; }
+    public int? MaximumMobilityVcacount { get; set; }
 
-    public int? MaximumHearingandVisionCSACount { get; set; }
+    public int? MaximumHearingandVisionCsacount { get; set; }
 
-    public int? MaximumHearingandVisionVCACount { get; set; }
+    public int? MaximumHearingandVisionVcacount { get; set; }
 
-    public int? LutFHAStandardId { get; set; }
+    public int? LutFhastandardId { get; set; }
 }

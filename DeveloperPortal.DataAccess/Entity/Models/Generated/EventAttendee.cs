@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EventAttendee
 {
-    public int EventID { get; set; }
+    public int EventId { get; set; }
 
     public string AttendeeName { get; set; } = null!;
 

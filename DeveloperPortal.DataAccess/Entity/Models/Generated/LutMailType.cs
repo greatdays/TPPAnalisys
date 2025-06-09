@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutMailType
 {
-    public int LutMailTypeID { get; set; }
+    public int LutMailTypeId { get; set; }
 
     public string MailType { get; set; } = null!;
 

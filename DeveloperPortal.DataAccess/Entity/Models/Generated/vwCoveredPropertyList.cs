@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwCoveredPropertyList
+public partial class VwCoveredPropertyList
 {
     public string? PropertyName { get; set; }
 
-    public int? HIMSProjUniqueId { get; set; }
+    public int? HimsprojUniqueId { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
-    public int RefProjectSiteID { get; set; }
+    public int RefProjectSiteId { get; set; }
 
     public string? FileNumber { get; set; }
 
     public int? SiteNum { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
-    public int? RegionID { get; set; }
+    public int? RegionId { get; set; }
 
     public string? CouncilDistrict { get; set; }
 
@@ -35,9 +35,9 @@ public partial class vwCoveredPropertyList
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
-    public int? DefaultOwnerContactID { get; set; }
+    public int? DefaultOwnerContactId { get; set; }
 
     public int? NoDefaultOwner { get; set; }
 
@@ -65,47 +65,47 @@ public partial class vwCoveredPropertyList
 
     public string? OwnerZip { get; set; }
 
-    public int? DefaultPMContactID { get; set; }
+    public int? DefaultPmcontactId { get; set; }
 
-    public bool? NoDefaultPM { get; set; }
+    public bool? NoDefaultPm { get; set; }
 
-    public string? PMContactName { get; set; }
+    public string? PmcontactName { get; set; }
 
-    public string? PMCompanyName { get; set; }
+    public string? PmcompanyName { get; set; }
 
-    public string? PMAddress { get; set; }
+    public string? Pmaddress { get; set; }
 
-    public string? PMEmail { get; set; }
+    public string? Pmemail { get; set; }
 
-    public string? PMPhone { get; set; }
+    public string? Pmphone { get; set; }
 
-    public string? PMHouseNum { get; set; }
+    public string? PmhouseNum { get; set; }
 
-    public string? PMHouseFracNum { get; set; }
+    public string? PmhouseFracNum { get; set; }
 
-    public string? PMStreet { get; set; }
+    public string? Pmstreet { get; set; }
 
-    public string? PMUnit { get; set; }
+    public string? Pmunit { get; set; }
 
-    public string? PMCity { get; set; }
+    public string? Pmcity { get; set; }
 
-    public string? PMState { get; set; }
+    public string? Pmstate { get; set; }
 
-    public string? PMZip { get; set; }
+    public string? Pmzip { get; set; }
 
     public bool? IsCoveredProperty { get; set; }
 
-    public decimal? LAT { get; set; }
+    public decimal? Lat { get; set; }
 
-    public decimal? lon { get; set; }
+    public decimal? Lon { get; set; }
 
     public string? ProjectName { get; set; }
 
-    public string? typeofproject { get; set; }
+    public string? Typeofproject { get; set; }
 
     public string? HousingRegistryStatus { get; set; }
 
-    public string PropertyCESType { get; set; } = null!;
+    public string PropertyCestype { get; set; } = null!;
 
     public string? PropertyAddress { get; set; }
 
@@ -113,15 +113,15 @@ public partial class vwCoveredPropertyList
 
     public string? Neighborhood { get; set; }
 
-    public int? NeighborhoodID { get; set; }
+    public int? NeighborhoodId { get; set; }
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
     public int? TotalProjectSiteMobilityUnit { get; set; }
 
     public int? TotalProjectSiteSensoryUnit { get; set; }
 
-    public int TotalProjectSiteBothMobilityHVUnit { get; set; }
+    public int TotalProjectSiteBothMobilityHvunit { get; set; }
 
     public int? TotalProjectSiteAccessibleUnit { get; set; }
 
@@ -131,7 +131,7 @@ public partial class vwCoveredPropertyList
 
     public int SensoryUnitCnt { get; set; }
 
-    public int MobilitywHVUnitCnt { get; set; }
+    public int MobilitywHvunitCnt { get; set; }
 
     public int AdaptableUnitCnt { get; set; }
 
@@ -139,15 +139,15 @@ public partial class vwCoveredPropertyList
 
     public int? AccessibleUnitCnt { get; set; }
 
-    public string LowestAMI { get; set; } = null!;
+    public string LowestAmi { get; set; } = null!;
 
-    public int _0Bedroom { get; set; }
+    public int _0bedroom { get; set; }
 
-    public int _1Bedroom { get; set; }
+    public int _1bedroom { get; set; }
 
-    public int _2Bedroom { get; set; }
+    public int _2bedroom { get; set; }
 
-    public int _3Bedroom { get; set; }
+    public int _3bedroom { get; set; }
 
     public int _4orMoreBedroom { get; set; }
 
@@ -191,9 +191,9 @@ public partial class vwCoveredPropertyList
 
     public int CertifiedComplianceCnt { get; set; }
 
-    public string? CWLOpenPriorRegistryDate { get; set; }
+    public string? CwlopenPriorRegistryDate { get; set; }
 
-    public bool? IsCWLOpenPriorRegistry { get; set; }
+    public bool? IsCwlopenPriorRegistry { get; set; }
 
     public string? HousingRegistryStatusDisplayName { get; set; }
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutFHAStandard
+public partial class LutFhastandard
 {
-    public int LutFHAStandardId { get; set; }
+    public int LutFhastandardId { get; set; }
 
     public string? Name { get; set; }
 

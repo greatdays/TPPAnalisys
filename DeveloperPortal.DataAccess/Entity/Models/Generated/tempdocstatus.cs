@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class tempdocstatus
+public partial class Tempdocstatus
 {
-    public Guid? guid { get; set; }
+    public Guid? Guid { get; set; }
 
-    public string? status { get; set; }
+    public string? Status { get; set; }
 }

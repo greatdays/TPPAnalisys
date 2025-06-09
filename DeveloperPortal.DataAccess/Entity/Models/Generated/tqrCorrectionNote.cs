@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class tqrCorrectionNote
+public partial class TqrCorrectionNote
 {
-    public int QRCorrectionNoteID { get; set; }
+    public int QrcorrectionNoteId { get; set; }
 
-    public int? QuarterlyReportID { get; set; }
+    public int? QuarterlyReportId { get; set; }
 
-    public int? PropSnapShotID { get; set; }
+    public int? PropSnapShotId { get; set; }
 
     public string? CorrectionNote { get; set; }
 

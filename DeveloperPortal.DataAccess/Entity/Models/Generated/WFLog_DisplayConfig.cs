@@ -15,5 +15,5 @@ public partial class WFLog_DisplayConfig
 
     public virtual ICollection<ControlViewMaster> ControlViewMasters { get; set; } = new List<ControlViewMaster>();
 
-    public virtual WF_Definition WFDefinition { get; set; } = null!;
+    public virtual WfDefinition WFDefinition { get; set; } = null!;
 }

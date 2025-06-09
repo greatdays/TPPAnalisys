@@ -5,17 +5,17 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnProjSiteAccessibleUnitFeature
 {
-    public int AssnProjSiteAccessibleUnitFeatureID { get; set; }
+    public int AssnProjSiteAccessibleUnitFeatureId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutAccessibleUnitFeatureID { get; set; }
+    public int LutAccessibleUnitFeatureId { get; set; }
 
     public string? SpecialNote { get; set; }
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

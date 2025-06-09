@@ -21,7 +21,7 @@ public partial class LutCourseType
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
 }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwHCIDAAHPApplicationUser
+public partial class VwHcidaahpapplicationUser
 {
     public string FullName { get; set; } = null!;
 
     public int UserId { get; set; }
 
-    public string? EmployeeID { get; set; }
+    public string? EmployeeId { get; set; }
 
     public string? UserName { get; set; }
 
@@ -37,5 +37,5 @@ public partial class vwHCIDAAHPApplicationUser
 
     public string? MiddleName { get; set; }
 
-    public string? IDMUserName { get; set; }
+    public string? IdmuserName { get; set; }
 }

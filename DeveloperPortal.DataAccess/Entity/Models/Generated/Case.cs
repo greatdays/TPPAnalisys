@@ -11,12 +11,12 @@ public partial class Case
     /// <summary>
     /// Primary key of the table
     /// </summary>
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     /// <summary>
     /// Case Type Id
     /// </summary>
-    public int CaseTypeID { get; set; }
+    public int CaseTypeId { get; set; }
 
     /// <summary>
     /// WorkLog Summary
@@ -36,7 +36,7 @@ public partial class Case
     /// <summary>
     /// User ID from IDM.
     /// </summary>
-    public string? AssigneeID { get; set; }
+    public string? AssigneeId { get; set; }
 
     /// <summary>
     /// User ID from IDM.
@@ -85,7 +85,7 @@ public partial class Case
 
     public int? AutoRemainingDays { get; set; }
 
-    public virtual ICollection<AcHPPropertyManagementPlan> AcHPPropertyManagementPlans { get; set; } = new List<AcHPPropertyManagementPlan>();
+    public virtual ICollection<AcHppropertyManagementPlan> AcHppropertyManagementPlans { get; set; } = new List<AcHppropertyManagementPlan>();
 
     public virtual ICollection<AssnProblemCase> AssnProblemCases { get; set; } = new List<AssnProblemCase>();
 
@@ -109,9 +109,9 @@ public partial class Case
 
     public virtual ICollection<PolicyComplianceDetail> PolicyComplianceDetails { get; set; } = new List<PolicyComplianceDetail>();
 
-    public virtual ICollection<ReviewPMPLogSnap> ReviewPMPLogSnaps { get; set; } = new List<ReviewPMPLogSnap>();
+    public virtual ICollection<ReviewPmplogSnap> ReviewPmplogSnaps { get; set; } = new List<ReviewPmplogSnap>();
 
-    public virtual ICollection<ReviewPMPLog> ReviewPMPLogs { get; set; } = new List<ReviewPMPLog>();
+    public virtual ICollection<ReviewPmplog> ReviewPmplogs { get; set; } = new List<ReviewPmplog>();
 
     public virtual ICollection<ServiceRequest> ServiceRequests { get; set; } = new List<ServiceRequest>();
 

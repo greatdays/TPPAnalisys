@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPLotteryApplnAvailMethodSnap
+public partial class AssnPmplotteryApplnAvailMethodSnap
 {
-    public int AssnPMPLotteryApplnAvailMethodSnapID { get; set; }
+    public int AssnPmplotteryApplnAvailMethodSnapId { get; set; }
 
-    public int? PMPSnapID { get; set; }
+    public int? PmpsnapId { get; set; }
 
-    public int? LutLotteryApplnAvailMethodID { get; set; }
+    public int? LutLotteryApplnAvailMethodId { get; set; }
 
     public string? SpecialNote { get; set; }
 
@@ -19,5 +19,5 @@ public partial class AssnPMPLotteryApplnAvailMethodSnap
 
     public virtual LutLotteryApplnAvailMethod? LutLotteryApplnAvailMethod { get; set; }
 
-    public virtual PMPSnap? PMPSnap { get; set; }
+    public virtual Pmpsnap? Pmpsnap { get; set; }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAAHRPropertiesToGetLADBSPermit
+public partial class VwAahrpropertiesToGetLadbspermit
 {
     public string? PropertyName { get; set; }
 
@@ -27,11 +27,11 @@ public partial class vwAAHRPropertiesToGetLADBSPermit
 
     public string? ZipSuffix { get; set; }
 
-    public string? PrimaryAPN { get; set; }
+    public string? PrimaryApn { get; set; }
 
-    public string? PIN { get; set; }
+    public string? Pin { get; set; }
 
-    public int SourceID { get; set; }
+    public int SourceId { get; set; }
 
     public string? SourceReferenceNumber { get; set; }
 
@@ -43,7 +43,7 @@ public partial class vwAAHRPropertiesToGetLADBSPermit
 
     public int? ProjectStatusCd { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
     public DateTime CreatedOn { get; set; }
 }

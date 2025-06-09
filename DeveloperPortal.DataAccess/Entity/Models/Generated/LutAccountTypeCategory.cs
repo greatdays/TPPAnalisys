@@ -11,7 +11,7 @@ public partial class LutAccountTypeCategory
     /// <summary>
     /// Primary Key Identity column for the LutAccountTypeCategory table
     /// </summary>
-    public int LutAccountTypeCategoryID { get; set; }
+    public int LutAccountTypeCategoryId { get; set; }
 
     /// <summary>
     /// short description for the recrod
@@ -51,5 +51,5 @@ public partial class LutAccountTypeCategory
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 }

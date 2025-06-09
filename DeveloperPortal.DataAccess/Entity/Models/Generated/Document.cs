@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Document
 {
-    public int DocumentID { get; set; }
+    public int DocumentId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -21,7 +21,7 @@ public partial class Document
 
     public string? Attributes { get; set; }
 
-    public int? DocumentTemplateID { get; set; }
+    public int? DocumentTemplateId { get; set; }
 
     public string? DocumentNum { get; set; }
 
@@ -31,7 +31,7 @@ public partial class Document
 
     public bool? IsDeleted { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     /// <summary>
     /// Created By
@@ -54,6 +54,8 @@ public partial class Document
     public DateTime? ModifiedOn { get; set; }
 
     public virtual ICollection<AssnDocument> AssnDocuments { get; set; } = new List<AssnDocument>();
+
+    public virtual ICollection<AssnFolderDocument> AssnFolderDocuments { get; set; } = new List<AssnFolderDocument>();
 
     public virtual DocumentTemplate? DocumentTemplate { get; set; }
 }

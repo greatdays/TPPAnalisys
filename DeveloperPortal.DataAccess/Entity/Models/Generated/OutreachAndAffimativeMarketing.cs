@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class OutreachAndAffimativeMarketing
 {
-    public int OutreachID { get; set; }
+    public int OutreachId { get; set; }
 
     public DateTime? DateOfOutreach { get; set; }
 
@@ -33,5 +33,5 @@ public partial class OutreachAndAffimativeMarketing
 
     public virtual ICollection<AssnOutreachTargetAudience> AssnOutreachTargetAudiences { get; set; } = new List<AssnOutreachTargetAudience>();
 
-    public virtual ICollection<AssnPMPSitesOutreach> AssnPMPSitesOutreaches { get; set; } = new List<AssnPMPSitesOutreach>();
+    public virtual ICollection<AssnPmpsitesOutreach> AssnPmpsitesOutreaches { get; set; } = new List<AssnPmpsitesOutreach>();
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwProjectSiteUnitActualCNT1
+public partial class VwProjectSiteUnitActualCnt1
 {
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
     public int? TotalActualAccessibleUnits { get; set; }
 
@@ -13,5 +13,5 @@ public partial class vwProjectSiteUnitActualCNT1
 
     public int? TotalActualSensoryUnits { get; set; }
 
-    public int? TotalActualBothMobilityHVUnit { get; set; }
+    public int? TotalActualBothMobilityHvunit { get; set; }
 }

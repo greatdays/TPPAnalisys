@@ -12,22 +12,22 @@ public partial class AssnCourseTrainer
     /// <summary>
     /// Primary Key Identity column for Associate table.
     /// </summary>
-    public int AssnCourseTrainerID { get; set; }
+    public int AssnCourseTrainerId { get; set; }
 
     /// <summary>
     /// FK of Course table
     /// </summary>
-    public int CourseID { get; set; }
+    public int CourseId { get; set; }
 
     /// <summary>
     /// FK for the Trainer table
     /// </summary>
-    public int? TrainerID { get; set; }
+    public int? TrainerId { get; set; }
 
     /// <summary>
     /// Obsolete field.  Initial design system will keep trainer under Account Profile table.
     /// </summary>
-    public int AccountID { get; set; }
+    public int AccountId { get; set; }
 
     /// <summary>
     /// Internal comment
@@ -67,7 +67,7 @@ public partial class AssnCourseTrainer
     /// <summary>
     /// Unique row ID in system
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual Trainer? Trainer { get; set; }
 

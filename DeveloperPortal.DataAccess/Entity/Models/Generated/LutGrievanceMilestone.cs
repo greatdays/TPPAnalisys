@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutGrievanceMilestone
 {
-    public int LutGrievanceMilestonesID { get; set; }
+    public int LutGrievanceMilestonesId { get; set; }
 
     public string MilestoneName { get; set; } = null!;
 

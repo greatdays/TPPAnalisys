@@ -21,9 +21,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <summary>
         /// GetProjectAssessors
         /// </summary>
-        /// <param name="projectId"></param>
+        /// <param name="ProjectId"></param>
         /// <returns></returns>
-        List<string> GetProjectAssessors(int projectId);
+        List<string> GetProjectAssessors(int ProjectId);
 
         /// <summary>
         /// GetUnitMatrixDetails

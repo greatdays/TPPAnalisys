@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class CorrectionNote
 {
-    public int CorrectionNotesID { get; set; }
+    public int CorrectionNotesId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
     public string Section { get; set; } = null!;
 
@@ -17,7 +17,7 @@ public partial class CorrectionNote
 
     public bool IsSubmited { get; set; }
 
-    public bool? IsSubmittedByOPM { get; set; }
+    public bool? IsSubmittedByOpm { get; set; }
 
     public bool IsCorrected { get; set; }
 
@@ -27,7 +27,7 @@ public partial class CorrectionNote
 
     public bool IsDeleted { get; set; }
 
-    public bool? IsAcHP { get; set; }
+    public bool? IsAcHp { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

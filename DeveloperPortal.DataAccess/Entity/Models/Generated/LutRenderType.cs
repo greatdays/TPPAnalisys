@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutRenderType
 {
-    public int LutRenderTypeID { get; set; }
+    public int LutRenderTypeId { get; set; }
 
     public string RenderType { get; set; } = null!;
 
@@ -21,5 +21,5 @@ public partial class LutRenderType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<SPGridView_DisplayConfig> SPGridView_DisplayConfigs { get; set; } = new List<SPGridView_DisplayConfig>();
+    public virtual ICollection<SpgridViewDisplayConfig> SpgridViewDisplayConfigs { get; set; } = new List<SpgridViewDisplayConfig>();
 }

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutBathroomType
 {
-    public int LutBathroomTypeID { get; set; }
+    public int LutBathroomTypeId { get; set; }
 
     public string? Description { get; set; }
 

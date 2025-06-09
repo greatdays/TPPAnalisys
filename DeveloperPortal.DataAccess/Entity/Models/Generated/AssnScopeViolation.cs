@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnScopeViolation
 {
-    public int AssnScopeViolationID { get; set; }
+    public int AssnScopeViolationId { get; set; }
 
-    public int AssnBidScopeOfWorkID { get; set; }
+    public int AssnBidScopeOfWorkId { get; set; }
 
-    public int? ViolationID { get; set; }
+    public int? ViolationId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

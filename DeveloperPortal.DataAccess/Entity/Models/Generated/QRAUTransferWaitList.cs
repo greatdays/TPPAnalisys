@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRAUTransferWaitList
+public partial class QrautransferWaitList
 {
-    public int QRAUTransferWaitListID { get; set; }
+    public int QrautransferWaitListId { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int? AUTransferWaitListID { get; set; }
+    public int? AutransferWaitListId { get; set; }
 
-    public string? AUTransferWaitListNumber { get; set; }
+    public string? AutransferWaitListNumber { get; set; }
 
-    public int? CurrentUnitProjectSiteID { get; set; }
+    public int? CurrentUnitProjectSiteId { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -25,29 +25,35 @@ public partial class QRAUTransferWaitList
 
     public DateTime? TransferRequestDate { get; set; }
 
-    public bool? IsPreviousAUWaitList { get; set; }
+    public bool? IsPreviousAuwaitList { get; set; }
 
     public DateTime? AccessibilieWaitListDate { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
     public string? AccessibilityRequest { get; set; }
 
-    public int? LutTotalBedroomID { get; set; }
+    public bool? IsTenantRequestRarmpendingTransfer { get; set; }
 
-    public int? LutTotalBathroomID { get; set; }
+    public DateTime? DateRarmrequestPlacedOnRarmlog { get; set; }
+
+    public int? LutTotalBedroomId { get; set; }
+
+    public int? LutTotalBathroomId { get; set; }
 
     public bool IsTransferred { get; set; }
 
     public DateTime? MovedInDate { get; set; }
 
-    public int? MoveInProjectSiteID { get; set; }
+    public int? MoveInProjectSiteId { get; set; }
 
-    public int? MoveInUnitPropSnapShotID { get; set; }
+    public int? MoveInUnitPropSnapShotId { get; set; }
 
-    public int? LutTransferWaitListReasonID { get; set; }
+    public int? LutTransferWaitListReasonId { get; set; }
 
     public DateTime? ReasonDate { get; set; }
+
+    public string? DeterminationExplanation { get; set; }
 
     public string? Comment { get; set; }
 
@@ -61,7 +67,7 @@ public partial class QRAUTransferWaitList
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual AUTransferWaitList? AUTransferWaitList { get; set; }
+    public virtual AutransferWaitList? AutransferWaitList { get; set; }
 
     public virtual ProjectSite? CurrentUnitProjectSite { get; set; }
 

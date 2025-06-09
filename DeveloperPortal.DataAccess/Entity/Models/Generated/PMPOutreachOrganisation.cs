@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPOutreachOrganisation
+public partial class PmpoutreachOrganisation
 {
-    public int PMPOutreachOrganisationID { get; set; }
+    public int PmpoutreachOrganisationId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? OrganisationID { get; set; }
+    public int? OrganisationId { get; set; }
 
     public int? OutreachTypeId { get; set; }
 
@@ -29,5 +29,5 @@ public partial class PMPOutreachOrganisation
 
     public virtual LutOutreachType? OutreachType { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 }

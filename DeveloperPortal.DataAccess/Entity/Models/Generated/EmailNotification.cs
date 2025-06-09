@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EmailNotification
 {
-    public int EmailNotificationID { get; set; }
+    public int EmailNotificationId { get; set; }
 
     public string MailTo { get; set; } = null!;
 
-    public string? MailCC { get; set; }
+    public string? MailCc { get; set; }
 
-    public string? MailBCC { get; set; }
+    public string? MailBcc { get; set; }
 
     public string Subject { get; set; } = null!;
 
@@ -29,7 +29,7 @@ public partial class EmailNotification
 
     public string? IdentifierType { get; set; }
 
-    public long? IdentifierID { get; set; }
+    public long? IdentifierId { get; set; }
 
     public bool? IsSendInstantly { get; set; }
 }

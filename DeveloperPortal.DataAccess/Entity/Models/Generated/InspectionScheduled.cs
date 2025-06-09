@@ -8,13 +8,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class InspectionScheduled
 {
-    public int InspectionRequestID { get; set; }
+    public int InspectionRequestId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int? LutInspectionTypeID { get; set; }
+    public int? LutInspectionTypeId { get; set; }
 
     public DateTime? ScheduledOn { get; set; }
 
@@ -22,7 +22,7 @@ public partial class InspectionScheduled
 
     public DateTime? ScheduledEndOn { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public string? CreatedBy { get; set; }
 

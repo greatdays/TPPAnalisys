@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutImportantDate
 {
-    public int LutImportantDateID { get; set; }
+    public int LutImportantDateId { get; set; }
 
     public string? EventName { get; set; }
 
@@ -13,11 +13,11 @@ public partial class LutImportantDate
 
     public bool IsEditable { get; set; }
 
-    public int? ActionID { get; set; }
+    public int? ActionId { get; set; }
 
     public bool IsDeleted { get; set; }
 
-    public int? CaseTypeID { get; set; }
+    public int? CaseTypeId { get; set; }
 
     public bool IsBackDateAllowed { get; set; }
 
@@ -33,7 +33,7 @@ public partial class LutImportantDate
 
     public int? ViewOrder { get; set; }
 
-    public virtual WF_Action? Action { get; set; }
+    public virtual WfAction? Action { get; set; }
 
     public virtual CaseType? CaseType { get; set; }
 

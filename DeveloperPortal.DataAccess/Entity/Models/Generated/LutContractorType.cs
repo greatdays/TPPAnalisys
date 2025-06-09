@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutContractorType
 {
-    public int LutContractorTypeID { get; set; }
+    public int LutContractorTypeId { get; set; }
 
     public string? ContractorType { get; set; }
 

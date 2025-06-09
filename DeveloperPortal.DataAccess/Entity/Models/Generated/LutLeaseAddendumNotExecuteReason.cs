@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLeaseAddendumNotExecuteReason
 {
-    public int LutLeaseAddendumNotExecuteReasonID { get; set; }
+    public int LutLeaseAddendumNotExecuteReasonId { get; set; }
 
     public string LeaseAddendumNotExecuteReason { get; set; } = null!;
 
@@ -21,9 +21,9 @@ public partial class LutLeaseAddendumNotExecuteReason
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual ICollection<UnitAttribute> UnitAttributes { get; set; } = new List<UnitAttribute>();
 

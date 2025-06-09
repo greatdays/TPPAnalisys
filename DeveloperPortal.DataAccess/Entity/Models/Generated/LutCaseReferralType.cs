@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutCaseReferralType
 {
-    public int LutCaseReferralTypeID { get; set; }
+    public int LutCaseReferralTypeId { get; set; }
 
     public string? Name { get; set; }
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutEAPFeature
+public partial class LutEapfeature
 {
-    public int LutEAPFeatureID { get; set; }
+    public int LutEapfeatureId { get; set; }
 
-    public string EAPFeature { get; set; } = null!;
+    public string Eapfeature { get; set; } = null!;
 
     public string? ProjectType { get; set; }
 

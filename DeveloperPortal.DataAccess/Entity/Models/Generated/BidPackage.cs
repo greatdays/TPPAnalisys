@@ -5,24 +5,24 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class BidPackage
 {
-    public int BidPackageID { get; set; }
+    public int BidPackageId { get; set; }
 
-    public long BidPackageServiceRequestID { get; set; }
+    public long BidPackageServiceRequestId { get; set; }
 
-    public long SiteCaseServiceRequestID { get; set; }
+    public long SiteCaseServiceRequestId { get; set; }
 
     public string? TypeOfBuildingConstruction { get; set; }
 
     /// <summary>
     /// Contact associated with Site Service Request
     /// </summary>
-    public int? ContactIdentifierID { get; set; }
+    public int? ContactIdentifierId { get; set; }
 
-    public string? RCSUsername { get; set; }
+    public string? Rcsusername { get; set; }
 
-    public string? RCSPhone { get; set; }
+    public string? Rcsphone { get; set; }
 
-    public int? LutContractorTypeID { get; set; }
+    public int? LutContractorTypeId { get; set; }
 
     public decimal? EstimatedContractTotal { get; set; }
 

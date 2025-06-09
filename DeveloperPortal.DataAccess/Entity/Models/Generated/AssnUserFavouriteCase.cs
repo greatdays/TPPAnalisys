@@ -7,7 +7,7 @@ public partial class AssnUserFavouriteCase
 {
     public string UserName { get; set; } = null!;
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public virtual Case Case { get; set; } = null!;
 }

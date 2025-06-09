@@ -3,23 +3,31 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwProjectLog
+public partial class VwProjectLog
 {
     public string? FileNumber { get; set; }
 
-    public int? PS_ProjectId { get; set; }
+    public int? PsProjectId { get; set; }
 
-    public int ProjectID { get; set; }
+    public string? PsFileNumber { get; set; }
 
-    public int RefProjectID { get; set; }
+    public string? PsHimsnumber { get; set; }
+
+    public string? PsPrimaryApn { get; set; }
+
+    public string? PsSiteAddress { get; set; }
+
+    public int ProjectId { get; set; }
+
+    public int RefProjectId { get; set; }
 
     public string? ProjectName { get; set; }
 
-    public string? LutProjSourceCD { get; set; }
+    public string? LutProjSourceCd { get; set; }
 
-    public int? LutProjectFundID { get; set; }
+    public int? LutProjectFundId { get; set; }
 
-    public int? LutTypeofProjectID { get; set; }
+    public int? LutTypeofProjectId { get; set; }
 
     public string? FileGroup { get; set; }
 
@@ -35,7 +43,7 @@ public partial class vwProjectLog
 
     public string? Source { get; set; }
 
-    public int? SourceRefID { get; set; }
+    public int? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -59,5 +67,5 @@ public partial class vwProjectLog
 
     public DateTime? ModifiedOn { get; set; }
 
-    public int ProjectLogID { get; set; }
+    public int ProjectLogId { get; set; }
 }

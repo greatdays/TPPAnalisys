@@ -11,12 +11,12 @@ public partial class DocumentEntity
     /// <summary>
     /// Primary Key Identity column for the DocumentEntity table
     /// </summary>
-    public int DocumentEntityID { get; set; }
+    public int DocumentEntityId { get; set; }
 
     /// <summary>
     /// Template being use when generate the record
     /// </summary>
-    public int DocTemplateID { get; set; }
+    public int DocTemplateId { get; set; }
 
     /// <summary>
     /// Document Number for the document
@@ -26,7 +26,7 @@ public partial class DocumentEntity
     /// <summary>
     /// CMS Case ID if workflow applied
     /// </summary>
-    public int? CaseID { get; set; }
+    public int? CaseId { get; set; }
 
     /// <summary>
     /// add data for the docuemnt stored in xml
@@ -56,9 +56,9 @@ public partial class DocumentEntity
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid? RowID { get; set; }
+    public Guid? RowId { get; set; }
 
-    public int? CaseLogID { get; set; }
+    public int? CaseLogId { get; set; }
 
     public virtual Case? Case { get; set; }
 

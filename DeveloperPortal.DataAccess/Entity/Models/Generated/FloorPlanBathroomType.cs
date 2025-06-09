@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class FloorPlanBathroomType
 {
-    public int FloorPlanBathroomTypeID { get; set; }
+    public int FloorPlanBathroomTypeId { get; set; }
 
-    public int FloorPlanTypeID { get; set; }
+    public int FloorPlanTypeId { get; set; }
 
-    public int LutBathroomTypeID { get; set; }
+    public int LutBathroomTypeId { get; set; }
 
-    public int? LutBathroomTypeOptionID { get; set; }
+    public int? LutBathroomTypeOptionId { get; set; }
 
     public bool? IsDeleted { get; set; }
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class tcaselog
+public partial class Tcaselog
 {
-    public int CaseLogID { get; set; }
+    public int CaseLogId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public string Action { get; set; } = null!;
 
@@ -15,9 +15,9 @@ public partial class tcaselog
 
     public string ToState { get; set; } = null!;
 
-    public string? LastAssigneeID { get; set; }
+    public string? LastAssigneeId { get; set; }
 
-    public string? NewAssigneeID { get; set; }
+    public string? NewAssigneeId { get; set; }
 
     public string? LastAssigneeName { get; set; }
 

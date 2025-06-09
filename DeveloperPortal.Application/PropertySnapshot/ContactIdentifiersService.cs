@@ -18,7 +18,7 @@ namespace DeveloperPortal.Application.PropertySnapshot
         {
             using (AAHREntities _dbContext = new())
             {
-                return _dbContext.ContactIdentifiers.Where(x => x.ContactID == contactId && x.IsDeleted == false).FirstOrDefault()?.ContactIdentifierID ?? 0;
+                return _dbContext.ContactIdentifiers.Where(x => x.ContactId == contactId && x.IsDeleted == false).FirstOrDefault()?.ContactIdentifierId ?? 0;
             }
         }
     }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutQRCertifyTerm
+public partial class LutQrcertifyTerm
 {
-    public int LutQRCertifyTermsID { get; set; }
+    public int LutQrcertifyTermsId { get; set; }
 
-    public string QRCertifyTerms { get; set; } = null!;
+    public string QrcertifyTerms { get; set; } = null!;
 
     public bool? IsAcceptMandatory { get; set; }
 
@@ -29,5 +29,5 @@ public partial class LutQRCertifyTerm
 
     public virtual ICollection<AssnFairHousingCertifyTerm> AssnFairHousingCertifyTerms { get; set; } = new List<AssnFairHousingCertifyTerm>();
 
-    public virtual ICollection<AssnQRFairHousingCertifyTerm> AssnQRFairHousingCertifyTerms { get; set; } = new List<AssnQRFairHousingCertifyTerm>();
+    public virtual ICollection<AssnQrfairHousingCertifyTerm> AssnQrfairHousingCertifyTerms { get; set; } = new List<AssnQrfairHousingCertifyTerm>();
 }

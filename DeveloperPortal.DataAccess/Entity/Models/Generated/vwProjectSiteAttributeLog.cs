@@ -3,21 +3,27 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwProjectSiteAttributeLog
+public partial class VwProjectSiteAttributeLog
 {
-    public string? FileNumber { get; set; }
-
-    public string? FileGroup { get; set; }
-
     public int ProjectId { get; set; }
 
-    public int? PS_ProjectId { get; set; }
+    public string? ProjectName { get; set; }
 
-    public int PropertyAttributeLogID { get; set; }
+    public int? PsProjectId { get; set; }
 
-    public int? ProjectSiteAttributeID { get; set; }
+    public string? PsFileNumber { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public string? PsHimsnumber { get; set; }
+
+    public string? PsPrimaryApn { get; set; }
+
+    public string? PsSiteAddress { get; set; }
+
+    public int PropertyAttributeLogId { get; set; }
+
+    public int? ProjectSiteAttributeId { get; set; }
+
+    public int PropSnapshotId { get; set; }
 
     public string? PropertyName { get; set; }
 
@@ -53,7 +59,7 @@ public partial class vwProjectSiteAttributeLog
 
     public string? ModifiedBy { get; set; }
 
-    public int? HousingTypeID { get; set; }
+    public int? HousingTypeId { get; set; }
 
     public bool? IsSharedLiving { get; set; }
 
@@ -71,7 +77,7 @@ public partial class vwProjectSiteAttributeLog
 
     public int? YearBuilt { get; set; }
 
-    public int? ParkingTypeID { get; set; }
+    public int? ParkingTypeId { get; set; }
 
     public bool? IsTaxCreditProperty { get; set; }
 
@@ -101,7 +107,7 @@ public partial class vwProjectSiteAttributeLog
 
     public bool? HasThisSiteBeenPreviouslyInspectedByAnExternalGroup { get; set; }
 
-    public string? LUTExternalGroupId { get; set; }
+    public string? LutexternalGroupId { get; set; }
 
     public int? MobilityUnitsPercentageRequired { get; set; }
 
@@ -119,13 +125,13 @@ public partial class vwProjectSiteAttributeLog
 
     public string? LutCheckListsId { get; set; }
 
-    public string? TTYNumber { get; set; }
+    public string? Ttynumber { get; set; }
 
-    public int? LutFHAStandardId { get; set; }
+    public int? LutFhastandardId { get; set; }
 
-    public string? LutNacRecomadationID { get; set; }
+    public string? LutNacRecomadationId { get; set; }
 
-    public bool? IsCWLOpenPriorRegistry { get; set; }
+    public bool? IsCwlopenPriorRegistry { get; set; }
 
-    public DateTime? CWLOpenPriorRegistryDate { get; set; }
+    public DateTime? CwlopenPriorRegistryDate { get; set; }
 }

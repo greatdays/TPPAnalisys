@@ -33,7 +33,7 @@ public partial class WF_Action
     public virtual ICollection<AssnActionSchemaTemplate> AssnActionSchemaTemplates { get; set; }
     public virtual WF_ActionView WF_ActionView { get; set; }
     public virtual WF_CaseCondition WF_CaseCondition { get; set; }
-    public virtual WF_Definition WF_Definition { get; set; }
+    public virtual WfDefinition WF_Definition { get; set; }
     public virtual WF_State WF_State { get; set; }
     public virtual WF_State WF_State1 { get; set; }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

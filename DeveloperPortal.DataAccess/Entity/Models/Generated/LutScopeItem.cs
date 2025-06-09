@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutScopeItem
 {
-    public int LutScopeItemID { get; set; }
+    public int LutScopeItemId { get; set; }
 
     public string? ScopeItem { get; set; }
 

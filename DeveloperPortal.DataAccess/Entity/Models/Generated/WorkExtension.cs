@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class WorkExtension
 {
-    public int WorkExtensionID { get; set; }
+    public int WorkExtensionId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int InspectionID { get; set; }
+    public int InspectionId { get; set; }
 
     public int? ExtensionDays { get; set; }
 

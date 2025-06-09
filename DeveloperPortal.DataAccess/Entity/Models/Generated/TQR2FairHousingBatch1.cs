@@ -3,83 +3,83 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class TQR2FairHousingBatch1
+public partial class Tqr2fairHousingBatch1
 {
-    public string? Quarterly_Report_ID__Sys_ { get; set; }
+    public string? QuarterlyReportIdSys { get; set; }
 
     public string? F2 { get; set; }
 
-    public DateTime? QRReport_Create_Date_Time__Copy_from_Previous_Tab_Column_H_ { get; set; }
+    public DateTime? QrreportCreateDateTimeCopyFromPreviousTabColumnH { get; set; }
 
-    public string? Year_QR { get; set; }
+    public string? YearQr { get; set; }
 
-    public string? AcHP__ { get; set; }
+    public string? AcHp { get; set; }
 
-    public DateTime? QRBegin_Date { get; set; }
+    public DateTime? QrbeginDate { get; set; }
 
-    public DateTime? QREnd_Date { get; set; }
+    public DateTime? QrendDate { get; set; }
 
-    public string? Property_Name { get; set; }
+    public string? PropertyName { get; set; }
 
-    public string? Property_Address { get; set; }
+    public string? PropertyAddress { get; set; }
 
-    public string? PMName { get; set; }
+    public string? Pmname { get; set; }
 
-    public string? PMPhone { get; set; }
+    public string? Pmphone { get; set; }
 
-    public string? PMEmail { get; set; }
+    public string? Pmemail { get; set; }
 
     public string? F13 { get; set; }
 
-    public double? Total_Fully_Accessible_Mobility_Unit { get; set; }
+    public double? TotalFullyAccessibleMobilityUnit { get; set; }
 
-    public double? Total_Fully_Accessible_HVUnit { get; set; }
+    public double? TotalFullyAccessibleHvunit { get; set; }
 
-    public double? Total_Vacant_AUThis_Quarter { get; set; }
+    public double? TotalVacantAuthisQuarter { get; set; }
 
-    public double? Total_Tenants_Occupied_AUWithout_Need { get; set; }
+    public double? TotalTenantsOccupiedAuwithoutNeed { get; set; }
 
-    public string? Legal_Owner_Name { get; set; }
+    public string? LegalOwnerName { get; set; }
 
-    public string? Owner_Address { get; set; }
+    public string? OwnerAddress { get; set; }
 
-    public string? Owner_Email { get; set; }
+    public string? OwnerEmail { get; set; }
 
-    public string? Owner_Phone { get; set; }
+    public string? OwnerPhone { get; set; }
 
-    public string? Statement_1 { get; set; }
+    public string? Statement1 { get; set; }
 
-    public string? Statement_2 { get; set; }
+    public string? Statement2 { get; set; }
 
-    public string? Statement_3 { get; set; }
+    public string? Statement3 { get; set; }
 
-    public string? Statement_4 { get; set; }
+    public string? Statement4 { get; set; }
 
-    public string? Statement_5 { get; set; }
+    public string? Statement5 { get; set; }
 
-    public string? Statement_6 { get; set; }
+    public string? Statement6 { get; set; }
 
-    public string? Statement_7 { get; set; }
+    public string? Statement7 { get; set; }
 
-    public string? Statement_8 { get; set; }
+    public string? Statement8 { get; set; }
 
-    public string? Statement_9 { get; set; }
+    public string? Statement9 { get; set; }
 
-    public string? Statement_10 { get; set; }
+    public string? Statement10 { get; set; }
 
-    public string? Statement_11 { get; set; }
+    public string? Statement11 { get; set; }
 
-    public string? Statement_12 { get; set; }
+    public string? Statement12 { get; set; }
 
-    public string? Statement_13 { get; set; }
+    public string? Statement13 { get; set; }
 
-    public string? Statement_14 { get; set; }
+    public string? Statement14 { get; set; }
 
-    public string? Statement_15 { get; set; }
+    public string? Statement15 { get; set; }
 
-    public string? Statement_16 { get; set; }
+    public string? Statement16 { get; set; }
 
     public DateOnly? SignDate { get; set; }
 
-    public int? LutSignatureTitleID { get; set; }
+    public int? LutSignatureTitleId { get; set; }
 }

@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class PropertyAccountContactSnapShot
 {
-    public int ID { get; set; }
+    public int Id { get; set; }
 
     public DateTime CaptureDate { get; set; }
 
-    public int ContactID { get; set; }
+    public int ContactId { get; set; }
 
-    public string? IDMUserName { get; set; }
+    public string? IdmuserName { get; set; }
 
     public string? FirstName { get; set; }
 

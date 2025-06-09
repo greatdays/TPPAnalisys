@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class CAPItemDetail
+public partial class CapitemDetail
 {
-    public int CAPItemDetailsID { get; set; }
+    public int CapitemDetailsId { get; set; }
 
-    public int CAPDetailsID { get; set; }
+    public int CapdetailsId { get; set; }
 
-    public int LUTCAPLanguageID { get; set; }
+    public int LutcaplanguageId { get; set; }
 
     public string ComplianceRequirement { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public partial class CAPItemDetail
 
     public DateTime ModifiedOn { get; set; }
 
-    public virtual CAPDetail CAPDetails { get; set; } = null!;
+    public virtual Capdetail Capdetails { get; set; } = null!;
 
-    public virtual LUTCAPLanguage LUTCAPLanguage { get; set; } = null!;
+    public virtual Lutcaplanguage Lutcaplanguage { get; set; } = null!;
 }

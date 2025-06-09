@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutReviewReportItem
 {
-    public int LutReviewReportItemID { get; set; }
+    public int LutReviewReportItemId { get; set; }
 
     public string Item { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutReviewReportItem
 
     public string ModifiedBy { get; set; } = null!;
 
-    public virtual ICollection<AssnSRReviewReportItemStatus> AssnSRReviewReportItemStatuses { get; set; } = new List<AssnSRReviewReportItemStatus>();
+    public virtual ICollection<AssnSrreviewReportItemStatus> AssnSrreviewReportItemStatuses { get; set; } = new List<AssnSrreviewReportItemStatus>();
 
     public virtual ICollection<LutPolicyReviewReportLanguage> LutPolicyReviewReportLanguages { get; set; } = new List<LutPolicyReviewReportLanguage>();
 

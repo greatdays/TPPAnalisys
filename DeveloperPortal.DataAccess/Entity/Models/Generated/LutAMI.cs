@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutAMI
+public partial class LutAmi
 {
-    public int LutAMIID { get; set; }
+    public int LutAmiid { get; set; }
 
-    public string? AMI { get; set; }
+    public string? Ami { get; set; }
 
     public bool IsObsolute { get; set; }
 
@@ -21,9 +21,9 @@ public partial class LutAMI
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual ICollection<UnitAttribute> UnitAttributes { get; set; } = new List<UnitAttribute>();
 }

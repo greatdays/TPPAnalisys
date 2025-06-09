@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPAddnlMarketingEffort
+public partial class PmpaddnlMarketingEffort
 {
-    public int PMPAddnlMarketingEffortID { get; set; }
+    public int PmpaddnlMarketingEffortId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
     public DateTime? LeaseUpBannerPostDate { get; set; }
 
@@ -31,5 +31,5 @@ public partial class PMPAddnlMarketingEffort
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 }

@@ -7,7 +7,7 @@ public partial class VwProjectSitePrimaryContact
 {
     public bool? NoDefault { get; set; }
 
-    public int DefaultContactID { get; set; }
+    public int DefaultContactId { get; set; }
 
     public string? ContactName { get; set; }
 
@@ -35,5 +35,5 @@ public partial class VwProjectSitePrimaryContact
 
     public string? ContactType { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 }

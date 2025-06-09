@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnPropertyDistrict
 {
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int LutPropertyDistrictID { get; set; }
+    public int LutPropertyDistrictId { get; set; }
 
     public virtual PropSnapshot PropSnapshot { get; set; } = null!;
 }

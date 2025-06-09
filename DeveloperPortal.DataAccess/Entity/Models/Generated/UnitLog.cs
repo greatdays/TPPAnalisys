@@ -5,31 +5,31 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class UnitLog
 {
-    public int UnitLogID { get; set; }
+    public int UnitLogId { get; set; }
 
-    public int? UnitID { get; set; }
+    public int? UnitId { get; set; }
 
-    public int? RefUnitID { get; set; }
+    public int? RefUnitId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
-    public int? APNID { get; set; }
+    public int? Apnid { get; set; }
 
-    public int? BuildingID { get; set; }
+    public int? BuildingId { get; set; }
 
-    public int? LevelID { get; set; }
+    public int? LevelId { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? UnitNum { get; set; }
 
     public string? Status { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
-    public int? LutUnitAccessibiltyTypeID { get; set; }
+    public int? LutUnitAccessibiltyTypeId { get; set; }
 
     public bool? IsDeleted { get; set; }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutMultiSelectOptionsGroup
 {
-    public int LutMultiSelectOptionsGroupID { get; set; }
+    public int LutMultiSelectOptionsGroupId { get; set; }
 
     public string OptionGroupName { get; set; } = null!;
 

@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class CannedNote
 {
-    public int CannedNoteID { get; set; }
+    public int CannedNoteId { get; set; }
 
-    public int LutViolationID { get; set; }
+    public int LutViolationId { get; set; }
 
-    public int LutViolationLocationID { get; set; }
+    public int LutViolationLocationId { get; set; }
 
     public string Note { get; set; } = null!;
 

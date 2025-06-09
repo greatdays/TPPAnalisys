@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutUnitAccessibiltyType
 {
-    public int LutUnitAccessibiltyTypeID { get; set; }
+    public int LutUnitAccessibiltyTypeId { get; set; }
 
     public string UnitAccessibiltyType { get; set; } = null!;
 
@@ -39,7 +39,7 @@ public partial class LutUnitAccessibiltyType
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual ICollection<Unit> Units { get; set; } = new List<Unit>();
 }

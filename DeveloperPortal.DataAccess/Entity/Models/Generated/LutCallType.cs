@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutCallType
 {
-    public int LutCallTypeID { get; set; }
+    public int LutCallTypeId { get; set; }
 
     public string CallType { get; set; } = null!;
 

@@ -43,7 +43,7 @@ app.UseSession();
 app.MapRazorPages();
 
 app.MapControllerRoute(name: "default",
-    pattern: "{controller=Dashboard}/{action=GetProjectData}");
+    pattern: "{controller=DashboardService}/{action=GetProjectData}");
 
 app.Run();
 */

@@ -19,7 +19,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
 
         public partial class CommentMD
         {
-            public int CommentID { get; set; }
+            public int CommentId { get; set; }
             public string? CommentText { get; set; }
             public Nullable<bool> IsInternal { get; set; }
             public Nullable<bool> IsWorklog { get; set; }

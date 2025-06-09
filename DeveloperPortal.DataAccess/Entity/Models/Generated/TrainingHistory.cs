@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class TrainingHistory
 {
-    public int ID { get; set; }
+    public int Id { get; set; }
 
     public DateTime CaptureDate { get; set; }
 
-    public int? TrainingCourseID { get; set; }
+    public int? TrainingCourseId { get; set; }
 
-    public int TrainingSessionID { get; set; }
+    public int TrainingSessionId { get; set; }
 
     public string TrainingCode { get; set; } = null!;
 
@@ -19,9 +19,9 @@ public partial class TrainingHistory
 
     public DateTime? TrainingDate { get; set; }
 
-    public int TrainingRegistryID { get; set; }
+    public int TrainingRegistryId { get; set; }
 
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     public DateTime? TrainingRegistryCreatedOn { get; set; }
 
@@ -39,13 +39,13 @@ public partial class TrainingHistory
 
     public string? TrainingRegistyEmail { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
-    public int ContactID { get; set; }
+    public int ContactId { get; set; }
 
     public string? TraineeTitle { get; set; }
 
-    public string? ContactIdentifierIDMUserName { get; set; }
+    public string? ContactIdentifierIdmuserName { get; set; }
 
     public string? ContactIdentifierFirstName { get; set; }
 
@@ -91,7 +91,7 @@ public partial class TrainingHistory
 
     public bool IsPrivate { get; set; }
 
-    public string? staffcomments { get; set; }
+    public string? Staffcomments { get; set; }
 
     public string? TrainingSessionNotes { get; set; }
 
@@ -117,9 +117,9 @@ public partial class TrainingHistory
 
     public string? DocumentEntity { get; set; }
 
-    public int? GroupAssnContactContactID { get; set; }
+    public int? GroupAssnContactContactId { get; set; }
 
-    public int? GroupContactIdentifierID { get; set; }
+    public int? GroupContactIdentifierId { get; set; }
 
     public string? GroupContactFirstName { get; set; }
 
@@ -127,7 +127,7 @@ public partial class TrainingHistory
 
     public string? GroupContactLastName { get; set; }
 
-    public string? GroupIDMUserName { get; set; }
+    public string? GroupIdmuserName { get; set; }
 
     public DateOnly? GroupContactLinkDate { get; set; }
 }

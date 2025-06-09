@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class GrievanceType
 {
-    public int GrievanceTypeID { get; set; }
+    public int GrievanceTypeId { get; set; }
 
-    public int GrievanceID { get; set; }
+    public int GrievanceId { get; set; }
 
-    public int? LutGrievantTypeID { get; set; }
+    public int? LutGrievantTypeId { get; set; }
 
     public bool? IsReasonableAccomodation { get; set; }
 
@@ -137,7 +137,7 @@ public partial class GrievanceType
 
     public DateTime? PropertyGrievanceDate { get; set; }
 
-    public DateTime? QRGrievanceLogDate { get; set; }
+    public DateTime? QrgrievanceLogDate { get; set; }
 
     public DateTime? PropertyDecisionDate { get; set; }
 
@@ -153,7 +153,7 @@ public partial class GrievanceType
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public bool? IsMaintenanceRelatedToDisability { get; set; }
 
@@ -163,17 +163,17 @@ public partial class GrievanceType
 
     public string? LanguageAccessDetails { get; set; }
 
-    public string? ReasonableAccmQRID { get; set; }
+    public string? ReasonableAccmQrid { get; set; }
 
-    public bool? IsUnknownReasonableAccmQRID { get; set; }
+    public bool? IsUnknownReasonableAccmQrid { get; set; }
 
-    public string? ReasonableModfQRID { get; set; }
+    public string? ReasonableModfQrid { get; set; }
 
-    public bool? IsUnknownReasonableModfQRID { get; set; }
+    public bool? IsUnknownReasonableModfQrid { get; set; }
 
-    public string? EffectiveCommQRID { get; set; }
+    public string? EffectiveCommQrid { get; set; }
 
-    public bool? IsUnknownEffectiveCommQRID { get; set; }
+    public bool? IsUnknownEffectiveCommQrid { get; set; }
 
     public string? GrievantTypeOther { get; set; }
 

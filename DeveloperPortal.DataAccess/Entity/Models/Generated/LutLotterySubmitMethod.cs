@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLotterySubmitMethod
 {
-    public int LutLotterySubmitMethodID { get; set; }
+    public int LutLotterySubmitMethodId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutLotterySubmitMethod
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPLotterySubmitMethodSnap> AssnPMPLotterySubmitMethodSnaps { get; set; } = new List<AssnPMPLotterySubmitMethodSnap>();
+    public virtual ICollection<AssnPmplotterySubmitMethodSnap> AssnPmplotterySubmitMethodSnaps { get; set; } = new List<AssnPmplotterySubmitMethodSnap>();
 
-    public virtual ICollection<AssnPMPLotterySubmitMethod> AssnPMPLotterySubmitMethods { get; set; } = new List<AssnPMPLotterySubmitMethod>();
+    public virtual ICollection<AssnPmplotterySubmitMethod> AssnPmplotterySubmitMethods { get; set; } = new List<AssnPmplotterySubmitMethod>();
 }

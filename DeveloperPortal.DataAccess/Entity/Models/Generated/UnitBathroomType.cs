@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class UnitBathroomType
 {
-    public int UnitBathroomTypeID { get; set; }
+    public int UnitBathroomTypeId { get; set; }
 
-    public int UnitAttributeID { get; set; }
+    public int UnitAttributeId { get; set; }
 
-    public int LutBathroomTypeID { get; set; }
+    public int LutBathroomTypeId { get; set; }
 
     public string? CreatedBy { get; set; }
 

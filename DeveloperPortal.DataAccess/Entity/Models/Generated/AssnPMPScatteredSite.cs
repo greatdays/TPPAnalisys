@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPScatteredSite
+public partial class AssnPmpscatteredSite
 {
-    public int AssnPMPScatteredSiteID { get; set; }
+    public int AssnPmpscatteredSiteId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? PropSnapshotID { get; set; }
+    public int? PropSnapshotId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -19,7 +19,7 @@ public partial class AssnPMPScatteredSite
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 
     public virtual PropSnapshot? PropSnapshot { get; set; }
 }

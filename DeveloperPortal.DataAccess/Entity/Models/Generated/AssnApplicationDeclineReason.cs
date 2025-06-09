@@ -7,7 +7,7 @@ public partial class AssnApplicationDeclineReason
 {
     public int AssnApplicationDeclineReasonId { get; set; }
 
-    public int HRMApplicationId { get; set; }
+    public int HrmapplicationId { get; set; }
 
     public int LutApplicationDeclineReasonId { get; set; }
 

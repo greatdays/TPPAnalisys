@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class HotlineCount
 {
-    public int HotlineCountID { get; set; }
+    public int HotlineCountId { get; set; }
 
     public int? Month { get; set; }
 

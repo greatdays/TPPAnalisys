@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectSiteUpcomingUnitVacancy
 {
-    public int ProjectSiteUpcomingUnitVacancyID { get; set; }
+    public int ProjectSiteUpcomingUnitVacancyId { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
     public bool? IsUnitBecomeVacant { get; set; }
 
@@ -21,5 +21,5 @@ public partial class ProjectSiteUpcomingUnitVacancy
 
     public virtual PropSnapshot ProjSitePropSnapShot { get; set; } = null!;
 
-    public virtual ICollection<QRProjectSiteUpcomingUnitVacancy> QRProjectSiteUpcomingUnitVacancies { get; set; } = new List<QRProjectSiteUpcomingUnitVacancy>();
+    public virtual ICollection<QrprojectSiteUpcomingUnitVacancy> QrprojectSiteUpcomingUnitVacancies { get; set; } = new List<QrprojectSiteUpcomingUnitVacancy>();
 }

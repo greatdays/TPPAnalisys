@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LACountyServicePlanningArea
+public partial class LacountyServicePlanningArea
 {
-    public int LACountyServicePlanningAreaID { get; set; }
+    public int LacountyServicePlanningAreaId { get; set; }
 
-    public int SPA { get; set; }
+    public int Spa { get; set; }
 
-    public string SPAName { get; set; } = null!;
+    public string Spaname { get; set; } = null!;
 
-    public string SPAFullName { get; set; } = null!;
+    public string SpafullName { get; set; } = null!;
 
     public string? Year { get; set; }
 
@@ -21,7 +21,7 @@ public partial class LACountyServicePlanningArea
 
     public string? GeoJsonCoordinates { get; set; }
 
-    public string? WKT { get; set; }
+    public string? Wkt { get; set; }
 
     public string? Attribute { get; set; }
 
@@ -35,7 +35,7 @@ public partial class LACountyServicePlanningArea
 
     public string ModifiedBy { get; set; } = null!;
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<ProjectSite> ProjectSites { get; set; } = new List<ProjectSite>();
 }

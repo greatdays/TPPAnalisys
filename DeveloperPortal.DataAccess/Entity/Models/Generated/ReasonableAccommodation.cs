@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ReasonableAccommodation
 {
-    public int ReasonableAccommodationID { get; set; }
+    public int ReasonableAccommodationId { get; set; }
 
     public string? ReasonableAccommodationNumber { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
-    public int LutUserTypeID { get; set; }
+    public int LutUserTypeId { get; set; }
 
     public string? FirstName { get; set; }
 
@@ -19,9 +19,9 @@ public partial class ReasonableAccommodation
 
     public string? LastName { get; set; }
 
-    public int? UnitProjectSiteID { get; set; }
+    public int? UnitProjectSiteId { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public string? Address { get; set; }
 
@@ -29,27 +29,29 @@ public partial class ReasonableAccommodation
 
     public bool? IsTransferRequest { get; set; }
 
-    public bool? IsNeedAUUnit { get; set; }
+    public bool? IsNeedAuunit { get; set; }
 
-    public bool? IsOnAUWaitList { get; set; }
+    public bool? IsOnAuwaitList { get; set; }
 
-    public bool? IsOnAUTransferList { get; set; }
+    public bool? IsOnAutransferList { get; set; }
 
-    public int? LutTotalBedroomsID { get; set; }
+    public int? LutTotalBedroomsId { get; set; }
 
-    public int? LutTotalBathroomsID { get; set; }
+    public int? LutTotalBathroomsId { get; set; }
 
-    public int? LutRARequestTypeID { get; set; }
+    public int? LutRarequestTypeId { get; set; }
 
-    public int? LutRACategoryID { get; set; }
+    public int? LutRacategoryId { get; set; }
 
-    public int? LutRASubCategoryID { get; set; }
+    public int? LutRasubCategoryId { get; set; }
 
     public string? RequestDescription { get; set; }
 
-    public int? LutDeterminationStatusID { get; set; }
+    public int? LutDeterminationStatusId { get; set; }
 
     public DateTime? DeterminationDate { get; set; }
+
+    public bool? IsDeterminateDateSameAsImplementationDate { get; set; }
 
     public DateTime? DateOfWithdrawal { get; set; }
 
@@ -91,6 +93,8 @@ public partial class ReasonableAccommodation
 
     public DateTime? NotificationDate4 { get; set; }
 
+    public DateTime? DateTenantPlacedOnList { get; set; }
+
     public bool IsDeleted { get; set; }
 
     public string CreatedBy { get; set; } = null!;
@@ -103,11 +107,11 @@ public partial class ReasonableAccommodation
 
     public virtual LutDeterminationStatus? LutDeterminationStatus { get; set; }
 
-    public virtual LutRACategory? LutRACategory { get; set; }
+    public virtual LutRacategory? LutRacategory { get; set; }
 
-    public virtual LutRARequestType? LutRARequestType { get; set; }
+    public virtual LutRarequestType? LutRarequestType { get; set; }
 
-    public virtual LutRASubCategory? LutRASubCategory { get; set; }
+    public virtual LutRasubCategory? LutRasubCategory { get; set; }
 
     public virtual LutTotalBathroom? LutTotalBathrooms { get; set; }
 
@@ -115,7 +119,7 @@ public partial class ReasonableAccommodation
 
     public virtual LutUserType LutUserType { get; set; } = null!;
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ProjectSite? UnitProjectSite { get; set; }
 

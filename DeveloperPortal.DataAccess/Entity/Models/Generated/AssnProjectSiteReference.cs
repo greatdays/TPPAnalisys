@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnProjectSiteReference
 {
-    public int AssnProjectSiteReferenceID { get; set; }
+    public int AssnProjectSiteReferenceId { get; set; }
 
-    public int? ProjectSIteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public int? ReferenceType { get; set; }
 
@@ -29,7 +29,7 @@ public partial class AssnProjectSiteReference
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ProjectSite? ProjectSIte { get; set; }
+    public virtual ProjectSite? ProjectSite { get; set; }
 
     public virtual LutReferenceType? ReferenceTypeNavigation { get; set; }
 }

@@ -33,7 +33,7 @@ public partial class WF_State
 
     public virtual WF_Action? WF_Action2 { get; set; }
 
-    public virtual WF_Definition WF_Definition { get; set; } = null!;
+    public virtual WfDefinition WF_Definition { get; set; } = null!;
 
     public virtual ICollection<WF_Action> WF_Action { get; set; } = new List<WF_Action>();
 

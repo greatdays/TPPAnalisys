@@ -8,7 +8,7 @@ public partial class CaseType
     /// <summary>
     /// Primary key of the table
     /// </summary>
-    public int CaseTypeID { get; set; }
+    public int CaseTypeId { get; set; }
 
     /// <summary>
     /// Type
@@ -23,7 +23,7 @@ public partial class CaseType
     /// <summary>
     /// Work flow Definition
     /// </summary>
-    public int? WfDefinitionID { get; set; }
+    public int? WfDefinitionId { get; set; }
 
     /// <summary>
     /// Is Obsolete flag
@@ -54,7 +54,7 @@ public partial class CaseType
 
     public virtual ICollection<LutImportantDate> LutImportantDates { get; set; } = new List<LutImportantDate>();
 
-    public virtual WF_Definition? WfDefinition { get; set; }
+    public virtual WfDefinition? WfDefinition { get; set; }
 
     public virtual ICollection<ApplicationMaster> ApplicationMasters { get; set; } = new List<ApplicationMaster>();
 

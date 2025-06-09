@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ReviewReportItem
 {
-    public int ReviewReportItemID { get; set; }
+    public int ReviewReportItemId { get; set; }
 
-    public int ReviewReportDetailID { get; set; }
+    public int ReviewReportDetailId { get; set; }
 
-    public int LutReviewReportItemID { get; set; }
+    public int LutReviewReportItemId { get; set; }
 
     public string? ReportLanguage { get; set; }
 

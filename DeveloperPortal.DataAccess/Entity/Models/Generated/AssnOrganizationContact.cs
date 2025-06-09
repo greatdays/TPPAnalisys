@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnOrganizationContact
 {
-    public int AssnOrganizationContactID { get; set; }
+    public int AssnOrganizationContactId { get; set; }
 
-    public int OrganizationID { get; set; }
+    public int OrganizationId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string AssociationType { get; set; } = null!;
 

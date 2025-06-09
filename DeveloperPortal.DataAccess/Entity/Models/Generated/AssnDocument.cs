@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnDocument
 {
-    public int AssnDocumentID { get; set; }
+    public int AssnDocumentId { get; set; }
 
-    public int DocumentID { get; set; }
+    public int DocumentId { get; set; }
 
-    public string? ReferenceID { get; set; }
+    public string? ReferenceId { get; set; }
 
     public string? ReferenceType { get; set; }
 

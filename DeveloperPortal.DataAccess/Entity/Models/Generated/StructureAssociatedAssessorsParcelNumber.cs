@@ -7,11 +7,11 @@ public partial class StructureAssociatedAssessorsParcelNumber
 {
     public int Id { get; set; }
 
-    public string APNNumber { get; set; } = null!;
+    public string Apnnumber { get; set; } = null!;
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public bool? isDeleted { get; set; }
+    public bool? IsDeleted { get; set; }
 
     public DateTime CreatedOn { get; set; }
 

@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Subscription
 {
-    public int SubscriptionID { get; set; }
+    public int SubscriptionId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public bool IsListingAdded { get; set; }
 

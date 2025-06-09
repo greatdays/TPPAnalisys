@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutNoticeType
 {
-    public int LutNoticeTypeID { get; set; }
+    public int LutNoticeTypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
