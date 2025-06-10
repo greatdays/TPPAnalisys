@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AppConfig
 {
-    public int AppConfigID { get; set; }
+    public int AppConfigId { get; set; }
 
-    public int ApplicationID { get; set; }
+    public int ApplicationId { get; set; }
 
     public string? Name { get; set; }
 
@@ -17,5 +17,5 @@ public partial class AppConfig
 
     public DateTime? CreatedOn { get; set; }
 
-    public virtual ApplicationMaster ApplicationMaster { get; set; } = null!;
+    public virtual ApplicationMaster Application { get; set; } = null!;
 }

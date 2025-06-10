@@ -16,7 +16,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             _context = context;
         }
 
-        // Fetch all AppConfig records
+        // Fetch all AppConfiguration records
         public async Task<IEnumerable<AppConfig>> GetAllAppConfigsAsync()
         {
             try
@@ -50,27 +50,27 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         
      
 
-        // Fetch a specific AppConfig by ID
+        // Fetch a specific AppConfiguration by ID
         public async Task<AppConfig> GetAppConfigByIdAsync(int id)
         {
-            return await _context.AppConfigs.FirstOrDefaultAsync(ac => ac.AppConfigID == id);
+            return await _context.AppConfigs.FirstOrDefaultAsync(ac => ac.AppConfigId == id);
         }
 
-        // Add a new AppConfig record
+        // Add a new AppConfiguration record
         public async Task AddAppConfigAsync(AppConfig appConfig)
         {
             await _context.AppConfigs.AddAsync(appConfig);
             await _context.SaveChangesAsync();
         }
 
-        // Update an existing AppConfig record
+        // Update an existing AppConfiguration record
         public async Task UpdateAppConfigAsync(AppConfig appConfig)
         {
             _context.AppConfigs.Update(appConfig);
             await _context.SaveChangesAsync();
         }
 
-        // Delete an AppConfig record by ID
+        // Delete an AppConfiguration record by ID
         public async Task DeleteAppConfigAsync(int id)
         {
             var appConfig = await _context.AppConfigs.FindAsync(id);

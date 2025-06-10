@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Entity\Models\**" />
+    <Compile Remove="Entity\RepositoryImplementations\**" />
     <EmbeddedResource Remove="Entity\Models\**" />
+    <EmbeddedResource Remove="Entity\RepositoryImplementations\**" />
     <None Remove="Entity\Models\**" />
+    <None Remove="Entity\RepositoryImplementations\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -276,6 +279,7 @@
     <Compile Include="Entity\Models\Generated\LutLanguage.cs" />
     <Compile Include="Entity\Models\Generated\LutLanguageLine.cs" />
     <Compile Include="Entity\Models\Generated\LutLanguageTranslation.cs" />
+    <Compile Include="Entity\Models\Generated\LutLcmdetermination.cs" />
     <Compile Include="Entity\Models\Generated\LutLeaseAddendumNotExecuteReason.cs" />
     <Compile Include="Entity\Models\Generated\LutLegalEntityType.cs" />
     <Compile Include="Entity\Models\Generated\LutListingType.cs" />
@@ -709,10 +713,6 @@
     <Reference Include="RijndaelSymmetricKey">
       <HintPath>Dlls\RijndaelSymmetricKey.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entity\RepositoryImplementations\Common\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using Microsoft.EntityFrameworkCore;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using System.Data.Entity.Infrastructure;
 using Microsoft.Extensions.Configuration;
 namespace DeveloperPortal.DataAccess.Entity.Data;
@@ -53,7 +52,7 @@ public partial class AAHREntities : DbContext
     {
         _configuration = configuration;
     }
-
+    
     public virtual DbSet<AcHpapn> AcHpapns { get; set; }
 
     public virtual DbSet<AcHppropertyManagementPlan> AcHppropertyManagementPlans { get; set; }
@@ -76,7 +75,7 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<Apnpin> Apnpins { get; set; }
 
-    public virtual DbSet<Models.Generated.AppConfig> AppConfigs { get; set; }
+    public virtual DbSet<AppConfig> AppConfigs { get; set; }
 
     public virtual DbSet<ApplicationMaster> ApplicationMasters { get; set; }
 
@@ -284,7 +283,7 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<CfgNextRun> CfgNextRuns { get; set; }
 
-    public virtual DbSet<DeveloperPortal.DataAccess.Entity.Models.Generated.Comment> Comments { get; set; }
+    public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<ContactIdentifier> ContactIdentifiers { get; set; }
 
@@ -557,6 +556,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<LutLanguageLine> LutLanguageLines { get; set; }
 
     public virtual DbSet<LutLanguageTranslation> LutLanguageTranslations { get; set; }
+
+    public virtual DbSet<LutLcmdetermination> LutLcmdeterminations { get; set; }
 
     public virtual DbSet<LutLeaseAddendumNotExecuteReason> LutLeaseAddendumNotExecuteReasons { get; set; }
 
@@ -1728,20 +1729,20 @@ public partial class AAHREntities : DbContext
                 .HasColumnName("PIN");
         });
 
-        modelBuilder.Entity<Models.Generated.AppConfig>(entity =>
+        modelBuilder.Entity<AppConfig>(entity =>
         {
             entity.ToTable("AppConfig", "CC");
 
-            entity.Property(e => e.AppConfigID).HasColumnName("AppConfigID");
-            entity.Property(e => e.ApplicationID).HasColumnName("ApplicationID");
+            entity.Property(e => e.AppConfigId).HasColumnName("AppConfigID");
+            entity.Property(e => e.ApplicationId).HasColumnName("ApplicationID");
             entity.Property(e => e.CreatedOn)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(200);
             entity.Property(e => e.Name).HasMaxLength(100);
 
-            entity.HasOne(d => d.ApplicationMaster).WithMany(p => p.AppConfigs)
-                .HasForeignKey(d => d.ApplicationID)
+            entity.HasOne(d => d.Application).WithMany(p => p.AppConfigs)
+                .HasForeignKey(d => d.ApplicationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AppConfig_ApplicationMaster");
         });
@@ -1981,10 +1982,10 @@ public partial class AAHREntities : DbContext
 
             entity.ToTable("AssnComment", "CC");
 
-            entity.Property(e => e.CommentId).HasColumnName("CommentId");
+            entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.ReferenceId)
                 .HasMaxLength(64)
-                .HasColumnName("ReferenceId");
+                .HasColumnName("ReferenceID");
             entity.Property(e => e.ReferenceType).HasMaxLength(20);
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
@@ -2136,7 +2137,7 @@ public partial class AAHREntities : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.ReferenceId)
                 .HasMaxLength(64)
-                .HasColumnName("ReferenceId");
+                .HasColumnName("ReferenceID");
             entity.Property(e => e.ReferenceType).HasMaxLength(20);
 
             entity.HasOne(d => d.Document).WithMany(p => p.AssnDocuments)
@@ -3033,7 +3034,7 @@ public partial class AAHREntities : DbContext
         {
             entity.ToTable("AssnProjectSiteReference", "AAHR");
 
-            entity.Property(e => e.AssnProjectSiteReferenceId).HasColumnName("AssnProjectSiteReferenceId");
+            entity.Property(e => e.AssnProjectSiteReferenceId).HasColumnName("AssnProjectSiteReferenceID");
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(500);
@@ -4722,7 +4723,7 @@ public partial class AAHREntities : DbContext
 
             entity.ToTable("CaseComment", "CMS");
 
-            entity.Property(e => e.CommentId).HasColumnName("CommentId");
+            entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -4753,7 +4754,7 @@ public partial class AAHREntities : DbContext
                     {
                         j.HasKey("CommentId", "CaseLogId");
                         j.ToTable("AssnCommentCaseLog", "CMS");
-                        j.IndexerProperty<int>("CommentId").HasColumnName("CommentId");
+                        j.IndexerProperty<int>("CommentId").HasColumnName("CommentID");
                         j.IndexerProperty<int>("CaseLogId")
                             .HasComment("Primary key of the table")
                             .HasColumnName("CaseLogID");
@@ -4775,7 +4776,7 @@ public partial class AAHREntities : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasComment("Action taken");
-            entity.Property(e => e.CaseComment).HasComment("CommentDetails by user");
+            entity.Property(e => e.CaseComment).HasComment("Comment by user");
             entity.Property(e => e.CaseId)
                 .HasComment("Case Id")
                 .HasColumnName("CaseID");
@@ -5109,11 +5110,11 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<DeveloperPortal.DataAccess.Entity.Models.Generated.Comment>(entity =>
+        modelBuilder.Entity<Comment>(entity =>
         {
-            entity.ToTable("CommentDetails", "CC");
+            entity.ToTable("Comment", "CC");
 
-            entity.Property(e => e.CommentId).HasColumnName("CommentId");
+            entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -5144,7 +5145,7 @@ public partial class AAHREntities : DbContext
                 });
 
             entity.Property(e => e.ContactIdentifierId).HasColumnName("ContactIdentifierID");
-            entity.Property(e => e.AltContactReferenceId).HasColumnName("AltContactReferenceId");
+            entity.Property(e => e.AltContactReferenceId).HasColumnName("AltContactReferenceID");
             entity.Property(e => e.Apn)
                 .HasMaxLength(50)
                 .HasColumnName("apn");
@@ -5266,7 +5267,7 @@ public partial class AAHREntities : DbContext
             entity.ToTable("ContactIdentifierLog", "PnC");
 
             entity.Property(e => e.ContactIdentifierLogId).HasColumnName("ContactIdentifierLogID");
-            entity.Property(e => e.AltContactReferenceId).HasColumnName("AltContactReferenceId");
+            entity.Property(e => e.AltContactReferenceId).HasColumnName("AltContactReferenceID");
             entity.Property(e => e.Apn)
                 .HasMaxLength(50)
                 .HasColumnName("apn");
@@ -6107,7 +6108,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ReferenceId)
                 .HasMaxLength(20)
                 .IsUnicode(false)
-                .HasColumnName("ReferenceId");
+                .HasColumnName("ReferenceID");
             entity.Property(e => e.ReferenceStatus)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -6463,7 +6464,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Placeholder)
                 .HasMaxLength(200)
                 .IsUnicode(false);
-            entity.Property(e => e.ReferenceId).HasColumnName("ReferenceId");
+            entity.Property(e => e.ReferenceId).HasColumnName("ReferenceID");
             entity.Property(e => e.RowId).HasDefaultValueSql("(newid())");
             entity.Property(e => e.ShowSessionValue).HasDefaultValue(false);
             entity.Property(e => e.TableName)
@@ -10049,6 +10050,31 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<LutLcmdetermination>(entity =>
+        {
+            entity.HasKey(e => e.LutLcmdeterminationId).HasName("PK__LutLCMDe__951C165DB7647B6B");
+
+            entity.ToTable("LutLCMDeterminations", "AAHR");
+
+            entity.Property(e => e.LutLcmdeterminationId).HasColumnName("LutLCMDeterminationId");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LcmdeterminationType)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("LCMDeterminationType");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
         });
 
         modelBuilder.Entity<LutLeaseAddendumNotExecuteReason>(entity =>
@@ -14006,6 +14032,10 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.InitialOccupiedDate).HasColumnType("datetime");
             entity.Property(e => e.IsCwlopenPriorRegistry).HasColumnName("IsCWLOpenPriorRegistry");
             entity.Property(e => e.IsLocked).HasDefaultValue(false);
+            entity.Property(e => e.Lcmdetermination).HasColumnName("LCMDetermination");
+            entity.Property(e => e.LcmsurveyDates)
+                .IsUnicode(false)
+                .HasColumnName("LCMSurveyDates");
             entity.Property(e => e.LockComment).HasMaxLength(500);
             entity.Property(e => e.LotteryDrawOn).HasColumnType("datetime");
             entity.Property(e => e.LutFhastandardId).HasColumnName("LutFHAStandardId");
@@ -14044,6 +14074,10 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.HousingType).WithMany(p => p.ProjectSiteAttributes)
                 .HasForeignKey(d => d.HousingTypeId)
                 .HasConstraintName("FK_ProjectSiteAttribute_LutHousingType");
+
+            entity.HasOne(d => d.LcmdeterminationNavigation).WithMany(p => p.ProjectSiteAttributes)
+                .HasForeignKey(d => d.Lcmdetermination)
+                .HasConstraintName("FK_ProjectSiteAttribute_LCMDetermination");
 
             entity.HasOne(d => d.ParkingType).WithMany(p => p.ProjectSiteAttributes)
                 .HasForeignKey(d => d.ParkingTypeId)
@@ -20159,7 +20193,7 @@ public partial class AAHREntities : DbContext
                 .HasNoKey()
                 .ToView("vwComment", "CC");
 
-            entity.Property(e => e.CommentId).HasColumnName("CommentId");
+            entity.Property(e => e.CommentId).HasColumnName("CommentID");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -20170,7 +20204,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Jsonattribute).HasColumnName("JSONAttribute");
             entity.Property(e => e.ReferenceId)
                 .HasMaxLength(64)
-                .HasColumnName("ReferenceId");
+                .HasColumnName("ReferenceID");
             entity.Property(e => e.ReferenceType).HasMaxLength(20);
         });
 

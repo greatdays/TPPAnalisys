@@ -39,7 +39,7 @@ namespace DeveloperPortal.Pages.ProjectDetails
                 //ProjectSummary.ProjectDetailModel  = ProjectDetailServiceClient.GetProjectDetailByCaseId(Id); ;
                 //if (null != projectSummary.ProjectDetailModel)
                 //{
-                //    projectSummary.ProjectDetailModel.HIMS_RECRecordDocs_URL = "";// AppConfig.GetConfigValue("HIMS_RECRecordDocs_URL");
+                //    projectSummary.ProjectDetailModel.HIMS_RECRecordDocs_URL = "";// AppConfiguration.GetConfigValue("HIMS_RECRecordDocs_URL");
                 //}
 
             }

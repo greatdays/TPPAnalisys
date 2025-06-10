@@ -139,6 +139,10 @@ public partial class ProjectSiteAttribute
 
     public string? SiteStatusLabel { get; set; }
 
+    public int? Lcmdetermination { get; set; }
+
+    public string? LcmsurveyDates { get; set; }
+
     public virtual ICollection<AssnPmpprojSiteAccessibleUnitFeatureSnap> AssnPmpprojSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPmpprojSiteAccessibleUnitFeatureSnap>();
 
     public virtual ICollection<AssnPmpprojTypeSiteAttrSnap> AssnPmpprojTypeSiteAttrSnaps { get; set; } = new List<AssnPmpprojTypeSiteAttrSnap>();
@@ -154,6 +158,8 @@ public partial class ProjectSiteAttribute
     public virtual ICollection<AssnPropertyFeature> AssnPropertyFeatures { get; set; } = new List<AssnPropertyFeature>();
 
     public virtual LutHousingType? HousingType { get; set; }
+
+    public virtual LutLcmdetermination? LcmdeterminationNavigation { get; set; }
 
     public virtual LutParkingType? ParkingType { get; set; }
 
