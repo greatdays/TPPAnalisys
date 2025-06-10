@@ -18,6 +18,7 @@ namespace DeveloperPortal.DataAccess.Repository
             services.AddScoped<IStoredProcedureExecutor, StoredProcedureExecutor>();
             services.AddScoped<IAppConfigRepository, AppConfigRepository>();
             services.AddScoped<IApnpinRepository, ApnpinRepository>();
-           }
+            return services;
+        }
     }
 }
