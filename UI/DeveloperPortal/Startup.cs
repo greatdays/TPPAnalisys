@@ -35,16 +35,8 @@ namespace DeveloperPortal
             services.AddDbContext<AAHREntitiesHelper>(options =>
            options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
 
-           
-            //        services.AddDbContext<AAHREntities>(options =>
-            //options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
-            //       .EnableSensitiveDataLogging()
-            //       .LogTo(Console.WriteLine));
-
-            //        services.AddScoped<AAHREntitiesHelper>();
 
             services.AddDataAccess();
-            
             services.AddScoped<IAppConfigService, AppConfigService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IApnpinService, ApnpinService>();
