@@ -68,9 +68,9 @@ namespace DeveloperPortal.Application.ProjectDetail
                             projectSummaryModel.ProblemCase = Convert.ToString(caseDetailDt.Rows[i]["ProblemCase"]);
                             projectSummaryModel.ProjectId = Convert.ToInt32(caseDetailDt.Rows[i]["ProjectId"]);
                             string propertyURL = "";
-                            //    AppConfig.GetConfigValue("AAHPURL")
+                            //    AppConfiguration.GetConfigValue("AAHPURL")
                             //+ "IDM/Authentication/RedirectToOtherApplication?AppKey=PropMgmt&AppURL="
-                            //+ AppConfig.GetConfigValue("PCMSPropertyURL")
+                            //+ AppConfiguration.GetConfigValue("PCMSPropertyURL")
                             //+ "&TabName=AcHPDetails&parameters=apn=" + caseDetail.APN
                             //+ ",projectSiteID=" + caseDetail.RefProjectSiteID;
                             projectSummaryModel.PropertyURL = propertyURL;

@@ -17,17 +17,17 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
     public partial class ActionViewModel
     {
         private IConfiguration _config;
-        AppConfig appConfig;
+        AppConfiguration appConfig;
         bool IsNotificationEnable;
         public ActionViewModel(IConfiguration config)
         {
             _config = config;
-            appConfig = new AppConfig(_config);
+            appConfig = new AppConfiguration(_config);
             IsNotificationEnable = appConfig.GetConfigValue<bool>("SendNotification");
         }
         #region Variable Declaration
 
-        //AppConfig appConfig = new AppConfig(_config);
+        //AppConfiguration appConfig = new AppConfiguration(_config);
         //bool IsNotificationEnable = appConfig.GetConfigValue<bool>("SendNotification");
 
         #endregion // Variable Declaration
@@ -75,7 +75,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                     //SaveDocuments(currentCase);
 
                     /* Push changes to db */
-                    db.SaveChanges(username);
+                    //db.SaveChanges(username);
 
                     if (!string.IsNullOrEmpty(comment))
                     {
@@ -165,7 +165,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                         UpdateCase(currentCase, null, null);
 
                         /* Push changes to db */
-                        db.SaveChanges(username);
+                       // db.SaveChanges(username);
 
                         if (!string.IsNullOrEmpty(comment))
                         {
@@ -309,7 +309,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                     caseLog.LastAssigneeName = newAssigneeName;
                 }
                 currentCase.CaseLogs.Add(caseLog);
-                db.SaveChanges(username);
+                //db.SaveChanges(username);
 
                 if (!string.IsNullOrEmpty(comment))
                 {

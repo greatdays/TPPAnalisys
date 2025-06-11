@@ -40,8 +40,8 @@ namespace DeveloperPortal.Application.ServiceClient
             DELETE
         }
 
-        //public static string BaseApiURL = AppConfig.GetConfigValue("BaseApiURL");
-        //public static string BasePropApiURL = AppConfig.GetConfigValue("BasePropApiURL");
+        //public static string BaseApiURL = AppConfiguration.GetConfigValue("BaseApiURL");
+        //public static string BasePropApiURL = AppConfiguration.GetConfigValue("BasePropApiURL");
         //private static JavaScriptSerializer serializer = new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue, RecursionLimit = 100 }; //unused statement
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace DeveloperPortal.Application.ServiceClient
             try
             {
                 string serializeqObject = string.Empty;
-                AppConfig appConfig = new AppConfig(_config);
+                AppConfiguration appConfig = new AppConfiguration(_config);
                 // security protocol type.
                 if (appConfig.GetConfigValue<bool>("EnableTLS"))
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;

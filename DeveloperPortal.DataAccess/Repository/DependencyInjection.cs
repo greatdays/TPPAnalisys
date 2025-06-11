@@ -18,10 +18,6 @@ namespace DeveloperPortal.DataAccess.Repository
             services.AddScoped<IStoredProcedureExecutor, StoredProcedureExecutor>();
             services.AddScoped<IAppConfigRepository, AppConfigRepository>();
             services.AddScoped<IApnpinRepository, ApnpinRepository>();
-            services.AddDbContext<AAHREntities>(options =>
-    options.UseSqlServer("Data Source=43devdb10;Initial Catalog=AAHRLocal;Integrated Security=true;user id=appACHP;password=BDpwD7@cHP;TrustServerCertificate=true"), ServiceLifetime.Scoped);
-            services.AddDbContext<AAHREntitiesHelper>(options =>
-    options.UseSqlServer("Data Source=43devdb10;Initial Catalog=AAHRLocal;Integrated Security=true;user id=appACHP;password=BDpwD7@cHP;TrustServerCertificate=true"), ServiceLifetime.Scoped);
             return services;
         }
     }

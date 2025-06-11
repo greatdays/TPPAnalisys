@@ -51,7 +51,7 @@ public partial class CaseLog
     public string? NewAssigneeName { get; set; }
 
     /// <summary>
-    /// CommentDetails by user
+    /// Comment by user
     /// </summary>
     public string? CaseComment { get; set; }
 

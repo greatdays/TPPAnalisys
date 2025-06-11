@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Application.ProjectDetail;
+﻿using System.Configuration;
+using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
@@ -29,17 +30,13 @@ namespace DeveloperPortal
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+            services.AddDbContext<AAHREntities>(options =>
+           options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+            services.AddDbContext<AAHREntitiesHelper>(options =>
+           options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
 
-
-    //        services.AddDbContext<AAHREntities>(options =>
-    //options.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
-    //       .EnableSensitiveDataLogging()
-    //       .LogTo(Console.WriteLine));
-
-    //        services.AddScoped<AAHREntitiesHelper>();
 
             services.AddDataAccess();
-            
             services.AddScoped<IAppConfigService, AppConfigService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IApnpinService, ApnpinService>();

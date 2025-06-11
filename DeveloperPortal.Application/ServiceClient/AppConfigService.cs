@@ -18,7 +18,7 @@ namespace DeveloperPortal.Application.ServiceClient
         public T GetConfigValue<T>(string key, string application = null)
         {
             T value = default;
-            DataAccess.Entity.AppConfig appConfig = new DataAccess.Entity.AppConfig(_config);
+            DataAccess.Entity.AppConfiguration appConfig = new DataAccess.Entity.AppConfiguration(_config);
 
             value = appConfig.GetConfigValue<T>(key, application);
             return value;

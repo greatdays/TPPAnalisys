@@ -13,11 +13,11 @@ namespace DeveloperPortal.DataAccess.Entity
     {
     }
 
-    public class AppConfig
+    public class AppConfiguration
     {
         private IConfiguration _config;
 
-        public AppConfig(IConfiguration configuration)
+        public AppConfiguration(IConfiguration configuration)
         {
             _config = configuration;
         }
@@ -36,8 +36,8 @@ namespace DeveloperPortal.DataAccess.Entity
                 {
                     Key = s.Name,
                     Value = s.Value,
-                    ApplicationID = s.ApplicationID,
-                    Application = s.ApplicationMaster.Name
+                    ApplicationID = s.ApplicationId,
+                    Application = s.Application.Name
                 }).ToList();
 
                 return appConfigList;
