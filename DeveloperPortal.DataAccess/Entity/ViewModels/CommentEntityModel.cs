@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DeveloperPortal.DataAccess.Entity.Data.AAHREntities;
-using DeveloperPortal.DataAccess.Entity.Data; 
+using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Repository.Interface;
 
 namespace DeveloperPortal.DataAccess.Entity.ViewModels
 {

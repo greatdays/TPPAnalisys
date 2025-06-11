@@ -43,7 +43,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
                 //    Role = Role,
                 //    AssnComments = new AssnComment { ReferenceId = RefId, ReferenceType = RefType.ToString() }
                 //});
-                db.SaveChanges(UserName);
+                //db.SaveChanges(UserName);
             }
         }
 
@@ -115,7 +115,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
                 comment.CommentText = commentText;
                 comment.Role = roleName;
                 comment.IsInternal = isInternal;
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 
@@ -128,7 +128,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
                     item.Comment.IsDeleted = true;
                 }
 
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 
@@ -138,7 +138,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
             {
                 DeveloperPortal.DataAccess.Entity.Models.Generated.Comment comment = db.Comments.Find(CommentId);
                 comment.IsDeleted = true;
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 

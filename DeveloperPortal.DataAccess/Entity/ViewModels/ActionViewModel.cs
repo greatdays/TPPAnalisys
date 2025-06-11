@@ -75,7 +75,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                     //SaveDocuments(currentCase);
 
                     /* Push changes to db */
-                    db.SaveChanges(username);
+                    //db.SaveChanges(username);
 
                     if (!string.IsNullOrEmpty(comment))
                     {
@@ -165,7 +165,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                         UpdateCase(currentCase, null, null);
 
                         /* Push changes to db */
-                        db.SaveChanges(username);
+                       // db.SaveChanges(username);
 
                         if (!string.IsNullOrEmpty(comment))
                         {
@@ -309,7 +309,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
                     caseLog.LastAssigneeName = newAssigneeName;
                 }
                 currentCase.CaseLogs.Add(caseLog);
-                db.SaveChanges(username);
+                //db.SaveChanges(username);
 
                 if (!string.IsNullOrEmpty(comment))
                 {

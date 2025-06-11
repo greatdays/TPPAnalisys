@@ -2,57 +2,20 @@
 using System.Collections.Generic;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity.Infrastructure;
-using Microsoft.Extensions.Configuration;
+
 namespace DeveloperPortal.DataAccess.Entity.Data;
 
 public partial class AAHREntities : DbContext
 {
-
-    public interface IAuditable
-    {
-        string CreatedBy { get; set; }
-        DateTime CreatedOn { get; set; }
-        string ModifiedBy { get; set; }
-        Nullable<System.DateTime> ModifiedOn { get; set; }
-    }
-
-    public int SaveChanges(string username)
-    {//copied from D:\Ananth\Git\Repos\AffordableAndAccessibleHousing\Common\ComCon.CommentDetails\EntityModels\CommentDetails.Context.cs
-        IEnumerable<DbEntityEntry<IAuditable>> changeSet = (IEnumerable<DbEntityEntry<IAuditable>>)ChangeTracker.Entries<IAuditable>();
-        if (changeSet != null)
-        {
-            foreach (DbEntityEntry<IAuditable> entry in changeSet.Where(c => c.State != System.Data.Entity.EntityState.Unchanged)) //System.Data.Entity.Infrastructure.
-            {
-                switch (entry.State)
-                {
-                    case System.Data.Entity.EntityState.Added:
-                        entry.Entity.CreatedBy = username;
-                        entry.Entity.CreatedOn = DateTime.Now;
-                        entry.Entity.ModifiedBy = username;
-                        entry.Entity.ModifiedOn = DateTime.Now;
-                        break;
-
-                    case System.Data.Entity.EntityState.Modified:
-                        entry.Entity.ModifiedBy = username;
-                        entry.Entity.ModifiedOn = DateTime.Now;
-                        break;
-                }
-            }
-        }
-        return base.SaveChanges();
-    }
-    private readonly IConfiguration _configuration;
     public AAHREntities()
     {
     }
 
-    public AAHREntities(DbContextOptions<AAHREntities> options, IConfiguration configuration)
+    public AAHREntities(DbContextOptions<AAHREntities> options)
         : base(options)
     {
-        _configuration = configuration;
     }
-    
+
     public virtual DbSet<AcHpapn> AcHpapns { get; set; }
 
     public virtual DbSet<AcHppropertyManagementPlan> AcHppropertyManagementPlans { get; set; }
@@ -1212,13 +1175,9 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<WsviewWstype> WsviewWstypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=43devdb10;Encrypt=False;Trust Server Certificate=true;initial catalog=AAHRLocal;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AI");
