@@ -34,8 +34,6 @@ namespace DeveloperPortal
            options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
             services.AddDbContext<AAHREntitiesHelper>(options =>
            options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
-
-            services.AddHttpClient();
             services.AddDataAccess();
             services.AddScoped<IAppConfigService, AppConfigService>();
             services.AddScoped<IDashboardService, DashboardService>();
@@ -70,18 +68,18 @@ namespace DeveloperPortal
                 endpoints.MapControllerRoute(name: "default",
                pattern: "{controller=Dashboard}/{action=GetProjectData}");
             });
-               // app.MapRazorPages();
+            // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",
-              //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
+            //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
-            
-            
+
+
         }
     }
 }
