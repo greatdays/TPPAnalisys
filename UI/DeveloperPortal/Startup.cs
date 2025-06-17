@@ -69,10 +69,18 @@ namespace DeveloperPortal
                 endpoints.MapControllerRoute(name: "default",
                pattern: "{controller=Dashboard}/{action=GetProjectData}");
             });
-               // app.MapRazorPages();
+            // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",
-              //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
+            //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                  name: "areas",
+                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
 
             app.UseEndpoints(endpoints =>
             {

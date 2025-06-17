@@ -1,0 +1,73 @@
+﻿@model DeveloperPortal.Areas.Document.Models.DMSModel
+@using System.Data
+
+<div class="dms-section" id="controlBody_@Model.ControlId">
+    @if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+    {
+        var result = Model.SearchResults[0];
+
+        @if (Model.ShowFilter != null && Model.ShowFilter.Value)
+        {
+            <div class="d-flex align-items-center mb-2">
+                <label for="DMSFilter_@Model.ControlId" class="me-2 mb-0 ">
+                    Filter by Category: 
+                </label>
+                @Html.DropDownList("DMSFilter_" + Model.ControlId,
+                         result.SubCategorySelectList ?? new SelectList(Enumerable.Empty<SelectListItem>()),
+                         "All",
+                         new { @class = "form-control form-control-sm w-auto", title = "File Category" })
+            </div>
+        }
+
+        if (result.Data != null && result.Data.Columns.Count > 0)
+        {
+            <div class="table-responsive">
+                <table id="tableGridView_@Model.ControlId" class="table table-bordered table-striped table-sm datatbl" style="width:100%">
+                    <thead>
+                        <tr>
+                            @foreach (DataColumn column in result.Data.Columns)
+                            {
+                                <th>@column.ColumnName</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DataRow row in result.Data.Rows)
+                        {
+                            <tr>
+                                @foreach (var item in row.ItemArray)
+                                {
+                                    <td>@item</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No data available</p>
+        }
+    }
+    else
+    {
+        <p class="text-muted">No data available</p>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Attach DataTable if needed
+        if (typeof AttachDataTable === 'function') {
+            AttachDataTable(true, true, true);
+        }
+
+        // Optional filter dropdown change handler (if you plan to wire this up later)
+        $("#DMSFilter_@Model.ControlId").change(function () {
+            const selectedVal = $(this).val();
+            // Future: You could trigger a reload/filter action here
+            console.log("Filter changed:", selectedVal);
+        });
+    });
+</script>

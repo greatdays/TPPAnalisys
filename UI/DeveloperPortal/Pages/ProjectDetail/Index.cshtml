@@ -153,7 +153,7 @@
                 LoadTabData(url, "divPolicyContacts");
                 break;
             case "tabDocuments":
-                url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Documents" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document" })' + '?controlViewModelId=' + documentControlViewModelId;
                 LoadTabData(url, "divDocument", true);
                 break;
             case "tabLogs":
@@ -164,8 +164,23 @@
         }
     }
 
-
     function LoadTabData(url, tabId, forceLoad = false) {
+
+        if ($("#" + tabId).html() == "" || forceLoad) {
+        $.ajax({
+            url: url,
+            type: "GET", // or "POST"
+            success: function (response) {
+                $("#" + tabId).html(response);
+            },
+            error: function (xhr, status, error) {
+                console.log("Error:", error);
+            }
+        });
+         }
+     }
+
+    /*function LoadTabData(url, tabId, forceLoad = false) {
         //return;
         if ($("#" + tabId).html() == "" || forceLoad) {
             AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
@@ -173,7 +188,7 @@
                     $("#" + tabId).html(result);
                 }, null, true, null, false);
         }
-    }
+    }*/
 
     /*Start Project Site Data table */
     function LoadSiteInformation() {
@@ -257,11 +272,4 @@
         IsLoadSiteInformationTab = true;
     }
     /*End Project Site Data table */
-
-
-
 </script>
-
-
-
-
