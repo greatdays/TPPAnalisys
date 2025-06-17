@@ -32,9 +32,13 @@ namespace DeveloperPortal
             });
             services.AddDbContext<AAHREntities>(options =>
            options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+
+
             services.AddDbContext<AAHREntitiesHelper>(options =>
            options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+           
             services.AddDataAccess();
+           
             services.AddScoped<IAppConfigService, AppConfigService>();
             services.AddScoped<IDashboardService, DashboardService>();
             services.AddScoped<IApnpinService, ApnpinService>();

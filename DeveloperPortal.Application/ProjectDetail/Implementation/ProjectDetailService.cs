@@ -20,11 +20,14 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         IConfiguration _config;
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+        private readonly AAHREntities _context;
 
-        public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor)
+        public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor,
+            AAHREntities context)
         {
             _config = configuration;
             _storedProcedureExecutor = storedProcedureExecutor;
+            _context = context;
         }
         
         #endregion
@@ -312,22 +315,28 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         private DataTable ExecuteStoreProcedure(string procedureName, List<SqlParameter> parameters)
         {
-            AAHREntities _context = new AAHREntities();
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            var conn = _context.Database.GetDbConnection();
+
+            if (string.IsNullOrWhiteSpace(conn.ConnectionString))
+                throw new InvalidOperationException("Connection string not initialized in _context.");
+           
+            using (var command = conn.CreateCommand())
             {
                 command.CommandText = procedureName;
-                command.CommandType = System.Data.CommandType.StoredProcedure;
-                command.Parameters.AddRange(parameters.ToArray());
+                command.CommandType = CommandType.StoredProcedure;
 
-                _context.Database.OpenConnection();
+                if (parameters != null && parameters.Any())
+                    command.Parameters.AddRange(parameters.ToArray());
+
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+
                 using (var reader = command.ExecuteReader())
                 {
                     DataTable dt = new DataTable();
                     dt.Load(reader);
                     return dt;
                 }
-
-
             }
         }
 
