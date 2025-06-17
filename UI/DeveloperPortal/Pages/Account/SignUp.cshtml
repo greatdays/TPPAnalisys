@@ -1,12 +1,11 @@
 ﻿@page
+@using DeveloperPortal.Application.ProjectDetail.Interface
 @using Microsoft.Extensions.Configuration
 @model DeveloperPortal.Pages.Account.SignUpModel
 @inject IConfiguration Configuration
-
+@inject IAccountService accountService;
 
 <script src="~/js/jquery-block-ui/blockUICollection.js"></script>
-
-
 
 <style>
     ul {
@@ -85,7 +84,7 @@
             </div>
             <div class="setup-content" id="step-3" role="tabpanel" style="display: none">
                 @{
-                    var projRegistrationModel = new ProjectRegistrationModel();
+                    var projRegistrationModel = new ProjectRegistrationModel(accountService);
                     <partial name="ProjectRegistration" model="projRegistrationModel"></partial>
                 }
             </div>
