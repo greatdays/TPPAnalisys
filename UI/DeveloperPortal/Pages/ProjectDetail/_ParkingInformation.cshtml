@@ -1,0 +1,688 @@
+﻿@using DeveloperPortal.Domain.ProjectDetail
+
+@model BuildingParkingInformationModal
+<style>
+    #dtPrkingData .input-parking {
+        border: 0px;
+        text-align: right;
+        pointer-events: none;
+    }
+
+    #dtPrkingData .radio-parking {
+        pointer-events: none;
+    }
+
+
+    .input-parking-total {
+        border: 0px !important;
+        text-align: right;
+        pointer-events: none;
+    }
+
+    .input-parking-edit {
+        border: inherit !important;
+        pointer-events: auto !important;
+    }
+
+    .total-td {
+        background-color: #e9ecef;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #tblparkinginfo .tr-header {
+        font-size: 18px;
+        background: whitesmoke;
+        height: 50px;
+    }
+
+        #tblparkinginfo .tr-header:hover {
+            background: whitesmoke !important;
+        }
+
+    #dtPermitNumberData_wrapper .paging_numbers {
+        DISPLAY: FLEX;
+        MARGIN-LEFT: 3em;
+    }
+
+    #dtPermitNumberData_wrapper .select-site-title {
+        font-size: 16PX;
+        FONT-WEIGHT: BOLD;
+        padding-top: 10PX;
+        min-width: 135px;
+        padding-right: 16px;
+    }
+
+    #dtPermitNumberData_wrapper .pagination .page-link {
+        display: table-cell !important;
+    }
+
+    #dtPermitNumberData_wrapper .pagination li {
+        margin-bottom: 5px;
+    }
+
+    .permit-number-buttons {
+        padding: 1em;
+    }
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-ajax/4.0.20526/MicrosoftAjax.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-unobtrusive-ajax/3.2.5/jquery.unobtrusive-ajax.min.js"></script>
+<div class="site-parking-summary" style="margin-top:15px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="site-title ">@Model.BuildingNumber</h3>
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td class="row-title">
+                                    Type of Construction Project
+                                </td>
+                                <td class="row-text" style="min-width: 170px;">
+                                    @Model.TypeOfConstruction
+                                </td>
+                                <td class="row-title lelf-border">
+                                    Type of Occupancy
+                                </td>
+                                <td class="row-text">
+                                    @Model.TypeOfOccupancy>
+                                </td>
+                                <td class="row-title lelf-border">
+                                    Building Permit Number
+                                </td>
+                                <td class="row-text">
+                                    @Model.BuildingPermitNumber
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <span class="row-title lelf-border"> Applicable Codes </span>
+                        <span class="row-text"> @Model.ApplicableCodes</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td class="row-title">
+                                    Total Number of Units
+                                </td>
+                                <td class="row-text">
+                                    @Model.NumberOfUnits
+                                </td>
+                                <td class="row-title  lelf-border">
+                                    # of Mobility Units
+                                </td>
+                                <td class="row-text">
+                                    @Model.NumberOfMobilityUnits
+                                </td>
+                                <td class="row-title lelf-border">
+                                    # of Communication Units
+                                </td>
+                                <td class="row-text">
+                                    @Model.NumberOfCommunicationUnits
+                                </td>
+                                <td class="row-title lelf-border"> # of Adaptable Units </td>
+                                <td class="row-text">
+                                    @Model.NumberOfAdaptableUnits
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-sm-12">
+                    <div class="row-box">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td class="row-title">
+                                    Number of Floors in Buildings
+                                </td>
+                                <td class="row-text" style="min-width: 170px;">@Model.NumberOfFloors </td>
+
+                                <td class="row-title lelf-border">
+                                    Elevator?
+                                </td>
+                                <td class="row-text">
+                                    @(Model.IsElevator ? "Yes" : "No")
+                                </td>
+                                <td class="row-title lelf-border">
+                                    Number of Parkings
+                                </td>
+                                <td class="row-text">
+                                    @Model.NumberOfParkings
+                                </td>
+                                <td class="row-title lelf-border">
+                                    Will Parking be provided for Each Residential Dwelling Unit?
+                                </td>
+                                <td class="row-text">
+                                    @(Model.ParkingAvailableAtbuildingLevel ? "Yes" : "No")
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
+        <div class="k-header k-grid-toolbar ">
+            <span class="k-grid-header-title"> Link Permit Number to LADBS</span><
+        </div>
+        <div>
+            <div class="k-d-flex k-justify-content-start" style="padding-left: 2em;padding-top: 1em;padding-bottom: 2em;">
+                <div class="k-w-300">
+                    <label for="LADBS_PermitNumber">Permit #:</label>
+                    <input id="LADBS_PermitNumber" />
+                    <label for="LADBS_PermitNumber" style="margin-left: 1em;">Department: </label>
+                    <select name="LADBS_Department" id="depts" style="height: 60%;width: 6em;">
+                        <option value="" selected disabled hidden></option>
+                        <option value="BAS">BAS</option>
+                        <option value="DWP">DWP</option>
+                        <option value="ENG">ENG</option>
+                        <option value="FIR">FIR</option>
+                        <option value="PLN">PLN</option>
+                        <option value="SAN">SAN</option>
+                        <option value="HPP">HPP</option>
+                    </select>
+                    <button id="linkPermitNumber" class="btn btn btn-primary no-access" role-access="true" style="margin-left: 1em;" onclick="linkPermitNumber()">Link Permit Number</button>
+                </div>
+            </div>
+            <div id="LADBSerror" style="padding-left: 2em;margin-bottom: 2em;" hidden>
+            </div>
+            <div id="permit-number-directions" style="padding-left: 2em;margin-bottom: 2em;">
+                Single-Click to Select/Double-Click to Open Permit Details
+            </div>
+        </div>
+
+        <table id="dtPermitNumberData"></table>
+
+        <div class="permit-number-buttons">
+            <button id="updatePermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="updatePermitNumber()">Update Permit Number</button>
+            <button id="deletePermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="deletePermitNumber()">Delete Permit Number</button>
+        </div>
+    </div>
+
+    <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
+        <div class="k-header k-grid-toolbar ">
+            <span class="k-grid-header-title"> Parking Information</span>
+            <a id="editbuildingParking" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="editbuildingParkingInfo()" href="#">Edit Parking Information</a>
+            <a id="canceleditbuildingParking" class="k-button k-button-icontext k-grid-add" style="margin-left :15px;" role="bu444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444tton" onclick="canceleditbuildingParkingInfo()" href="#">Cancel</a>
+            <a id="updatebuildingParking" class="k-button k-button-icontext k-grid-add" role="button" onclick="updatebuildingParkingInfo()" href="#">Update</a>
+        </div>
+    </div>
+    <div class="hide-hover">
+        <div id="idForm">
+        @* @using (Ajax.BeginForm("BuildingUpdateForm", "ConstructionNew", new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBuildingSaveBegin", OnSuccess = "OnBuildingSaveSuccess", OnFailure = "OnBuildingSaveFailure" }, new { @id = "idForm" }))
+        { *@
+            <table style="width:100%" id="tblparkinginfo">
+                <tr>
+                    <td style="width:45%">
+                        <div class="k-grid totalGrid">
+                            <table style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color:transparent !important; font-size:15px; border-right: 1px solid #dee2e6 ">
+                                            <label class="">ComplianceMatrix.lblResidentialParking</label>
+                                        </th>
+                                        <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color: transparent !important; font-size: 15px; ">
+                                            <label class="">ComplianceMatrix.lblCommercialParking</label>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td> <label class="wraping_label">    Will Parking be provided for Each Residential Dwelling Unit?</label></td>
+                                    <td>
+
+                                        <div class="input-group yesno_radio" style="width: 115px;border:none; margin:10px 0px; ">
+                                            <div class="custom-control custom-radio" aria-labelledby="s_parking1" style="margin-right:10px;">
+                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_parking1", @class = "radio-parking custom-control-input" })
+                                                <label class="custom-control-label" for="s_parking1">Yes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " aria-labelledby="s_parking2">
+                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_parking2", @class = " radio-parking custom-control-input" })
+                                                <label class="custom-control-label" for="s_parking2">No</label>
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+                                    <td colspan="2">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Residential Parking</td>
+                                    <td style="width: 90px; text-align: right">
+                                        @Html.TextBoxFor(x => x.ResindentialSpaces, new { @class = "form-control residentialSpaces input-parking " })
+                                        @Html.HiddenFor(x => x.PropSnapshotID)
+                                    </td>
+                                    <td>  Commercial Parking Spaces</td>
+                                    <td style="width: 100px; text-align: right">
+                                        @Html.TextBoxFor(x => x.StandardCommercialSpaces, new { @class = "form-control comercialSpaces input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Accessible Parking</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.AccessibleSpaces, new { @class = "form-control residentialSpaces input-parking " })
+                                    </td>
+                                    <td> Commercial Accessible Parking Spaces</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Van Accessible Parking</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.VanAccessibleSpaces, new { @class = "form-control residentialSpaces input-parking " })
+                                    </td>
+                                    <td> Commercial Van Accessible Parking Spaces</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialVanAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking " })
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 15px;">Total Residential Parking Spaces</td>
+                                    <td class="total-td">
+                                        @Html.TextBoxFor(x => x.TotalResidentialParking, new { @class = "form-control residentialSpacesTotal input-parking-total", @readonly = "readonly" })
+                                    </td>
+                                    <td style="font-weight: bold; font-size: 15px;">Total Commercial Parking Spaces</td>
+                                    <td class="total-td">
+                                        @Html.TextBoxFor(x => x.TotalCommercialParking, new { @class = "form-control comercialSpacesTotal input-parking-total", @readonly = "readonly" })
+                                    </td>
+                                </tr>
+                                <tr class="tr-header">
+                                    <td style="font-weight: bold; font-size: 15px;" colspan="2">Residential Electric Vehicle Charging Stations</td>
+                                    <td style="font-weight: bold; font-size: 15px;" colspan="2">Commercial Electric Vehicle Charging Stations</td>
+                                </tr>
+                                <tr>
+                                    <td>Electric Vehicle Charging Station</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.ElectricVehicleChargingStations, new { @class = "form-control chargingStations input-parking " })
+                                    </td>
+                                    <td>Commercial Vehicle Charging Stations</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialVehicleChargingStations, new { @class = "form-control commercialcharging input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Van Accessible Charging Station</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.VanAccessibleChargingStations, new { @class = "form-control chargingStations input-parking " })
+                                    </td>
+                                    <td>  Commercial Van Accessible Charging Stations</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialElectricVanAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Standard Accessible Charging Station</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.StandardAccessibleChargingStations, new { @class = "form-control chargingStations input-parking " })
+                                    </td>
+                                    <td> Commercial Standard Accessible Charging Stations</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialElectricStandardAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> Ambulatory Charging Station</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.AmbulatoryChargingStations, new { @class = "form-control chargingStations input-parking " })
+                                    </td>
+                                    <td>  Commercial Ambulatory Charging Stations</td>
+                                    <td style="text-align:right">
+                                        @Html.TextBoxFor(x => x.CommercialElectricAmbulatoryChargingStation, new { @class = "form-control commercialcharging input-parking " })
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 15px;">  Total Number of Electric Vehicle Charging Stations</td>
+                                    <td class="total-td">
+                                        @Html.TextBoxFor(x => x.TotalNumberofElectricVehicleChargingStations, new { @class = "form-control chargingStationsTotal input-parking-total", @readonly = "readonly" })
+                                    </td>
+                                    <td style="font-weight: bold; font-size: 15px;"> Total Number of Commercial Charging Stations</td>
+                                    <td class="total-td">
+                                        @Html.TextBoxFor(x => x.TotalNumberofCommercialElectricVehicleChargingStations, new { @class = "form-control commercialchargingTotal input-parking-total", @readonly = "readonly" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        @* } *@
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#idForm").submit(function (event) {
+            event.preventDefault(); // Prevent normal form submission
+
+            $.ajax({
+                url: "Construction/ProjectDetail/BuildingUpdateForm",
+                type: "POST",
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    OnBuildingSaveBegin();
+                },
+                success: function (response) {
+                    OnBuildingSaveSuccess(response);
+                },
+                error: function (xhr) {
+                    OnBuildingSaveFailure(xhr.responseText);
+                }
+            });
+        });
+        resetBulidingParkingEdit();
+        calculateTotal("chargingStations", "chargingStationsTotal");
+        $('.input-parking').on("keypress", function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
+        });
+        $('.residentialSpaces').on('change', function () {
+            calculateTotal("residentialSpaces", "residentialSpacesTotal")
+        });
+        $('.comercialSpaces').on('change', function () {
+            calculateTotal("comercialSpaces", "comercialSpacesTotal")
+        });
+        $('.commercialcharging').on('change', function () {
+            calculateTotal("commercialcharging", "commercialchargingTotal")
+        });
+        $('.chargingStations').on('change', function () {
+            calculateTotal("chargingStations", "chargingStationsTotal")
+        });
+
+        initPermitNumberList();
+        SetRoleAccess(accessType);
+
+    });
+
+    function initPermitNumberList() {
+        dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
+            ajax: {
+                url: '@Url.Action("GetPermitNumbersPost", "ProjectDetail", new { })',
+                data: function (d) {
+                    d.PropSnapshotID = '@Model.PropSnapshotID'
+                },
+                type: 'Post',
+                "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                dataType: 'json'
+
+            },
+            "columns": [{ "data": 'permitData' }],
+
+            processing: true,
+            serverSide: true,
+            pageLength: 1,
+            pagingType: 'numbers',
+            "paging": true,
+            "searching": false,
+            "ordering": false,
+            "sorting": false,
+            "dom": "<'row'<'<'col-sm-12'p>>",
+            "oLanguage": {
+                "sEmptyTable": "No record found."
+            }
+        });
+
+        dtPermitNumberDataTable.on('draw.dt', function () {
+            if ($("#dtPermitNumberData_paginate .select-site-title").length == 0) {
+                $("#dtPermitNumberData_paginate").prepend("<div class='select-site-title'>Permit Numbers: </div><br/>")
+            }
+            $(".dataTables_length").hide();
+            var PermitNumberData = $('#dtPermitNumberData').dataTable().fnGetData();
+            if (PermitNumberData.length > 0) {
+                $("#dtPermitNumberData_paginate").show()
+                var pageItems = $("#dtPermitNumberData_paginate .paginate_button");
+                var permitList = PermitNumberData[0].PermitList;
+                //BuildingInformationData = PermitNumberData[0].BuildingInformationData;
+
+                // for (var i = 0; i < pageItems.length; i++) {
+                //     if (pageItems[i].text != '…') {
+                //         if (parseInt(pageItems[i].text) !== NaN) {
+                //             $(pageItems[i]).text(permitList[parseInt(pageItems[i].text) - 1]);
+                //         }
+                //     }
+                // }
+                 
+                 for (var i = 0; i < pageItems.length; i++) {
+                     var text = pageItems[i].text
+                     if (text != '…') {
+                         if (parseInt(text) !== NaN) {
+                             pageItems[i].text=permitList[parseInt(text) - 1];
+                         }
+                     }
+                 }
+
+
+                if (pageItems.length == 0) {
+                    $(".permit-number-buttons").attr("hidden", true);
+                    $("#dtPermitNumberData_wrapper").attr("hidden", true);
+                    $("#permit-number-directions").attr("hidden", true);
+                }
+                else {
+                    $(".permit-number-buttons").attr("hidden", false);
+                    $("#dtPermitNumberData_wrapper").attr("hidden", false);
+                    $("#permit-number-directions").attr("hidden", false);
+                }
+            }
+            else {
+                $("#dtPermitNumberData_paginate").hide();
+            }
+
+            $("a.page-link[aria-controls='dtPermitNumberData']").on('dblclick', function () {
+
+                var params = this.text.split(" ");
+
+                $("#permitNumberInformationPopup").modal("show");
+                $("#permitNumberInformationPopupTitle").html(`Permit Details: ${this.text}`)
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetPermitDetails", new { controller = "ProjectDetail" })",
+                    data: {
+                        PropsnapshotID: @Model.PropSnapshotID,
+                        PermitNumber: params[0],
+                        Department: params[1],
+                    },
+                    success: function (data) {
+                        $("#permitNumberInformationPopup .modal-body").html(data);
+                    },
+                    error: function (result) {
+                        console.log(result)
+                    }
+                });
+            });
+
+            $("#dtPermitNumberData .sorting_disabled").attr("hidden", true);
+        });
+    }
+
+    function linkPermitNumber() {
+
+        var permitNumber = $("#LADBS_PermitNumber").val();
+        var dept = $("#depts").children("option:selected").val();
+        var propsnapshotID = @Model.PropSnapshotID;
+
+        if ((permitNumber === null || permitNumber.trim() === "") || (dept === null || dept.trim() === "")) {
+            $("#LADBSerror").text("Permit Number or Department field is empty!");
+            $("#LADBSerror").attr("hidden", false);
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+                data: {
+                    PropsnapshotID: propsnapshotID,
+                    PermitNumber: permitNumber,
+                    Department: dept,
+                },
+                success: function (data) {
+
+                    if (data != "OK") {
+                        $("#LADBSerror").text(data);
+                        $("#LADBSerror").attr("hidden", false);
+                    }
+                    else {
+                        $("#LADBSerror").attr("hidden", true);
+                    }
+                },
+                error: function (result) {
+                    console.log(result)
+                }
+            });
+
+            $('#dtPermitNumberData').DataTable().destroy();
+
+            initPermitNumberList();
+        }
+    }
+
+    function updatePermitNumber() {
+
+        var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
+        console.log(params)
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+            data: {
+                PropsnapshotID: @Model.PropSnapshotID,
+                PermitNumber: params[0],
+                Department: params[1]
+            },
+            success: function (data) {
+                if (data == "OK") {
+                    $("#LADBSerror").attr("hidden", true);
+                    $("#dtPermitNumberData_wrapper .active a").dblclick();
+                }
+                else {
+                    $("#LADBSerror").attr("hidden", false);
+                }
+            },
+            error: function (result) {
+                console.log(result)
+            }
+        });
+    }
+
+    function deletePermitNumber() {
+        var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+            data: {
+                PropsnapshotID: @Model.PropSnapshotID,
+                PermitNumber: params[0],
+                Department: params[1],
+                Delete: true
+            },
+            success: function (data) {
+                if (data == "OK") {
+                    $("#LADBSerror").attr("hidden", true);
+
+                    $('#dtPermitNumberData').DataTable().destroy();
+
+                    initPermitNumberList();
+                }
+                else {
+                    $("#LADBSerror").attr("hidden", false);
+                }
+            },
+            error: function (result) {
+                console.log(result)
+            }
+        });
+    }
+    //  function OnBuildingSaveBegin() {
+    //     console.log("Submitting...");
+    // }
+
+    // function OnBuildingSaveSuccess(response) {
+    //     $("#resultDiv").html("<strong>Success:</strong> " + response);
+    // }
+
+    // function OnBuildingSaveFailure(error) {
+    //     alert("Error: " + error);
+    // }
+
+    /*Building Edit Method*/
+    function ReloadBuildingDt() {
+        if (dtBuildingDataTable)
+            dtBuildingDataTable.api().ajax.reload();
+    }
+    function editbuildingParkingInfo() {
+        $(".input-parking").addClass("input-parking-edit");
+        $("#editbuildingParking").hide();
+        $("#updatebuildingParking").show();
+        $("#canceleditbuildingParking").show();
+        $("#ResidentialSpaces").focus();
+        $(".radio-parking").attr("disabled", false);
+    }
+    function canceleditbuildingParkingInfo() {
+        resetBulidingParkingEdit();
+        ReloadBuildingDt();
+    }
+    function updatebuildingParkingInfo() {
+        $('#idForm').submit();
+        }
+    function resetBulidingParkingEdit() {
+        $(".input-parking").removeClass("input-parking-edit");
+        $(".radio-parking").attr("disabled",true);
+
+        $("#editbuildingParking").show();
+        $("#updatebuildingParking").hide();
+        $("#canceleditbuildingParking").hide();
+    }
+    function calculateTotal(sourceElement,totalElement) {
+        var total = 0;
+        $("." + sourceElement).each(function (index, elem) {
+            if (!isNaN($(elem).val()) && $(elem).val() !== '') {
+                total += parseInt($(elem).val());
+            }
+        });
+        $('.' + totalElement).val(total);
+    }
+    function OnBuildingSaveSuccess(data) {
+        $('#cm_loader').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", false);
+        BuildingInformationData = [];
+        resetBulidingParkingEdit();
+        ReloadBuildingDt();
+        showMessage("Success", "Record Updated Successfully.");
+    }
+    function OnBuildingSaveBegin() {
+        $('#cm_loader').attr("hidden", false);
+        $('.blockUI').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", true);
+
+    }
+    function OnBuildingSaveFailure(data) {
+        $('#cm_loader').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", false);
+        resetBulidingParkingEdit();
+        ReloadBuildingDt();
+        showMessage("Error", "Error occurred, please try again.");
+    }
+    /*Building Edit Method*/
+
+</script>

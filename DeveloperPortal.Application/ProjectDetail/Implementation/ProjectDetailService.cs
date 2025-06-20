@@ -1,5 +1,4 @@
-﻿using System.Data;
-using DeveloperPortal.Application.Common;
+﻿using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models;
@@ -11,6 +10,12 @@ using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Data;
+using System.Reflection;
+using System.Web.Mvc;
+using static Azure.Core.HttpHeader;
+using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
 namespace DeveloperPortal.Application.ProjectDetail
 {
@@ -29,12 +34,12 @@ namespace DeveloperPortal.Application.ProjectDetail
             _storedProcedureExecutor = storedProcedureExecutor;
             _context = context;
         }
-        
+
         #endregion
-        
+
         #region Public Methods
 
-        
+
         public ProjectSummaryModel GetProjectSummary(int caseId, string userName = "")
         {
             var projectSummaryModel = new ProjectSummaryModel();
@@ -44,8 +49,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 {
                     new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
                 };
-
-                using (var caseDetailDt = ExecuteStoreProcedure("[AAHPCC].[uspRoGetConstructionCaseDetail]", sqlParameters))
+                using (var caseDetailDt = _storedProcedureExecutor.ExecuteStoreProcedure("[AAHPCC].[uspRoGetConstructionCaseDetail]", sqlParameters))
                 {
                     if (caseDetailDt != null && caseDetailDt.Rows.Count > 0)
                     {
@@ -71,9 +75,9 @@ namespace DeveloperPortal.Application.ProjectDetail
                             projectSummaryModel.ProblemCase = Convert.ToString(caseDetailDt.Rows[i]["ProblemCase"]);
                             projectSummaryModel.ProjectId = Convert.ToInt32(caseDetailDt.Rows[i]["ProjectId"]);
                             string propertyURL = "";
-                            //    AppConfiguration.GetConfigValue("AAHPURL")
+                            //    AppConfig.GetConfigValue("AAHPURL")
                             //+ "IDM/Authentication/RedirectToOtherApplication?AppKey=PropMgmt&AppURL="
-                            //+ AppConfiguration.GetConfigValue("PCMSPropertyURL")
+                            //+ AppConfig.GetConfigValue("PCMSPropertyURL")
                             //+ "&TabName=AcHPDetails&parameters=apn=" + caseDetail.APN
                             //+ ",projectSiteID=" + caseDetail.RefProjectSiteID;
                             projectSummaryModel.PropertyURL = propertyURL;
@@ -99,10 +103,10 @@ namespace DeveloperPortal.Application.ProjectDetail
             return projectSummaryModel;
         }
 
-        public List<string> GetProjectAssessors(int ProjectId)
+        public List<string> GetProjectAssessors(int projectId)
         {
             //List<string> result = null;
-            //BaseResponse baseResponse = CreateRequest<BaseResponse>(new { ProjectId }, $"{baseUrl}Construction/GetProjectAssessors", ActionType.GET);
+            //BaseResponse baseResponse = CreateRequest<BaseResponse>(new { projectId }, $"{baseUrl}Construction/GetProjectAssessors", ActionType.GET);
             //if (HttpStatusCode.OK == baseResponse.ResponseCode)
             //{
             //    result = JsonConvert.DeserializeObject<List<string>>(Convert.ToString(baseResponse.Response));
@@ -123,37 +127,44 @@ namespace DeveloperPortal.Application.ProjectDetail
             {
                 return resultList;
             }
+            var sqlParameters = new List<SqlParameter>
+            {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = gridRequestModel.CaseId },
+                    new SqlParameter() { ParameterName = "@projectId", Value = gridRequestModel.ProjectId }
+                };
 
-            //var metrixData =  uspGetUnitsForComplianceMetrix(gridRequestModel.CaseId, gridRequestModel.ProjectId);
-            //if (metrixData != null && metrixData.Count > 0)
-            //{
-            //    resultList = metrixData.Select(x => new UnitDataModel
-            //    {
-            //        APNId = x.APNId,
-            //        SiteAddressID = x.SiteAddressID,
-            //        ProjectSiteId = x.ProjectSiteId,
-            //        ProjectId = x.ProjectId,
-            //        LevelId = x.LevelId,
-            //        BuildingId = x.BuildingId ?? 0,
-            //        CaseId = x.CaseId,
-            //        ServiceRequestId = x.ServiceRequestId,
-            //        PropSnapshotID = x.PropSnapshotID ?? 0,
-            //        ACHPNo = x.ACHPNo,
-            //        UnitID = x.UnitID,
-            //        UnitNum = x.UnitNum,
-            //        TotalBedroom = x.TotalBedroom,
-            //        LutTotalBedroomID = x.LutTotalBedroomID,
-            //        FloorPlanType = x.FloorPlanType,
-            //        FloorPlanTypeID = x.FloorPlanTypeID,
-            //        UnitType = x.UnitType,
-            //        LutUnitTypeID = x.LutUnitTypeID,
-            //        ManagersUnit = x.ManagersUnit,
-            //        IsCSA = x.IsCSA ?? false,
-            //        IsVCA = x.IsVCA ?? false,
-            //        AdditionalAccecibility = x.AdditionalAccecibility,
-            //        IsCompliant = x.IsCompliant ?? false
-            //    }).ToList();
-            //}
+            var data = ExecuteStoreProcedure("AAHPCC.uspGetUnitsForComplianceMetrix", sqlParameters);
+            var metrixData = data.ConvertDataTable<uspGetUnitsForComplianceMetrix>();
+            //var metrixData = uspGetUnitsForComplianceMetrix(gridRequestModel.CaseId, gridRequestModel.ProjectId);
+            if (metrixData != null && metrixData.Count > 0)
+            {
+                resultList = metrixData.Select(x => new UnitDataModel
+                {
+                    APNId = x.APNId,
+                    SiteAddressID = x.SiteAddressID,
+                    ProjectSiteId = x.ProjectSiteId,
+                    ProjectId = x.ProjectId,
+                    LevelId = x.LevelId,
+                    BuildingId = x.BuildingId ?? 0,
+                    CaseId = x.CaseId,
+                    ServiceRequestId = x.ServiceRequestId,
+                    PropSnapshotID = x.PropSnapshotID ?? 0,
+                    ACHPNo = x.ACHPNo,
+                    UnitID = x.UnitID,
+                    UnitNum = x.UnitNum,
+                    TotalBedroom = x.TotalBedroom,
+                    LutTotalBedroomID = x.LutTotalBedroomID,
+                    FloorPlanType = x.FloorPlanType,
+                    FloorPlanTypeID = x.FloorPlanTypeID,
+                    UnitType = x.UnitType,
+                    LutUnitTypeID = x.LutUnitTypeID,
+                    ManagersUnit = x.ManagersUnit,
+                    IsCSA = x.IsCSA ?? false,
+                    IsVCA = x.IsVCA ?? false,
+                    AdditionalAccecibility = x.AdditionalAccecibility,
+                    IsCompliant = x.IsCompliant ?? false
+                }).ToList();
+            }
             return resultList;
         }
 
@@ -205,6 +216,167 @@ namespace DeveloperPortal.Application.ProjectDetail
         }
 
         /// <summary>
+        /// UpdateUnitDetails
+        /// </summary>
+        /// <param name="unitModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public bool UpdateUnitDetails(UnitDataModel unitModel, string userName)
+        {
+            var unitAtt = _context.UnitAttributes.FirstOrDefault(u => u.PropSnapshotId == unitModel.PropSnapshotID);
+            if (unitAtt != null)
+            {
+                var prop = _context.PropSnapshots.FirstOrDefault(p => p.PropSnapshotId == unitModel.PropSnapshotID);
+                var unit = _context.Units.FirstOrDefault(u => u.UnitId == prop.UnitId);
+                if (unit != null)
+                {
+                    unit.UnitNum = unitModel.UnitNum;
+                }
+                unitAtt.IsCsa = unitModel.IsCSA;
+                unitAtt.IsVca = unitModel.IsVCA;
+                unitAtt.LutTotalBedroomId = unitModel.LutTotalBedroomID;
+                unitAtt.LutUnitTypeId = unitModel.LutUnitTypeID;
+                unitAtt.FloorPlanType = unitModel.FloorPlanType;
+                unitAtt.AccessibleFeatureType = unitModel.AdditionalAccecibility;
+                unitAtt.IsManagersUnit = unitModel.ManagersUnit.HasValue ? unitModel.ManagersUnit.HasValue : false;
+                _context.SaveChanges(userName);
+                PolicyComplianceDetail pcd = _context.PolicyComplianceDetails.Where(p => p.ServiceRequestId == unitModel.ServiceRequestId).FirstOrDefault();
+                if (pcd == null && unitModel.IsCompliant)
+                {
+                    PolicyComplianceDetail newpcd = new PolicyComplianceDetail();
+                    newpcd.ServiceRequestId = unitModel.ServiceRequestId;
+                    newpcd.CaseId = Convert.ToInt32(unitModel.CaseId);
+                    newpcd.IsCompliant = unitModel.IsCompliant;
+                    newpcd.CreatedBy = userName;
+                    newpcd.CreatedOn = System.DateTime.Now;
+                    newpcd.ModifiedBy = userName;
+                    newpcd.ModifiedOn = System.DateTime.Now;
+                    _context.PolicyComplianceDetails.Add(newpcd);
+                    _context.SaveChanges(userName);
+                }
+                else if (pcd != null && pcd.IsCompliant != unitModel.IsCompliant)
+                {
+                    pcd.IsCompliant = unitModel.IsCompliant;
+                    pcd.ModifiedBy = userName;
+                    pcd.ModifiedOn = System.DateTime.Now;
+                    _context.Entry(pcd).State = EntityState.Modified;
+                    _context.SaveChanges(userName);
+                }
+                //Added by Dipti
+                //Jira Ticket - ACHP Improvement / Task ACHP-17 -> calling Property Api to update PCMS Unit table 
+                //Task.Factory.StartNew(() =>
+                //{
+                //    ComCon.PropertySnapshot.ServiceClient.CommonServiceClient.UpdatePnCUnitToPCMSUnitAsync(unit.UnitID);
+                //});
+                //end
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// AddUnitDetail
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="Username"></param>
+        /// <returns></returns>
+        public bool AddUnitDetail(UnitDataModel model, string userName)
+        {
+            Unit unit = new Unit();
+            SetBuildingReferenceData(model);
+            PropSnapshot ps = new PropSnapshot();
+            if (model.UnitID == 0)
+            {
+                unit.Apnid = model.APNId;
+                unit.SiteAddressId = model.SiteAddressID;
+                unit.ProjectSiteId = model.ProjectSiteId;
+                unit.ProjectId = model.ProjectId;
+                unit.BuildingId = model.BuildingId;
+                unit.UnitNum = model.UnitNum;
+                unit.ProjectSiteId = model.ProjectSiteId;
+                unit.LevelId = model.LevelId;
+                unit.Status = "X";
+                unit.Source = "Construction";
+                unit.Attributes = "{\"Status\":\"V\"}";
+                unit.IsDeleted = false;
+                _context.Units.Add(unit);
+                _context.SaveChanges(userName);
+
+                //Added by Dipti
+                //Jira Ticket - ACHP Improvement / Task ACHP-17 -> calling Property Api to update PCMS Unit table 
+                //Task.Factory.StartNew(() =>
+                //{
+                //    ComCon.PropertySnapshot.ServiceClient.CommonServiceClient.UpdatePnCUnitToPCMSUnitAsync(unit.UnitID);
+                //});
+                //end
+
+                ps.UnitId = unit.UnitId;
+                ps.IdentifierType = "Unit";
+                ps.Status = "X";
+                ps.ProjectId = unit.ProjectId;
+                ps.ProjectSiteId = unit.ProjectSiteId;
+                ps.SiteAddressId = unit.SiteAddressId;
+                ps.StructureId = unit.BuildingId;
+                ps.Apnid = unit.Apnid;
+                ps.CreatedOn = DateTime.Now;
+
+                #region Create New UnitAttribute For  UnitModel
+                var newUnitAttribute = new UnitAttribute()
+                {
+                    UnitAttributeId = 0,
+                    PropSnapshotId = ps.PropSnapshotId,
+                    SquareFeet = 0,
+                    IsVca = model.IsVCA,
+                    IsCsa = model.IsCSA,
+                    IsManagersUnit = model.ManagersUnit,
+                    LutTotalBedroomId = model.LutTotalBedroomID,
+                    FloorPlanTypeId = model.FloorPlanTypeID,
+                    FloorPlanType = model.FloorPlanType,
+                    LutUnitTypeId = model.LutUnitTypeID,
+                    AccessibleFeatureType = model.AdditionalAccecibility,
+                    CreatedOn = DateTime.Now
+                };
+
+                //ps.UnitAttributes.Add(newUnitAttribute);
+
+                #endregion
+                var serviceRequest = _context.ServiceRequests.FirstOrDefault(s => s.CaseId == model.CaseId);
+                serviceRequest.PropSnapshots.Add(ps);
+                _context.SaveChanges(userName);
+                return true;
+
+            }
+            return false;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="propId"></param>
+        /// <param name="User"></param>
+        /// <returns></returns>
+        public bool DeleteUnit(int propId, string username)
+        {
+            // mark a single construction unit and unitattribute record as deleted
+            var propsnapshot = _context.PropSnapshots.Include(c=>c.Unit).FirstOrDefault(x => x.PropSnapshotId == propId && x.IdentifierType == "Unit");
+            if (propsnapshot != null)
+            {
+                propsnapshot.Status = "X";
+                propsnapshot.Unit.Status = "X";
+                propsnapshot.Unit.IsDeleted = true;
+                propsnapshot.Unit.Attributes = "{\"Status\":\"X\"}";
+                //if (propsnapshot.UnitAttributes.FirstOrDefault() != null)
+                //{
+                //    propsnapshot.UnitAttributes.FirstOrDefault().IsDeleted = true;
+                //}
+
+                _context.SaveChanges(username);
+            }
+            return true;
+        }
+
+
+        /// <summary>
         /// GetSiteInformation
         /// </summary>
         /// <param name="caseId"></param>
@@ -218,13 +390,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
                     new SqlParameter() { ParameterName = "@UserName", Value = userName }
                 };
-            //AahrdevContext context = new AahrdevContext();
-            AAHREntities context = new AAHREntities();
-            
-           // var dd= context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}").Result;
-            context.Set<List<SiteInformationModel>>().FromSql($"[AAHR].[uspRoGetAllSiteForProject] @CaseId = {caseId} @UserName= {userName}");
-            //context.Database.ExecuteSqlRaw("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters);
-            /*using (var dataTableAllSites = context.Database.ExecuteStoredProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
+            using (var dataTableAllSites = ExecuteStoreProcedure("[AAHR].[uspRoGetAllSiteForProject]", sqlParameters))
             {
                 if (dataTableAllSites.Rows.Count > 0)
                 {
@@ -234,7 +400,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                         siteInformation.CaseID = Convert.ToInt32(dataTableAllSites.Rows[i]["CaseID"]);
                         siteInformation.RefProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["RefProjectSiteID"]);
                         siteInformation.ProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectSiteID"]);
-                        siteInformation.ProjectId = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectId"]);
+                        siteInformation.ProjectID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectID"]);
                         siteInformation.SiteName = dataTableAllSites.Rows[i]["SiteName"].ToString();
                         siteInformation.FileNumber = dataTableAllSites.Rows[i]["FileNumber"].ToString();
                         siteInformation.SiteAddress = dataTableAllSites.Rows[i]["SiteAddress"].ToString();
@@ -252,7 +418,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     }
                 }
                 return siteInformations;
-            }*/
+            }
 
             return siteInformations;
         }
@@ -263,10 +429,8 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <param name="controlViewModelId"></param>
         /// <returns></returns>
         public ControlViewModel GetControlViewModelById(int controlViewModelId)
-        {   
-            AAHREntities context = new AAHREntities();
-            ControlViewMaster controlView = context.ControlViewMasters.Include(x => x.Control).FirstOrDefault(m => m.Id == controlViewModelId);
-
+        {
+            ControlViewMaster controlView = _context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
             ControlViewModel controlViewModel = new ControlViewModel(_config);
             if (controlView != null)
             {
@@ -278,26 +442,129 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         #endregion
 
+        /// <summary>
+        /// Get Project actions by Case Id and logged in user roles
+        /// </summary>
+        /// <param name="caseId">Case Id</param>
+        /// <param name="roles">Comma Separated Role Names</param>
+        /// <returns>List of action names</returns>
+        public string GetProjectActionsByCaseId(int caseId, string roles)
+        {
+            string action = string.Empty;
+            var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@caseId", Value = caseId },
+                    new SqlParameter() { ParameterName = "@roles", Value = roles }
+                };
+            using (var dataTableAllSites = ExecuteStoreProcedure("[AAHR].[uspRoGetProjectActions]", sqlParameters))
+            {
+                if (dataTableAllSites.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dataTableAllSites.Rows)
+                    {
+                        action = item[0].ToString();
+                        action = action.Replace("<ActionNames>", string.Empty);
+                        action = action.Replace("</ActionNames>", string.Empty);
+                    }
+                }
+            }
+
+            return action;
+        }
 
 
+        /// <summary>
+        /// GetBuildingInformation
+        /// </summary>
+        /// <param name="caseId"></param>
+        /// <returns></returns>
+        public List<BuildingParkingInformationModal> GetBuildingInformation(int caseId)
+        {
+            List<BuildingParkingInformationModal> buildingInformation = new List<BuildingParkingInformationModal>();
+            List<SelectListItem> LutApplicableAccessibilityStandard = GetApplicableAccessibilityStandard();
+            var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId }
+                };
+            var dt = ExecuteStoreProcedure("AAHPCC.uspRoGetBuildingParkingInfo", sqlParameters);
 
 
+            buildingInformation = dt.ConvertDataTable<BuildingParkingInformationModal>();
+            foreach (var buildingInfo in buildingInformation)
+            {
+                if (!string.IsNullOrEmpty(buildingInfo.LutApplicableAccessibilityStandardId))
+                {
+                    var listId = buildingInfo.LutApplicableAccessibilityStandardId.Split(',');
+                    buildingInfo.ApplicableCodes = string.Join(", ", LutApplicableAccessibilityStandard.Where(x => listId.Contains(x.Value)).Select(y => y.Text).ToList());
+                }
+            }
+            return buildingInformation;
+        }
 
 
+        /// <summary>
+        ///Get  LutTotalBedrooms
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetLutTotalBedrooms()
+        {
+            var lutTotalBedrooms = _context.LutTotalBedrooms.OrderBy(o => o.SortOrder).Select(a => new SelectListItem
+            {
+                Value = a.LutTotalBedroomsId.ToString(),
+                Text = a.Description
+            }).ToList();
 
+            foreach (var item in lutTotalBedrooms)
+            {
+                switch (item.Text)
+                {
+                    case "1":
+                        item.Text = "1 Bedroom";
+                        break;
+                    case "2":
+                        item.Text = "2 Bedroom";
+                        break;
+                    case "3":
+                        item.Text = "3 Bedroom";
+                        break;
+                    case "4":
+                        item.Text = "4 Bedroom";
+                        break;
+                    case "5+":
+                        item.Text = "5 Bedroom";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return lutTotalBedrooms;
+        }
+        /// <summary>
+        /// Ge tLutUnitType
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetLutUnitType()
+        {
+            var lutUnitTypes = _context.LutUnitTypes.Where(x => x.IsDeleted == false).OrderBy(o => o.SortOrder).Select(a => new SelectListItem
+            {
+                Value = a.LutUnitTypeId.ToString(),
+                Text = a.UnitType
+            }).ToList();
+            lutUnitTypes.Insert(0, new SelectListItem
+            {
+                Value = "0",
+                Text = "Select"
+            });
+            return lutUnitTypes;
+        }
 
-
-
-
-        //public void GetProjectParticipantsByProjectId(string ProjectId)
-        //{
-        //    AAHREntities context = new AAHREntities();
-        //    int projId = 0;
-        //    int.TryParse(ProjectId, out projId);
-
-        //    var projectParticipants = context.GetProjectParticipantsByProjectId(projId);
-        //    List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
-        //}
+        public void GetProjectParticipantsByProjectId(string projectId)
+        {
+            int projId = 0;
+            //int.TryParse(projectId, out projId);
+            //var projectParticipants = _context.GetProjectParticipantsByProjectId(projId);
+            //List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
+        }
 
 
         #region Private Methods
@@ -305,42 +572,147 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// Get all construction cases to be displayed on the dashboard
         /// </summary>
         /// <returns>List</returns>
-        //private async Task<List<uspGetUnitsForComplianceMetrix>> uspGetUnitsForComplianceMetrix(int caseId, int ProjectId)
-        //{
-        //    AAHREntities context = new AAHREntities();
-        //    return await _unitOfWork.StoredProcedure.ExecuteStoredProcAsync<AllConstructionData>(StoredProcedureNames.SP_uspRoGetAllConstructionCases);
-        //   // return context.ExecuteStoredProcedureAsync<uspGetUnitsForComplianceMetrix>($"[AAHPCC].[uspGetUnitsForComplianceMetrix] @CaseId = {caseId}, @ProjectId= {ProjectId}").Result;
-        //}
+        private List<uspGetUnitsForComplianceMetrix> uspGetUnitsForComplianceMetrix(int caseId, int projectId)
+        {
+
+            var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
+                    new SqlParameter() { ParameterName = "@projectId", Value = projectId }
+                };
+
+            var data = ExecuteStoreProcedure("AAHPCC.uspGetUnitsForComplianceMetrix", sqlParameters);
+            return _storedProcedureExecutor.ExecuteStoredProcAsync<uspGetUnitsForComplianceMetrix>($"[AAHPCC].[uspGetUnitsForComplianceMetrix] @CaseId = {caseId}, @projectId= {projectId}").Result;
+        }
 
 
         private DataTable ExecuteStoreProcedure(string procedureName, List<SqlParameter> parameters)
         {
-            var conn = _context.Database.GetDbConnection();
+            return _storedProcedureExecutor.ExecuteStoreProcedure(procedureName, parameters);
+            //using (var command = _context.Database.GetDbConnection().CreateCommand())
+            //{
+            //    command.CommandText = procedureName;
+            //    command.CommandType = System.Data.CommandType.StoredProcedure;
+            //    command.Parameters.AddRange(parameters.ToArray());
 
-            if (string.IsNullOrWhiteSpace(conn.ConnectionString))
-                throw new InvalidOperationException("Connection string not initialized in _context.");
-           
-            using (var command = conn.CreateCommand())
+            //    _context.Database.OpenConnection();
+            //    using (var reader = command.ExecuteReader())
+            //    {
+            //        DataTable dt = new DataTable();
+            //        dt.Load(reader);
+            //        return dt;
+            //    }
+            //}
+        }
+        /// <summary>
+        /// GetApplicableAccessibilityStandard
+        /// </summary>
+        /// <returns></returns>
+        private static List<SelectListItem> GetApplicableAccessibilityStandard()
+        {
+            return new List<SelectListItem>
             {
-                command.CommandText = procedureName;
-                command.CommandType = CommandType.StoredProcedure;
+                new SelectListItem { Value = "1", Text = "Section 504" },
+                new SelectListItem { Value = "2", Text = "2010 ADA w/ 11 HUD Exceptions" },
+                new SelectListItem { Value = "3", Text = "2010 ADA" },
+                new SelectListItem { Value = "4", Text = "Fair Housing Act" },
+                new SelectListItem { Value = "5", Text = "CBC 2013 Chapter 11A" },
+                new SelectListItem { Value = "6", Text = "CBC 2013 Chapter 11B" },
+                new SelectListItem { Value = "7", Text = "CBC 2016 Chapter 11A" },
+                new SelectListItem { Value = "8", Text = "CBC 2016 Chapter 11B" },
+                new SelectListItem { Value = "9", Text = "CBC 2019 Chapter 11A" },
+                new SelectListItem { Value = "10", Text = "CBC 2019 Chapter 11B" },
+                new SelectListItem { Value = "11", Text = "Community Development Department of County of Los Angeles Universal Design Principles" },
+                new SelectListItem { Value = "12", Text = "California Tax Credit Allocation Committee Regulations 50% Mobility Units" },
+                new SelectListItem { Value = "13", Text = "UFAS" },
+                new SelectListItem { Value = "14", Text = "Enhanced Accessiblity Program (EAP)" },
+                new SelectListItem { Value = "15", Text = "2019 CBC w/ intervening cycle effective July 1st, 2021" },
+                new SelectListItem { Value = "16", Text = "LACDA NOFA" },
+                new SelectListItem { Value = "17", Text = "TCAC Universal Design" },
+                new SelectListItem { Value = "18", Text = "CBC 2022 Chapter 11A" },
+                new SelectListItem { Value = "19", Text = "CBC 2022 Chapter 11B" }
+            };
+        }
 
-                if (parameters != null && parameters.Any())
-                    command.Parameters.AddRange(parameters.ToArray());
+        /// <summary>
+        /// SetBuildingReferenceData
+        /// </summary>
+        /// <param name="model"></param>
+        private void SetBuildingReferenceData(UnitDataModel model)
+        {
 
-                if (conn.State != ConnectionState.Open)
-                    conn.Open();
-
-                using (var reader = command.ExecuteReader())
+            var propsnapshot = _context.PropSnapshots.Where(x => x.StructureId == model.BuildingId && x.IdentifierType == "Building").ToList();
+            foreach (var i in propsnapshot)
+            {
+                var siteAddressId = i.SiteAddressId;
+                model.APNId = i.Apnid;
+                model.BuildingId = i.StructureId.Value;
+                model.SiteAddressID = i.SiteAddressId;
+                model.ProjectId = i.ProjectId;
+                model.ProjectSiteId = i.ProjectSiteId;
+                model.LevelId = i.LevelId ;
+                if (i.ServiceRequests.Any())
                 {
-                    DataTable dt = new DataTable();
-                    dt.Load(reader);
-                    return dt;
+                    model.CaseId = i.ServiceRequests.First().CaseId;
+                }
+            }
+
+
+        }
+        #endregion
+        public List<string> GetLADBSPermitNumberList(int PropsnapshotID)
+        {
+            try
+            {
+                string LADBSjson = _context.StructureAttributes.FirstOrDefault(m => m.PropSnapshotId == PropsnapshotID).Ladbsjson ?? "";
+                List<PcisPermitDetail> pcisPermitDetails = JsonConvert.DeserializeObject<List<PcisPermitDetail>>(LADBSjson);
+                if (pcisPermitDetails != null)
+                    return pcisPermitDetails.Select(m => m.PermitNumber + " (" + m.Department + ")").ToList();
+                return new List<string>();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+    }
+}
+
+public static class helpers
+{
+    public static List<T> ConvertDataTable<T>(this DataTable dt) where T : class
+    {
+        List<T> data = new List<T>();
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                T item = GetItem<T>(row);
+                data.Add(item);
+            }
+        }
+        return data;
+    }
+
+    private static T GetItem<T>(DataRow dr)
+    {
+        Type temp = typeof(T);
+        T obj = Activator.CreateInstance<T>();
+
+        foreach (DataColumn column in dr.Table.Columns)
+        {
+            foreach (PropertyInfo pro in temp.GetProperties())
+            {
+                if (pro.Name == column.ColumnName)
+                {
+                    if (dr[column.ColumnName] != DBNull.Value)
+                    {
+                        pro.SetValue(obj, dr[column.ColumnName], null);
+                    }
+                    break;
                 }
             }
         }
-
-        #endregion
-
+        return obj;
     }
 }

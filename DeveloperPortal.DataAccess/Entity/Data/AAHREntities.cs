@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -18,7 +19,68 @@ public partial class AAHREntities : DbContext
     {
         _configuration = configuration;
     }
+    public int SaveChanges(string username)
+    {
+        ApplyAuditInfo(username);
+        //var changeSet = ChangeTracker.Entries();
+        //if (changeSet != null)
+        //{
+        //    foreach (var entry in changeSet.Where(c => c.State != EntityState.Unchanged))
+        //    {
+        //        switch (entry.State)
+        //        {
+        //            case EntityState.Added:
+        //                entry.Entity.CreatedBy = username;
+        //                entry.Entity.CreatedOn = DateTime.Now;
+        //                entry.Entity.ModifiedBy = username;
+        //                entry.Entity.ModifiedOn = DateTime.Now;
+        //                break;
 
+        //            case EntityState.Modified:
+        //                entry.Entity.ModifiedBy = username;
+        //                entry.Entity.ModifiedOn = DateTime.Now;
+        //                break;
+
+        //            default:
+        //                // Dont' update anything
+        //                break;
+        //        }
+        //    }
+        //}
+        return base.SaveChanges();
+    }
+    private void ApplyAuditInfo(string username)
+    {
+
+        var entries = ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+
+        foreach (var entry in entries)
+        {
+            var entity = entry.Entity;
+            var entityType = entity.GetType();
+
+            var modifiedOnProp = entityType.GetProperty("ModifiedOn");
+            var modifiedByProp = entityType.GetProperty("ModifiedBy");
+            var createdOnProp = entityType.GetProperty("CreatedOn");
+            var createdByProp = entityType.GetProperty("CreatedBy");
+
+            if (modifiedOnProp != null && modifiedOnProp.PropertyType == typeof(DateTime))
+                modifiedOnProp.SetValue(entity, DateTime.UtcNow);
+
+            if (modifiedByProp != null && modifiedByProp.PropertyType == typeof(string))
+                modifiedByProp.SetValue(entity, username);
+
+            if (entry.State == EntityState.Added)
+            {
+                if (createdOnProp != null && createdOnProp.PropertyType == typeof(DateTime))
+                    createdOnProp.SetValue(entity, DateTime.UtcNow);
+
+                if (createdByProp != null && createdByProp.PropertyType == typeof(string))
+                    createdByProp.SetValue(entity, username);
+            }
+        }
+    }
     public virtual DbSet<AcHpapn> AcHpapns { get; set; }
 
     public virtual DbSet<AcHppropertyManagementPlan> AcHppropertyManagementPlans { get; set; }
