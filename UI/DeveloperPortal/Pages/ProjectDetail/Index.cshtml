@@ -153,7 +153,8 @@
                 LoadTabData(url, "divPolicyContacts");
                 break;
             case "tabDocuments":
-                url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document" })' + '?controlViewModelId=' + documentControlViewModelId;
+                url = '@Html.Raw(Url.Action("GetFilesByIdNew", "DMS", new { area = "Document" }))' + '?projectId=' + ProjectId;
+                console.log(url);
                 LoadTabData(url, "divDocument", true);
                 break;
             case "tabLogs":

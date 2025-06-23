@@ -2,14 +2,31 @@
 using System.Collections.Generic;
 using System.Data;
 using DeveloperPortal.Areas.Document.Models;
+using DeveloperPortal.Application.DMS.Interface;
+using DeveloperPortal.Domain.Dashboard;
+using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Application.DMS.Implementation;
 
 
 namespace DeveloperPortal.Areas.Document.Controllers
 {
+    [Area("Document")]
     public class DMSController : Controller
     {
+        private readonly IDocumentService _documentService;
 
-        public ActionResult GetFilesByIdNew(int controlViewModelId)
+        public DMSController(IDocumentService documentService)
+        {
+            this._documentService= documentService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFilesByIdNew(int projectId)
+        {
+            var list = await _documentService.GetAllDocumentsBasedOnProjectId(projectId);
+            return View("~/Areas/Document/Views/DMS/DMSView.cshtml", list); // Or Json(list) if it's an API
+        }
+        /*public ActionResult GetFilesByIdNew(int controlViewModelId)
         {
             // Normally you'd call a real method here
             var controlViewModel = new ControlViewModel
@@ -57,7 +74,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
             });
 
             return PartialView("~/Areas/Document/Views/DMS/DMSViewNew.cshtml", model);
-        }
+        }*/
 
     }
 }
