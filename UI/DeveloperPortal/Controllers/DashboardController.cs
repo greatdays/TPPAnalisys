@@ -37,11 +37,7 @@ namespace DeveloperPortal.Controllers
         public async Task<List<DashboardDataModel>> GetMyProjectData()
         {
             List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUser();
-            
-            //Added for test purpose will remove later
-            //var newresult = await _apnpinService.GetOrdersWithCustomersAsync();
-            //var result = await appConfigService.GetOrdersWithCustomersAsync();
-           
+                      
             return list;
         }
 
@@ -75,11 +71,6 @@ namespace DeveloperPortal.Controllers
                 HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
             }
 
-            /*DataRow[] drNewProjColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
-            DataRow[] drPlanReviewColl = dt.Select("Status='Ready for Design Review'");
-            DataRow[] drSiteInspectionColl = dt.Select("Status='Site Case In Progress'");
-            DataRow[] drNACColl = dt.Select("Status='NAC Inspection IN Progress'");
-            DataRow[] drCompletedCertColl = dt.Select("Status='City Compliance Certificate Issued'");*/
 
             //initialize
             DataRow[] drColl = Array.Empty<DataRow>();

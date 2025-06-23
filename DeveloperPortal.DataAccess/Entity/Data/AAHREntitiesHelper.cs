@@ -24,24 +24,25 @@ namespace DeveloperPortal.DataAccess.Entity.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AllConstructionData>(entity =>
-            {
-                entity.HasNoKey();
-                entity.Property(e => e.Type);
-                entity.Property(e => e.CaseId);
-                entity.Property(e => e.SiteCases);
-                entity.Property(e => e.ComplianceMatrixLink);
-                entity.Property(e => e.PropertyDetailsLink);
-                entity.Property(e => e.Status);
-                entity.Property(e => e.AssigneeID);
-                entity.Property(e => e.Summary);
-                entity.Property(e => e.ProjectName);
-                entity.Property(e => e.ProjectAddress);
-                entity.Property(e => e.CreatedOn);
-                entity.Property(e => e.ModifiedOn);
-                entity.Property(e => e.AcHPFileProjectNumber);
-                entity.Property(e => e.ProblemProject);
-            });
+            modelBuilder.Entity<AllConstructionData>().HasNoKey();
+            //modelBuilder.Entity<AllConstructionData>(entity =>
+            //{
+            //    entity.HasNoKey();
+            //    entity.Property(e => e.Type);
+            //    entity.Property(e => e.CaseId);
+            //    entity.Property(e => e.SiteCases);
+            //    entity.Property(e => e.ComplianceMatrixLink);
+            //    entity.Property(e => e.PropertyDetailsLink);
+            //    entity.Property(e => e.Status);
+            //    entity.Property(e => e.AssigneeID);
+            //    entity.Property(e => e.Summary);
+            //    entity.Property(e => e.ProjectName);
+            //    entity.Property(e => e.ProjectAddress);
+            //    entity.Property(e => e.CreatedOn);
+            //    entity.Property(e => e.ModifiedOn);
+            //    entity.Property(e => e.AcHPFileProjectNumber);
+            //    entity.Property(e => e.ProblemProject);
+            //});
 
             OnModelCreatingPartial(modelBuilder);
         }
