@@ -56,5 +56,7 @@ namespace DeveloperPortal.DataAccess.Entity.Data
                 optionsBuilder.UseSqlServer(connectionString);
             }
         }
+
+
     }
 }

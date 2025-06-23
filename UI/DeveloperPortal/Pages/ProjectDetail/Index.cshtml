@@ -4,26 +4,153 @@
     ViewData["Title"] = "Project Details";
 }
 <style>
-    .table-responsive .row {
-        margin-bottom: 15px;
+        .table-responsive .row {
+            margin-bottom: 15px;
+        }
+
+        .datatbl {
+            width: 100% !important;
+        }
+
+        #tabSiteInformation .pagination {
+            display: list-item !important;
+            text-align: start;
+        }
+
+        #tabSiteInformation .paginate_button a {
+            margin-left: -5px !important;
+        }
+
+        #tabSiteInformation .paginate_button:first-child a {
+            margin-left: -5px;
+        }
+
+        #unitKgrid .k-grid-add {
+            margin-right: 100px;
+        }
+
+        .k-grid-content tr:last-child {
+            border-bottom: solid 1px lightgray;
+        }
+
+
+        a.paginate_button {
+        float: left !important;
     }
 
-    .datatbl {
-        width: 100% !important;
+        .paginate_button:first-child a {
+            margin-left: 0;
+            border-top-left-radius: .25rem;
+            border-bottom-left-radius: .25rem;
+        }
+
+        .paginate_button:last-child a {
+            border-top-right-radius: .25rem;
+            border-bottom-right-radius: .25rem;
+        }
+
+        .paginate_button.active a {
+            color: #fff !important;
+            background: #2C3E5C;
+        }
+
+        #dtPrkingData_paginate a.paginate_button {
+            position: relative;
+            padding: .5rem .75rem !important;
+            margin: 1px !important;;
+            line-height: 1.25;
+            color: #fff !important;
+            background-color: #2C3E5C !important;
+            border: 1px solid #2C3E5C !important;
+
+        }
+        a#dtPrkingData_paginate {
+            color: #fff !important;
     }
 
-    #tabSiteInformation .pagination {
-        display: list-item !important;
-        text-align: start;
-    }
+        #dtPrkingData_paginate span {
+            float: left;
+            padding-right: 30px;
+        }
 
-    #tabSiteInformation .paginate_button a {
-        margin-left: -5px !important;
-    }
+        #dtPrkingData_paginate .paginate_button:hover {
+            color: white !important;
+            border: 1px solid #111;
+            background-color: #111;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+            background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+            background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+            background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+            background: -o-linear-gradient(top, #585858 0%, #111 100%);
+            background: linear-gradient(to bottom, #585858 0%, #111 100%)
+        }
 
-    #tabSiteInformation .paginate_button:first-child a {
-        margin-left: -5px;
-    }
+        #dtPrkingData_paginate .paginate_button.current {
+            color: white !important;
+            border: 1px solid #111;
+            background-color: #111;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+            background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+            background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+            background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+            background: -o-linear-gradient(top, #585858 0%, #111 100%);
+            background: linear-gradient(to bottom, #585858 0%, #111 100%)
+        }
+
+        #dtPrkingData_paginate a.paginate_button {
+            position: relative;
+            padding: .5rem .75rem !important;
+            margin: 1px !important;
+            ;
+            line-height: 1.25;
+            color: #fff !important;
+            background-color: #2C3E5C !important;
+            border: 1px solid #2C3E5C !important;
+        }
+
+        a#dtSiteData_paginate {
+            color: #fff !important;
+        }
+
+        #dtSiteData_paginate span {
+            float: left;
+            padding-right: 30px;
+        }
+
+        #dtSiteData_paginate .paginate_button:hover {
+            color: white !important;
+            border: 1px solid #111;
+            background-color: #111;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+            background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+            background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+            background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+            background: -o-linear-gradient(top, #585858 0%, #111 100%);
+            background: linear-gradient(to bottom, #585858 0%, #111 100%)
+        }
+
+        #dtSiteData_paginate .paginate_button.current {
+            color: white !important;
+            border: 1px solid #111;
+            background-color: #111;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+            background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+            background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+            background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+            background: -o-linear-gradient(top, #585858 0%, #111 100%);
+            background: linear-gradient(to bottom, #585858 0%, #111 100%)
+        }
+
+        #dtSiteData_paginate a.paginate_button {
+            position: relative;
+            padding: .5rem .75rem !important;
+            margin: 1px !important;
+            ;
+            line-height: 1.25;
+            color: #fff !important;
+            background-color: #2C3E5C !important;
+            border: 1px solid #2C3E5C !important;
+        }
 </style>
 <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
@@ -31,78 +158,259 @@
 <script src="~/"></script>
 <script src="~/js/kendojs/kendo.all.min.js"></script>
 <script src="~/js/kendojs/kendo.timezones.min.js"></script>
-
+<script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
 
 <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
 <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
-<div class="row custom_row_margin">
 
-    <div id="workFlowDiv" class="col-md-12 position-relative">
-        <h1 class="fs-title">
-            @Model.TabName
-        </h1>
-
-        <div class="page-title left-data" id="divCollapseAll">
-            <ul class="quick-action-link noprint">
-                <li id="CollapseAll" class="mr-2">
-                    <button type="button" class="btn btn-primary ">
-                        <span height="20" width="20" id="CollapseIn">Action buttons<span class="fas fa-chevron-up"></span></span>
-                    </button>
-                </li>
-            </ul>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-8">
+            <h3 class="title" style="color:#393939; margin-bottom: 0;">  @Model.TabName</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="page-title left-data">
+                <ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
+                    <li id="help">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="HelpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#003399 !important">
+                            <img src="~/Images/help.png" height="20" width="20">
+                        </a>
+                    </li>
+                    <li id="PrintAll">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="printSelectedTabs()" data-original-title="Print" style="background:#003399 !important; margin-left:10px;">
+                            <img src="~/Images/printer.svg">
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+    <div style="padding-left: 010px; padding-right: 10px;">
+        @{
+            Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
+        }
+    </div><br />
 
-</div>
-<div>
-    @{
-        Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
-    }
+    <div style="padding-left: 010px; padding-right: 10px;">
+        <!-- Tab links -->
+        <div class="tab">
+            <button class="tablinks active" onclick="openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
+            <button class="tablinks" onclick="openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+            <button class="tablinks hide" onclick="openTab(event, 'tabProjectParticipants')">Project Participants</button>
+            <button class="tablinks hide" onclick="openTab(event, 'tabImportantDates')">Important Dates</button>
+            <button class="tablinks" onclick="openTab(event, 'tabDocuments')">Documents</button>
+            <button class="tablinks hide" onclick="openTab(event, 'tabLogs')">Plan Review</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="tabProjectInformation" class="tabcontent" style="display: block ">
+            @{
+                Html.RenderPartial("_ProjectInformation");
+            }
+        </div>
+        <div id="tabSiteInformation" class="tabcontent">
+            <table id="dtSiteData"></table>
+        </div>
+        <div id="tabImportantDates" class="tabcontent">
+            <div id="divImportantDates"></div>
+        </div>
+        <div id="tabProjectParticipants" class="tabcontent">
+            <div id="divProjectParticipants"></div>
+        </div>
+        <div id="tabPolicyContacts" class="tabcontent">
+            <div id="divPolicyContacts"></div>
+        </div>
+        <div id="tabDocuments" class="tabcontent">
+            <div id="divDocument"></div>
+        </div>
+        <div id="tabLogs" class="tabcontent">
+            <div id="divLogs"></div>
+        </div>
+    </div>
 </div>
 
-<br />
-<!-- Tab links -->
-<div class="tab">
-    <button class="tablinks active" onclick="openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
-    <button class="tablinks" onclick="openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-    <button class="tablinks" onclick="openTab(event, 'tabProjectParticipants')">Project Participants</button>
-    <button class="tablinks" onclick="openTab(event, 'tabImportantDates')">Funding Source</button>
-    <button class="tablinks" onclick="openTab(event, 'tabDocuments')">Documents</button>
-    <button class="tablinks" onclick="openTab(event, 'tabLogs')">Plan Review</button>
-</div>
-<style>
-    #unitKgrid .k-grid-add {
-        margin-right: 100px;
-    }
+<div id="Help">
 
-    .k-grid-content tr:last-child {
-        border-bottom: solid 1px lightgray;
-    }
-</style>
-<!-- Tab content -->
-<div id="tabProjectInformation" class="tabcontent" style="display: block ">
-    @{
-        Html.RenderPartial("_ProjectInformation");
-    }
+    <div id="myModalHelp" tabindex="-1" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" text-align="center">Workflow Image </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                @if (Model.ProjectSummary.CaseType == "Retrofit Site" || Model.ProjectSummary.CaseType == "Existing Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RetrofitSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Retrofit Project" || Model.ProjectSummary.CaseType == "Existing Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RetrofitProject.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Sub Rehab Project" || Model.ProjectSummary.CaseType == "Sub Rehab/Retrofit Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "New Construction Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Other Alterations Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Sub Rehab/New Construction Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                    </div>
+                }
+
+                else if (Model.ProjectSummary.CaseType == "Sub Rehab Site" || Model.ProjectSummary.CaseType == "Sub Rehab/Retrofit Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "New Construction Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Other Alterations Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Sub Rehab/New Construction Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Retrofit Bid Package")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/BidPackage.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "New Construction/Modular Project" || Model.ProjectSummary.CaseType == "New Construction/Retrofit Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                    </div>
+                }
+
+                else if (Model.ProjectSummary.CaseType == "New Construction/Modular Site" || Model.ProjectSummary.CaseType == "New Construction/Retrofit Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Enforcement")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/wf_enforcement.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "CAP")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/wf_CAP.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Policy Project")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/wf_PolicyProject.png" class="WF-image" />
+
+                    </div>
+                }
+                else if (Model.ProjectSummary.CaseType == "Policy Site")
+                {
+                    <div class="modal-body">
+
+                        <img src="~/Images/wf_PolicySite.png" class="WF-image" />
+
+                    </div>
+                }
+                <div class="modal-footer">
+
+
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
-<div id="tabSiteInformation" class="tabcontent">
-    <table id="dtSiteData"></table>
+
+<!--START Printing Deatils Popup -->
+<div class="modal" id="printDetailsPopup" data-backdrop="static" aria-labelledby="LinkPropertyPopupTitle" aria-modal="true" role="dialog" tabindex="-1" aria-hidden="true" style="overflow: hidden;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width:660px">
+            <div class="modal-header">
+                <div class="modal-title" id="EditAccountTitle">Print Case Details</div>
+            </div>
+
+            <div class="row">
+                <div id="checkboxContainerPart1" class="col-md-5" style="margin-left:20px">  </div>
+                <div id="checkboxContainerPart2" class="col-md-5" style="margin-left:20px"> </div>
+            </div>
+
+            <div class="modal-footer multi-button">
+                <button id="cancelButton" class="modal-button left-button">Cancel</button>
+                <button id="printButton" class="modal-button right-button">Print Details</button>
+
+            </div>
+        </div>
+    </div>
 </div>
-<div id="tabImportantDates" class="tabcontent">
-    <div id="divImportantDates"></div>
-</div>
-<div id="tabProjectParticipants" class="tabcontent">
-    <div id="divProjectParticipants"></div>
-</div>
-<div id="tabPolicyContacts" class="tabcontent">
-    <div id="divPolicyContacts"></div>
-</div>
-<div id="tabDocuments" class="tabcontent">
-    <div id="divDocument"></div>
-</div>
-<div id="tabLogs" class="tabcontent">
-    <div id="divLogs"></div>
-</div>
+
 <script type="text/javascript">
     var baseUrl = window.location.origin;
     var Id = @Model.Id
@@ -118,13 +426,16 @@
     var popupTitle = "";
     var oldPageSize = 0;
     var selectedEvents = [];
-
+    var reloadUntiGrid = false;
+    var reloadParkingGrid = false;
+    var accessType="FULLACCESS";
     var SiteInformationData = [];
     var IsLoadSiteInformationTab = false;
-    console.log("Model.ProjectId: " + ProjectId);
+
+    $.fn.dataTableExt.pager.numbers_length = 50;
     //Load on init
     LoadProjectInformation();
-   
+
     function openTab(evt, tabName) {
         // Get all elements with class="tabcontent" and hide them
         $(".tabcontent").css("display", "none");
@@ -153,6 +464,7 @@
                 LoadTabData(url, "divPolicyContacts");
                 break;
             case "tabDocuments":
+                url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Documents" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 url = '@Html.Raw(Url.Action("GetFilesByIdNew", "DMS", new { area = "Document" }))' + '?projectId=' + ProjectId;
                 console.log(url);
                 LoadTabData(url, "divDocument", true);
@@ -165,23 +477,8 @@
         }
     }
 
+
     function LoadTabData(url, tabId, forceLoad = false) {
-
-        if ($("#" + tabId).html() == "" || forceLoad) {
-        $.ajax({
-            url: url,
-            type: "GET", // or "POST"
-            success: function (response) {
-                $("#" + tabId).html(response);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error:", error);
-            }
-        });
-         }
-     }
-
-    /*function LoadTabData(url, tabId, forceLoad = false) {
         //return;
         if ($("#" + tabId).html() == "" || forceLoad) {
             AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
@@ -189,15 +486,15 @@
                     $("#" + tabId).html(result);
                 }, null, true, null, false);
         }
-    }*/
+    }
 
     /*Start Project Site Data table */
     function LoadSiteInformation() {
+          $.fn.dataTableExt.pager.numbers_length = 50;
         if (IsLoadSiteInformationTab) {
             return;
         }
-        
-        $.fn.dataTableExt.pager.numbers_length = 50;
+
         var dtSiteDataTable = $('#dtSiteData').dataTable({
             ajax: {
                 url: '@Url.Action("GetSiteInformations", "ProjectDetail", new { })',
@@ -231,7 +528,7 @@
             }
         });
         dtSiteDataTable.on('draw.dt', function () {
-            if ($(".select-site-title").length == 0) {
+             if ($("#dtSiteData_paginate .select-site-title").length == 0) {
                 $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:</div>")
             }
 
@@ -248,12 +545,12 @@
                 var pageItems = $("#tabSiteInformation .paginate_button");
                 var siteList = siteData[0].siteList;
                 for (var i = 0; i < pageItems.length; i++) {
-                    var item = $(pageItems[i]).children("a")
-                    if (item.text() != '…') {
-                        if (parseInt(item.text()) !== NaN) {
-                            $(item).text(siteList[parseInt(item.text()) - 1]);
-                        }
-                    }
+                    var text = pageItems[i].text
+                     if (text != '…') {
+                         if (parseInt(text).toString() != "NaN") {
+                             pageItems[i].text=siteList[parseInt(text) - 1];
+                         }
+                     }
                 }
                 $("#btnSiteInformation").text("Site Information (" + siteList.length + ")");
             }
@@ -273,4 +570,137 @@
         IsLoadSiteInformationTab = true;
     }
     /*End Project Site Data table */
+
+    function printSelectedTabs()
+    {
+
+     }
+
+    function HelpImage()
+    {
+        $("#myModalHelp").modal('show');
+    }
+
+     // SUmmary Popup
+      function OpenActionPopUp1(link, OpenInWindow) {
+        $(".modal-dialog.modal-dialog-centered").removeClass("modal-lg");
+        var title = $(link).html();
+        var url = $(link).attr('modal-data');
+        if (!url) {
+            url = '@Url.Action("ActionNotFound", "Action", new { area = "ComCon" })';
+        }
+        if (OpenInWindow == 'True') {
+            window.location.href = url;
+        }
+        else {
+
+            AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
+                function (result) {
+                    var form = $('form[name=submitForm]')
+                    form.removeData("validator") // added by the raw jquery.validate plugin /
+                        .removeData("unobtrusiveValidation");  // added by the jquery unobtrusive plugin
+                    $.validator.unobtrusive.parse(form);
+
+
+                    $('.ActioModalTitle').html(title);
+                    $(".ActioModalBody").html(result);
+                    $('#ActioModal').modal('show');
+                }, null, true, null, false);
+        }
+    }
+
+       /*Start Building Data table */
+    function LoadParkingInfo()
+    {
+
+     var   dtBuildingDataTable = $('#dtPrkingData').dataTable({
+            ajax: {
+                url: '@Url.Action("GetBuildingInformation", "ProjectDetail", new { })',
+                data: function (d) {
+                    
+                    d.caseId = Id;
+                    if (reloadParkingGrid==false)
+                    {
+                        d.BuildingInformationData = BuildingInformationData;
+                    }
+                    reloadParkingGrid = false
+                    
+                },
+                type: 'Post',
+                 "headers": {
+                     "Content-Type": "application/x-www-form-urlencoded"
+                 },
+                dataType: 'json'
+                ,contentType: "application/json"
+
+            },
+            "columns": [{ "data": 'parkingData' }],
+
+            processing: true,
+            serverSide: true,
+            pageLength: 1,
+            pagingType: 'numbers',
+            "paging": true,
+            "searching": false,
+            "ordering": false,
+            "dom": "<'row'<'<'col-sm-12'p>>",
+            "oLanguage": {
+                "sEmptyTable": "No record found."
+            }
+        });
+
+        dtBuildingDataTable.on('draw.dt', function () {
+            if ($("#dtPrkingData_paginate .select-site-title").length == 0) {
+                $("#dtPrkingData_paginate").prepend("<div class='select-site-title'>Select Building:</div>")
+            }
+            $(".dataTables_length").hide();
+            var buildingData =dtBuildingDataTable.fnGetData();
+            if (buildingData.length > 0) {
+                $("#dtPrkingData_paginate").show()
+                var pageItems = $("#dtPrkingData_paginate .paginate_button");
+                var buildingList = buildingData[0].buildingList;
+                BuildingInformationData = buildingData[0].buildingInformationData;
+                 for (var i = 0; i < pageItems.length; i++) {
+                     var text = pageItems[i].text
+                     if (text != '…') {
+                         if (parseInt(text).toString() != "NaN") {
+                             pageItems[i].text=buildingList[parseInt(text) - 1];
+                         }
+                     }
+                 }
+            }
+            else { $("#dtPrkingData_paginate").hide();}
+        });
+        }
+        /*End Building Data table */
+
+
+
+    function SetRoleAccess(accesstype) {
+        var roleElements = $('[role-access');
+        accesstype = accesstype.toUpperCase();
+        roleElements.each(function (index,item) {
+
+            if (accesstype == "FULLACCESS" || accesstype == "EDITACCESS") {
+                $(item).removeClass("no-access");
+                $(item).addClass("allow-access");
+            }
+            else if (accesstype == "READONLYACCESS") {
+                $(item).removeClass("no-access");
+                $(item).addClass("readonly-access");
+            }
+        });
+    }
+
+     function GetUnitModalData() {
+         var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { })';
+          AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
+                function (result) {
+                    kgridEditModelData=result;
+                }, null, true, null, false);
+    }
 </script>
+
+
+
+

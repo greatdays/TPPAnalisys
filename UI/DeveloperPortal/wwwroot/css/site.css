@@ -2933,32 +2933,32 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
     margin-top: 6px;
 }
 
-    .pagination li.paginate_button:first-child a {
-        margin-left: 0;
-        border-top-left-radius: .25rem;
-        border-bottom-left-radius: .25rem;
-    }
+.dataTables_paginate .paginate_button:first-child a {
+    margin-left: 0;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
 
-    .pagination li.paginate_button:last-child a {
-        border-top-right-radius: .25rem;
-        border-bottom-right-radius: .25rem;
-    }
+.dataTables_paginate .paginate_button:last-child a {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
 
-    .pagination li.paginate_button.active a {
-        color: #fff !important;
-        background: #2C3E5C;
-    }
+.dataTables_paginate .paginate_button.active a {
+    color: #fff !important;
+    background: #2C3E5C;
+}
 
-    .pagination li.paginate_button a {
-        position: relative;
-        display: block;
-        padding: .5rem .75rem;
-        margin-left: -1px;
-        line-height: 1.25;
-        color: #2C3E5C !important;
-        background-color: #fff;
-        border: 1px solid #2C3E5C;
-    }
+.dataTables_paginate .paginate_button {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+}
 
 .dataTables_paginate.paging_simple_numbers {
     display: flex;
@@ -10229,7 +10229,7 @@ h2.usename.Contact-Infon-name {
     }*/
 
 
-    .pagination li.paginate_button a {
+    .dataTables_paginate .paginate_button a {
         padding: 0.5rem 0.4rem;
     }
 
@@ -11378,3 +11378,30 @@ h1.white-text{
         border: 1px solid #cbcbcb !important;
     }
 /*Signup Page CSS - End*/
+
+a {
+ cursor:pointer;
+}
+
+.dataTables_length select {
+    border: solid 1px;
+    height: 38px;
+    border: 1px solid #e4e4e4;
+    margin: 0px 9px;
+    margin-top: -10px;
+    width: 80px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #135b79;
+    border-color: #135b79;
+}
+
+.pagination .page-link {
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: -10px;
+    border: solid 1px #135b79;
+}

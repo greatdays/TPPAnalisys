@@ -19,9 +19,10 @@
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
     <link href="~/content/font-awesome.css" rel="stylesheet" />
     
-    
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    
+
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
 
     <script>
         //CurrentScroll();
@@ -51,6 +52,12 @@
                     $(navBar).css('top', scrollPos + "px");
                 }
             });
+        }
+             function showMessage(title,message, type)
+        {
+            $("#cMatrixMessageTitle").html(title);
+            $("#cMatrixMessageBody").html(message);
+            $("#complienceMatrixMessage").modal('show');
         }
     </script>
 
@@ -114,18 +121,64 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Modal Popup Start-->
+<div class="modal" id="ActioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header comcom-header">
+                <h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
+
+                <button type="button" class="close " data-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
+
+            </div>
+            <div class="modal-body comcom-body" style="padding:0">
+                <div class="ActioModalBody">
+
+                </div>
+                <!-- Render Action Partial -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+    <div class="modal fade" id="complienceMatrixMessage" tabindex="-1" role="dialog" aria-labelledby="cMatrixMessageTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered imp-date-dialog" style="width: 450px">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cMatrixMessageTitle"></h5>
+                </div>
+                <div class="modal-body" id="cMatrixMessageBody">
+                </div>
+                <div class="modal-footer singal-button">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" title="Ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Modal PopUp End -->
+
+
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+    
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ✅ Then Load DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
     <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery-block-ui/blockuicollection.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    @* <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js" type="text/javascript"></script> *@
     <script src="~/js/customcommon.js"></script>
     <script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
-    <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
+    
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>
