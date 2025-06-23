@@ -2,7 +2,6 @@
 using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 using System.Data;
 
 namespace DeveloperPortal.DataAccess.Repository.Implementation
@@ -11,9 +10,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
     {
         private readonly AAHREntitiesHelper _contextData;
 
-        public StoredProcedureExecutor(AAHREntitiesHelper _contextData)
+        public StoredProcedureExecutor(AAHREntitiesHelper contextData)
         {
-            this._contextData = _contextData;
+            _contextData = contextData;
         }
 
         public async Task<List<T>> ExecuteStoredProcAsync<T>(string storedProcName, params SqlParameter[] parameters) where T : class, new()
@@ -48,6 +47,34 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
             }
         }
+
+        public async Task<DataTable> ExecuteStoredProcedureWithDataTableAsync(string storedProcName, params SqlParameter[] parameters)
+        {
+            var dataTable = new DataTable();
+
+            using (var connection = new SqlConnection(_contextData.Database.GetConnectionString()))
+            {
+                using (var command = new SqlCommand(storedProcName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        await connection.OpenAsync();
+                        adapter.Fill(dataTable);
+                    }
+                }
+            }
+
+            return dataTable;
+        }
+
+
         private static string BuildSqlCommand(string storedProcName, SqlParameter[] parameters)
         {
             var paramNames = parameters != null && parameters.Length > 0
