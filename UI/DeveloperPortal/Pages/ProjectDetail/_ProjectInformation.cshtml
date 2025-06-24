@@ -181,6 +181,10 @@
     }).data("kendoWindow");
     /*Start Unit Kendo Grid */
     function LoadProjectInformation() {
+
+             $("#uploadUnitExcel").click(function () {
+       $("#modalImportUnits").modal('show');
+     });
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {

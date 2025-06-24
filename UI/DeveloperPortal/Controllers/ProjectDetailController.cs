@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using ComCon.DataAccess.Models.Helpers;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -21,12 +23,18 @@ namespace DeveloperPortal.Controllers
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
         private IProjectDetailService _projectDetailService;
+        private IUnitImportService _unitImportService;
+        private readonly IWebHostEnvironment _env;
 
-        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService)
+
+
+        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
         {
             _config = configuration;
             _contextAccessor = contextAccessor;
             _projectDetailService = projectDetailService;
+            _unitImportService = unitImportService;
+            _env = env;
         }
 
         #endregion
@@ -147,7 +155,7 @@ namespace DeveloperPortal.Controllers
                 if (updateModels != null && updateModels.Count > 0)
                 {
                     var updateModel = updateModels[0];
-                    result = _projectDetailService.UpdateUnitDetails(updateModel,"jhirpara");
+                    result = _projectDetailService.UpdateUnitDetails(updateModel, "jhirpara");
                 }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Updated Successfully." });
             }
@@ -322,7 +330,7 @@ namespace DeveloperPortal.Controllers
         public JsonResult GetPermitNumbersPost([FromForm] int PropSnapshotID, [FromForm] int start, [FromForm] int length, [FromForm] int draw)
         {
 
-            List<string> permitList= new List<string>();//= _projectDetailService.GetLADBSPermitNumberList(PropSnapshotID);
+            List<string> permitList = new List<string>();//= _projectDetailService.GetLADBSPermitNumberList(PropSnapshotID);
 
             List<PermitNumberInformation> data = new List<PermitNumberInformation>()
             {
@@ -491,6 +499,95 @@ namespace DeveloperPortal.Controllers
             //return JsonConvert;
             return hasRole;
         }
+
+        #region Import
+
+        [HttpPost]
+        public async Task<JsonResult> ImportUnitInformation(List<IFormFile> file, [FromForm] int projectId, [FromForm] int projectSiteID, [FromForm] int Id)
+        {
+
+            JsonData<JsonStatus> result = new JsonData<JsonStatus>(new JsonStatus());
+            result.Result.Status = false;
+            //JsonData<JsonStatus> result = new JsonData<JsonStatus>(new JsonStatus());
+            //NameValueCollection data = System.Web.HttpContext.Current.Request.Form;
+            //result.Result.Status = false;
+            //var projectId = Convert.ToInt32(data["ProjectId"]);
+            //var projectSiteID = Convert.ToInt32(data["ProjectSiteID"]);
+            var caseId = Id;
+
+            try
+            {
+                if (file != null)
+                {
+                    var postedFile = file[0];
+                    if (postedFile.ContentType == "application/vnd.ms-excel" || postedFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        string fileName = $"UnitInformation_{projectId}_{projectSiteID}_upload.xlsx";
+                        string targetPath = Path.Combine(_env.WebRootPath, "Document");
+                        string fullPath = Path.Combine(targetPath, fileName);
+
+                        // Ensure directory exists
+                        if (!Directory.Exists(targetPath))
+                            Directory.CreateDirectory(targetPath);
+
+                        // Delete file if it already exists
+                        if (System.IO.File.Exists(fullPath))
+                            System.IO.File.Delete(fullPath);
+
+                        // Save the uploaded file
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await postedFile.CopyToAsync(stream);
+                        }
+
+                        var excelData = await _unitImportService.ReadExcelData(fullPath);
+                        //validate the import is correct nor error..
+                        if (excelData.Tables.Count == 2)
+                        {
+                            //Import data to database 
+                            var dtResult = await _unitImportService.ExecuteImportUnitInfoAsync(excelData, caseId, "jhirpara");
+                            var totalRecord = dtResult.Rows.Count;
+                            dtResult.DefaultView.RowFilter = "Status ='Success'";
+                            var validRecord = dtResult.DefaultView.Count;
+                            var inValidRecord = totalRecord - validRecord;
+                            fileName = $"UnitInformation_{projectId}_{projectSiteID}_upload_result.xlsx";
+                            fullPath = targetPath + "/" + fileName;
+
+                            StringBuilder tableHtml = _unitImportService.ShowExportDataResult(dtResult);
+
+                            string baseMessage = "Unit information has been uploaded successfully." +
+                                                 "<br><br>Note: Valid Records: " + validRecord + "/" + totalRecord +
+                                                 " and Invalid Records: " + inValidRecord + "/" + totalRecord;
+
+                            result.Result.Message = baseMessage + tableHtml.ToString();
+                            result.Result.Status = true;
+                        }
+                        else
+                        {
+                            result.Result.ErrorMessage = "Invalid Data Found in excel sheet.";
+                        }
+                    }
+                    else
+                    {
+                        result.Result.ErrorMessage = "Invalid uploaded file";
+                    }
+                }
+                else
+                {
+                    result.Result.ErrorMessage = "Please select valid excel file";
+                }
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+
+                result.Result.ErrorMessage = "The uploaded file is invalid. Please upload a valid Excel file as per the sample format and try again.";
+                return new JsonResult(result);
+            }
+
+        }
+
+        #endregion
     }
 
     public static class ControllerExtensions

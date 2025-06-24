@@ -44,6 +44,7 @@ namespace DeveloperPortal
             services.AddScoped<IApnpinService, ApnpinService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProjectDetailService, ProjectDetailService>();
+            services.AddScoped<IUnitImportService, UnitImportService>();
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
