@@ -704,6 +704,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="EntityFramework">
       <HintPath>..\Core\DeveloperPortal.Domain\Dlls\EntityFramework.dll</HintPath>
     </Reference>
