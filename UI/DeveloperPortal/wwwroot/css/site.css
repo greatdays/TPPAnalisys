@@ -11380,11 +11380,11 @@ h1.white-text{
 /*Signup Page CSS - End*/
 
 a {
- cursor:pointer;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
 }
 
 .dataTables_length select {
-    border: solid 1px;
     height: 38px;
     border: 1px solid #e4e4e4;
     margin: 0px 9px;
@@ -11404,4 +11404,83 @@ a {
     margin-right: 5px;
     margin-top: -10px;
     border: solid 1px #135b79;
+}
+
+#tblMyProjects_wrapper .dataTables_length {
+    padding-top: 20px;
+    padding-left: 15px;
+}
+
+#tblMyProjects_wrapper .dataTables_filter {
+    padding-top: 20px;
+    padding-right: 5px;
+}
+
+#tblMyProjects_wrapper .dataTables_info {
+    padding-left: 15px;
+}
+
+#tblMyProjects_wrapper .dataTables_paginate {
+    padding-top: 12px;
+    padding-right: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#tblMyProjects_wrapper .paginate_button {
+    display: inline-block; 
+    vertical-align: middle;
+    text-align: center; 
+    line-height: 30px; 
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px; 
+    box-sizing: border-box;
+}
+
+#tblMyProjects_wrapper .paginate_button.current {
+    background-color: #2C3E5C;
+    color: #fff !important;
+}
+
+#tblMyProjects_wrapper .paginate_button:hover {
+    background: #2C3E5C !important;
+    color: #fff !important;
+    border-color: #2C3E5C !important;
+    cursor: pointer;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_previous {
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_next {
+    border-top-right-radius: 0.15rem;
+    border-bottom-right-radius: 0.15rem;
+}
+
+#tblMyProjects_previous,
+#tblMyProjects_next {
+    display: inline-block !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    line-height: 30px !important;
+    padding: 0 12px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    background-color: #fff !important;
+}
+
+#tblMyProjects th,
+#tblMyProjects td {
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 1.25;
 }
