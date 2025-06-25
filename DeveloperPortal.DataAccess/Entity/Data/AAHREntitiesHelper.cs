@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using DeveloperPortal.Domain.DMS;
 
 namespace DeveloperPortal.DataAccess.Entity.Data
 {
@@ -21,10 +22,12 @@ namespace DeveloperPortal.DataAccess.Entity.Data
             _configuration = configuration;
         }
         public virtual DbSet<AllConstructionData> AllConstructionData { get; set; }
+        public virtual DbSet<DocumentModel> DocumentData { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AllConstructionData>().HasNoKey();
+            modelBuilder.Entity<DocumentModel>().HasNoKey();
             //modelBuilder.Entity<AllConstructionData>(entity =>
             //{
             //    entity.HasNoKey();

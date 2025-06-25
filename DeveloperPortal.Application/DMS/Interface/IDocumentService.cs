@@ -10,6 +10,6 @@ namespace DeveloperPortal.Application.DMS.Interface
 {
     public interface IDocumentService
     {
-        Task<List<FileModel>> GetAllDocumentsBasedOnProjectId(int projectId);
+        Task<List<FileModel>> GetAllDocumentsBasedOnProjectId(int caseId);
     }
 }

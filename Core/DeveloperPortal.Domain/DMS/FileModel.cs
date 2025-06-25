@@ -11,7 +11,7 @@ namespace DeveloperPortal.Domain.DMS
         public string? Name { get; set; }
         public string? Link { get; set; }
         public string? ID { get; set; }
-        public string? FileType { get; set; }
+       // public string? FileType { get; set; }
 
         public string? Category { get; set; }
         /// <summary>
@@ -21,7 +21,7 @@ namespace DeveloperPortal.Domain.DMS
         /// <summary>
         /// ShareWithNAC
         /// </summary>
-        public bool ShareWithNAC { get; set; }
+      //  public bool ShareWithNAC { get; set; }
         public string? Roles { get; set; }
 
         /// <summary>

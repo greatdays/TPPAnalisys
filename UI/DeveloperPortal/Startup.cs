@@ -1,4 +1,6 @@
 ﻿using System.Configuration;
+using DeveloperPortal.Application.DMS.Implementation;
+using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
@@ -44,6 +46,7 @@ namespace DeveloperPortal
             services.AddScoped<IApnpinService, ApnpinService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProjectDetailService, ProjectDetailService>();
+            services.AddScoped<IDocumentService, DocumentService>();
 
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

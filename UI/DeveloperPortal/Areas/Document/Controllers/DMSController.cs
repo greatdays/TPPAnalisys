@@ -21,9 +21,10 @@ namespace DeveloperPortal.Areas.Document.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFilesByIdNew(int projectId)
+        [Route("Document/DMS/GetFilesByIdNew")]
+        public async Task<IActionResult> GetFilesByIdNew(int caseId)
         {
-            var list = await _documentService.GetAllDocumentsBasedOnProjectId(projectId);
+            var list = await _documentService.GetAllDocumentsBasedOnProjectId(caseId);
             return View("~/Areas/Document/Views/DMS/DMSView.cshtml", list); // Or Json(list) if it's an API
         }
         /*public ActionResult GetFilesByIdNew(int controlViewModelId)
