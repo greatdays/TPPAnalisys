@@ -46,6 +46,7 @@ namespace DeveloperPortal
             services.AddScoped<IApnpinService, ApnpinService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProjectDetailService, ProjectDetailService>();
+            services.AddScoped<IUnitImportService, UnitImportService>();
             services.AddScoped<IDocumentService, DocumentService>();
 
         }
