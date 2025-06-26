@@ -11420,18 +11420,20 @@ a {
     padding-left: 15px;
 }
 
-#tblMyProjects_wrapper .dataTables_paginate {
+#tblMyProjects_wrapper .dataTables_paginate,
+#dmsDataTable_wrapper .dataTables_paginate {
     padding-top: 12px;
     padding-right: 15px;
     display: flex;
     justify-content: flex-end;
 }
 
-#tblMyProjects_wrapper .paginate_button {
-    display: inline-block; 
+#tblMyProjects_wrapper .paginate_button,
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
     vertical-align: middle;
-    text-align: center; 
-    line-height: 30px; 
+    text-align: center;
+    line-height: 30px;
     font-size: 1rem;
     color: #2C3E5C !important;
     background-color: #fff;
@@ -11440,34 +11442,40 @@ a {
     margin: 0 2px;
     min-width: 30px;
     min-height: 30px;
-    height: 30px; 
+    height: 30px;
     box-sizing: border-box;
 }
 
-#tblMyProjects_wrapper .paginate_button.current {
+#tblMyProjects_wrapper .paginate_button.current,
+#dmsDataTable_wrapper .paginate_button.current {
     background-color: #2C3E5C;
     color: #fff !important;
 }
 
-#tblMyProjects_wrapper .paginate_button:hover {
+#tblMyProjects_wrapper .paginate_button:hover,
+#dmsDataTable_wrapper .paginate_button:hover {
     background: #2C3E5C !important;
     color: #fff !important;
     border-color: #2C3E5C !important;
     cursor: pointer;
 }
 
-#tblMyProjects_wrapper a#tblMyProjects_previous {
+#tblMyProjects_wrapper a#tblMyProjects_previous,
+#dmsDataTable_wrapper a#dmsDataTable_previous {
     border-top-left-radius: 0.2rem;
     border-bottom-left-radius: 0.2rem;
 }
 
-#tblMyProjects_wrapper a#tblMyProjects_next {
+#tblMyProjects_wrapper a#tblMyProjects_next,
+#dmsDataTable_wrapper a#dmsDataTable_next {
     border-top-right-radius: 0.15rem;
     border-bottom-right-radius: 0.15rem;
 }
 
 #tblMyProjects_previous,
-#tblMyProjects_next {
+#tblMyProjects_next,
+#dmsDataTable_previous,
+#dmsDataTable_next {
     display: inline-block !important;
     min-width: 30px !important;
     min-height: 30px !important;
@@ -11479,8 +11487,55 @@ a {
 }
 
 #tblMyProjects th,
-#tblMyProjects td {
+#tblMyProjects td,
+#dmsDataTable th,
+#dmsDataTable td {
     padding-left: 20px;
     padding-right: 20px;
     line-height: 1.25;
+}
+
+#dmsDataTable_wrapper .dataTables_length {
+    padding-top: 14px;
+    padding-left: 2px;
+}
+
+#dmsDataTable_wrapper .dataTables_filter {
+    padding-top: 14px;
+}
+
+#dmsDataTable_wrapper .dataTables_paginate {
+    padding-right: 0px;
+}
+
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#dmsDataTable .btn-primary {
+    background-color: #2C3E5C !important;
+    color: #fff !important;
+}
+
+#dmsDataTable.dataTable tbody tr > [class^="sorting_"] {
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+}
+
+#dmsDataTable.dataTable tbody tr:hover > [class^="sorting_"] {
+    background-color: #f5f5f5 !important; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
 }
