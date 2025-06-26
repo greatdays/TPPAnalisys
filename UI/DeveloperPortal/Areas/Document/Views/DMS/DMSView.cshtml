@@ -1,12 +1,8 @@
 ﻿@model List<DeveloperPortal.Domain.DMS.FileModel>
 @using Newtonsoft.Json
 
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
 <div class="table-responsive">
-    <table id="dmsDataTable" class="display table table-bordered table-striped table-sm" style="width:100%">
+    <table id="dmsDataTable" class="display table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Date</th>
@@ -43,7 +39,7 @@
             }
             else
             {
-                <!-- This dummy row ensures cell count matches column count -->
+                @*This dummy row ensures cell count matches column count*@
                 <tr>
                     <td colspan="6" class="text-center text-muted">No data available</td>
                 </tr>
@@ -55,11 +51,11 @@
 <script>
     $(document).ready(function () {
         $('#dmsDataTable').DataTable({
+            stripeClasses: [],
             paging: true,
-            searching: false,
-            ordering: true,
-            info: false,
-            autoWidth: false,
+            info: true,
+            searching: true,
+            scrollX: true,
             language: {
                 emptyTable: "No documents available"
             }
