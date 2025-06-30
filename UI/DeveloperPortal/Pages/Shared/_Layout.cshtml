@@ -72,32 +72,30 @@
             </div>
         </div>
         <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
-            @if (usr.UserID == 0)
-            {
-                <div id="leftMenu collapse navbar-collapse">
-                    <ul class="navbar-nav botNav-left-hide">
+            <div id="leftMenu collapse navbar-collapse">
+                <ul class="navbar-nav botNav-left-hide">
                     <li class="nav-item navItem-decor">
                         <a class="nav-link nav-link-basic" href='~/dashboard'>
                             Dashboard
                         </a>
                     </li>
-                     <li class="nav-item navItem-decor">
+                        <li class="nav-item navItem-decor">
                         <a class="nav-link nav-link-basic" href='~/PlanReview'>
                             PlanReview
                         </a>
                     </li>
                 </ul>
             </div>
-            }
             <div id="rightMenu">
                 <div class="SignInContatiner">
                     <partial name="_LoginPartial" />
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Sign up", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                        <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-
-                    </ul>
+                    @if (usr.UserID == 0)
+                    {
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("Sign up", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        </ul>
+                    }
                 </div>
             </div>
         </div>
