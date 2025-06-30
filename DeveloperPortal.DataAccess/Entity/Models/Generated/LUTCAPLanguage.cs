@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LUTCAPLanguage
+public partial class Lutcaplanguage
 {
-    public int LUTCAPLanguageID { get; set; }
+    public int LutcaplanguageId { get; set; }
 
-    public int LutCAPChecklistItemID { get; set; }
+    public int LutCapchecklistItemId { get; set; }
 
     public string ComplianceItemHeader { get; set; } = null!;
 
@@ -27,7 +27,7 @@ public partial class LUTCAPLanguage
 
     public string ModifiedBy { get; set; } = null!;
 
-    public virtual ICollection<CAPItemDetail> CAPItemDetails { get; set; } = new List<CAPItemDetail>();
+    public virtual ICollection<CapitemDetail> CapitemDetails { get; set; } = new List<CapitemDetail>();
 
-    public virtual LutCAPChecklistItem LutCAPChecklistItem { get; set; } = null!;
+    public virtual LutCapchecklistItem LutCapchecklistItem { get; set; } = null!;
 }

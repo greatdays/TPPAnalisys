@@ -1,188 +1,143 @@
 ﻿@page
 @model DeveloperPortal.Pages.Account.ProjectRegistrationModel
+<form id="antiforgery-form">
+	@Html.AntiForgeryToken()
+	<input name="__RequestVerificationToken" type="hidden" value="xyz..." />
+</form>
 <div class="form-partial-container">
-    <fieldset style="margin-bottom: 1em;">
-        <div class="app-form-heading" style="margin-bottom: 0">
-            <h3 class="signup-step-header">Provide Your AcHP Number(s)</h3>
-        </div>
-        <div class="text-danger-custom" style="padding-bottom:4%">
-            All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
-        </div>
-        <span style="color: black">If you do not know your AcHP Number, please contact your assigned RCS.</span>
-        <div class="row" style="padding-bottom:1rem;"></div>
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <div class="input-group" id="divAdd">
-                    @Html.TextBox("AcHPNumber", "", new { @class = "form-control", @placeholder = "AcHP Number" })
+	<fieldset style="margin-bottom: 1em;">
+		<div class="app-form-heading" style="margin-bottom: 0">
+			<h3 class="signup-step-header">Provide Your AcHP Number(s)</h3>
+		</div>
+		<div class="text-danger-custom" style="padding-bottom:4%">
+			All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
+		</div>
+		<span style="color: black">If you do not know your AcHP Number, please contact your assigned RCS.</span>
+		<div class="row" style="padding-bottom:1rem;"></div>
+		<div class="row">
+			<div class="col-md-6 text-center">
+				<div class="input-group" id="divAdd">
+					@Html.TextBox("AcHPNumber", "", new { @class = "form-control", @placeholder = "AcHP Number" })
 
-                    <div class="input-group-append">
-                        <button id="btnAdd" class="btn btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <span style="padding-top:5%;display:inline-block"></span>
-        <span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: auto; margin-right: auto;display: block;"></span>
-        <span id="spnLoading" class="sr-only">Loading...</span>
-        <div id="divProjects">
-           
-        </div>
-    </fieldset>
+					<div class="input-group-append">
+						<button id="btnAdd" class="btn btn-sm" type="button" style="width:7rem;border-top-right-radius:5px;border-bottom-right-radius: 5px;">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <div class="row" style="padding-bottom:5%">
-        <div class="col-md-4">
-            <button class="btn-primary-outline prevBtn float-left">Back</button>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <button class="main-btn nextBtn float-right">Next</button>
-        </div>
-    </div>
+		<span style="padding-top:5%;display:inline-block"></span>
+		<span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="margin-left: auto; margin-right: auto;display: block;"></span>
+		<span id="spnLoading" class="sr-only">Loading...</span>
+		<div id="divProjects">
+		</div>
+	</fieldset>
+
+	<div class="row" style="padding-bottom:5%">
+		<div class="col-md-4">
+			<button class="btn-primary-outline prevBtn float-left">Back</button>
+		</div>
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<button class="main-btn nextBtn float-right">Next</button>
+		</div>
+	</div>
 </div>
 <script>
-    
-    
-    //var ctlIndex = projCount;
-    $(document).ready(function () {
-        $('#cm_loader').attr("hidden", true);
-        //$('#spnLoading').hide();
 
-       /* $(document).ajaxStart(function () {
-            $('#cm_loader').attr("hidden", false);
-            $('#spnLoading').show();
-            $('.btn.btn-primary').attr("disabled", true);
-            console.log('disabled and loading image displayed');
-        }).ajaxStop(function () {
-            $('#cm_loader').attr("hidden", true);
-            $('.btn.btn-primary').attr("disabled", false);
-            console.log('disabled and loading image hidden');
-        });*/
 
-        $('#btnAdd').on('click', function () {
-            //$('#btnAdd').text('Loading..');
-            
+	//var ctlIndex = projCount;
+	$(document).ready(function () {
+		$('#cm_loader').attr("hidden", true);
+		
+		$('#btnAdd').on('click', function () {
+			//$('#btnAdd').text('Loading..');
 
-            var achp = $('#AcHPNumber').val();
 
-            if(achp != ''){
-                $('#divAdd').next('.text-danger-custom').remove();
+			var achp = $('#AcHPNumber').val();
 
-                $('#cm_loader').attr("hidden", false);
-                $('#spnLoading').show();
-                $('#btnAdd').prop('disabled', true);
-                setTimeout(AddClick, 300);
-            }
-            else{
-                $('#divAdd').next('.text-danger-custom').remove();
-                $('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>Please enter a ACHP Number</span>");
-            }
-            
-            //var children = $('#divProjects').children().length;
-            
-            /*var ctlIndex = GetControlIndex();
-            console.log('ProjCount: ' + ctlIndex);
+			if(achp != ''){
+				$('#divAdd').next('.text-danger-custom').remove();
 
-            var achpNumber = $('#AcHPNumber').val();
-            console.log('achp#: ' + achpNumber);
-            var addr = GetACHPDetail(achpNumber);
+				$('#cm_loader').attr("hidden", false);
+				$('#spnLoading').show();
+				$('#btnAdd').prop('disabled', true);
+				setTimeout(AddClick, 300);
+			}
+			else{
+				$('#divAdd').next('.text-danger-custom').remove();
+				$('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>Please enter a ACHP Number</span>");
+			}
 
-            console.log('retAddr:' + addr);
-            //var ctlIndex = ctlIndex + 1;
-            //var addr = 'F0200 - 6120 N.Woodman Ave.';
-            
-            //var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-            //var divACHPWithAddr = '<div class="col-md-4 border-no-right row-padding">' + addr + '</div>';
-            //var divDel = '<div class="col-md-2 text-right border-no-left row-padding"><button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
-            //$('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>")
+		})
+	})
 
-            $('#btnDel' + ctlIndex).on('click', function () {
-                var ctlId = $(this).attr('id');
-                var idx = ctlId.replace('btnDel', '');
-                var divId = 'div' + idx;
-                $('#'+divId).remove();
-                //$(this).parent().closest('[id]').remove()
-            })
+	
 
-            $('#cm_loader').attr("hidden", true);*/
-        })
-    })
+		function AddClick() {
+		$('#cm_loader').removeAttr("hidden");
+		var achpNumber = $('#AcHPNumber').val();
+		debugger;
+		GetACHPDetail(achpNumber, function (retAchp, streetName, found) {
+			debugger;
+			if (!found) {
+				$('#divAdd').next('.text-danger-custom').remove();
+				$('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>No data found</span>");
+				$('#cm_loader').attr("hidden", true);
+				  $('#btnAdd').prop('disabled', false);
+				return;
+			}
 
-    function AddClick(){
-        var ctlIndex = GetControlIndex();
-        console.log('ProjCount: ' + ctlIndex);
+			streetName = streetName.replace(/LOS ANGELES.*/g, ""); // Clean address
+			var ctlIndex = GetControlIndex();
+			var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
+			var divACHPWithAddr = '<div class="col-md-4 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
+			var divDel = '<div class="col-md-2 text-right border-no-left row-padding">' +
+						 '<button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
 
-        var achpNumber = $('#AcHPNumber').val();
-        console.log('achp#: ' + achpNumber);
-        var addr = GetACHPDetail(achpNumber);
+			$('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>");
+			$('#cm_loader').attr("hidden", true);
+			  $('#btnAdd').prop('disabled', false);
+		});
+	}
 
-        console.log('retAddr:' + addr);
-        //var ctlIndex = ctlIndex + 1;
-        //var addr = 'F0200 - 6120 N.Woodman Ave.';
 
-        //var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-        //var divACHPWithAddr = '<div class="col-md-4 border-no-right row-padding">' + addr + '</div>';
-        //var divDel = '<div class="col-md-2 text-right border-no-left row-padding"><button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
-        //$('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>")
+			function GetACHPDetail(achpNumber, callback) {
+		var token = $('input[name="__RequestVerificationToken"]').val();
 
-        $('#btnDel' + ctlIndex).on('click', function () {
-            var ctlId = $(this).attr('id');
-            var idx = ctlId.replace('btnDel', '');
-            var divId = 'div' + idx;
-            $('#' + divId).remove();
-            //$(this).parent().closest('[id]').remove()
-        })
+		$.ajax({
+			url: '/Account/ProjectRegistration?handler=GetACHPDetails',
+			type: 'POST',
+			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			headers: {
+				'RequestVerificationToken': token
+			},
+			data: { achpNumber: achpNumber },
+			success: function (data) {
+				var retJson = data;
 
-        $('#cm_loader').attr("hidden", true);
-        $('.btn.btn-primary').attr("disabled", false);
-        $('#btnAdd').prop('disabled', false);
-        //$('#btnAdd').text('Add');
-    }
+				var respCode = retJson.responseCode;
+				var retAchp = retJson.achpNumber;
+				var streetName = retJson.streetName; // ✅ make sure this is here
+				var response = retJson.response;
 
-    function GetACHPDetail(achpNumber){
-        $.ajax({
-            url: "/Account/GetACHPDetails",
-            type: 'POST',
-            async: false,
-            dataType: 'json',
-            contentType: 'application/json',
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            data: "achpNumber=" + achpNumber,
-            success: function (data) {
-                //debugger;
-                //alert('data:' + data );//+ ' parsed:' + $.parseJSON(data));
-                
-                var retJson = JSON.parse(data);
-                var respCode = retJson.ResponseCode;
-                var streetName = retJson.StreetName;
-                var retAchp = retJson.AchpNumber;
-                var response = retJson.Response;
-                console.log('response:' + response);
-                if (response != '[]') {
-                    streetName = streetName.replace(/LOS ANGELES.*/g, ""); // remove city, state and zip
-                    // console.log('response from controller: ' + data);
-                    //alert('success: '+ data);
+				if (response && response !== '[]') {
+					callback(retAchp, streetName, true); // ✅ success
+				} else {
+					callback(null, null, false); // ❌ no data
+				}
+			},
+			error: function (xhr) {
+				console.error("Error:", xhr.status, xhr.responseText);
+				callback(null, null, false); // ❌ failure
+			}
+		});
+	}
 
-                    var ctlIndex = GetControlIndex();
-                    var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-                    var divACHPWithAddr = '<div class="col-md-4 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
-                    var divDel = '<div class="col-md-2 text-right border-no-left row-padding"><button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
-                    $('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>")
-                }
-                else
-                {
-                    $('#divAdd').next('.text-danger-custom').remove();
-                    $('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>No data found</span>");
-                }
 
-                return streetName;
-                
-            },
-            error: function (xhr) { }
-        })
-    }
+			$(document).on('click', 'button[id^="btnDel"]', function () {
+		$(this).closest('div.row').remove();
+	});
 </script>
 @{
 }

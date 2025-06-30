@@ -5,27 +5,27 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class UnitAttribute
 {
-    public int UnitAttributeID { get; set; }
+    public int UnitAttributeId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
-    public int? LutTotalBedroomID { get; set; }
+    public int? LutTotalBedroomId { get; set; }
 
-    public int? LutTotalBathroomID { get; set; }
+    public int? LutTotalBathroomId { get; set; }
 
     public bool? IsOccupiedByDisabled { get; set; }
 
     public bool? IsOccupied { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
-    public int? LutAMIID { get; set; }
+    public int? LutAmiid { get; set; }
 
-    public int? LutRentalSubsidyID { get; set; }
+    public int? LutRentalSubsidyId { get; set; }
 
     public string? OtherRentalSubsidy { get; set; }
 
-    public bool? IsCES { get; set; }
+    public bool? IsCes { get; set; }
 
     public int? IsAddendumSigned { get; set; }
 
@@ -77,21 +77,21 @@ public partial class UnitAttribute
 
     public string? PreviousTenantMoved { get; set; }
 
-    public int? PreviousProjSitePropSnapShotID { get; set; }
+    public int? PreviousProjSitePropSnapShotId { get; set; }
 
-    public int? PreviousUnitPropSnapShotID { get; set; }
+    public int? PreviousUnitPropSnapShotId { get; set; }
 
     public DateOnly? RelocationDate { get; set; }
 
-    public bool? IsAvailableFromTransferAUWaitList { get; set; }
+    public bool? IsAvailableFromTransferAuwaitList { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
-    public int? CurrentProjSitePropSnapShotID { get; set; }
+    public int? CurrentProjSitePropSnapShotId { get; set; }
 
-    public bool? IsAvailableFromAUWaitList { get; set; }
+    public bool? IsAvailableFromAuwaitList { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public bool? IsStartTargetedMarket { get; set; }
 
@@ -115,7 +115,7 @@ public partial class UnitAttribute
 
     public DateOnly? MovedInDate { get; set; }
 
-    public int? LutTenantSelectedFromID { get; set; }
+    public int? LutTenantSelectedFromId { get; set; }
 
     public string? OtherReferralSource { get; set; }
 
@@ -133,61 +133,61 @@ public partial class UnitAttribute
 
     public DateOnly? LeaseAddendumExpirationDate { get; set; }
 
-    public bool? IsLeaseAddendumProvidedToAcHP { get; set; }
+    public bool? IsLeaseAddendumProvidedToAcHp { get; set; }
 
-    public int? LutOccupancyReasonID { get; set; }
+    public int? LutOccupancyReasonId { get; set; }
 
     public string? OtherOccupancyReason { get; set; }
 
     public DateOnly? TenantMovedToAnotherUnitDate { get; set; }
 
-    public int? LutLeaseAddendumNotExecuteReasonID { get; set; }
+    public int? LutLeaseAddendumNotExecuteReasonId { get; set; }
 
     public string? OtherLeaseAddendumNotExecuteReason { get; set; }
 
-    public int? LutFixedFloatingUnitID { get; set; }
+    public int? LutFixedFloatingUnitId { get; set; }
 
-    public int? FloorPlanTypeID { get; set; }
+    public int? FloorPlanTypeId { get; set; }
 
-    public int? LutFHATypeID { get; set; }
+    public int? LutFhatypeId { get; set; }
 
     public bool? CountAsMobilty { get; set; }
 
-    public bool IsVCA { get; set; }
+    public bool IsVca { get; set; }
 
-    public bool IsCSA { get; set; }
+    public bool IsCsa { get; set; }
 
     public DateOnly? UtilizationSurveyDate { get; set; }
 
-    public int? IsFullyAUNeeded { get; set; }
+    public int? IsFullyAuneeded { get; set; }
 
-    public int? TenantRequestedUnitTypeID { get; set; }
+    public int? TenantRequestedUnitTypeId { get; set; }
 
-    public int? TenantRequestedBedroomsID { get; set; }
+    public int? TenantRequestedBedroomsId { get; set; }
 
-    public int? TenantRequestedBathroomsID { get; set; }
+    public int? TenantRequestedBathroomsId { get; set; }
 
-    public bool? IsAddedToAUTL { get; set; }
+    public bool? IsAddedToAutl { get; set; }
 
-    public string? NotAddedToAUTLReason { get; set; }
+    public string? NotAddedToAutlreason { get; set; }
 
     public int? IsAccessibleFeaturesNeeded { get; set; }
 
     public string? AccessibleFeatureType { get; set; }
 
-    public bool? IsAdvisedRightToRM { get; set; }
+    public bool? IsAdvisedRightToRm { get; set; }
 
-    public bool? IsAddedToRARMLog { get; set; }
+    public bool? IsAddedToRarmlog { get; set; }
 
-    public string? NotAddedToRARMLogReason { get; set; }
+    public string? NotAddedToRarmlogReason { get; set; }
 
     public int? IsTenantHasAssistanceAnimal { get; set; }
 
-    public string? LutEAPFeatureIDs1A { get; set; }
+    public string? LutEapfeatureIds1A { get; set; }
 
-    public string? LutEAPFeatureIDs1B { get; set; }
+    public string? LutEapfeatureIds1B { get; set; }
 
-    public string? LutEAPFeatureIDsOptional { get; set; }
+    public string? LutEapfeatureIdsOptional { get; set; }
 
     public string? FloorPlanType { get; set; }
 
@@ -197,9 +197,9 @@ public partial class UnitAttribute
 
     public virtual PropSnapshot? CurrentUnitPropSnapShot { get; set; }
 
-    public virtual LutAMI? LutAMI { get; set; }
-
     public virtual LutAccessibilityComplianceStatus? LutAccessibilityComplianceStatus { get; set; }
+
+    public virtual LutAmi? LutAmi { get; set; }
 
     public virtual LutFixedFloatingUnit? LutFixedFloatingUnit { get; set; }
 
@@ -217,7 +217,7 @@ public partial class UnitAttribute
 
     public virtual LutUnitType? LutUnitType { get; set; }
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
     public virtual PropSnapshot? PreviousProjSitePropSnapShot { get; set; }
 

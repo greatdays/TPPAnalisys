@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnHRMApplicationPropQuestion
+public partial class AssnHrmapplicationPropQuestion
 {
-    public int AssnHRMApplicationPropQuestion1 { get; set; }
+    public int AssnHrmapplicationPropQuestion1 { get; set; }
 
-    public int HRMApplicationId { get; set; }
+    public int HrmapplicationId { get; set; }
 
     public int LutProjectSiteQuestionId { get; set; }
 
@@ -23,9 +23,9 @@ public partial class AssnHRMApplicationPropQuestion
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public virtual HRMApplication HRMApplication { get; set; } = null!;
+    public virtual Hrmapplication Hrmapplication { get; set; } = null!;
 
     public virtual LutProjectSiteQuestion LutProjectSiteQuestion { get; set; } = null!;
 }

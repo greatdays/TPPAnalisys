@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using ComCon.DataAccess.Models.Helpers;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,9 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,12 +23,18 @@ namespace DeveloperPortal.Controllers
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
         private IProjectDetailService _projectDetailService;
+        private IUnitImportService _unitImportService;
+        private readonly IWebHostEnvironment _env;
 
-        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService)
+
+
+        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
         {
             _config = configuration;
             _contextAccessor = contextAccessor;
             _projectDetailService = projectDetailService;
+            _unitImportService = unitImportService;
+            _env = env;
         }
 
         #endregion
@@ -38,11 +47,11 @@ namespace DeveloperPortal.Controllers
         /// <param name="gridRequestModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetUnitDetails(GridRequestModel gridRequestModel)
+        public JsonResult GetUnitDetails([FromBody] GridRequestModel gridRequestModel)
         {
             var unitModels = new List<UnitDataModel>();
             var isCalculateCount = true;
-            if (gridRequestModel!= null && gridRequestModel.UnitGridData != null && gridRequestModel.UnitGridData.Any())
+            if (gridRequestModel != null && gridRequestModel.UnitGridData != null && gridRequestModel.UnitGridData.Any())
             {
                 isCalculateCount = false;
                 unitModels = gridRequestModel.UnitGridData;
@@ -70,10 +79,20 @@ namespace DeveloperPortal.Controllers
             return Json(new { data = data, unitGridData = unitModels, buildingDropDownList = buildingDropDownList, aggregates = new Dictionary<string, Dictionary<string, string>>(), _total = unitModels.Count, isGrouped = false, totalUnitsCount = totalUnitDetail });
 
         }
-                
+        [HttpGet]
+        public JsonResult GetUnitModalData()
+        {
+            var unitModels = new List<UnitDataModel>();
+            var lutUnitType = _projectDetailService.GetLutUnitType();
+            var lutTotalBedrooms = _projectDetailService.GetLutTotalBedrooms();
+
+            return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms });
+
+        }
+
         private static List<UnitDataModel> SortData(GridRequestModel gridRequestModel, List<UnitDataModel> unitModels)
         {
-            if (gridRequestModel!= null && gridRequestModel.Sort != null && gridRequestModel.Sort.Count > 0)
+            if (gridRequestModel != null && gridRequestModel.Sort != null && gridRequestModel.Sort.Count > 0)
             {
                 var orderby = gridRequestModel.Sort[0].Field;
                 var desc = gridRequestModel.Sort[0].Dir == "desc";
@@ -128,19 +147,16 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UpdateUnitDetails()
+        public JsonResult UpdateUnitDetails([FromBody] List<UnitDataModel> updateModels)
         {
-
             var result = false;
             try
             {
-                var requstModels = Request.Form["models"];
-                var updateModels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UnitDataModel>>(requstModels);
-                //if (updateModels != null && updateModels.Count > 0)
-                //{
-                //    var updateModel = updateModels[0];
-                //    result = _caseDetailService.UpdateUnitDetails(updateModel, UserSession.GetUserSession().UserName);
-                //}
+                if (updateModels != null && updateModels.Count > 0)
+                {
+                    var updateModel = updateModels[0];
+                    result = _projectDetailService.UpdateUnitDetails(updateModel, "jhirpara");
+                }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Updated Successfully." });
             }
             catch (Exception ex)
@@ -154,18 +170,15 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult DeleteUnitDetail()
+        public JsonResult DeleteUnitDetail([FromBody] List<UnitDataModel> deleteModels)
         {
             var result = false;
             try
             {
-                var requstModels = Request.Form["models"];
-                var deleteModels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UnitDataModel>>(requstModels);
-                //if (deleteModels != null && deleteModels.Count > 0)
-                //{
-                //    result = _caseService.DeleteUnit(deleteModels[0].PropSnapshotID, UserSession.GetUserSession().UserName);
-                //}
-
+                if (deleteModels != null && deleteModels.Count > 0)
+                {
+                    result = _projectDetailService.DeleteUnit(deleteModels[0].PropSnapshotID, "jhirpara");
+                }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Deleted Successfully." });
             }
             catch (Exception ex)
@@ -179,21 +192,19 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult AddUnitDetail()
+        public JsonResult AddUnitDetail([FromBody] List<UnitDataModel> addModels)
         {
             var result = false;
             try
             {
-                var requstModels = Request.Form["models"];
-                var addModels = Newtonsoft.Json.JsonConvert.DeserializeObject<List<UnitDataModel>>(requstModels);
                 if (addModels != null && addModels.Count > 0)
                 {
                     var saveMode = addModels[0];
                     saveMode.UnitID = 0;
-                    //if (saveMode != null)
-                    //{
-                    //    result = _caseDetailService.AddUnitDetail(saveMode, UserSession.GetUserSession().UserName);
-                    //}
+                    if (saveMode != null)
+                    {
+                        result = _projectDetailService.AddUnitDetail(saveMode, "jhirpara");
+                    }
                 }
 
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Added Successfully." });
@@ -206,6 +217,143 @@ namespace DeveloperPortal.Controllers
 
 
         #endregion
+
+
+
+        /// <summary>
+        /// GetBuildingInformationsPost
+        /// </summary>
+        /// <param name="paramModel"></param>
+        /// <param name="caseId"></param>
+        /// <param name="start"></param>
+        /// <param name="length"></param>
+        /// <param name="draw"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetBuildingInformation([FromForm] BuildingInformationParamModel paramModel, [FromForm] int start, [FromForm] int length, [FromForm] int draw)
+        {
+            var total = 0;
+            List<ParkingInformation> buildingData = new List<ParkingInformation>();
+            if (paramModel == null)
+            {
+                return Json(new { draw = draw, data = buildingData, recordsTotal = total, recordsFiltered = total });
+            }
+            var buildingParkingInformations = paramModel.BuildingInformationData;
+
+            if (paramModel.BuildingInformationData == null || paramModel.BuildingInformationData.Count == 0)
+            {
+                buildingParkingInformations = _projectDetailService.GetBuildingInformation(paramModel.CaseId);
+            }
+
+            if (buildingParkingInformations.Any())
+            {
+                total = buildingParkingInformations.Count;
+            }
+
+            var totalbuldingList = buildingParkingInformations.Select(x => x.BuildingFileNumber).Distinct().ToList();
+
+            if (length > 0)
+            {
+                var selectedBuildingParkingInformations = buildingParkingInformations.Skip(start).Take(length).ToList();
+                if (selectedBuildingParkingInformations.Any())
+                {
+                    foreach (var buildingParkingInformation in selectedBuildingParkingInformations)
+                    {
+                        buildingData.Add(new ParkingInformation
+                        {
+                            ParkingData = this.RenderViewAsync("../ProjectDetail/_ParkingInformation", buildingParkingInformation, true).Result,
+                            BuildingFileNumber = buildingParkingInformation.BuildingFileNumber
+                        });
+                    }
+                    buildingData[0].BuildingList = totalbuldingList;
+                    buildingData[0].BuildingInformationData = buildingParkingInformations;
+
+                }
+            }
+            return Json(new { draw = draw, data = buildingData, recordsTotal = total, recordsFiltered = total });
+        }
+
+
+        /// <summary>
+        /// GetBuildingInformationsPost
+        /// </summary>
+        /// <param name="paramModel"></param>
+        /// <param name="caseId"></param>
+        /// <param name="start"></param>
+        /// <param name="length"></param>
+        /// <param name="draw"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetBuildingInformation1()
+        {
+            var paramModel = new BuildingInformationParamModel();
+            int start = 0;
+            int length = 0;
+            int draw = 0;
+            var total = 0;
+            var buildingParkingInformations = paramModel.BuildingInformationData;
+
+            if (paramModel.BuildingInformationData == null || paramModel.BuildingInformationData.Count == 0)
+            {
+                buildingParkingInformations = _projectDetailService.GetBuildingInformation(paramModel.CaseId);
+            }
+
+            if (buildingParkingInformations.Any())
+            {
+                total = buildingParkingInformations.Count;
+            }
+
+            var totalbuldingList = buildingParkingInformations.Select(x => x.BuildingFileNumber).Distinct().ToList();
+            List<ParkingInformation> buildingData = new List<ParkingInformation>();
+            if (length > 0)
+            {
+                var selectedBuildingParkingInformations = buildingParkingInformations.Skip(start).Take(length).ToList();
+                if (selectedBuildingParkingInformations.Any())
+                {
+                    foreach (var buildingParkingInformation in selectedBuildingParkingInformations)
+                    {
+                        buildingData.Add(new ParkingInformation
+                        {
+                            ParkingData = this.RenderViewAsync("../ProjectDetail/_ParkingInformation", buildingParkingInformation, true).Result,
+                            BuildingFileNumber = buildingParkingInformation.BuildingFileNumber
+                        });
+                    }
+                    buildingData[0].BuildingList = totalbuldingList;
+                    buildingData[0].BuildingInformationData = buildingParkingInformations;
+
+                }
+            }
+            return Json(new { draw = draw, data = buildingData, recordsTotal = total, recordsFiltered = total });
+        }
+
+        [HttpPost]
+        public JsonResult GetPermitNumbersPost([FromForm] int PropSnapshotID, [FromForm] int start, [FromForm] int length, [FromForm] int draw)
+        {
+
+            List<string> permitList = new List<string>();//= _projectDetailService.GetLADBSPermitNumberList(PropSnapshotID);
+
+            List<PermitNumberInformation> data = new List<PermitNumberInformation>()
+            {
+                new PermitNumberInformation() {
+                    PermitData = null,
+                    PermitNumber = null,
+                    PermitList = permitList
+                }
+            };
+
+            return Json(new { draw = draw, data = data, recordsTotal = permitList.Count(), recordsFiltered = permitList.Count() });
+        }
+
+        [HttpGet]
+        public JsonResult GetPermitDetails(int PropsnapshotID, string PermitNumber, string Department)
+        {
+
+            PcisPermitDetail pcisPermitDetail = new PcisPermitDetail();// _caseService.GetLADBSPermitDetails(PropsnapshotID, PermitNumber, Department);
+
+            string html = this.RenderViewAsync("../ProjectDetail/GetPermitDetails", pcisPermitDetail, true).Result;
+
+            return Json(html);
+        }
 
         #region Project Site Information
 
@@ -249,7 +397,7 @@ namespace DeveloperPortal.Controllers
                             ContactControlViewModelId = siteIData.ContactControlViewModelId,
                             SiteName = siteIData.SiteName,
                             FileNumber = siteIData.FileNumber,
-                            SiteInfomationData = this.RenderViewAsync("../ProjectDetail/_SiteInformation", siteIData,true).Result
+                            SiteInfomationData = this.RenderViewAsync("../ProjectDetail/_SiteInformation", siteIData, true).Result
                         });
                     }
                     siteData[0].SiteList = totalSiteList;
@@ -262,12 +410,35 @@ namespace DeveloperPortal.Controllers
 
         #endregion
 
+
+        /// <summary>
+        /// Get Project actions by case Id and logged in user role.
+        /// </summary>
+        /// <param name="caseId">Case Id</param>        
+        /// <param name="projectId">Project Id</param>
+        /// <returns>Project actions anchor links</returns>
+        [HttpGet]
+        public ActionResult GetProjectActionsByCaseId(int caseId, int projectId)
+        {
+
+            List<string> roles = new List<string>()
+            {
+                "RCS |||",
+                "RCS ||"
+            };//UserSession.GetUserSession().Roles;
+            string commaSeparatedRoles = String.Join(",", roles);
+            string projectActions = "";// _projectDetailService.GetProjectActionsByCaseId(caseId, commaSeparatedRoles);
+            string decodedActions = HttpUtility.HtmlDecode(projectActions);
+
+            return Content(decodedActions);
+        }
+
         public IActionResult RenderContactById(string projectId, int controlViewModelId)
         {
             DataAccess.Entity.ViewModel.ControlViewModel controlView = _projectDetailService.GetControlViewModelById(controlViewModelId);
             string? areaQueryString = Request.Query["area"];
             string? Id = areaQueryString?.Split('?')[1].Replace("Id=", string.Empty); //caseId
-            
+
             RenderController renderController = new RenderController(_config);
             PartialViewResult result = renderController.RenderContact(controlView, Id);
             //return renderController.RenderContact(controlView, Id);
@@ -287,7 +458,7 @@ namespace DeveloperPortal.Controllers
             string response = string.Empty;
             JObject jsonObject = new JObject();
             //JObject[] jsonObjectArray = new JObject();
-            
+
 
             switch (key)
             {
@@ -313,7 +484,8 @@ namespace DeveloperPortal.Controllers
                     break;
                 case "All":
                     hasRole = UserSession.GetUserSession(_contextAccessor.HttpContext).Roles.Any(x => model.MarkObsoleteRoleList.Contains(x));
-                    jsonObject = new JObject { 
+                    jsonObject = new JObject
+                    {
 
                     };
                     jsonObject["Role"] = key;
@@ -327,6 +499,95 @@ namespace DeveloperPortal.Controllers
             //return JsonConvert;
             return hasRole;
         }
+
+        #region Import
+
+        [HttpPost]
+        public async Task<JsonResult> ImportUnitInformation(List<IFormFile> file, [FromForm] int projectId, [FromForm] int projectSiteID, [FromForm] int Id)
+        {
+
+            JsonData<JsonStatus> result = new JsonData<JsonStatus>(new JsonStatus());
+            result.Result.Status = false;
+            //JsonData<JsonStatus> result = new JsonData<JsonStatus>(new JsonStatus());
+            //NameValueCollection data = System.Web.HttpContext.Current.Request.Form;
+            //result.Result.Status = false;
+            //var projectId = Convert.ToInt32(data["ProjectId"]);
+            //var projectSiteID = Convert.ToInt32(data["ProjectSiteID"]);
+            var caseId = Id;
+
+            try
+            {
+                if (file != null)
+                {
+                    var postedFile = file[0];
+                    if (postedFile.ContentType == "application/vnd.ms-excel" || postedFile.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                    {
+                        string fileName = $"UnitInformation_{projectId}_{projectSiteID}_upload.xlsx";
+                        string targetPath = Path.Combine(_env.WebRootPath, "Document");
+                        string fullPath = Path.Combine(targetPath, fileName);
+
+                        // Ensure directory exists
+                        if (!Directory.Exists(targetPath))
+                            Directory.CreateDirectory(targetPath);
+
+                        // Delete file if it already exists
+                        if (System.IO.File.Exists(fullPath))
+                            System.IO.File.Delete(fullPath);
+
+                        // Save the uploaded file
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            await postedFile.CopyToAsync(stream);
+                        }
+
+                        var excelData = await _unitImportService.ReadExcelData(fullPath);
+                        //validate the import is correct nor error..
+                        if (excelData.Tables.Count == 2)
+                        {
+                            //Import data to database 
+                            var dtResult = await _unitImportService.ExecuteImportUnitInfoAsync(excelData, caseId, "jhirpara");
+                            var totalRecord = dtResult.Rows.Count;
+                            dtResult.DefaultView.RowFilter = "Status ='Success'";
+                            var validRecord = dtResult.DefaultView.Count;
+                            var inValidRecord = totalRecord - validRecord;
+                            fileName = $"UnitInformation_{projectId}_{projectSiteID}_upload_result.xlsx";
+                            fullPath = targetPath + "/" + fileName;
+
+                            StringBuilder tableHtml = _unitImportService.ShowExportDataResult(dtResult);
+
+                            string baseMessage = "Unit information has been uploaded successfully." +
+                                                 "<br><br>Note: Valid Records: " + validRecord + "/" + totalRecord +
+                                                 " and Invalid Records: " + inValidRecord + "/" + totalRecord;
+
+                            result.Result.Message = baseMessage + tableHtml.ToString();
+                            result.Result.Status = true;
+                        }
+                        else
+                        {
+                            result.Result.ErrorMessage = "Invalid Data Found in excel sheet.";
+                        }
+                    }
+                    else
+                    {
+                        result.Result.ErrorMessage = "Invalid uploaded file";
+                    }
+                }
+                else
+                {
+                    result.Result.ErrorMessage = "Please select valid excel file";
+                }
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+
+                result.Result.ErrorMessage = "The uploaded file is invalid. Please upload a valid Excel file as per the sample format and try again.";
+                return new JsonResult(result);
+            }
+
+        }
+
+        #endregion
     }
 
     public static class ControllerExtensions

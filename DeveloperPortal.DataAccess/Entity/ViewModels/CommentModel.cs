@@ -33,17 +33,17 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
         {
             using (AAHREntities db = new AAHREntities())
             {
-                db.Comments.Add(new DeveloperPortal.DataAccess.Entity.Models.Generated.Comment
-                {
-                    CommentText = Comment,
-                    IsInternal = IsInternal,
-                    IsWorklog = IsWorklog,
-                    JSONAttribute = JSONAttribute,
-                    IsDeleted = false,
-                    Role = Role,
-                    AssnComment = new AssnComment { ReferenceID = RefId, ReferenceType = RefType.ToString() }
-                });
-                db.SaveChanges(UserName);
+                //db.Comments.Add(new DeveloperPortal.DataAccess.Entity.Models.Generated.CommentDetails
+                //{
+                //    CommentText = CommentDetails,
+                //    IsInternal = IsInternal,
+                //    IsWorklog = IsWorklog,
+                //    Jsonattribute = JSONAttribute,
+                //    IsDeleted = false,
+                //    Role = Role,
+                //    AssnComments = new AssnComment { ReferenceId = RefId, ReferenceType = RefType.ToString() }
+                //});
+                //db.SaveChanges(UserName);
             }
         }
 
@@ -54,13 +54,13 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
                 List<CommentModel> query = new List<CommentModel>();
                 foreach (var item in referenceList)
                 {
-                    var List = db.AssnComments.Where(m => m.ReferenceID == item.ReferenceID && m.ReferenceType == item.ReferenceType && m.Comment.IsDeleted == false && m.Comment.IsWorklog == IsWorklog).Select(x => new CommentModel
+                    var List = db.AssnComments.Where(m => m.ReferenceId == item.ReferenceId && m.ReferenceType == item.ReferenceType && m.Comment.IsDeleted == false && m.Comment.IsWorklog == IsWorklog).Select(x => new CommentModel
                     {
-                        CommentId = x.CommentID,
+                        CommentId = x.CommentId,
                         Comment = x.Comment.CommentText,
                         IsWorklog = x.Comment.IsWorklog.HasValue ? x.Comment.IsWorklog.Value : false,
                         IsInternal = x.Comment.IsInternal.HasValue ? x.Comment.IsInternal.Value : false,
-                        JSONAttribute = x.Comment.JSONAttribute,
+                        JSONAttribute = x.Comment.Jsonattribute,
                         CommentDatetime = (DateTime)x.Comment.ModifiedOn,
                         CommentCreatedBy = x.Comment.CreatedBy,
                         CommentEditedBy = x.Comment.ModifiedBy,
@@ -89,12 +89,12 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
 
                 else if (!IsWorklog && !all && IsInternal && jsonAttribute != string.Empty)
                 {
-                    return db.vwComments.Where(w => referenceList.Any(y => y.ReferenceID == w.ReferenceID && y.ReferenceType.ToString() == w.ReferenceType) && w.IsWorklog != true &&
-                                            w.IsDeleted == false && w.JSONAttribute == jsonAttribute)
+                    return db.VwComments.Where(w => referenceList.Any(y => y.ReferenceId == w.ReferenceId && y.ReferenceType.ToString() == w.ReferenceType) && w.IsWorklog != true &&
+                                            w.IsDeleted == false && w.Jsonattribute == jsonAttribute)
                                            .Select(s => new CommentModel
                                            {
-                                               CommentId = s.CommentID,
-                                               RefId = s.ReferenceID,
+                                               CommentId = s.CommentId,
+                                               RefId = s.ReferenceId,
                                                Comment = s.CommentText,
                                                IsInternal = s.IsInternal.HasValue ? s.IsInternal.Value : false,
                                                CommentCreatedBy = s.CreatedUserName,
@@ -107,15 +107,15 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
             return new List<CommentModel>();
         }
 
-        public static void UpdateComment(int commentId, string commentText, string username, string roleName = null, bool isInternal = false)
+        public static void UpdateComment(int CommentId, string commentText, string username, string roleName = null, bool isInternal = false)
         {
             using (AAHREntities db = new AAHREntities())
             {
-                DeveloperPortal.DataAccess.Entity.Models.Generated.Comment comment = db.Comments.Find(commentId);
+                DeveloperPortal.DataAccess.Entity.Models.Generated.Comment comment = db.Comments.Find(CommentId);
                 comment.CommentText = commentText;
                 comment.Role = roleName;
                 comment.IsInternal = isInternal;
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 
@@ -123,33 +123,33 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
         {
             using (AAHREntities db = new AAHREntities())
             {
-                foreach (AssnComment item in db.AssnComments.Where(m => m.ReferenceID == refId && m.ReferenceType == refType.ToString()))
+                foreach (AssnComment item in db.AssnComments.Where(m => m.ReferenceId == refId && m.ReferenceType == refType.ToString()))
                 {
                     item.Comment.IsDeleted = true;
                 }
 
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 
-        public static void DeleteComment(int commentId, string username)
+        public static void DeleteComment(int CommentId, string username)
         {
             using (AAHREntities db = new AAHREntities())
             {
-                DeveloperPortal.DataAccess.Entity.Models.Generated.Comment comment = db.Comments.Find(commentId);
+                DeveloperPortal.DataAccess.Entity.Models.Generated.Comment comment = db.Comments.Find(CommentId);
                 comment.IsDeleted = true;
-                db.SaveChanges(username);
+               // db.SaveChanges(username);
             }
         }
 
-        public static DeveloperPortal.DataAccess.Entity.Models.Generated.Comment FindCommentByRefID(string referenceID, string referenceType)
+        public static DeveloperPortal.DataAccess.Entity.Models.Generated.Comment FindCommentByRefID(string ReferenceId, string referenceType)
         {
             using (var db = new AAHREntities())
             {
-                var assnComments = db.AssnComments.Where(x => x.ReferenceID == referenceID && x.ReferenceType == referenceType && x.Comment.IsDeleted == false).OrderByDescending(y => y.CommentID).FirstOrDefault();
+                var assnComments = db.AssnComments.Where(x => x.ReferenceId == ReferenceId && x.ReferenceType == referenceType && x.Comment.IsDeleted == false).OrderByDescending(y => y.CommentId).FirstOrDefault();
                 if (assnComments != null)
                 {
-                    return db.Comments.FirstOrDefault(x => x.CommentID == assnComments.CommentID);
+                    return db.Comments.FirstOrDefault(x => x.CommentId == assnComments.CommentId);
                 }
 
             }
@@ -158,7 +158,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
 
         public class CommentReference
         {
-            public string ReferenceID { get; set; }
+            public string ReferenceId { get; set; }
             public string ReferenceType { get; set; }
         }
 

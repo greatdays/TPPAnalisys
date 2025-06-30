@@ -10,7 +10,7 @@ public partial class ProjectSiteAdditionalQuestion
 {
     public int ProjectSiteAddQuestionId { get; set; }
 
-    public int? ProjectSiteAttributeID { get; set; }
+    public int? ProjectSiteAttributeId { get; set; }
 
     public string? Question { get; set; }
 

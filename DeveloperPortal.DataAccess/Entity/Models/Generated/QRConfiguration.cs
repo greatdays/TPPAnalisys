@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRConfiguration
+public partial class Qrconfiguration
 {
-    public int QRConfigurationID { get; set; }
+    public int QrconfigurationId { get; set; }
 
-    public string? QRCode { get; set; }
+    public string? Qrcode { get; set; }
 
     public int? QuarterStartDay { get; set; }
 
@@ -17,21 +17,21 @@ public partial class QRConfiguration
 
     public int? QuarterEndMonth { get; set; }
 
-    public int? QRSubmitStartDay { get; set; }
+    public int? QrsubmitStartDay { get; set; }
 
-    public int? QRSubmitStartMonth { get; set; }
+    public int? QrsubmitStartMonth { get; set; }
 
-    public int? QRSubmitEndDay { get; set; }
+    public int? QrsubmitEndDay { get; set; }
 
-    public int? QRSubmitEndMonth { get; set; }
+    public int? QrsubmitEndMonth { get; set; }
 
-    public int? QRStaffSubmitEndDay { get; set; }
+    public int? QrstaffSubmitEndDay { get; set; }
 
-    public int? QRStaffSubmitEndMonth { get; set; }
+    public int? QrstaffSubmitEndMonth { get; set; }
 
-    public int? QRSoftSubmitDay { get; set; }
+    public int? QrsoftSubmitDay { get; set; }
 
-    public int? QRSoftSubmitMonth { get; set; }
+    public int? QrsoftSubmitMonth { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

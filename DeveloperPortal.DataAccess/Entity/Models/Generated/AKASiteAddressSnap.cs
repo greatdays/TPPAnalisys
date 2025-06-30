@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AKASiteAddressSnap
+public partial class AkasiteAddressSnap
 {
-    public int AKASiteAddressSnapID { get; set; }
+    public int AkasiteAddressSnapId { get; set; }
 
-    public int ProjectSiteSnapID { get; set; }
+    public int ProjectSiteSnapId { get; set; }
 
-    public int? RefSiteAddressID { get; set; }
+    public int? RefSiteAddressId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
     public string? HouseNum { get; set; }
 
@@ -23,7 +23,7 @@ public partial class AKASiteAddressSnap
 
     public string? StreetTypeCd { get; set; }
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
     public string? PostDirCd { get; set; }
 

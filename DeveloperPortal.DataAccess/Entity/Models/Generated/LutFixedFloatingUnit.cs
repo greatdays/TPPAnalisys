@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutFixedFloatingUnit
 {
-    public int LutFixedFloatingUnitID { get; set; }
+    public int LutFixedFloatingUnitId { get; set; }
 
     public string? Description { get; set; }
 
@@ -21,7 +21,7 @@ public partial class LutFixedFloatingUnit
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
     public virtual ICollection<UnitAttribute> UnitAttributes { get; set; } = new List<UnitAttribute>();
 }

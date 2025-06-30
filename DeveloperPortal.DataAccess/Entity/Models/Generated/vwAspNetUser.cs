@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwAspNetUser
+public partial class VwAspNetUser
 {
     public int UserId { get; set; }
 
-    public string? EmployeeID { get; set; }
+    public string? EmployeeId { get; set; }
 
     public string? UserName { get; set; }
 

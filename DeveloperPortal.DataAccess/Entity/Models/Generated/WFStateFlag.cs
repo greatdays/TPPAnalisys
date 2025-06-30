@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class WFStateFlag
+public partial class WfstateFlag
 {
-    public int WorkFlowFlagID { get; set; }
+    public int WorkFlowFlagId { get; set; }
 
-    public int? WFStateID { get; set; }
+    public int? WfstateId { get; set; }
 
     public bool? IsDeleteLocked { get; set; }
 

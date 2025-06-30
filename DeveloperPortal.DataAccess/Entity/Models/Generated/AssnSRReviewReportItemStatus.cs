@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnSRReviewReportItemStatus
+public partial class AssnSrreviewReportItemStatus
 {
-    public int AssnServiceRequestReviewReportID { get; set; }
+    public int AssnServiceRequestReviewReportId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutReviewReportItemID { get; set; }
+    public int LutReviewReportItemId { get; set; }
 
-    public int LutReviewReportSubItemID { get; set; }
+    public int LutReviewReportSubItemId { get; set; }
 
     public string Status { get; set; } = null!;
 

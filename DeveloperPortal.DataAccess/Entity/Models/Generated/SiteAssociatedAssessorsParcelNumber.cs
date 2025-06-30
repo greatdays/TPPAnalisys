@@ -7,13 +7,13 @@ public partial class SiteAssociatedAssessorsParcelNumber
 {
     public int Id { get; set; }
 
-    public string? APNNumber { get; set; }
+    public string? Apnnumber { get; set; }
 
-    public bool? IsHIMS { get; set; }
+    public bool? IsHims { get; set; }
 
-    public bool? IsAcHP { get; set; }
+    public bool? IsAcHp { get; set; }
 
-    public int SiteID { get; set; }
+    public int SiteId { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -23,7 +23,7 @@ public partial class SiteAssociatedAssessorsParcelNumber
 
     public string? ModifiedBy { get; set; }
 
-    public int? PropSnapshotID { get; set; }
+    public int? PropSnapshotId { get; set; }
 
-    public bool? isDeleted { get; set; }
+    public bool? IsDeleted { get; set; }
 }

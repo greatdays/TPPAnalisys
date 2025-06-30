@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PCMStoPncSyncLog
+public partial class PcmstoPncSyncLog
 {
-    public int SyncLogID { get; set; }
+    public int SyncLogId { get; set; }
 
     public string IdentifierType { get; set; } = null!;
 
-    public string IdentifierID { get; set; } = null!;
+    public string IdentifierId { get; set; } = null!;
 
-    public string? IdentifierJSON { get; set; }
+    public string? IdentifierJson { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

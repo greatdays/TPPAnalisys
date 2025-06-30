@@ -1,5 +1,7 @@
 ﻿using System.Data;
-using DeveloperPortal.Application;
+using System.Threading.Tasks;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.Dashboard;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,28 +18,32 @@ namespace DeveloperPortal.Controllers
         public IConfigurationRoot Configuration { get; set; }
         public List<string?> DashboardData { get; private set; }
         readonly ILogger<DashboardController> _logger;
-
+        public IDashboardService _dashboardService;
+        public IAppConfigService appConfigService;
+        public IApnpinService _apnpinService;
+        
 
         // Here we are using Dependency Injection to inject the Configuration object
-        public DashboardController(IConfiguration config, IHttpContextAccessor httpConfig, ILogger<DashboardController> logger, IDiagnosticContext diagnosticContext)
+        public DashboardController(IConfiguration config, IHttpContextAccessor httpConfig, ILogger<DashboardController> logger, IDiagnosticContext diagnosticContext, IDashboardService dashboardService, IAppConfigService appConfigService, IApnpinService apnpinService)
         {
             _logger = logger;
+            _dashboardService = dashboardService;
+            this.appConfigService = appConfigService;
+            _apnpinService = apnpinService;
         }
 
         //Ananth commented for testing
         [HttpPost]
-        public List<DashboardDataModel> GetMyProjectData()
+        public async Task<List<DashboardDataModel>> GetMyProjectData()
         {
-            //below code will be remove after test ticket AQT0007949
-            _logger.LogInformation("DashboardController:GetMyProjectData : Test serilog in UI layer");
-            Dashboard dashboard = new Dashboard();
-            List<DashboardDataModel> list = dashboard.GetAllConstructionCasesForUser();
+            List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUser();
+                      
             return list;
         }
 
         // GET: api/<DashboardController>
         [HttpPost]
-        public JsonResult GetProjectData()
+        public async Task<JsonResult> GetProjectData()
         {
 
             string? dashboardCategory = Request.Form["name"].FirstOrDefault();
@@ -51,8 +57,8 @@ namespace DeveloperPortal.Controllers
             else
             {
                 //dt = GetAllConstructionCases();
-                Dashboard dashboard = new Dashboard(); //Ananth commented for testing
-                List<DashboardDataModel> list = dashboard.GetAllConstructionCases(); //Ananth commented for testing
+                     //Ananth commented for testing
+                List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCases(); //Ananth commented for testing
                 //List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
 
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(list);
@@ -65,11 +71,6 @@ namespace DeveloperPortal.Controllers
                 HttpContext.Session.SetString("DashboardData", JsonConvert.SerializeObject(dt));
             }
 
-            /*DataRow[] drNewProjColl = dt.Select("Status='Under Document Review'"); //Type='New Construction Project' AND
-            DataRow[] drPlanReviewColl = dt.Select("Status='Ready for Design Review'");
-            DataRow[] drSiteInspectionColl = dt.Select("Status='Site Case In Progress'");
-            DataRow[] drNACColl = dt.Select("Status='NAC Inspection IN Progress'");
-            DataRow[] drCompletedCertColl = dt.Select("Status='City Compliance Certificate Issued'");*/
 
             //initialize
             DataRow[] drColl = Array.Empty<DataRow>();

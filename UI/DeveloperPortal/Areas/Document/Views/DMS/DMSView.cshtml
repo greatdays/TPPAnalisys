@@ -1,0 +1,64 @@
+﻿@model List<DeveloperPortal.Domain.DMS.FileModel>
+@using Newtonsoft.Json
+
+<div class="table-responsive">
+    <table id="dmsDataTable" class="display table table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Filename</th>
+                <th>Category</th>
+                <th>Uploader</th>
+                <th>Shared</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var file in Model)
+                {
+                    <tr>
+                        <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
+                        <td>@file.Name</td>
+                        <td>@file.Category</td>
+                        <td>@file.UploadedBy</td>
+                        <td>@file.Roles</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(file.Link))
+                            {
+                                <a href="@file.Link" class="btn btn-sm btn-primary" target="_blank">Download</a>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                @*This dummy row ensures cell count matches column count*@
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No data available</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#dmsDataTable').DataTable({
+            stripeClasses: [],
+            paging: true,
+            info: true,
+            searching: true,
+            scrollX: true,
+            language: {
+                emptyTable: "No documents available"
+            }
+        });
+    });
+</script>

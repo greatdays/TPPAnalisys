@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

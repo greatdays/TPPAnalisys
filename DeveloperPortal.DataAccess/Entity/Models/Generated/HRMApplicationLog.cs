@@ -3,27 +3,27 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class HRMApplicationLog
+public partial class HrmapplicationLog
 {
-    public int HRMApplicationLogID { get; set; }
+    public int HrmapplicationLogId { get; set; }
 
-    public int HRMApplicationID { get; set; }
+    public int HrmapplicationId { get; set; }
 
-    public int ListingID { get; set; }
+    public int ListingId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int LutContactTypeID { get; set; }
+    public int LutContactTypeId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string? ApplicationNumber { get; set; }
 
-    public int? LutUnitTypeID { get; set; }
+    public int? LutUnitTypeId { get; set; }
 
     public string? AltPhone { get; set; }
 
-    public string? AltLutPhoneTypeCD { get; set; }
+    public string? AltLutPhoneTypeCd { get; set; }
 
     public string? AltArea { get; set; }
 
@@ -35,9 +35,9 @@ public partial class HRMApplicationLog
 
     public decimal? IncomeHousehold { get; set; }
 
-    public int? LutTotalBathroomsID { get; set; }
+    public int? LutTotalBathroomsId { get; set; }
 
-    public int? LutTotalBedroomsID { get; set; }
+    public int? LutTotalBedroomsId { get; set; }
 
     public bool? MemberAgeOver55 { get; set; }
 
@@ -63,7 +63,7 @@ public partial class HRMApplicationLog
 
     public DateTime? UnSubscriptionDate { get; set; }
 
-    public int? CancelReasonID { get; set; }
+    public int? CancelReasonId { get; set; }
 
     public DateTime CreatedOn { get; set; }
 
@@ -73,19 +73,19 @@ public partial class HRMApplicationLog
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public bool? IsDeleted { get; set; }
 
     public string? Comment { get; set; }
 
-    public string? AUWaitListPosition { get; set; }
+    public string? AuwaitListPosition { get; set; }
 
     public int? LotteryResult { get; set; }
 
     public string? ConventionalWaitListPosition { get; set; }
 
-    public int? HAContactIndentifierId { get; set; }
+    public int? HacontactIndentifierId { get; set; }
 
     public int? ListingSnapId { get; set; }
 
@@ -123,7 +123,15 @@ public partial class HRMApplicationLog
 
     public string? FullAddress { get; set; }
 
-    public string? HMISNumber { get; set; }
+    public string? Hmisnumber { get; set; }
 
     public DateTime? LogCreatedOn { get; set; }
+
+    public bool? IsDeclined { get; set; }
+
+    public string? FirstName { get; set; }
+
+    public string? MiddleName { get; set; }
+
+    public string? LastName { get; set; }
 }

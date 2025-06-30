@@ -21,38 +21,38 @@ namespace DeveloperPortal.Application.PropertySnapshot
                     .Include(x => x.PropSnapshots)
                     
                     .Include(x=>x.Case.CaseType)
-                    .Where(x => x.CaseID == caseId).FirstOrDefault();
+                    .Where(x => x.CaseId == caseId).FirstOrDefault();
 
                 if (sr != null)
                 {
-                    serviceRequestModel.ServiceRequestId = sr.ServiceRequestID;
-                    serviceRequestModel.CaseId = sr.CaseID;
-                    serviceRequestModel.ServiceRequestTypeId = sr.LutServiceRequestTypeID;
+                    serviceRequestModel.ServiceRequestId = sr.ServiceRequestId;
+                    serviceRequestModel.CaseId = sr.CaseId;
+                    serviceRequestModel.ServiceRequestTypeId = sr.LutServiceRequestTypeId;
                     serviceRequestModel.ServiceRequestNumber = sr.ServiceRequestNumber;
-                    serviceRequestModel.ServiceTrackingId = sr.ServiceTrackingID;
-                    serviceRequestModel.ProgramCycleId = sr.LutProgramCycleID;
-                    serviceRequestModel.PropSnapshotId = sr.PropSnapshots.FirstOrDefault().PropSnapshotID;
-                    serviceRequestModel.ProjectID = sr.PropSnapshots.FirstOrDefault()?.ProjectID;
+                    serviceRequestModel.ServiceTrackingId = sr.ServiceTrackingId;
+                    serviceRequestModel.ProgramCycleId = sr.LutProgramCycleId;
+                    serviceRequestModel.PropSnapshotId = sr.PropSnapshots.FirstOrDefault().PropSnapshotId;
+                    serviceRequestModel.ProjectID = sr.PropSnapshots.FirstOrDefault()?.ProjectId;
                     serviceRequestModel.SiteAddress = sr.PropSnapshots.FirstOrDefault()?.IdentifierType == Domain.PropertySnapshot.Constants.IdentifierTypeProject
-                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectID == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.SiteAddress?.FullAddress
+                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectId == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.SiteAddress?.FullAddress
                                                         : sr.PropSnapshots.FirstOrDefault()?.SiteAddress?.FullAddress;
-                    serviceRequestModel.APN = sr.PropSnapshots.FirstOrDefault().APN?.APN1;
+                    serviceRequestModel.APN = sr.PropSnapshots.FirstOrDefault().Apn?.Apn1;
                     serviceRequestModel.Status = sr.Case.Status;
-                    serviceRequestModel.APNAttributes = sr.PropSnapshots.FirstOrDefault().APN?.Attributes;
+                    serviceRequestModel.APNAttributes = sr.PropSnapshots.FirstOrDefault().Apn?.Attributes;
                     serviceRequestModel.ServiceRequestAttributes = sr.Attributes;
                     var obj = sr.PropSnapshots.FirstOrDefault()?.Project;
-                    serviceRequestModel.RefProjectID = sr.PropSnapshots.FirstOrDefault()?.Project?.RefProjectID;
+                    serviceRequestModel.RefProjectID = sr.PropSnapshots.FirstOrDefault()?.Project?.RefProjectId;
                     serviceRequestModel.RefProjectSiteID = sr.PropSnapshots.FirstOrDefault()?.IdentifierType == Domain.PropertySnapshot.Constants.IdentifierTypeProject
-                                                            ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectID == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSite?.RefProjectSiteID
-                                                            : sr.PropSnapshots.FirstOrDefault()?.ProjectSite?.RefProjectSiteID;
+                                                            ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectId == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSite?.RefProjectSiteId
+                                                            : sr.PropSnapshots.FirstOrDefault()?.ProjectSite?.RefProjectSiteId;
                     serviceRequestModel.CaseType = sr.Case.CaseType.Type;
                     serviceRequestModel.FileNumber = sr.PropSnapshots.FirstOrDefault()?.IdentifierType == Domain.PropertySnapshot.Constants.IdentifierTypeProject
-                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectID == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSite?.FileNumber
+                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectId == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSite?.FileNumber
                                                         : sr.PropSnapshots.FirstOrDefault()?.Project.ProjectSites.FirstOrDefault()?.FileNumber;
                     serviceRequestModel.ProjectName = sr.PropSnapshots.FirstOrDefault()?.Project?.ProjectName;
                     serviceRequestModel.ProjectSiteID = sr.PropSnapshots.FirstOrDefault()?.IdentifierType == Domain.PropertySnapshot.Constants.IdentifierTypeProject
-                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectID == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSiteID
-                                                        : sr.PropSnapshots.FirstOrDefault()?.ProjectSiteID;
+                                                        ? _dbContext.PropSnapshots.FirstOrDefault(x => x.ProjectId == serviceRequestModel.ProjectID && x.IdentifierType == "ProjectSite")?.ProjectSiteId
+                                                        : sr.PropSnapshots.FirstOrDefault()?.ProjectSiteId;
                     serviceRequestModel.CESType = "";// sr.PropSnapshots.FirstOrDefault()?.Project.ProjectSites.FirstOrDefault()?.LutCESType?.CESType;
                     serviceRequestModel.ServiceRequestComments = sr.ServiceRequestComments;
                 }
@@ -72,11 +72,11 @@ namespace DeveloperPortal.Application.PropertySnapshot
 
             using (AAHREntities _dbContext = new())
             {
-                var sr = _dbContext.ServiceRequests.Where(x => x.CaseID == caseId).FirstOrDefault();
+                var sr = _dbContext.ServiceRequests.Where(x => x.CaseId == caseId).FirstOrDefault();
 
                 if (sr != null)
                 {
-                    apn = sr?.PropSnapshots?.FirstOrDefault(x => x.IdentifierType == "APN")?.APN?.APN1;
+                    apn = sr?.PropSnapshots?.FirstOrDefault(x => x.IdentifierType == "APN")?.Apn?.Apn1;
                 }
             }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutConstructionType
 {
-    public int LutConstructionTypeID { get; set; }
+    public int LutConstructionTypeId { get; set; }
 
     public string? Name { get; set; }
 
@@ -21,5 +21,5 @@ public partial class LutConstructionType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPSnap> PMPSnaps { get; set; } = new List<PMPSnap>();
+    public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 }

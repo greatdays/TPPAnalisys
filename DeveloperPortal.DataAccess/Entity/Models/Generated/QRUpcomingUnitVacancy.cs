@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRUpcomingUnitVacancy
+public partial class QrupcomingUnitVacancy
 {
-    public int QRUpcomingUnitVacancyID { get; set; }
+    public int QrupcomingUnitVacancyId { get; set; }
 
-    public int QuarterlyReportID { get; set; }
+    public int QuarterlyReportId { get; set; }
 
-    public int UpcomingUnitVacancyID { get; set; }
+    public int UpcomingUnitVacancyId { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
     public bool IsUnitBecomeVacant { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public DateOnly? NoticeDate { get; set; }
 
@@ -23,19 +23,19 @@ public partial class QRUpcomingUnitVacancy
 
     public DateOnly? ActualVacancyDate { get; set; }
 
-    public bool? IsQualifiedAUTL { get; set; }
+    public bool? IsQualifiedAutl { get; set; }
 
-    public int? CurrentUnitPropSnapShotID { get; set; }
+    public int? CurrentUnitPropSnapShotId { get; set; }
 
-    public int? LutUpcomingUnitVacancyID { get; set; }
+    public int? LutUpcomingUnitVacancyId { get; set; }
 
     public string? Other { get; set; }
 
-    public bool? IsQualifiedAUWL { get; set; }
+    public bool? IsQualifiedAuwl { get; set; }
 
-    public string? AUWLNo { get; set; }
+    public string? Auwlno { get; set; }
 
-    public bool? IsQualifiedNonPWDInAU { get; set; }
+    public bool? IsQualifiedNonPwdinAu { get; set; }
 
     public bool IsDeleted { get; set; }
 

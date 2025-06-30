@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ContactNameChangeLog
 {
-    public int ContactNameChangeLogID { get; set; }
+    public int ContactNameChangeLogId { get; set; }
 
-    public int ContactIdentifierID { get; set; }
+    public int ContactIdentifierId { get; set; }
 
     public string OldFirstName { get; set; } = null!;
 

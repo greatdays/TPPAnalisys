@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class WarrantDetail
 {
-    public int WarrantDetailID { get; set; }
+    public int WarrantDetailId { get; set; }
 
-    public int? InspectionID { get; set; }
+    public int? InspectionId { get; set; }
 
     public DateTime? WarrantRequestedOn { get; set; }
 

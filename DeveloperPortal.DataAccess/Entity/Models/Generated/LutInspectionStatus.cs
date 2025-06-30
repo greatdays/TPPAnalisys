@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutInspectionStatus
 {
-    public int LutInspectionStatusID { get; set; }
+    public int LutInspectionStatusId { get; set; }
 
     public string? InspectionStatus { get; set; }
 

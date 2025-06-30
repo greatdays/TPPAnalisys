@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AccessLog
 {
-    public int AccessLogID { get; set; }
+    public int AccessLogId { get; set; }
 
     public string? AppKey { get; set; }
 

@@ -11,7 +11,7 @@ public partial class CfgDocument
     /// <summary>
     /// Primary Key Identity column for the CfgDocument table
     /// </summary>
-    public int CfgDocumentID { get; set; }
+    public int CfgDocumentId { get; set; }
 
     /// <summary>
     /// TMS Document Name
@@ -21,7 +21,7 @@ public partial class CfgDocument
     /// <summary>
     /// Running number configuration
     /// </summary>
-    public int? CfgNextRunID { get; set; }
+    public int? CfgNextRunId { get; set; }
 
     /// <summary>
     /// Created by date
@@ -46,5 +46,5 @@ public partial class CfgDocument
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 }

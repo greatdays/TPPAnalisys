@@ -5,35 +5,35 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectSite
 {
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
-    public int RefProjectSiteID { get; set; }
+    public int RefProjectSiteId { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
     public string? PropertyName { get; set; }
 
-    public string? PrimaryAPN { get; set; }
+    public string? PrimaryApn { get; set; }
 
     public string? FileNumber { get; set; }
 
     public int? SiteNum { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
-    public int? HIMSProjUniqueId { get; set; }
+    public int? HimsprojUniqueId { get; set; }
 
-    public int? RegionID { get; set; }
+    public int? RegionId { get; set; }
 
-    public int? NeighborhoodID { get; set; }
+    public int? NeighborhoodId { get; set; }
 
     public string? CouncilDistrict { get; set; }
 
     public string? Source { get; set; }
 
-    public int? SourceRefID { get; set; }
+    public int? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -51,7 +51,7 @@ public partial class ProjectSite
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
     public bool? IsAccessible { get; set; }
 
@@ -69,11 +69,11 @@ public partial class ProjectSite
 
     public string? SiteAddress { get; set; }
 
-    public int? LutCESTypeID { get; set; }
+    public int? LutCestypeId { get; set; }
 
-    public int? LutProjectSiteStatusID { get; set; }
+    public int? LutProjectSiteStatusId { get; set; }
 
-    public int? LACountyServicePlanningAreaID { get; set; }
+    public int? LacountyServicePlanningAreaId { get; set; }
 
     /// <summary>
     /// For HACLA property
@@ -88,9 +88,9 @@ public partial class ProjectSite
 
     public decimal? ConstructionMobilityRatio { get; set; }
 
-    public decimal? ConstructionHVRatio { get; set; }
+    public decimal? ConstructionHvratio { get; set; }
 
-    public int? LutOccupancyStatusID { get; set; }
+    public int? LutOccupancyStatusId { get; set; }
 
     public DateOnly? OccupancyNotificationDate { get; set; }
 
@@ -106,17 +106,23 @@ public partial class ProjectSite
 
     public DateOnly? OwnershipChangeDate { get; set; }
 
-    public bool? IsWillAUWLOpen { get; set; }
+    public bool? IsWillAuwlopen { get; set; }
 
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitListCurrentUnitProjectSites { get; set; } = new List<AUTransferWaitList>();
+    public string? SharedSiteAchpfileNumber { get; set; }
 
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitListMoveInProjectSites { get; set; } = new List<AUTransferWaitList>();
+    public int? TotalSharedSiteUnits { get; set; }
 
-    public virtual ICollection<AUWaitList> AUWaitLists { get; set; } = new List<AUWaitList>();
+    public bool? ParentSite { get; set; }
 
     public virtual ICollection<AssnProjectSiteReference> AssnProjectSiteReferences { get; set; } = new List<AssnProjectSiteReference>();
 
     public virtual ICollection<AssnTrainingRegistryProjectSite> AssnTrainingRegistryProjectSites { get; set; } = new List<AssnTrainingRegistryProjectSite>();
+
+    public virtual ICollection<AutransferWaitList> AutransferWaitListCurrentUnitProjectSites { get; set; } = new List<AutransferWaitList>();
+
+    public virtual ICollection<AutransferWaitList> AutransferWaitListMoveInProjectSites { get; set; } = new List<AutransferWaitList>();
+
+    public virtual ICollection<AuwaitList> AuwaitLists { get; set; } = new List<AuwaitList>();
 
     public virtual ICollection<EffectiveCommunication> EffectiveCommunications { get; set; } = new List<EffectiveCommunication>();
 
@@ -124,11 +130,11 @@ public partial class ProjectSite
 
     public virtual ICollection<GrievanceLog> GrievanceLogs { get; set; } = new List<GrievanceLog>();
 
-    public virtual LACountyServicePlanningArea? LACountyServicePlanningArea { get; set; }
+    public virtual LacountyServicePlanningArea? LacountyServicePlanningArea { get; set; }
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
 
-    public virtual LutCESType? LutCESType { get; set; }
+    public virtual LutCestype? LutCestype { get; set; }
 
     public virtual LutOccupancyStatus? LutOccupancyStatus { get; set; }
 
@@ -136,11 +142,11 @@ public partial class ProjectSite
 
     public virtual Neighborhood? Neighborhood { get; set; }
 
-    public virtual ICollection<PMPProjectSiteSnap> PMPProjectSiteSnaps { get; set; } = new List<PMPProjectSiteSnap>();
-
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
-
     public virtual ICollection<PhoneLog> PhoneLogs { get; set; } = new List<PhoneLog>();
+
+    public virtual ICollection<PmpprojectSiteSnap> PmpprojectSiteSnaps { get; set; } = new List<PmpprojectSiteSnap>();
+
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual Project? Project { get; set; }
 
@@ -150,17 +156,17 @@ public partial class ProjectSite
 
     public virtual ICollection<PropSnapshot> PropSnapshots { get; set; } = new List<PropSnapshot>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitListCurrentUnitProjectSites { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitListCurrentUnitProjectSites { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitListMoveInProjectSites { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitListMoveInProjectSites { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitLists { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitLists { get; set; } = new List<QrauwaitList>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogs { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ICollection<ReasonableAccommodation> ReasonableAccommodations { get; set; } = new List<ReasonableAccommodation>();
 

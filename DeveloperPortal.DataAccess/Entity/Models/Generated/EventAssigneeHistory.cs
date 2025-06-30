@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EventAssigneeHistory
 {
-    public int EventHistoryID { get; set; }
+    public int EventHistoryId { get; set; }
 
     public string AssigneeName { get; set; } = null!;
 

@@ -8,7 +8,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 /// </summary>
 public partial class LutInspectionType
 {
-    public int LutInspectionTypeID { get; set; }
+    public int LutInspectionTypeId { get; set; }
 
     public string? Name { get; set; }
 

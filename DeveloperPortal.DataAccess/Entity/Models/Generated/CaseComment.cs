@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class CaseComment
 {
-    public int CommentID { get; set; }
+    public int CommentId { get; set; }
 
     public string Description { get; set; } = null!;
 

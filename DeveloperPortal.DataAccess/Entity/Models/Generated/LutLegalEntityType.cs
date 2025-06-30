@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutLegalEntityType
 {
-    public int LutLegalEntityTypeID { get; set; }
+    public int LutLegalEntityTypeId { get; set; }
 
     public string? LegalEntityType { get; set; }
 
@@ -21,7 +21,7 @@ public partial class LutLegalEntityType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPSnap> PMPSnaps { get; set; } = new List<PMPSnap>();
+    public virtual ICollection<Pmp> Pmps { get; set; } = new List<Pmp>();
 
-    public virtual ICollection<PMP> PMPs { get; set; } = new List<PMP>();
+    public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 }

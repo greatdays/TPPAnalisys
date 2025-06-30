@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class TrainingSessionTrainer
 {
-    public int TrainingSessionID { get; set; }
+    public int TrainingSessionId { get; set; }
 
-    public int AssnCourseTrainerID { get; set; }
+    public int AssnCourseTrainerId { get; set; }
 
     public double PlanDuration { get; set; }
 
@@ -25,7 +25,7 @@ public partial class TrainingSessionTrainer
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual AssnCourseTrainer AssnCourseTrainer { get; set; } = null!;
 }

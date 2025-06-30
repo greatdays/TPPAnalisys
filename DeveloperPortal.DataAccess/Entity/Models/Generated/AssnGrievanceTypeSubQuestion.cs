@@ -43,5 +43,5 @@ public partial class AssnGrievanceTypeSubQuestion
 
     public virtual LutGrievanceType? LutGrievanceType { get; set; }
 
-    public virtual ICollection<QRAssnGrievanceTypeSubQuestion> QRAssnGrievanceTypeSubQuestions { get; set; } = new List<QRAssnGrievanceTypeSubQuestion>();
+    public virtual ICollection<QrassnGrievanceTypeSubQuestion> QrassnGrievanceTypeSubQuestions { get; set; } = new List<QrassnGrievanceTypeSubQuestion>();
 }

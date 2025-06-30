@@ -1,8 +1,15 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using System.Configuration;
+using DeveloperPortal.Application.DMS.Implementation;
+using DeveloperPortal.Application.DMS.Interface;
+using DeveloperPortal.Application.ProjectDetail;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Application.Security;
 using DeveloperPortal.Application.Services;
 using DeveloperPortal.DataAccess;
 using DeveloperPortal.Domain.Interfaces;
+using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Repository;
 using DeveloperPortal.Serilog;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,23 +47,43 @@ namespace DeveloperPortal
                 options.Cookie.SameSite = SameSiteMode.Lax;
                 options.Cookie.IsEssential = true;
             });
+            services.AddDbContext<AAHREntities>(options =>
+           options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+            services.AddDbContext<AAHREntitiesHelper>(opts =>
+    opts.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+
+
+            services.AddScoped<AAHREntitiesHelper>();
+            services.AddDataAccess();
+            services.AddScoped<IAppConfigService, AppConfigService>();
+            services.AddScoped<IDashboardService, DashboardService>();
+            services.AddScoped<IApnpinService, ApnpinService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IProjectDetailService, ProjectDetailService>();
+            services.AddScoped<IUnitImportService, UnitImportService>();
+            services.AddScoped<IDocumentService, DocumentService>();
+
 
             services.AddSingleton<JwtGenerator>();
-            services.AddScoped<IProjectDetailService, DeveloperPortal.Application.ProjectDetail.ProjectDetailService>();
             services.AddScoped<IAngelenoAuthentication, AngelenoAuthenticationService>();
             services.AddScoped<ISignInServices, SignInServices>();
             services.AddDbContext<TPPDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
+            services.AddAuthentication(options =>
+            {
+                // These defaults will be used unless you override per‑attribute or per‑call
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
             .AddCookie(options =>
             {
-                options.LoginPath = "/Account/Login"; 
+                options.LoginPath = "/Account/Login";
                 options.Cookie.Name = ".AAHRDeveloperPortal.Auth";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Lax;
-            });
-            services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -66,10 +93,13 @@ namespace DeveloperPortal
                     ValidateAudience = true,
                     ValidAudience = _configuration["JwtSettings:Audience"],
                     ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_configuration["JwtSettings:Secret"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                                                 Convert.FromBase64String(
+                                                   _configuration["JwtSettings:Secret"])),
                     ValidateIssuerSigningKey = true
                 };
             });
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -88,19 +118,24 @@ namespace DeveloperPortal
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSession();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Dashboard}/{action=GetProjectData}/{id?}"
-                );
+                 name: "areas",
+                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                 name: "default",
+                 pattern: "{controller=Dashboard}/{action=GetProjectData}");
+                endpoints.MapRazorPages(); // Correctly map Razor Pages
             });
+            // app.MapRazorPages();
+
+            //app.MapControllerRoute(name: "default",
+            //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
         }
     }
 }

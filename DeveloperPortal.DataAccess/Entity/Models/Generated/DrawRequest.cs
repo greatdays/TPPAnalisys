@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class DrawRequest
 {
-    public int DrawRequestID { get; set; }
+    public int DrawRequestId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
-    public int BidPackageID { get; set; }
+    public int BidPackageId { get; set; }
 
     public decimal? Amount { get; set; }
 

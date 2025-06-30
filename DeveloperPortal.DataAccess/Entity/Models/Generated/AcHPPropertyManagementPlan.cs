@@ -3,39 +3,39 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AcHPPropertyManagementPlan
+public partial class AcHppropertyManagementPlan
 {
-    public int PropertyManagementPlanID { get; set; }
+    public int PropertyManagementPlanId { get; set; }
 
-    public int ProjectID { get; set; }
+    public int ProjectId { get; set; }
 
-    public int? CaseID { get; set; }
+    public int? CaseId { get; set; }
 
-    public int? RefAcHPCaseID { get; set; }
+    public int? RefAcHpcaseId { get; set; }
 
-    public string? ACHPPreliminaryCertification { get; set; }
+    public string? AchppreliminaryCertification { get; set; }
 
-    public DateTime? ACHPPreliminaryCertificationDate { get; set; }
+    public DateTime? AchppreliminaryCertificationDate { get; set; }
 
-    public DateTime? ACHPAffirmativeMarketingDate { get; set; }
+    public DateTime? AchpaffirmativeMarketingDate { get; set; }
 
-    public string? ACHPCertification { get; set; }
+    public string? Achpcertification { get; set; }
 
-    public DateTime? ACHPCertificationDate { get; set; }
+    public DateTime? AchpcertificationDate { get; set; }
 
-    public DateTime? ACHPMarketingDocumentsReceivedDate { get; set; }
+    public DateTime? AchpmarketingDocumentsReceivedDate { get; set; }
 
-    public DateTime? ACHPMarketingDocumentsDueDate { get; set; }
+    public DateTime? AchpmarketingDocumentsDueDate { get; set; }
 
-    public string? OMPreliminaryCertification { get; set; }
+    public string? OmpreliminaryCertification { get; set; }
 
-    public DateTime? OMPreliminaryCertificationDate { get; set; }
+    public DateTime? OmpreliminaryCertificationDate { get; set; }
 
-    public DateTime? OMAffirmativeMarketingDate { get; set; }
+    public DateTime? OmaffirmativeMarketingDate { get; set; }
 
-    public string? OMCertification { get; set; }
+    public string? Omcertification { get; set; }
 
-    public DateTime? OMCertificationDate { get; set; }
+    public DateTime? OmcertificationDate { get; set; }
 
     public DateTime? ApplicationStartDate { get; set; }
 
@@ -49,6 +49,8 @@ public partial class AcHPPropertyManagementPlan
 
     public bool IsDeleted { get; set; }
 
+    public bool IsLocked { get; set; }
+
     public DateTime CreatedOn { get; set; }
 
     public string CreatedBy { get; set; } = null!;
@@ -57,7 +59,7 @@ public partial class AcHPPropertyManagementPlan
 
     public string? ModifiedBy { get; set; }
 
-    public Guid? RowID { get; set; }
+    public Guid? RowId { get; set; }
 
     public virtual Case? Case { get; set; }
 

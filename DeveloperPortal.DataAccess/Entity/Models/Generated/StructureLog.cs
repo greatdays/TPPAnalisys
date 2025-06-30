@@ -5,15 +5,15 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class StructureLog
 {
-    public int StructureLogID { get; set; }
+    public int StructureLogId { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
-    public int? RefBuildingID { get; set; }
+    public int? RefBuildingId { get; set; }
 
-    public int APNID { get; set; }
+    public int Apnid { get; set; }
 
-    public int? LutStructureTypeID { get; set; }
+    public int? LutStructureTypeId { get; set; }
 
     public string? Description { get; set; }
 
@@ -29,7 +29,7 @@ public partial class StructureLog
 
     public string? Source { get; set; }
 
-    public string? SourceRefID { get; set; }
+    public string? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -41,7 +41,7 @@ public partial class StructureLog
 
     public string? Label { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public int? TotalUnits { get; set; }
 

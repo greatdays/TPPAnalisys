@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutPolicyReviewReportLanguage
 {
-    public int LutReviewReportLanguageID { get; set; }
+    public int LutReviewReportLanguageId { get; set; }
 
-    public int ReviewReportItemID { get; set; }
+    public int ReviewReportItemId { get; set; }
 
     public string? TemplateIdentifier { get; set; }
 

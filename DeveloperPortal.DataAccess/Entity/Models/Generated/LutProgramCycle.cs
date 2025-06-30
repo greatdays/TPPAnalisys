@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutProgramCycle
 {
-    public int LutProgramCycleID { get; set; }
+    public int LutProgramCycleId { get; set; }
 
-    public Guid? ApplicationGUID { get; set; }
+    public Guid? ApplicationGuid { get; set; }
 
     public string Name { get; set; } = null!;
 

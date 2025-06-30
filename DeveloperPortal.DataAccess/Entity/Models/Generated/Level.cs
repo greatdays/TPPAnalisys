@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class Level
 {
-    public int LevelID { get; set; }
+    public int LevelId { get; set; }
 
-    public int? RefFloorID { get; set; }
+    public int? RefFloorId { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
     public string? Floor { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Level
 
     public int? TotalUnits { get; set; }
 
-    public string? ServiceTrackingID { get; set; }
+    public string? ServiceTrackingId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -33,11 +33,11 @@ public partial class Level
 
     public virtual ICollection<Location> Locations { get; set; } = new List<Location>();
 
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual ICollection<PropSnapshot> PropSnapshots { get; set; } = new List<PropSnapshot>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnits { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual Structure? Structure { get; set; }
 

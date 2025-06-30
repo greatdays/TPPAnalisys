@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class HRMApplicationAdditionalQuestion
+public partial class HrmapplicationAdditionalQuestion
 {
-    public int HRMApplicationAddQuestionId { get; set; }
+    public int HrmapplicationAddQuestionId { get; set; }
 
-    public int? HRMApplicationId { get; set; }
+    public int? HrmapplicationId { get; set; }
 
     public int? ProjectSiteSnapId { get; set; }
 
@@ -23,7 +23,7 @@ public partial class HRMApplicationAdditionalQuestion
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual HRMApplication? HRMApplication { get; set; }
+    public virtual Hrmapplication? Hrmapplication { get; set; }
 
     public virtual ProjectSiteSnap? ProjectSiteSnap { get; set; }
 }

@@ -5,27 +5,27 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class PropSnapshot
 {
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public string IdentifierType { get; set; } = null!;
 
-    public int? APNID { get; set; }
+    public int? Apnid { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
-    public int? StructureID { get; set; }
+    public int? StructureId { get; set; }
 
-    public int? LevelID { get; set; }
+    public int? LevelId { get; set; }
 
-    public int? UnitID { get; set; }
+    public int? UnitId { get; set; }
 
-    public int? LocationID { get; set; }
+    public int? LocationId { get; set; }
 
-    public string? IdentifierJSON { get; set; }
+    public string? IdentifierJson { get; set; }
 
     public string? Status { get; set; }
 
@@ -37,29 +37,29 @@ public partial class PropSnapshot
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual APN? APN { get; set; }
-
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitListCurrentUnitPropSnapShots { get; set; } = new List<AUTransferWaitList>();
-
-    public virtual ICollection<AUTransferWaitList> AUTransferWaitListMoveInUnitPropSnapShots { get; set; } = new List<AUTransferWaitList>();
-
-    public virtual ICollection<AUWaitList> AUWaitListMoveInUnitPropSnapShots { get; set; } = new List<AUWaitList>();
-
-    public virtual ICollection<AUWaitList> AUWaitListProjSitePropSnapShots { get; set; } = new List<AUWaitList>();
+    public virtual Apn? Apn { get; set; }
 
     public virtual ICollection<AssnBackgroundCheck> AssnBackgroundChecks { get; set; } = new List<AssnBackgroundCheck>();
 
-    public virtual ICollection<AssnPMPScatteredSiteSnap> AssnPMPScatteredSiteSnaps { get; set; } = new List<AssnPMPScatteredSiteSnap>();
+    public virtual ICollection<AssnPmpscatteredSiteSnap> AssnPmpscatteredSiteSnaps { get; set; } = new List<AssnPmpscatteredSiteSnap>();
 
-    public virtual ICollection<AssnPMPScatteredSite> AssnPMPScatteredSites { get; set; } = new List<AssnPMPScatteredSite>();
+    public virtual ICollection<AssnPmpscatteredSite> AssnPmpscatteredSites { get; set; } = new List<AssnPmpscatteredSite>();
 
-    public virtual ICollection<AssnPMPSitesOutreachSnap> AssnPMPSitesOutreachSnaps { get; set; } = new List<AssnPMPSitesOutreachSnap>();
+    public virtual ICollection<AssnPmpsitesOutreachSnap> AssnPmpsitesOutreachSnaps { get; set; } = new List<AssnPmpsitesOutreachSnap>();
 
-    public virtual ICollection<AssnPMPSitesOutreach> AssnPMPSitesOutreaches { get; set; } = new List<AssnPMPSitesOutreach>();
+    public virtual ICollection<AssnPmpsitesOutreach> AssnPmpsitesOutreaches { get; set; } = new List<AssnPmpsitesOutreach>();
 
     public virtual ICollection<AssnPropertyDistrict> AssnPropertyDistricts { get; set; } = new List<AssnPropertyDistrict>();
 
     public virtual ICollection<AssnUserPropertyFavouriteCase> AssnUserPropertyFavouriteCases { get; set; } = new List<AssnUserPropertyFavouriteCase>();
+
+    public virtual ICollection<AutransferWaitList> AutransferWaitListCurrentUnitPropSnapShots { get; set; } = new List<AutransferWaitList>();
+
+    public virtual ICollection<AutransferWaitList> AutransferWaitListMoveInUnitPropSnapShots { get; set; } = new List<AutransferWaitList>();
+
+    public virtual ICollection<AuwaitList> AuwaitListMoveInUnitPropSnapShots { get; set; } = new List<AuwaitList>();
+
+    public virtual ICollection<AuwaitList> AuwaitListProjSitePropSnapShots { get; set; } = new List<AuwaitList>();
 
     public virtual ICollection<CorrectionNote> CorrectionNotes { get; set; } = new List<CorrectionNote>();
 
@@ -79,11 +79,11 @@ public partial class PropSnapshot
 
     public virtual Location? Location { get; set; }
 
-    public virtual ICollection<PMPSnap> PMPSnaps { get; set; } = new List<PMPSnap>();
+    public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 
-    public virtual ICollection<PMPUnitSnap> PMPUnitSnaps { get; set; } = new List<PMPUnitSnap>();
+    public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
 
     public virtual Project? Project { get; set; }
 
@@ -103,39 +103,39 @@ public partial class PropSnapshot
 
     public virtual ICollection<PropAttribute> PropAttributes { get; set; } = new List<PropAttribute>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitListCurrentUnitPropSnapShots { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitListCurrentUnitPropSnapShots { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUTransferWaitList> QRAUTransferWaitListMoveInUnitPropSnapShots { get; set; } = new List<QRAUTransferWaitList>();
+    public virtual ICollection<QrautransferWaitList> QrautransferWaitListMoveInUnitPropSnapShots { get; set; } = new List<QrautransferWaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitListCurrentUnitPropSnapShots { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitListCurrentUnitPropSnapShots { get; set; } = new List<QrauwaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitListMoveInUnitPropSnapShots { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitListMoveInUnitPropSnapShots { get; set; } = new List<QrauwaitList>();
 
-    public virtual ICollection<QREffectiveCommunication> QREffectiveCommunications { get; set; } = new List<QREffectiveCommunication>();
+    public virtual ICollection<QreffectiveCommunication> QreffectiveCommunications { get; set; } = new List<QreffectiveCommunication>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogProjSitePropSnapShots { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogProjSitePropSnapShots { get; set; } = new List<QrgrievanceLog>();
 
-    public virtual ICollection<QRGrievanceLog> QRGrievanceLogUnitPropSnapShots { get; set; } = new List<QRGrievanceLog>();
+    public virtual ICollection<QrgrievanceLog> QrgrievanceLogUnitPropSnapShots { get; set; } = new List<QrgrievanceLog>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnitCurrentProjSitePropSnapShots { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnitCurrentProjSitePropSnapShots { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnitCurrentUnitPropSnapShots { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnitCurrentUnitPropSnapShots { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnitPreviousProjSitePropSnapShots { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnitPreviousProjSitePropSnapShots { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnitPreviousUnitPropSnapShots { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnitPreviousUnitPropSnapShots { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QROccupancyUnit> QROccupancyUnitUnitPropSnapShots { get; set; } = new List<QROccupancyUnit>();
+    public virtual ICollection<QroccupancyUnit> QroccupancyUnitUnitPropSnapShots { get; set; } = new List<QroccupancyUnit>();
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
-    public virtual ICollection<QRUpcomingUnitVacancy> QRUpcomingUnitVacancyCurrentUnitPropSnapShots { get; set; } = new List<QRUpcomingUnitVacancy>();
+    public virtual ICollection<QrupcomingUnitVacancy> QrupcomingUnitVacancyCurrentUnitPropSnapShots { get; set; } = new List<QrupcomingUnitVacancy>();
 
-    public virtual ICollection<QRUpcomingUnitVacancy> QRUpcomingUnitVacancyProjSitePropSnapShots { get; set; } = new List<QRUpcomingUnitVacancy>();
+    public virtual ICollection<QrupcomingUnitVacancy> QrupcomingUnitVacancyProjSitePropSnapShots { get; set; } = new List<QrupcomingUnitVacancy>();
 
-    public virtual ICollection<QRUpcomingUnitVacancy> QRUpcomingUnitVacancyUnitPropSnapShots { get; set; } = new List<QRUpcomingUnitVacancy>();
+    public virtual ICollection<QrupcomingUnitVacancy> QrupcomingUnitVacancyUnitPropSnapShots { get; set; } = new List<QrupcomingUnitVacancy>();
 
-    public virtual ICollection<QRUtilizationSurvey> QRUtilizationSurveys { get; set; } = new List<QRUtilizationSurvey>();
+    public virtual ICollection<QrutilizationSurvey> QrutilizationSurveys { get; set; } = new List<QrutilizationSurvey>();
 
     public virtual ICollection<QuarterlyReport> QuarterlyReports { get; set; } = new List<QuarterlyReport>();
 

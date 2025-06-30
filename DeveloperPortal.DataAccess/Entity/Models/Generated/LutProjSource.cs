@@ -12,7 +12,7 @@ public partial class LutProjSource
     /// <summary>
     /// Primary Key Identity column for the LutProjSource table.  A code represent source of PnC Project
     /// </summary>
-    public string LutProjSourceCD { get; set; } = null!;
+    public string LutProjSourceCd { get; set; } = null!;
 
     /// <summary>
     /// Description for LutProjSourceCD
@@ -32,7 +32,7 @@ public partial class LutProjSource
     /// <summary>
     /// The settlement agreement version number
     /// </summary>
-    public string? SAVersion { get; set; }
+    public string? Saversion { get; set; }
 
     /// <summary>
     /// Exhibit from settlement agreement
@@ -72,7 +72,7 @@ public partial class LutProjSource
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 }

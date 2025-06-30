@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutProjectFund
 {
-    public int LutProjectFundID { get; set; }
+    public int LutProjectFundId { get; set; }
 
     public string FundCode { get; set; } = null!;
 

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPOutreachAndAffimativeMarketingSnap
+public partial class PmpoutreachAndAffimativeMarketingSnap
 {
-    public int OutreachSnapID { get; set; }
+    public int OutreachSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int OutreachID { get; set; }
+    public int OutreachId { get; set; }
 
     public DateTime? DateOfOutreach { get; set; }
 
@@ -31,5 +31,5 @@ public partial class PMPOutreachAndAffimativeMarketingSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 }

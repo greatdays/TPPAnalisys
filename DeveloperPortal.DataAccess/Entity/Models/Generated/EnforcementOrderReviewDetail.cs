@@ -5,13 +5,13 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EnforcementOrderReviewDetail
 {
-    public int EnforcementOrderReviewDetailID { get; set; }
+    public int EnforcementOrderReviewDetailId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
     public DateOnly? AdoptionDate { get; set; }
 
-    public DateOnly? CAPIssuedDate { get; set; }
+    public DateOnly? CapissuedDate { get; set; }
 
     public DateOnly? CorrectiveActionPlanDate { get; set; }
 
@@ -23,7 +23,7 @@ public partial class EnforcementOrderReviewDetail
 
     public DateOnly? RegAgreementExecutionDate { get; set; }
 
-    public int? LutTemplateID { get; set; }
+    public int? LutTemplateId { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -37,7 +37,7 @@ public partial class EnforcementOrderReviewDetail
 
     public DateOnly? OrderToComplyIssueDate { get; set; }
 
-    public int? LutWithdrawReasonID { get; set; }
+    public int? LutWithdrawReasonId { get; set; }
 
     public string? RecorderNo { get; set; }
 

@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AssnProjectSiteQuestion
 {
-    public int AssnProjectSiteQuestionID { get; set; }
+    public int AssnProjectSiteQuestionId { get; set; }
 
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int LutProjectSiteQuestionID { get; set; }
+    public int LutProjectSiteQuestionId { get; set; }
 
     public string? SpecialNote { get; set; }
 

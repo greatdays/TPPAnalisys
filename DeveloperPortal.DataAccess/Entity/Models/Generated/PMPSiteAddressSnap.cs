@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPSiteAddressSnap
+public partial class PmpsiteAddressSnap
 {
-    public int PMPSiteAddressSnapID { get; set; }
+    public int PmpsiteAddressSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int SiteAddressID { get; set; }
+    public int SiteAddressId { get; set; }
 
-    public int? RefSiteAddressID { get; set; }
+    public int? RefSiteAddressId { get; set; }
 
-    public string? PIN { get; set; }
+    public string? Pin { get; set; }
 
     public string? HouseNum { get; set; }
 
@@ -57,5 +57,5 @@ public partial class PMPSiteAddressSnap
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 }

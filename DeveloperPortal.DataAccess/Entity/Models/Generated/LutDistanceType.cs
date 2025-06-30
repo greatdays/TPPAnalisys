@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutDistanceType
 {
-    public int LutDistanceTypeID { get; set; }
+    public int LutDistanceTypeId { get; set; }
 
     public string? DistanceType { get; set; }
 

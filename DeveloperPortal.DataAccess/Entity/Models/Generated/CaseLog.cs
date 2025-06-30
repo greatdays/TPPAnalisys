@@ -8,12 +8,12 @@ public partial class CaseLog
     /// <summary>
     /// Primary key of the table
     /// </summary>
-    public int CaseLogID { get; set; }
+    public int CaseLogId { get; set; }
 
     /// <summary>
     /// Case Id
     /// </summary>
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     /// <summary>
     /// Action taken
@@ -33,12 +33,12 @@ public partial class CaseLog
     /// <summary>
     /// Last Assignee Id
     /// </summary>
-    public string? LastAssigneeID { get; set; }
+    public string? LastAssigneeId { get; set; }
 
     /// <summary>
     /// New Assignee Id
     /// </summary>
-    public string? NewAssigneeID { get; set; }
+    public string? NewAssigneeId { get; set; }
 
     /// <summary>
     /// Last Assignee Id

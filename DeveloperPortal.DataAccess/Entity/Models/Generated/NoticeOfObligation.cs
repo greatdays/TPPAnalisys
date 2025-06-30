@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class NoticeOfObligation
 {
-    public int NoticeOfObligationID { get; set; }
+    public int NoticeOfObligationId { get; set; }
 
-    public long ServiceRequestID { get; set; }
+    public long ServiceRequestId { get; set; }
 
     public DateTime NocDate { get; set; }
 
@@ -31,19 +31,19 @@ public partial class NoticeOfObligation
 
     public string? LupamEmail { get; set; }
 
-    public string? PMFullName { get; set; }
+    public string? PmfullName { get; set; }
 
-    public string? PMEmail { get; set; }
+    public string? Pmemail { get; set; }
 
-    public string? NOBType { get; set; }
+    public string? Nobtype { get; set; }
 
     public DateTime? SelfCertAdpotionDate { get; set; }
 
     public DateTime? RegulatoryAgreementExecDate { get; set; }
 
-    public string? ToEMailIds { get; set; }
+    public string? ToEmailIds { get; set; }
 
-    public string? CCEMailIds { get; set; }
+    public string? CcemailIds { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnFHACFiledDate
+public partial class AssnFhacfiledDate
 {
-    public int AssnFHACFiledDateID { get; set; }
+    public int AssnFhacfiledDateId { get; set; }
 
-    public int FairHousingID { get; set; }
+    public int FairHousingId { get; set; }
 
-    public int LutFHACFiledSourceID { get; set; }
+    public int LutFhacfiledSourceId { get; set; }
 
-    public DateOnly FHACFiledDate { get; set; }
+    public DateOnly FhacfiledDate { get; set; }
 
     public bool IsDeleted { get; set; }
 
@@ -21,5 +21,5 @@ public partial class AssnFHACFiledDate
 
     public virtual FairHousing FairHousing { get; set; } = null!;
 
-    public virtual LutFHACFiledSource LutFHACFiledSource { get; set; } = null!;
+    public virtual LutFhacfiledSource LutFhacfiledSource { get; set; } = null!;
 }

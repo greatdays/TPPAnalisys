@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutPMPProjType
+public partial class LutPmpprojType
 {
-    public int LutPMPProjTypeID { get; set; }
+    public int LutPmpprojTypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutPMPProjType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPProjTypeSiteAttrSnap> AssnPMPProjTypeSiteAttrSnaps { get; set; } = new List<AssnPMPProjTypeSiteAttrSnap>();
+    public virtual ICollection<AssnPmpprojTypeSiteAttrSnap> AssnPmpprojTypeSiteAttrSnaps { get; set; } = new List<AssnPmpprojTypeSiteAttrSnap>();
 
-    public virtual ICollection<AssnPMPProjTypeSiteAttr> AssnPMPProjTypeSiteAttrs { get; set; } = new List<AssnPMPProjTypeSiteAttr>();
+    public virtual ICollection<AssnPmpprojTypeSiteAttr> AssnPmpprojTypeSiteAttrs { get; set; } = new List<AssnPmpprojTypeSiteAttr>();
 }

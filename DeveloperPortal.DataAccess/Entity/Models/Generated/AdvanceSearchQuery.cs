@@ -5,11 +5,11 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AdvanceSearchQuery
 {
-    public int SearchQueryID { get; set; }
+    public int SearchQueryId { get; set; }
 
     public string SearchQueryName { get; set; } = null!;
 
-    public string SearchQueryJSON { get; set; } = null!;
+    public string SearchQueryJson { get; set; } = null!;
 
     public bool IsDeleted { get; set; }
 

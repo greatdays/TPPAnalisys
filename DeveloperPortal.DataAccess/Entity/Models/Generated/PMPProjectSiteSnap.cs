@@ -3,41 +3,41 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPProjectSiteSnap
+public partial class PmpprojectSiteSnap
 {
-    public int PMPProjectSiteSnapID { get; set; }
+    public int PmpprojectSiteSnapId { get; set; }
 
-    public int PMPSnapID { get; set; }
+    public int PmpsnapId { get; set; }
 
-    public int ProjectSiteID { get; set; }
+    public int ProjectSiteId { get; set; }
 
-    public int RefProjectSiteID { get; set; }
+    public int RefProjectSiteId { get; set; }
 
-    public int? ProjectID { get; set; }
+    public int? ProjectId { get; set; }
 
-    public int? SiteAddressID { get; set; }
+    public int? SiteAddressId { get; set; }
 
     public string? PropertyName { get; set; }
 
-    public string? PrimaryAPN { get; set; }
+    public string? PrimaryApn { get; set; }
 
     public string FileNumber { get; set; } = null!;
 
     public int? SiteNum { get; set; }
 
-    public string? HIMSNumber { get; set; }
+    public string? Himsnumber { get; set; }
 
-    public int? HIMSProjUniqueId { get; set; }
+    public int? HimsprojUniqueId { get; set; }
 
-    public int? RegionID { get; set; }
+    public int? RegionId { get; set; }
 
-    public int? NeighborhoodID { get; set; }
+    public int? NeighborhoodId { get; set; }
 
     public string? CouncilDistrict { get; set; }
 
     public string? Source { get; set; }
 
-    public int? SourceRefID { get; set; }
+    public int? SourceRefId { get; set; }
 
     public string? Status { get; set; }
 
@@ -55,7 +55,7 @@ public partial class PMPProjectSiteSnap
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
     public bool? IsAccessible { get; set; }
 
@@ -65,11 +65,11 @@ public partial class PMPProjectSiteSnap
 
     public string? SiteAddress { get; set; }
 
-    public int? LutCESTypeID { get; set; }
+    public int? LutCestypeId { get; set; }
 
-    public int? LutProjectSiteStatusID { get; set; }
+    public int? LutProjectSiteStatusId { get; set; }
 
-    public int? LACountyServicePlanningAreaID { get; set; }
+    public int? LacountyServicePlanningAreaId { get; set; }
 
     /// <summary>
     /// For HACLA property
@@ -84,9 +84,9 @@ public partial class PMPProjectSiteSnap
 
     public decimal? ConstructionMobilityRatio { get; set; }
 
-    public decimal? ConstructionHVRatio { get; set; }
+    public decimal? ConstructionHvratio { get; set; }
 
-    public int? LutOccupancyStatusID { get; set; }
+    public int? LutOccupancyStatusId { get; set; }
 
     public DateOnly? OccupancyNotificationDate { get; set; }
 
@@ -102,13 +102,13 @@ public partial class PMPProjectSiteSnap
 
     public DateOnly? OwnershipChangeDate { get; set; }
 
-    public bool? IsWillAUWLOpen { get; set; }
+    public bool? IsWillAuwlopen { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
     public DateTime CreatedOn { get; set; }
 
-    public virtual LutCESType? LutCESType { get; set; }
+    public virtual LutCestype? LutCestype { get; set; }
 
     public virtual LutOccupancyStatus? LutOccupancyStatus { get; set; }
 
@@ -116,7 +116,7 @@ public partial class PMPProjectSiteSnap
 
     public virtual Neighborhood? Neighborhood { get; set; }
 
-    public virtual PMPSnap PMPSnap { get; set; } = null!;
+    public virtual Pmpsnap Pmpsnap { get; set; } = null!;
 
     public virtual Project? Project { get; set; }
 

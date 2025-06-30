@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class AwardBidPackage
 {
-    public int AwardBidPackageID { get; set; }
+    public int AwardBidPackageId { get; set; }
 
-    public int? BidPackageID { get; set; }
+    public int? BidPackageId { get; set; }
 
     public string ContractorUsername { get; set; } = null!;
 

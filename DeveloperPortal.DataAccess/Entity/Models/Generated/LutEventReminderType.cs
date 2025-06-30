@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutEventReminderType
 {
-    public int LutEventReminderTypeID { get; set; }
+    public int LutEventReminderTypeId { get; set; }
 
     public string EventReminderType { get; set; } = null!;
 

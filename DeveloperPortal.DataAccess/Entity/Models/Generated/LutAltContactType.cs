@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutAltContactType
 {
-    public int LutAltContactTypeID { get; set; }
+    public int LutAltContactTypeId { get; set; }
 
     public string? PreferContactType { get; set; }
 

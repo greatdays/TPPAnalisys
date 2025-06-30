@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class vwDMSDocument
+public partial class VwDmsdocument
 {
     public int Id { get; set; }
 
     public int? EntryId { get; set; }
 
-    public string? Primary_Key { get; set; }
+    public string? PrimaryKey { get; set; }
 
     public string? Category { get; set; }
 
-    public string? Sub_Category { get; set; }
+    public string? SubCategory { get; set; }
 
-    public string? Original_File_Name { get; set; }
+    public string? OriginalFileName { get; set; }
 
     public string? Description { get; set; }
 
@@ -27,37 +27,37 @@ public partial class vwDMSDocument
 
     public string? Audience { get; set; }
 
-    public string? HIMS_Number { get; set; }
+    public string? HimsNumber { get; set; }
 
-    public string? AcHP_Number { get; set; }
+    public string? AcHpNumber { get; set; }
 
-    public string? Case_ID { get; set; }
+    public string? CaseId { get; set; }
 
-    public string? System_Description { get; set; }
+    public string? SystemDescription { get; set; }
 
-    public string? APN { get; set; }
+    public string? Apn { get; set; }
 
-    public string? Created_By { get; set; }
+    public string? CreatedBy { get; set; }
 
-    public string? Modified_By { get; set; }
+    public string? ModifiedBy { get; set; }
 
-    public string? Last_Accessed { get; set; }
+    public string? LastAccessed { get; set; }
 
-    public string? HIMS_Project_Id { get; set; }
+    public string? HimsProjectId { get; set; }
 
-    public string? AcHP_Project_ID { get; set; }
+    public string? AcHpProjectId { get; set; }
 
-    public string? AcHP_Property_ID { get; set; }
+    public string? AcHpPropertyId { get; set; }
 
-    public string? Default_Image { get; set; }
+    public string? DefaultImage { get; set; }
 
-    public string? View_Order { get; set; }
+    public string? ViewOrder { get; set; }
 
     public string? FileExtension { get; set; }
 
     public string? FileSize { get; set; }
 
-    public string? InternalURL { get; set; }
+    public string? InternalUrl { get; set; }
 
     public string? MimeType { get; set; }
 

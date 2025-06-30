@@ -8,12 +8,12 @@ public partial class CaseWatcher
     /// <summary>
     /// Primary key of the table
     /// </summary>
-    public int CaseID { get; set; }
+    public int CaseId { get; set; }
 
     /// <summary>
     /// User ID from IDM.
     /// </summary>
-    public string WatcherID { get; set; } = null!;
+    public string WatcherId { get; set; } = null!;
 
     public virtual Case Case { get; set; } = null!;
 }

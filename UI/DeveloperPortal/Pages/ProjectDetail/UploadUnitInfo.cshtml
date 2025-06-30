@@ -1,0 +1,187 @@
+﻿@* @page
+@model DeveloperPortal.Pages.ProjectDetail.UploadUnitInfoModel
+@{
+}
+
+ *@
+@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
+
+<div id="modalImportUnits" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="true" tabindex='-1'>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Import Unit Information</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("DMSUpload", "Action", FormMethod.Post, new { enctype = "multipart/form-data", id = "unit-upload-form" }))
+                {
+                    @Html.HiddenFor(model => model.ProjectId, new { id = "ProjectId" })
+                    @Html.HiddenFor(model => model.ProjectSiteId, new { id = "ProjectSiteID" })
+                    @Html.HiddenFor(model => model.CaseID, new { id = "Id" })
+                    @Html.HiddenFor(model => model.AcHPFileNumber, new { id = "FileNumber" })
+                    <div class="d-flex flex-wrap justify-content-between align-items-center" style="margin-bottom:20px">
+                        <a href="@Url.Content("~/Document/ImportUnitMatrixSample.xlsx")" class="cursor-pointer me-3" style="font-size: 1.25rem;margin-bottom:5px;">Download sample excel file format.</a>
+                        <span class="text-end" style="font-size: 1.25rem;">The Unit Information should be as per the sample excel file format. The system won't digest any other format.</span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div id="divDropZone" class="dropzone"></div>
+                            <span id="spanDropZoneError" class="field-validation-error text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-12 text-left mt-2">
+                                    <div class="d-flex" id="supported-file-types">
+                                        Upload the excel sheet support extensions(.xls, .xlsx)
+                                    </div>
+                                    <hr />
+                                </div>
+
+                            </div>
+                            <div id="errorMsg" class="col-md-12 text-danger text-center"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal-footer multi-button comcom-fotter AddDocumentfotter">
+                                <button id="cancelUnitImport" type="button" value="" class="btn btn-Cancel" onclick="$('#modalImportUnits').modal('hide');">Cancel</button>
+                                <button id="unitImport" type="button" value="" class="btn btn-primary">Import</button>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divModalImportSuccess" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <!-- Modal content-->
+        <div class="modal-content modal-error">
+            <div class="modal-header modal-error-header">
+                <h4 class="modal-title" id="modalSuccessTitle"></h4>
+            </div>
+            <div class="modal-body text-center">
+                <div class="h5" id="modalSuccessBody"></div>
+            </div>
+            <div class="modal-footer modal-error-footer">
+                <input type="button" value="Ok" title="Ok" class="btn btn-lg text-center btn-light" id="modalDismiss" data-dismiss="modal" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    Dropzone.autoDiscover = false;
+    $("#unit-upload-form").data('unobtrusiveValidation');
+	eval("var dropzone" +   " = null;");
+	$(document).ready(function() {
+		var myDropzone = new Dropzone("div#divDropZone", {
+            url: '@Url.Action("ImportUnitInformation", "ProjectDetail", new { })' ,
+			paramName: "file",
+			clickable: "#divDropZone",
+			filesizeBase: 1024,
+			uploadMultiple: false,
+			autoProcessQueue: false,
+			addRemoveLinks: true,
+			autoDiscover: false,
+			acceptedFiles: ".xls,.xlsx", // file types.
+			dictMaxFilesExceeded: 'You can not upload any more files.',
+			dictRemoveFile: 'Remove file',
+			dictDefaultMessage: 'Drop files here to upload',
+			dictCancelUpload: 'Cancel upload',
+			init: function () {
+				myDropzone = this;
+				this.on("sending", function (data, xhr, formData) {
+                    formData.delete('ProjectId');
+                    formData.delete('ProjectSiteID');
+                    formData.delete('Id');
+					formData.delete('FileNumber');
+
+                    formData.append('ProjectId', $('#ProjectId').val());
+                    formData.append('ProjectSiteID', $('#ProjectSiteID').val());
+                    formData.append('Id', $('#Id').val());
+                    formData.append('FileNumber', $('#FileNumber').val());
+				});
+
+				this.on('success', function(file, response) {
+					fnUnblockUI();
+					var myDropZone = eval("dropzone");
+					if (response.result.status) {
+						myDropzone.removeAllFiles();
+						myDropZone.removeAllFiles();
+
+                        ShowMessage("Suceess!", response.result.message, true);
+						$("#modalImportUnits").modal('hide');
+
+					} else {
+                        myDropzone.removeAllFiles();
+                        $("#modalImportUnits").modal('show');
+                        ShowMessage("Error!", response.result.errorMessage, true);
+					}
+				});
+
+				this.on("error", function(file, message) {
+					this.removeFile(file);
+					fnUnblockUI();
+                    ShowMessage("Error!", message, true);
+				});
+			}
+		});
+
+		eval("dropzone" + " = myDropzone");
+		$("#modalDismiss").click(function () {
+            reloadUntiGrid = true;
+            $('#unitKgrid').data('kendoGrid').dataSource.read();
+            $('#unitKgrid').data('kendoGrid').refresh();
+            reloadParkingGrid = true;
+            $('#dtPrkingData').DataTable().ajax.reload();
+		});
+
+	});
+
+    $("#unitImport").click(function() {
+        debugger;
+		myDropzone = eval("dropzone");
+		if (myDropzone.getQueuedFiles().length < 1) {
+			$("#errorMsg").show();
+			$("#errorMsg").html('At least one file is required');
+			return false;
+		}
+		$("#errorMsg").hide();
+		if ($("#unit-upload-form").valid()) {
+			fnBlockUI();
+			myDropzone.processQueue();
+			}
+		return true;
+	});
+
+    function ShowMessage(title,body, isShow=true) {
+        $("#modalSuccessTitle").text(title);
+        $("#modalSuccessBody").html(body);
+		if (isShow) {
+			$("#divModalImportSuccess").modal('show');
+		}
+		else {
+            $("#divModalImportSuccess").modal('hide');
+        }
+    }
+
+</script>
+<style>
+    .modal-error {
+        border: 2px solid #135B79;
+        width: 700px;
+    }
+
+    .modal-error-header {
+        margin: 0 auto;
+    }
+
+    .modal-error-footer {
+        margin: 0 auto 10px;
+    }
+</style>

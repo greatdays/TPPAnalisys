@@ -5,25 +5,25 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectSiteNoChangeReport
 {
-    public int ProjectSiteNoChangeReportID { get; set; }
+    public int ProjectSiteNoChangeReportId { get; set; }
 
-    public int ProjSitePropSnapShotID { get; set; }
+    public int ProjSitePropSnapShotId { get; set; }
 
-    public bool? IsNoChangeInUS { get; set; }
+    public bool? IsNoChangeInUs { get; set; }
 
-    public bool? IsNoChangeInUUV { get; set; }
+    public bool? IsNoChangeInUuv { get; set; }
 
-    public bool IsNoChangeInAUTWL { get; set; }
+    public bool IsNoChangeInAutwl { get; set; }
 
-    public bool IsNoChangeInAUWL { get; set; }
+    public bool IsNoChangeInAuwl { get; set; }
 
-    public bool IsNoChangeInGL { get; set; }
+    public bool IsNoChangeInGl { get; set; }
 
-    public bool IsNoChangeInRA { get; set; }
+    public bool IsNoChangeInRa { get; set; }
 
-    public bool IsNoChangeInEC { get; set; }
+    public bool IsNoChangeInEc { get; set; }
 
-    public bool IsNoChangeInOS { get; set; }
+    public bool IsNoChangeInOs { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -35,5 +35,5 @@ public partial class ProjectSiteNoChangeReport
 
     public virtual PropSnapshot ProjSitePropSnapShot { get; set; } = null!;
 
-    public virtual ICollection<QRProjectSiteNoChangeReport> QRProjectSiteNoChangeReports { get; set; } = new List<QRProjectSiteNoChangeReport>();
+    public virtual ICollection<QrprojectSiteNoChangeReport> QrprojectSiteNoChangeReports { get; set; } = new List<QrprojectSiteNoChangeReport>();
 }

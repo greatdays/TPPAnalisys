@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutViolation
 {
-    public int LutViolationID { get; set; }
+    public int LutViolationId { get; set; }
 
     public string? Name { get; set; }
 
@@ -26,7 +26,7 @@ public partial class LutViolation
     /// </summary>
     public bool IsObsolete { get; set; }
 
-    public int LutViolationCategoryID { get; set; }
+    public int LutViolationCategoryId { get; set; }
 
     public string? SeverityLevelUnit { get; set; }
 

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutApplicationType
 {
-    public int LutApplicationTypeID { get; set; }
+    public int LutApplicationTypeId { get; set; }
 
     public string? ApplicationType { get; set; }
 
@@ -19,7 +19,7 @@ public partial class LutApplicationType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AUWaitList> AUWaitLists { get; set; } = new List<AUWaitList>();
+    public virtual ICollection<AuwaitList> AuwaitLists { get; set; } = new List<AuwaitList>();
 
-    public virtual ICollection<QRAUWaitList> QRAUWaitLists { get; set; } = new List<QRAUWaitList>();
+    public virtual ICollection<QrauwaitList> QrauwaitLists { get; set; } = new List<QrauwaitList>();
 }

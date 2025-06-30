@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class QRUtilizationSurvey
+public partial class QrutilizationSurvey
 {
-    public int QRUtilizationSurveyID { get; set; }
+    public int QrutilizationSurveyId { get; set; }
 
-    public int? QuarterlyReportID { get; set; }
+    public int? QuarterlyReportId { get; set; }
 
-    public int? UnitPropSnapShotID { get; set; }
+    public int? UnitPropSnapShotId { get; set; }
 
     public bool? IsOccupied { get; set; }
 
@@ -23,27 +23,27 @@ public partial class QRUtilizationSurvey
 
     public DateOnly? UtilizationSurveyDate { get; set; }
 
-    public int? IsFullyAUNeeded { get; set; }
+    public int? IsFullyAuneeded { get; set; }
 
-    public int? TenantRequestedUnitTypeID { get; set; }
+    public int? TenantRequestedUnitTypeId { get; set; }
 
-    public int? TenantRequestedBedroomsID { get; set; }
+    public int? TenantRequestedBedroomsId { get; set; }
 
-    public int? TenantRequestedBathroomsID { get; set; }
+    public int? TenantRequestedBathroomsId { get; set; }
 
-    public bool? IsAddedToAUTL { get; set; }
+    public bool? IsAddedToAutl { get; set; }
 
-    public string? NotAddedToAUTLReason { get; set; }
+    public string? NotAddedToAutlreason { get; set; }
 
     public int? IsAccessibleFeaturesNeeded { get; set; }
 
     public string? AccessibleFeatureType { get; set; }
 
-    public bool? IsAdvisedRightToRM { get; set; }
+    public bool? IsAdvisedRightToRm { get; set; }
 
-    public bool? IsAddedToRARMLog { get; set; }
+    public bool? IsAddedToRarmlog { get; set; }
 
-    public string? NotAddedToRARMLogReason { get; set; }
+    public string? NotAddedToRarmlogReason { get; set; }
 
     public int? IsTenantHasAssistanceAnimal { get; set; }
 

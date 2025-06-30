@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutGrievanceReferralAgency
 {
-    public int LutGrievanceReferralAgencyID { get; set; }
+    public int LutGrievanceReferralAgencyId { get; set; }
 
     public string AgencyName { get; set; } = null!;
 

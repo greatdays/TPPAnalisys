@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EventHistory
 {
-    public int EventHistoryID { get; set; }
+    public int EventHistoryId { get; set; }
 
-    public int EventID { get; set; }
+    public int EventId { get; set; }
 
     public DateTime? EventStartOn { get; set; }
 

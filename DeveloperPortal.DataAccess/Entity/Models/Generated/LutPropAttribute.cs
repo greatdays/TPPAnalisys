@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutPropAttribute
 {
-    public int LutPropAttributeID { get; set; }
+    public int LutPropAttributeId { get; set; }
 
     public string FlagType { get; set; } = null!;
 

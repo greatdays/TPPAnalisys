@@ -2922,32 +2922,32 @@ table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:a
     margin-top: 6px;
 }
 
-    .pagination li.paginate_button:first-child a {
-        margin-left: 0;
-        border-top-left-radius: .25rem;
-        border-bottom-left-radius: .25rem;
-    }
+.dataTables_paginate .paginate_button:first-child a {
+    margin-left: 0;
+    border-top-left-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+}
 
-    .pagination li.paginate_button:last-child a {
-        border-top-right-radius: .25rem;
-        border-bottom-right-radius: .25rem;
-    }
+.dataTables_paginate .paginate_button:last-child a {
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+}
 
-    .pagination li.paginate_button.active a {
-        color: #fff !important;
-        background: #2C3E5C;
-    }
+.dataTables_paginate .paginate_button.active a {
+    color: #fff !important;
+    background: #2C3E5C;
+}
 
-    .pagination li.paginate_button a {
-        position: relative;
-        display: block;
-        padding: .5rem .75rem;
-        margin-left: -1px;
-        line-height: 1.25;
-        color: #2C3E5C !important;
-        background-color: #fff;
-        border: 1px solid #2C3E5C;
-    }
+.dataTables_paginate .paginate_button {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+}
 
 .dataTables_paginate.paging_simple_numbers {
     display: flex;
@@ -10218,7 +10218,7 @@ h2.usename.Contact-Infon-name {
     }*/
 
 
-    .pagination li.paginate_button a {
+    .dataTables_paginate .paginate_button a {
         padding: 0.5rem 0.4rem;
     }
 
@@ -11103,6 +11103,10 @@ fieldset .form_body label {
     color: #b10000;
 }
 
+#Sign_progressbar {
+    border-bottom: 0;
+}
+
 #Sign_progressbar li {
     list-style-type: none;
     font-size: 15px;
@@ -11145,7 +11149,7 @@ fieldset .form_body label {
     color: #757575;
 }
 .nav-tabs {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 .nav.nav-tabs li.wizard-item:first-child:after {
     width: 50% !important;
@@ -11367,3 +11371,164 @@ h1.white-text{
         border: 1px solid #cbcbcb !important;
     }
 /*Signup Page CSS - End*/
+
+a {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+}
+
+.dataTables_length select {
+    height: 38px;
+    border: 1px solid #e4e4e4;
+    margin: 0px 9px;
+    margin-top: -10px;
+    width: 80px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #135b79;
+    border-color: #135b79;
+}
+
+.pagination .page-link {
+    padding: 10px;
+    margin-right: 5px;
+    margin-top: -10px;
+    border: solid 1px #135b79;
+}
+
+#tblMyProjects_wrapper .dataTables_length {
+    padding-top: 20px;
+    padding-left: 15px;
+}
+
+#tblMyProjects_wrapper .dataTables_filter {
+    padding-top: 20px;
+    padding-right: 5px;
+}
+
+#tblMyProjects_wrapper .dataTables_info {
+    padding-left: 15px;
+}
+
+#tblMyProjects_wrapper .dataTables_paginate,
+#dmsDataTable_wrapper .dataTables_paginate {
+    padding-top: 12px;
+    padding-right: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#tblMyProjects_wrapper .paginate_button,
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#tblMyProjects_wrapper .paginate_button.current,
+#dmsDataTable_wrapper .paginate_button.current {
+    background-color: #2C3E5C;
+    color: #fff !important;
+}
+
+#tblMyProjects_wrapper .paginate_button:hover,
+#dmsDataTable_wrapper .paginate_button:hover {
+    background: #2C3E5C !important;
+    color: #fff !important;
+    border-color: #2C3E5C !important;
+    cursor: pointer;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_previous,
+#dmsDataTable_wrapper a#dmsDataTable_previous {
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_next,
+#dmsDataTable_wrapper a#dmsDataTable_next {
+    border-top-right-radius: 0.15rem;
+    border-bottom-right-radius: 0.15rem;
+}
+
+#tblMyProjects_previous,
+#tblMyProjects_next,
+#dmsDataTable_previous,
+#dmsDataTable_next {
+    display: inline-block !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    line-height: 30px !important;
+    padding: 0 12px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    background-color: #fff !important;
+}
+
+#tblMyProjects th,
+#tblMyProjects td,
+#dmsDataTable th,
+#dmsDataTable td {
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 1.25;
+}
+
+#dmsDataTable_wrapper .dataTables_length {
+    padding-top: 14px;
+    padding-left: 2px;
+}
+
+#dmsDataTable_wrapper .dataTables_filter {
+    padding-top: 14px;
+}
+
+#dmsDataTable_wrapper .dataTables_paginate {
+    padding-right: 0px;
+}
+
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#dmsDataTable .btn-primary {
+    background-color: #2C3E5C !important;
+    color: #fff !important;
+}
+
+#dmsDataTable.dataTable tbody tr > [class^="sorting_"] {
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+}
+
+#dmsDataTable.dataTable tbody tr:hover > [class^="sorting_"] {
+    background-color: #f5f5f5 !important; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+}

@@ -1,11 +1,14 @@
-﻿<div>
+﻿    <!-- ✅ Then Load DataTables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<div>
     <div style="position: absolute; z-index: 1; right: 209px; padding-top:2px; ">
         <input autocomplete="off" id="search-unit-grid" placeholder="Search..." tabindex="0" class="k-textbox form-control" style="height: 38px !important;" />
         <label for="search-unit-grid" tabindex="0" style="display:none">Search</label>
     </div>
 
-    <div style="position: absolute;right: 37px;z-index: 1; margin-top:1px">
-        <button class="btn btn-primary no-access" id="uploadUnitExcel" role-access="true" style="height: 40px;border-radius: 0px; ">
+    <div style="position: absolute;right: 33px;z-index: 1; margin-top:1px">
+        <button class="btn btn-primary no-access" id="uploadUnitExcel" role-access="true" style="height: 42px;border-radius: 0px; ">
             Upload <i class="fa fa-upload"></i>
         </button>
     </div>
@@ -166,9 +169,11 @@
     var BuildingInformationData = [];
     var UnitGridData = [];
     var dtBuildingDataTable;
+    var kgridEditModelData={};
+    
 
     var windowTemplate = kendo.template($("#windowTemplate").html());
-    var window = $("#kednoWindow").kendoWindow({
+    var kednoWindow = $("#kednoWindow").kendoWindow({
         title: "Are you sure you want to delete this unit?",
         visible: false, //the window will not appear before its .open method is called
         width: "400px",
@@ -176,39 +181,46 @@
     }).data("kendoWindow");
     /*Start Unit Kendo Grid */
     function LoadProjectInformation() {
+
+             $("#uploadUnitExcel").click(function () {
+       $("#modalImportUnits").modal('show');
+     });
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { })',
                     dataType: "json"
                     , method: "post"
+                    ,contentType: "application/json" 
                 },
                 update: {
                     url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { })',
                     method: "post",
                     dataType: "json"
+                    ,contentType: "application/json"
                 },
                 destroy: {
                     url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { })',
                     method: "post",
                     dataType: "json"
+                     ,contentType: "application/json"
                 },
                 create: {
                     url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { })',
                     method: "post",
                     dataType: "json"
+                    ,contentType: "application/json"
                 },
                 parameterMap: function (options, operation) {
-                    debugger;
                     if (operation !== "read" && options.models) {
                         $('#cm_loader').attr("hidden", false);
                         $('.blockUI').attr("hidden", true);
                         //Update Ids based on vales
                         if (options.models.length > 0) {
-                            options.models[0].UnitType = "";
+                            options.models[0].unitType = "";
                         }
                         UnitGridData = [];
-                        return { models: kendo.stringify(options.models) };
+                        return JSON.stringify(options.models);
                     }
                     options.caseId = Id;
                     options.projectId = ProjectId;
@@ -220,7 +232,7 @@
                         options.take = 20;
                     }
                     else { options.unitGridData = UnitGridData; }
-                    return options;
+                    return  JSON.stringify(options);
                 }
             },
             pageSize: 20,
@@ -287,16 +299,16 @@
                         var tr = $(e.target).closest("tr"); //get the row for deletion
                         var data = this.dataItem(tr); //get the row data so it can be referred later
 
-                        window.content(windowTemplate(data)); //send the row data object to the template and render it
-                        window.center().open();
+                        kednoWindow.content(windowTemplate(data)); //send the row data object to the template and render it
+                        kednoWindow.center().open();
 
                         $("#yesButton").click(function () {
                             dataSource.remove(data)  //prepare a "destroy" request
                             dataSource.sync()  //actually send the request (might be ommited if the autoSync option is enabled in the dataSource)
-                            window.close();
+                            kednoWindow.close();
                         })
                         $("#noButton").click(function () {
-                            window.close();
+                            kednoWindow.close();
                         })
 
                     }
@@ -338,7 +350,8 @@
                     command: gridCommand, title: "&nbsp;", width: "80px"
                 }]
         });
-
+          LoadParkingInfo();
+          GetUnitModalData();
       
     }
     function onGridEdit(arg) {
@@ -356,8 +369,8 @@
             .kendoDropDownList({
 
                 autoBind: false,
-                dataTextField: "BuildingFileNumber",
-                dataValueField: "BuildingFileNumber",
+                dataTextField: "buildingFileNumber",
+                dataValueField: "buildingFileNumber",
                 dataSource: BuildingInformationData,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
@@ -376,9 +389,9 @@
             .appendTo(container)
             .kendoDropDownList({
                 autoBind: false,
-                dataTextField: "Text",
-                dataValueField: "Text",
-                dataSource: modelData.LutTotalBedrooms,
+                dataTextField: "text",
+                dataValueField: "text",
+                dataSource: kgridEditModelData.lutTotalBedrooms,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
                     options.model.set("LutTotalBedroomID", dataItem.Value);
@@ -391,9 +404,9 @@
             .appendTo(container)
             .kendoDropDownList({
                 autoBind: false,
-                dataTextField: "Text",
-                dataValueField: "Text",
-                dataSource: modelData.LutUnitType,
+                dataTextField: "text",
+                dataValueField: "text",
+                dataSource: kgridEditModelData.lutUnitType,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
                     options.model.set("LutUnitTypeID", dataItem.Value);
@@ -474,5 +487,22 @@
 
     }
 
+     $('#search-unit-grid').keyup(function (e) {
+        var value = this.value.toLowerCase().trim();
+
+        $('#unitKgrid').find('table tr').each(function (index) {
+            if (!index) return;
+            $(this).find("td").each(function () {
+                var id = $(this).text().toLowerCase().trim();
+                var not_found = (id.indexOf(value) == -1);
+                $(this).closest('tr').toggle(!not_found);
+                return not_found;
+            });
+        });
+        SetRoleAccess(accessType);
+    });
+   
     /*End Unit Kendo Grid */
+
+    
 </script>

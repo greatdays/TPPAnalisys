@@ -12,7 +12,7 @@ public partial class LutTypeofProject
     /// <summary>
     /// Primary Key Identity column for the LutTypeofProject table.  This number match HIMS
     /// </summary>
-    public int LutTypeofProjectID { get; set; }
+    public int LutTypeofProjectId { get; set; }
 
     /// <summary>
     /// description about type of project
@@ -49,7 +49,7 @@ public partial class LutTypeofProject
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();
 }

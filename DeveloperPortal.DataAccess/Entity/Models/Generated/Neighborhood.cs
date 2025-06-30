@@ -8,7 +8,7 @@ public partial class Neighborhood
     /// <summary>
     /// Primary Key Identity column for the Neighborhood table
     /// </summary>
-    public int NeighborhoodID { get; set; }
+    public int NeighborhoodId { get; set; }
 
     /// <summary>
     /// N = Neighborhood, R = Region
@@ -28,7 +28,7 @@ public partial class Neighborhood
     /// <summary>
     /// Neighborhood belongs to which region
     /// </summary>
-    public int? ParentNeighborhoodID { get; set; }
+    public int? ParentNeighborhoodId { get; set; }
 
     /// <summary>
     /// Geographic Json type
@@ -43,7 +43,7 @@ public partial class Neighborhood
     /// <summary>
     /// Well know text for the geometry
     /// </summary>
-    public string? WKT { get; set; }
+    public string? Wkt { get; set; }
 
     /// <summary>
     /// Created by date
@@ -68,9 +68,9 @@ public partial class Neighborhood
     /// <summary>
     /// Unique ID in System
     /// </summary>
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
-    public virtual ICollection<PMPProjectSiteSnap> PMPProjectSiteSnaps { get; set; } = new List<PMPProjectSiteSnap>();
+    public virtual ICollection<PmpprojectSiteSnap> PmpprojectSiteSnaps { get; set; } = new List<PmpprojectSiteSnap>();
 
     public virtual ICollection<ProjectSite> ProjectSites { get; set; } = new List<ProjectSite>();
 }

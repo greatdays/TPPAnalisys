@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class ProjectSiteAttribute
 {
-    public int ProjectSiteAttributeID { get; set; }
+    public int ProjectSiteAttributeId { get; set; }
 
-    public int PropSnapshotID { get; set; }
+    public int PropSnapshotId { get; set; }
 
     public string? PropertyName { get; set; }
 
@@ -17,7 +17,7 @@ public partial class ProjectSiteAttribute
 
     public DateTime? ApplicationEndDate { get; set; }
 
-    public int? HousingTypeID { get; set; }
+    public int? HousingTypeId { get; set; }
 
     public string? RentalInfo { get; set; }
 
@@ -53,7 +53,7 @@ public partial class ProjectSiteAttribute
 
     public int? YearBuilt { get; set; }
 
-    public int? ParkingTypeID { get; set; }
+    public int? ParkingTypeId { get; set; }
 
     public bool IsTaxCreditProperty { get; set; }
 
@@ -91,7 +91,7 @@ public partial class ProjectSiteAttribute
 
     public bool? HasThisSiteBeenPreviouslyInspectedByAnExternalGroup { get; set; }
 
-    public string? LUTExternalGroupId { get; set; }
+    public string? LutexternalGroupId { get; set; }
 
     public int? MobilityUnitsPercentageRequired { get; set; }
 
@@ -109,11 +109,11 @@ public partial class ProjectSiteAttribute
 
     public string? LutCheckListsId { get; set; }
 
-    public string? TTYNumber { get; set; }
+    public string? Ttynumber { get; set; }
 
-    public int? LutFHAStandardId { get; set; }
+    public int? LutFhastandardId { get; set; }
 
-    public string? LutNacRecomadationID { get; set; }
+    public string? LutNacRecomadationId { get; set; }
 
     public bool? MoveToInDevelopment { get; set; }
 
@@ -131,17 +131,23 @@ public partial class ProjectSiteAttribute
 
     public bool? MoveToClosedApplicationForAffordable { get; set; }
 
-    public bool? IsCWLOpenPriorRegistry { get; set; }
+    public bool? IsCwlopenPriorRegistry { get; set; }
 
-    public DateTime? CWLOpenPriorRegistryDate { get; set; }
+    public DateTime? CwlopenPriorRegistryDate { get; set; }
 
     public string? SiteDescription { get; set; }
 
-    public virtual ICollection<AssnPMPProjSiteAccessibleUnitFeatureSnap> AssnPMPProjSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPMPProjSiteAccessibleUnitFeatureSnap>();
+    public string? SiteStatusLabel { get; set; }
 
-    public virtual ICollection<AssnPMPProjTypeSiteAttrSnap> AssnPMPProjTypeSiteAttrSnaps { get; set; } = new List<AssnPMPProjTypeSiteAttrSnap>();
+    public int? Lcmdetermination { get; set; }
 
-    public virtual ICollection<AssnPMPProjTypeSiteAttr> AssnPMPProjTypeSiteAttrs { get; set; } = new List<AssnPMPProjTypeSiteAttr>();
+    public string? LcmsurveyDates { get; set; }
+
+    public virtual ICollection<AssnPmpprojSiteAccessibleUnitFeatureSnap> AssnPmpprojSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPmpprojSiteAccessibleUnitFeatureSnap>();
+
+    public virtual ICollection<AssnPmpprojTypeSiteAttrSnap> AssnPmpprojTypeSiteAttrSnaps { get; set; } = new List<AssnPmpprojTypeSiteAttrSnap>();
+
+    public virtual ICollection<AssnPmpprojTypeSiteAttr> AssnPmpprojTypeSiteAttrs { get; set; } = new List<AssnPmpprojTypeSiteAttr>();
 
     public virtual ICollection<AssnProjSiteAccessibleUnitFeature> AssnProjSiteAccessibleUnitFeatures { get; set; } = new List<AssnProjSiteAccessibleUnitFeature>();
 
@@ -152,6 +158,8 @@ public partial class ProjectSiteAttribute
     public virtual ICollection<AssnPropertyFeature> AssnPropertyFeatures { get; set; } = new List<AssnPropertyFeature>();
 
     public virtual LutHousingType? HousingType { get; set; }
+
+    public virtual LutLcmdetermination? LcmdeterminationNavigation { get; set; }
 
     public virtual LutParkingType? ParkingType { get; set; }
 

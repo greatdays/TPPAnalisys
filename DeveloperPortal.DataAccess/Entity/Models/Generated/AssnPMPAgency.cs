@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPAgency
+public partial class AssnPmpagency
 {
-    public int AssnPMPAgencyID { get; set; }
+    public int AssnPmpagencyId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? PMPAgencyID { get; set; }
+    public int? PmpagencyId { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 
-    public virtual PMPAgency? PMPAgency { get; set; }
+    public virtual Pmpagency? Pmpagency { get; set; }
 }

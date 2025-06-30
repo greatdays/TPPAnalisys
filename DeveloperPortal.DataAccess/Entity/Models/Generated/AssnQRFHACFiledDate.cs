@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnQRFHACFiledDate
+public partial class AssnQrfhacfiledDate
 {
-    public int AssnQRFHACFiledDateID { get; set; }
+    public int AssnQrfhacfiledDateId { get; set; }
 
-    public int QRFairHousingID { get; set; }
+    public int QrfairHousingId { get; set; }
 
-    public int LutFHACFiledSourceID { get; set; }
+    public int LutFhacfiledSourceId { get; set; }
 
-    public DateOnly FHACFiledDate { get; set; }
+    public DateOnly FhacfiledDate { get; set; }
 
-    public virtual LutFHACFiledSource LutFHACFiledSource { get; set; } = null!;
+    public virtual LutFhacfiledSource LutFhacfiledSource { get; set; } = null!;
 
-    public virtual QRFairHousing QRFairHousing { get; set; } = null!;
+    public virtual QrfairHousing QrfairHousing { get; set; } = null!;
 }

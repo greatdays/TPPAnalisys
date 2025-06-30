@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutTemplate
 {
-    public int LutTemplateID { get; set; }
+    public int LutTemplateId { get; set; }
 
     public string DocumentType { get; set; } = null!;
 
@@ -35,7 +35,7 @@ public partial class LutTemplate
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
 
-    public Guid? RowID { get; set; }
+    public Guid? RowId { get; set; }
 
     public string? SampleData { get; set; }
 

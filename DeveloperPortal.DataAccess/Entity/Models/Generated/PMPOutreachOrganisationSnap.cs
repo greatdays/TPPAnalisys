@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class PMPOutreachOrganisationSnap
+public partial class PmpoutreachOrganisationSnap
 {
-    public int PMPOutreachOrganisationSnapID { get; set; }
+    public int PmpoutreachOrganisationSnapId { get; set; }
 
-    public int? PMPSnapID { get; set; }
+    public int? PmpsnapId { get; set; }
 
-    public int? OrganisationID { get; set; }
+    public int? OrganisationId { get; set; }
 
-    public int? LutOutreachTypeID { get; set; }
+    public int? LutOutreachTypeId { get; set; }
 
     public string? OtherOutreachType { get; set; }
 
@@ -25,5 +25,5 @@ public partial class PMPOutreachOrganisationSnap
 
     public virtual Organization? Organisation { get; set; }
 
-    public virtual PMPSnap? PMPSnap { get; set; }
+    public virtual Pmpsnap? Pmpsnap { get; set; }
 }

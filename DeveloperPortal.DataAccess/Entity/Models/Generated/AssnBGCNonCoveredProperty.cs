@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnBGCNonCoveredProperty
+public partial class AssnBgcnonCoveredProperty
 {
-    public int AssnBGCNonCoveredPropertyID { get; set; }
+    public int AssnBgcnonCoveredPropertyId { get; set; }
 
-    public int BackgroundCheckID { get; set; }
+    public int BackgroundCheckId { get; set; }
 
-    public int NonCoveredProjectSiteID { get; set; }
+    public int NonCoveredProjectSiteId { get; set; }
 
     public bool IsDeleted { get; set; }
 

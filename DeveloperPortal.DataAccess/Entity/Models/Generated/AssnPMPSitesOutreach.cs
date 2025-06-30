@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class AssnPMPSitesOutreach
+public partial class AssnPmpsitesOutreach
 {
-    public int AssnPMPSitesOutreachID { get; set; }
+    public int AssnPmpsitesOutreachId { get; set; }
 
-    public int? PMPID { get; set; }
+    public int? Pmpid { get; set; }
 
-    public int? PropsnapshotID { get; set; }
+    public int? PropsnapshotId { get; set; }
 
-    public int? OutreachID { get; set; }
+    public int? OutreachId { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class AssnPMPSitesOutreach
 
     public virtual OutreachAndAffimativeMarketing? Outreach { get; set; }
 
-    public virtual PMP? PMP { get; set; }
+    public virtual Pmp? Pmp { get; set; }
 
     public virtual PropSnapshot? Propsnapshot { get; set; }
 }

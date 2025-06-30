@@ -5,9 +5,9 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class SurveyReport
 {
-    public int SurveyReportID { get; set; }
+    public int SurveyReportId { get; set; }
 
-    public long? ServiceRequestID { get; set; }
+    public long? ServiceRequestId { get; set; }
 
     public DateTime? ReportDate { get; set; }
 
@@ -19,25 +19,25 @@ public partial class SurveyReport
 
     public string? ParkingRequired { get; set; }
 
-    public DateTime? DBSDateSubmitToLA { get; set; }
+    public DateTime? DbsdateSubmitToLa { get; set; }
 
-    public DateTime? DBSDatePermitIssued { get; set; }
+    public DateTime? DbsdatePermitIssued { get; set; }
 
-    public DateTime? DBSPermitFinalledDate { get; set; }
+    public DateTime? DbspermitFinalledDate { get; set; }
 
-    public DateTime? DBSCertificateOccupancyDate { get; set; }
+    public DateTime? DbscertificateOccupancyDate { get; set; }
 
-    public string? DBSRequiresFHAInspection { get; set; }
+    public string? DbsrequiresFhainspection { get; set; }
 
-    public DateTime? NACInspectionDate { get; set; }
+    public DateTime? NacinspectionDate { get; set; }
 
-    public int? NACRecomForProjectSite { get; set; }
+    public int? NacrecomForProjectSite { get; set; }
 
-    public int? NACEstAccessRetrofitUnit { get; set; }
+    public int? NacestAccessRetrofitUnit { get; set; }
 
-    public int? NACEstAccessRetrofitComAreas { get; set; }
+    public int? NacestAccessRetrofitComAreas { get; set; }
 
-    public int? NACEstAccessRetrofit { get; set; }
+    public int? NacestAccessRetrofit { get; set; }
 
     public decimal? PrevailWageMaterialCostPlus30per { get; set; }
 
@@ -89,31 +89,31 @@ public partial class SurveyReport
 
     public int? CommUnitDesignated { get; set; }
 
-    public decimal? UCF4perReqByAgreement { get; set; }
+    public decimal? Ucf4perReqByAgreement { get; set; }
 
-    public string? UCFExisting { get; set; }
+    public string? Ucfexisting { get; set; }
 
-    public string? UCFRecommended { get; set; }
+    public string? Ucfrecommended { get; set; }
 
-    public int? UCF00StudioUnits { get; set; }
+    public int? Ucf00studioUnits { get; set; }
 
-    public int? UCF0EfficiencyUnits { get; set; }
+    public int? Ucf0efficiencyUnits { get; set; }
 
-    public int? UCF01BedroomUnits { get; set; }
+    public int? Ucf01bedroomUnits { get; set; }
 
-    public int? UCF02BedroomUnits { get; set; }
+    public int? Ucf02bedroomUnits { get; set; }
 
-    public int? UCF03BedroomUnits { get; set; }
+    public int? Ucf03bedroomUnits { get; set; }
 
-    public int? UCF04BedroomUnits { get; set; }
+    public int? Ucf04bedroomUnits { get; set; }
 
-    public int? UCF05BedroomUnits { get; set; }
+    public int? Ucf05bedroomUnits { get; set; }
 
-    public int? UCFMgrUnitTypeNotVerfied { get; set; }
+    public int? UcfmgrUnitTypeNotVerfied { get; set; }
 
-    public int? UCFTotalNoOfUnits { get; set; }
+    public int? UcftotalNoOfUnits { get; set; }
 
-    public int? SROUnits { get; set; }
+    public int? Srounits { get; set; }
 
     public string CreatedBy { get; set; } = null!;
 

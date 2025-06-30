@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static DeveloperPortal.DataAccess.Entity.Data.AAHREntities;
-using DeveloperPortal.DataAccess.Entity.Data; 
+using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Repository.Interface;
 
 namespace DeveloperPortal.DataAccess.Entity.ViewModels
 {
@@ -19,7 +20,7 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModels
 
         public partial class CommentMD
         {
-            public int CommentID { get; set; }
+            public int CommentId { get; set; }
             public string? CommentText { get; set; }
             public Nullable<bool> IsInternal { get; set; }
             public Nullable<bool> IsWorklog { get; set; }

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class EmailLog
 {
-    public int EmailLogID { get; set; }
+    public int EmailLogId { get; set; }
 
     public DateOnly ReceivedDate { get; set; }
 
@@ -17,11 +17,11 @@ public partial class EmailLog
 
     public string Email { get; set; } = null!;
 
-    public int? ProjectSiteID { get; set; }
+    public int? ProjectSiteId { get; set; }
 
     public string? CallerType { get; set; }
 
-    public int LutMailTypeID { get; set; }
+    public int LutMailTypeId { get; set; }
 
     public string? OtherMailType { get; set; }
 
@@ -29,9 +29,9 @@ public partial class EmailLog
 
     public DateOnly ResponseDate { get; set; }
 
-    public int ResponderID { get; set; }
+    public int ResponderId { get; set; }
 
-    public int LutOutcomeID { get; set; }
+    public int LutOutcomeId { get; set; }
 
     public string? Outcome { get; set; }
 

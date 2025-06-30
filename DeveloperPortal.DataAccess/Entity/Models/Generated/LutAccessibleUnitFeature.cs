@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutAccessibleUnitFeature
 {
-    public int LutAccessibleUnitFeatureID { get; set; }
+    public int LutAccessibleUnitFeatureId { get; set; }
 
     public string? Name { get; set; }
 
@@ -17,7 +17,7 @@ public partial class LutAccessibleUnitFeature
 
     public decimal? MobilityRatio { get; set; }
 
-    public decimal? HVRatio { get; set; }
+    public decimal? Hvratio { get; set; }
 
     public string? CreatedBy { get; set; }
 
@@ -27,7 +27,7 @@ public partial class LutAccessibleUnitFeature
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<AssnPMPProjSiteAccessibleUnitFeatureSnap> AssnPMPProjSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPMPProjSiteAccessibleUnitFeatureSnap>();
+    public virtual ICollection<AssnPmpprojSiteAccessibleUnitFeatureSnap> AssnPmpprojSiteAccessibleUnitFeatureSnaps { get; set; } = new List<AssnPmpprojSiteAccessibleUnitFeatureSnap>();
 
     public virtual ICollection<AssnProjSiteAccessibleUnitFeature> AssnProjSiteAccessibleUnitFeatures { get; set; } = new List<AssnProjSiteAccessibleUnitFeature>();
 }

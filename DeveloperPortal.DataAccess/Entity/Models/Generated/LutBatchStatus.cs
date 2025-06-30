@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class LutBatchStatus
 {
-    public int LutBatchStatusID { get; set; }
+    public int LutBatchStatusId { get; set; }
 
     public string BatchStatus { get; set; } = null!;
 
@@ -23,7 +23,7 @@ public partial class LutBatchStatus
 
     public string? ModifiedBy { get; set; }
 
-    public Guid RowID { get; set; }
+    public Guid RowId { get; set; }
 
     public virtual ICollection<BatchJobDetail> BatchJobDetails { get; set; } = new List<BatchJobDetail>();
 

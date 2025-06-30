@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutFHAType
+public partial class LutFhatype
 {
-    public int LutFHATypeID { get; set; }
+    public int LutFhatypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -21,5 +21,5 @@ public partial class LutFHAType
 
     public DateTime ModifiedOn { get; set; }
 
-    public virtual ICollection<PMPUnitAttributeSnap> PMPUnitAttributeSnaps { get; set; } = new List<PMPUnitAttributeSnap>();
+    public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
 }

@@ -5,7 +5,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 public partial class NonCoveredProjectSite
 {
-    public int NonCoveredProjectSiteID { get; set; }
+    public int NonCoveredProjectSiteId { get; set; }
 
     public string PropertyName { get; set; } = null!;
 
@@ -27,5 +27,5 @@ public partial class NonCoveredProjectSite
 
     public DateTime? DeletedOn { get; set; }
 
-    public virtual ICollection<AssnBGCNonCoveredProperty> AssnBGCNonCoveredProperties { get; set; } = new List<AssnBGCNonCoveredProperty>();
+    public virtual ICollection<AssnBgcnonCoveredProperty> AssnBgcnonCoveredProperties { get; set; } = new List<AssnBgcnonCoveredProperty>();
 }

@@ -50,22 +50,22 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated
             int displayConfigId = 0;
 
             //switch (this.ControlMaster.Name)
-            switch (controlViewMaster.ControlMaster.Name)
+            switch (controlViewMaster.Control.Name)
             {
                 case "Links":
                     displayConfigId = null != LinkDisplayConfigId ? (int)LinkDisplayConfigId : 0;
                     break;
 
                 case "SPDetailView":
-                    displayConfigId = null != SPDetailDisplayConfigId ? (int)SPDetailDisplayConfigId : 0;
+                    displayConfigId = null != SpdetailDisplayConfigId ? (int)SpdetailDisplayConfigId : 0;
                     break;
 
                 case "SPGridView":
-                    displayConfigId = null != SPGridDisplayConfigId ? (int)SPGridDisplayConfigId : 0;
+                    displayConfigId = null != SpgridDisplayConfigId ? (int)SpgridDisplayConfigId : 0;
                     break;
 
                 case "SPMatrixView":
-                    displayConfigId = null != SPMatrixDisplayConfigId ? (int)SPMatrixDisplayConfigId : 0;
+                    displayConfigId = null != SpmatrixDisplayConfigId ? (int)SpmatrixDisplayConfigId : 0;
                     break;
 
                 case "News":
@@ -77,24 +77,24 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated
                     break;
 
                 case "WorkflowLog":
-                    displayConfigId = null != WFLogDisplayConfigId ? (int)WFLogDisplayConfigId : 0;
+                    displayConfigId = null != WflogDisplayConfigId ? (int)WflogDisplayConfigId : 0;
                     break;
 
                 case "WorkflowNavigation":
-                    displayConfigId = null != WFNavigationDisplayConfigId ? (int)WFNavigationDisplayConfigId : 0;
+                    displayConfigId = null != WfnavigationDisplayConfigId ? (int)WfnavigationDisplayConfigId : 0;
                     break;
 
                 case "SPGroupView":
-                    displayConfigId = null != SPGroupDisplayConfigId ? (int)SPGroupDisplayConfigId : 0;
+                    displayConfigId = null != SpgroupDisplayConfigId ? (int)SpgroupDisplayConfigId : 0;
                     break;
 
                 case "WSGridView":
-                    displayConfigId = null != WSGridViewDisplayConfigId ? (int)WSGridViewDisplayConfigId : 0;
+                    displayConfigId = null != WsgridViewDisplayConfigId ? (int)WsgridViewDisplayConfigId : 0;
                     break;
 
 
                 case "WSDetailView":
-                    displayConfigId = null != WSDetailDisplayConfigId ? (int)WSDetailDisplayConfigId : 0;
+                    displayConfigId = null != WsdetailDisplayConfigId ? (int)WsdetailDisplayConfigId : 0;
                     break;
 
                 case "Form":
@@ -128,76 +128,76 @@ namespace DeveloperPortal.DataAccess.Entity.Models.Generated
             object displayConfiguration = 0;
 
             //switch (this.ControlMaster.Name)
-            switch (controlViewMaster.Name)
-            {
-                case "Links":
-                    if (null != Links_DisplayConfig)
-                    {
-                        /* Fetch Display Configuration from db to view model */
-                        LinksViewModel linksViewModel = new LinksViewModel();
-                        linksViewModel.FetchDisplayConfiguration(Links_DisplayConfig);
-                        /* Copy Model */
-                        displayConfiguration = linksViewModel;
-                    }
-                    break;
+            //switch (controlViewMaster.Name)
+            //{
+            //    case "Links":
+            //        if (null != LinksDisplayConfig)
+            //        {
+            //            /* Fetch Display Configuration from db to view model */
+            //            LinksViewModel linksViewModel = new LinksViewModel();
+            //            linksViewModel.FetchDisplayConfiguration(LinksDisplayConfig);
+            //            /* Copy Model */
+            //            displayConfiguration = linksViewModel;
+            //        }
+            //        break;
 
-                case "SPDetailView":
-                    displayConfiguration = SPDetailView_DisplayConfig;
-                    break;
+            //    case "SPDetailView":
+            //        displayConfiguration = SPDetailView_DisplayConfig;
+            //        break;
 
-                case "SPGridView":
-                    displayConfiguration = SPGridView_DisplayConfig;
-                    break;
+            //    case "SPGridView":
+            //        displayConfiguration = SPGridView_DisplayConfig;
+            //        break;
 
-                case "SPMatrixView":
-                    displayConfiguration = SPMatrixView_DisplayConfig;
-                    break;
+            //    case "SPMatrixView":
+            //        displayConfiguration = SPMatrixView_DisplayConfig;
+            //        break;
 
-                case "News":
-                    displayConfiguration = News_DisplayConfig;
-                    break;
+            //    case "News":
+            //        displayConfiguration = News_DisplayConfig;
+            //        break;
 
-                case "Custom":
-                    displayConfiguration = Custom_DisplayConfig;
-                    break;
+            //    case "Custom":
+            //        displayConfiguration = Custom_DisplayConfig;
+            //        break;
 
-                case "WorkflowNavigation":
-                    if (null != WFNavigation_DisplayConfig)
-                    {
-                        /* Fetch Display Configuration from db to view model */
-                        WFNavigationViewModel wfNavigationViewModel = new WFNavigationViewModel();
-                        wfNavigationViewModel.FetchDisplayConfiguration(WFNavigation_DisplayConfig);
-                        /* Copy Model */
-                        displayConfiguration = wfNavigationViewModel;
-                    }
-                    break;
+            //    case "WorkflowNavigation":
+            //        if (null != WFNavigation_DisplayConfig)
+            //        {
+            //            /* Fetch Display Configuration from db to view model */
+            //            WFNavigationViewModel wfNavigationViewModel = new WFNavigationViewModel();
+            //            wfNavigationViewModel.FetchDisplayConfiguration(WFNavigation_DisplayConfig);
+            //            /* Copy Model */
+            //            displayConfiguration = wfNavigationViewModel;
+            //        }
+            //        break;
 
-                case "WorkflowLog":
-                    if (null != WFLog_DisplayConfig)
-                    {
-                        /* Fetch Display Configuration from db to view model */
-                        WFLogViewModel wfLogViewModel = new WFLogViewModel();
-                        wfLogViewModel.FetchDisplayConfiguration(WFNavigation_DisplayConfig);
+            //    case "WorkflowLog":
+            //        if (null != WFLog_DisplayConfig)
+            //        {
+            //            /* Fetch Display Configuration from db to view model */
+            //            WFLogViewModel wfLogViewModel = new WFLogViewModel();
+            //            wfLogViewModel.FetchDisplayConfiguration(WFNavigation_DisplayConfig);
 
-                        /* Copy Model */
-                        displayConfiguration = wfLogViewModel;
-                    }
-                    break;
+            //            /* Copy Model */
+            //            displayConfiguration = wfLogViewModel;
+            //        }
+            //        break;
 
-                case "SPGroupView":
-                    displayConfiguration = SPGroupView_DisplayConfig;
-                    break;
+            //    case "SPGroupView":
+            //        displayConfiguration = SPGroupView_DisplayConfig;
+            //        break;
 
-                case "WSGridView":
-                    displayConfiguration = WSGridView_DisplayConfig;
-                    break;
+            //    case "WSGridView":
+            //        displayConfiguration = WSGridView_DisplayConfig;
+            //        break;
 
-                //case "WSDetailView":
-                //    displayConfiguration = WSDetailView_DisplayConfig;
-                //    break;
-                default:
-                    break;
-            }
+            //    //case "WSDetailView":
+            //    //    displayConfiguration = WSDetailView_DisplayConfig;
+            //    //    break;
+            //    default:
+            //        break;
+            //}
 
             return displayConfiguration; //return
         }

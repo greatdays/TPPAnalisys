@@ -32,51 +32,51 @@ public partial class ControlViewMaster
 
     public int? LinkDisplayConfigId { get; set; }
 
-    public int? SPDetailDisplayConfigId { get; set; }
+    public int? SpdetailDisplayConfigId { get; set; }
 
-    public int? SPGridDisplayConfigId { get; set; }
+    public int? SpgridDisplayConfigId { get; set; }
 
-    public int? SPMatrixDisplayConfigId { get; set; }
+    public int? SpmatrixDisplayConfigId { get; set; }
 
     public int? NewsDisplayConfigId { get; set; }
 
     public int? CustomDisplayConfigId { get; set; }
 
-    public int? WFNavigationDisplayConfigId { get; set; }
+    public int? WfnavigationDisplayConfigId { get; set; }
 
-    public int? WFLogDisplayConfigId { get; set; }
+    public int? WflogDisplayConfigId { get; set; }
 
-    public int? SPGroupDisplayConfigId { get; set; }
+    public int? SpgroupDisplayConfigId { get; set; }
 
-    public int? WSGridViewDisplayConfigId { get; set; }
+    public int? WsgridViewDisplayConfigId { get; set; }
 
-    public int? WSDetailDisplayConfigId { get; set; }
+    public int? WsdetailDisplayConfigId { get; set; }
 
     public string? JsonConfig { get; set; }
 
-    public virtual ControlMaster ControlMaster { get; set; }
+    public virtual ControlMaster Control { get; set; } = null!;
 
-    public virtual Custom_DisplayConfig? Custom_DisplayConfig { get; set; }
+    public virtual CustomDisplayConfig? CustomDisplayConfig { get; set; }
 
-    public virtual Links_DisplayConfig? Links_DisplayConfig { get; set; }
+    public virtual LinksDisplayConfig? LinkDisplayConfig { get; set; }
 
-    public virtual News_DisplayConfig? News_DisplayConfig { get; set; }
+    public virtual NewsDisplayConfig? NewsDisplayConfig { get; set; }
 
-    public virtual SPDetailView_DisplayConfig? SPDetailView_DisplayConfig { get; set; }
+    public virtual SpdetailViewDisplayConfig? SpdetailDisplayConfig { get; set; }
 
-    public virtual SPGridView_DisplayConfig? SPGridView_DisplayConfig { get; set; }
+    public virtual SpgridViewDisplayConfig? SpgridDisplayConfig { get; set; }
 
-    public virtual SPGroupView_DisplayConfig? SPGroupView_DisplayConfig { get; set; }
+    public virtual SpgroupViewDisplayConfig? SpgroupDisplayConfig { get; set; }
 
-    public virtual SPMatrixView_DisplayConfig? SPMatrixView_DisplayConfig { get; set; }
+    public virtual SpmatrixViewDisplayConfig? SpmatrixDisplayConfig { get; set; }
 
     public virtual ICollection<TabControlViewMap> TabControlViewMaps { get; set; } = new List<TabControlViewMap>();
 
-    public virtual WFLog_DisplayConfig? WFLog_DisplayConfig { get; set; }
+    public virtual WflogDisplayConfig? WflogDisplayConfig { get; set; }
 
-    public virtual WFNavigation_DisplayConfig? WFNavigation_DisplayConfig { get; set; }
+    public virtual WfnavigationDisplayConfig? WfnavigationDisplayConfig { get; set; }
 
-    public virtual WSDetailView_DisplayConfig? WSDetailView_DisplayConfig { get; set; }
+    public virtual WsdetailViewDisplayConfig? WsdetailDisplayConfig { get; set; }
 
-    public virtual WSGridView_DisplayConfig? WSGridView_DisplayConfig { get; set; }
+    public virtual WsgridViewDisplayConfig? WsgridViewDisplayConfig { get; set; }
 }

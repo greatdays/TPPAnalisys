@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutAHUPScore
+public partial class LutAhupscore
 {
-    public int LutAHUPScoreID { get; set; }
+    public int LutAhupscoreId { get; set; }
 
     public string? Name { get; set; }
 

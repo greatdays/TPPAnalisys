@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class LutRARequestType
+public partial class LutRarequestType
 {
-    public int LutRARequestTypeID { get; set; }
+    public int LutRarequestTypeId { get; set; }
 
-    public int LutUserTypeID { get; set; }
+    public int LutUserTypeId { get; set; }
 
-    public string RARequestType { get; set; } = null!;
+    public string RarequestType { get; set; } = null!;
 
     public int ViewOrder { get; set; }
 
@@ -25,11 +25,11 @@ public partial class LutRARequestType
 
     public DateTime? ModifiedOn { get; set; }
 
-    public virtual ICollection<LutRACategory> LutRACategories { get; set; } = new List<LutRACategory>();
+    public virtual ICollection<LutRacategory> LutRacategories { get; set; } = new List<LutRacategory>();
 
     public virtual LutUserType LutUserType { get; set; } = null!;
 
-    public virtual ICollection<QRReasonableAccommodation> QRReasonableAccommodations { get; set; } = new List<QRReasonableAccommodation>();
+    public virtual ICollection<QrreasonableAccommodation> QrreasonableAccommodations { get; set; } = new List<QrreasonableAccommodation>();
 
     public virtual ICollection<ReasonableAccommodation> ReasonableAccommodations { get; set; } = new List<ReasonableAccommodation>();
 }
