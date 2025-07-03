@@ -80,7 +80,7 @@
 	eval("var dropzone" +   " = null;");
 	$(document).ready(function() {
 		var myDropzone = new Dropzone("div#divDropZone", {
-            url: '@Url.Action("ImportUnitInformation", "ProjectDetail", new { })' ,
+            url: '@Url.Action("ImportUnitInformation", "ProjectDetail", new { area = "Construction" })' ,
 			paramName: "file",
 			clickable: "#divDropZone",
 			filesizeBase: 1024,

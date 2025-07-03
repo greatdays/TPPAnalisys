@@ -2,8 +2,10 @@
 
 @model BuildingParkingInformationModal
 <style>
+
+
     #dtPrkingData .input-parking {
-        border: 0px;
+        border: 0px solid #828282 !important;
         text-align: right;
         pointer-events: none;
     }
@@ -12,7 +14,6 @@
         pointer-events: none;
     }
 
-
     .input-parking-total {
         border: 0px !important;
         text-align: right;
@@ -20,8 +21,10 @@
     }
 
     .input-parking-edit {
-        border: inherit !important;
+        border: 1px solid #828282 !important;
         pointer-events: auto !important;
+        text-align: right;
+        pointer-events: none;
     }
 
     .total-td {
@@ -65,151 +68,396 @@
         padding: 1em;
     }
 
+    #dtPrkingData .input-parking {
+        border: 0px;
+        text-align: right;
+        pointer-events: none;
+    }
+
+    #dtPrkingData .radio-parking {
+        pointer-events: none;
+    }
+
+
+    .input-parking-total {
+        border: 0px !important;
+        text-align: right;
+        pointer-events: none;
+    }
+
+    .input-parking-edit {
+        border: inherit !important;
+        pointer-events: auto !important;
+    }
+
+    #dtPrkingData .input-building-summary {
+        border: 0px;
+        pointer-events: none;
+        max-height: 35px;
+    }
+
+    #dtPrkingData .input-building-summary-disabled {
+        border: 0px;
+        pointer-events: none;
+    }
+
+    .input-building-summary-edit {
+        border: 1px solid #e4e4e4 !important;
+        pointer-events: auto !important;
+    }
+
+    .view-control-height {
+        max-height: 25px !important;
+    }
+
+    .total-td {
+        background-color: #e9ecef;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    #tblparkinginfo .tr-header {
+        font-size: 18px;
+        background: whitesmoke;
+        height: 50px;
+    }
+
+        #tblparkinginfo .tr-header:hover {
+            background: whitesmoke !important;
+        }
+
+    #dtPermitNumberData_wrapper .paging_numbers {
+        DISPLAY: FLEX;
+        MARGIN-LEFT: 3em;
+    }
+
+    #dtPermitNumberData_wrapper .select-site-title {
+        font-size: 16PX;
+        FONT-WEIGHT: BOLD;
+        padding-top: 10PX;
+        min-width: 135px;
+        padding-right: 16px;
+    }
+
+    #dtPermitNumberData_wrapper .pagination .page-link {
+        display: table-cell !important;
+    }
+
+    #dtPermitNumberData_wrapper .pagination li {
+        margin-bottom: 5px;
+    }
+
+    .permit-number-buttons {
+        padding: 1em;
+    }
+
+    #blockUIMessage {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1050;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    #loaderOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        backdrop-filter: blur(4px);
+        background: rgba(255, 255, 255, 0.4);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #buildingSummaryForm .form-control {
+         border: 1px solid #fff; 
+    }
+
+
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-ajax/4.0.20526/MicrosoftAjax.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-unobtrusive-ajax/3.2.5/jquery.unobtrusive-ajax.min.js"></script>
+
+
 <div class="site-parking-summary" style="margin-top:15px;">
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="site-title ">@Model.BuildingNumber</h3>
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-sm-12">
-                    <div class="row-box">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td class="row-title">
-                                    Type of Construction Project
-                                </td>
-                                <td class="row-text" style="min-width: 170px;">
-                                    @Model.TypeOfConstruction
-                                </td>
-                                <td class="row-title lelf-border">
-                                    Type of Occupancy
-                                </td>
-                                <td class="row-text">
-                                    @Model.TypeOfOccupancy>
-                                </td>
-                                <td class="row-title lelf-border">
-                                    Building Permit Number
-                                </td>
-                                <td class="row-text">
-                                    @Model.BuildingPermitNumber
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <div id="buildingSummaryForm">
+                @Html.HiddenFor(m => m.BuildingAddressId)
+                @Html.HiddenFor(m => m.LutApplicableAccessibilityStandardId)
+                @Html.HiddenFor(m => m.BuildingId)
+                @Html.HiddenFor(m => m.ProjectSiteId)
+                @Html.HiddenFor(m => m.PropSnapshotID)
+                @Html.HiddenFor(m => m.CaseId)
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-8">
+                        @{
+                            if (!string.IsNullOrWhiteSpace(Model.StructureNo))
+                            {
+                                <h3 class="site-title ">
+                                    @Model.BuildingFileNumber  -   @Model.StructureNo
+                                </h3>
+                            }
+                            else
+                            {
 
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-sm-12">
-                    <div class="row-box">
-                        <span class="row-title lelf-border"> Applicable Codes </span>
-                        <span class="row-text"> @Model.ApplicableCodes</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-sm-12">
-                    <div class="row-box">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td class="row-title">
-                                    Total Number of Units
-                                </td>
-                                <td class="row-text">
-                                    @Model.NumberOfUnits
-                                </td>
-                                <td class="row-title  lelf-border">
-                                    # of Mobility Units
-                                </td>
-                                <td class="row-text">
-                                    @Model.NumberOfMobilityUnits
-                                </td>
-                                <td class="row-title lelf-border">
-                                    # of Communication Units
-                                </td>
-                                <td class="row-text">
-                                    @Model.NumberOfCommunicationUnits
-                                </td>
-                                <td class="row-title lelf-border"> # of Adaptable Units </td>
-                                <td class="row-text">
-                                    @Model.NumberOfAdaptableUnits
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="margin-bottom:10px;">
-                <div class="col-sm-12">
-                    <div class="row-box">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td class="row-title">
-                                    Number of Floors in Buildings
-                                </td>
-                                <td class="row-text" style="min-width: 170px;">@Model.NumberOfFloors </td>
+                                <h3 class="site-title ">
+                                    @Model.BuildingFileNumber
+                                </h3>
 
-                                <td class="row-title lelf-border">
-                                    Elevator?
-                                </td>
-                                <td class="row-text">
-                                    @(Model.IsElevator ? "Yes" : "No")
-                                </td>
-                                <td class="row-title lelf-border">
-                                    Number of Parkings
-                                </td>
-                                <td class="row-text">
-                                    @Model.NumberOfParkings
-                                </td>
-                                <td class="row-title lelf-border">
-                                    Will Parking be provided for Each Residential Dwelling Unit?
-                                </td>
-                                <td class="row-text">
-                                    @(Model.ParkingAvailableAtbuildingLevel ? "Yes" : "No")
-                                </td>
-                            </tr>
-                        </table>
+                            }
+                        }
+                    </div>
+                    <div class="col-sm-4">
+                        
+                        <button id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access" role="button" style="background: #003399;color: white;" role-access="true" onclick="editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</button>
+                        <button id="canceleditbuildingSummary" class="k-button k-button-icontext k-grid-add" style="background: #003399;color: white;margin-left :15px;" role="button" onclick="canceleditbuildingSummary()">Cancel</button>
+                        <button id="updatebuildingSummary" class="k-button k-button-icontext k-grid-add"  style="background: #003399;color: white;" onclick="updatebuildingSummary()">Update</button>
+                    </div>
+                   
+                </div>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-12">
+                        <div class="row-box">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="row-title">
+                                        Type of Construction Project
+                                    </td>
+                                    <td class="row-text" style="min-width: 170px;">
+                                        @Model.TypeOfConstruction
+                                        @*@Html.TextBoxFor(x => x.TypeOfConstruction, new { @class = "form-control input-building-summar1 " ,disabled= "disabled" })*@
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Type of Occupancy
+                                    </td>
+                                    <td class="row-text">
+                                        @Model.TypeOfOccupancy
+                                        @*@Html.TextBoxFor(x => x.TypeOfOccupancy, new { @class = "form-control NumberOfUnits input-building-summary " })*@
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Building Permit Number
+                                    </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.BuildingPermitNumber, new { @class = "input-number form-control NumberOfUnits input-building-summary ", @MaxLength = "7" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-12">
+                        <div class="row-box">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="row-title" width="190px">
+                                        Building Address
+                                    </td>
+                                    <td class="row-text" style="min-width: 170px;">
+
+
+                                        <spam class="radio-building-summary-lable">
+                                            @Model.FullAddress
+                                        </spam>
+                                        <div class="radio-building-summary-edit">
+                                            @Html.DropDownListFor(x => x.BuildingAddressId, new List<SelectListItem>(), "Building Address", new { @class = "form-control input-building-summary ", @id = "BuildingAddressDL" })
+                                        </div>
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Building Description
+                                    </td>
+                                    <td class="row-text">
+                                        <spam class="radio-building-summary-lable" id="lblBuildingDescription">
+                                            @Model.BuildingDescription
+                                        </spam>
+                                        <div class="radio-building-summary-edit">
+                                            @Html.DropDownListFor(model => model.BuildingDescription, new List<SelectListItem>(), "Select", new { @id = "BuildingDescriptionDL", @class = "form-control input-building-summary " })
+                                        </div>
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Non-Residential
+                                    </td>
+                                    <td class="row-text">
+                                        <spam class="radio-building-summary-lable">
+                                            @(Model.NonResidental.HasValue && Model.NonResidental == true ? "Yes" : "No")
+                                        </spam>
+                                        <div class="input-group yesno_radio radio-building-summary-edit">
+                                            <div class="custom-control custom-radio" aria-labelledby="s_NonResidental1" style="margin-right:10px;">
+                                                @Html.RadioButtonFor(model => model.NonResidental, "true", new { @id = "s_NonResidental1", @class = "radio-building-summary custom-control-input" })
+                                                <label class="custom-control-label" for="s_NonResidental1">Yes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " aria-labelledby="s_NonResidental2">
+                                                @Html.RadioButtonFor(model => model.NonResidental, "false", new { @id = "s_NonResidental2", @class = "radio-building-summary custom-control-input " })
+                                                <label class="custom-control-label" for="s_NonResidental2">No</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-12">
+                        <div class="row-box">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="row-title" width="190px">
+                                        Applicable Codes
+                                    </td>
+                                    <td class="row-text">
+                                        <spam class="radio-building-summary-lable">
+                                            @Model.ApplicableCodes
+                                        </spam>
+                                        <div class="radio-building-summary-edit" style="width:400px;">
+                                            @Html.DropDownListFor(model => model.LutApplicableAccessibilityStandardIdList, Model.LutApplicableAccessibilityList, "Select", new { @id = "ApplicableCodesDL", @multiple = "multiple", @class = "form-control input-building-summary " })
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-12">
+                        <div class="row-box">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="row-title">
+                                        Total Number of Units
+                                    </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.NumberOfUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "5" })
+                                    </td>
+                                    <td class="row-title  lelf-border">
+                                        # of Mobility Units
+                                    </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.NumberOfMobilityUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "5" })
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        # of Communication Units
+                                    </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.NumberOfCommunicationUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "5" })
+                                    </td>
+                                    <td class="row-title lelf-border"> # of Adaptable Units </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.NumberOfAdaptableUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "5" })
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom:10px;">
+                    <div class="col-sm-12">
+                        <div class="row-box">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="row-title">
+                                        Number of Floors in Buildings
+                                    </td>
+                                    <td class="row-text" style="min-width: 170px;">
+                                        @Html.TextBoxFor(x => x.NumberOfFloors, new { @class = "input-number form-control NumberOfFloors input-building-summary ", @MaxLength = "5" })
+                                    </td>
+
+                                    <td class="row-title lelf-border">
+                                        Elevator?
+                                    </td>
+                                    <td class="row-text">
+                                        <spam class="radio-building-summary-lable">
+                                            @(Model.IsElevator ? "Yes" : "No")
+                                        </spam>
+                                        <div class="input-group yesno_radio radio-building-summary-edit">
+                                            <div class="custom-control custom-radio" aria-labelledby="s_IsElevator1" style="margin-right:10px;">
+                                                @Html.RadioButtonFor(model => model.IsElevator, "true", new { @id = "s_IsElevator1", @class = "radio-building-summary custom-control-input" })
+                                                <label class="custom-control-label" for="s_IsElevator1">Yes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " aria-labelledby="s_IsElevator2">
+                                                @Html.RadioButtonFor(model => model.IsElevator, "false", new { @id = "s_IsElevator2", @class = " radio-building-summary custom-control-input" })
+                                                <label class="custom-control-label" for="s_IsElevator2">No</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Number of Parkings
+                                    </td>
+                                    <td class="row-text">
+                                        @Html.TextBoxFor(x => x.NumberOfParkings, new { @class = "input-number form-control input-building-summary", @MaxLength = "5" })
+                                    </td>
+                                    <td class="row-title lelf-border">
+                                        Will Parking be provided for Each Residential Dwelling Unit?
+                                    </td>
+                                    <td class="row-text">
+                                        <spam class="radio-building-summary-lable">
+                                            @(Model.ParkingAvailableAtbuildingLevel ? "Yes" : "No")
+                                        </spam>
+                                        <div class="input-group yesno_radio radio-building-summary-edit">
+                                            <div class="custom-control custom-radio" aria-labelledby="s_ParkingAvailableAtbuildingLevel1" style="margin-right:10px;">
+                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_ParkingAvailableAtbuildingLevel1", @class = "radio-building-summary custom-control-input" })
+                                                <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel1">Yes</label>
+                                            </div>
+                                            <div class="custom-control custom-radio " aria-labelledby="s_ParkingAvailableAtbuildingLevel2">
+                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_ParkingAvailableAtbuildingLevel2", @class = " radio-building-summary custom-control-input" })
+                                                <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel2">No</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
-            <span class="k-grid-header-title"> Link Permit Number to LADBS</span><
+            <span class="k-grid-header-title">LADBS Building Permit Info</span>
+            <img src="~/Images/question-circle.svg" class="question-mark-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" data-original-title="Double click permit numbers below to view LADBS details" />
         </div>
         <div>
-            <div class="k-d-flex k-justify-content-start" style="padding-left: 2em;padding-top: 1em;padding-bottom: 2em;">
-                <div class="k-w-300">
+            <div style="display: inline;">
+                <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em;">
                     <label for="LADBS_PermitNumber">Permit #:</label>
-                    <input id="LADBS_PermitNumber" />
-                    <label for="LADBS_PermitNumber" style="margin-left: 1em;">Department: </label>
-                    <select name="LADBS_Department" id="depts" style="height: 60%;width: 6em;">
-                        <option value="" selected disabled hidden></option>
-                        <option value="BAS">BAS</option>
-                        <option value="DWP">DWP</option>
-                        <option value="ENG">ENG</option>
-                        <option value="FIR">FIR</option>
-                        <option value="PLN">PLN</option>
-                        <option value="SAN">SAN</option>
-                        <option value="HPP">HPP</option>
-                    </select>
-                    <button id="linkPermitNumber" class="btn btn btn-primary no-access" role-access="true" style="margin-left: 1em;" onclick="linkPermitNumber()">Link Permit Number</button>
+                    <input id="LADBS_PermitNumber" class="form-group" />
+                    <button id="linkPermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="linkPermitNumber()">Query Permit Number</button>
+                    <div id="invalid-permit-message" style="display: none;"></div>
+                </div>
+                <div style="float: inline-end;padding-right: 1em;padding-top: 1em;padding-bottom: 2em;">
+                    <button id="syncPermitNumbers" class="btn btn btn-primary" onclick="syncPermitNumbers()">Sync All Permit Numbers</button>
+                    <img src="~/Images/question-circle.svg" class="question-mark-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" data-original-title="Uses all permit numbers saved onto this building. (Original, Prior, Current, Historic, Conversion)" />
                 </div>
             </div>
+
             <div id="LADBSerror" style="padding-left: 2em;margin-bottom: 2em;" hidden>
-            </div>
-            <div id="permit-number-directions" style="padding-left: 2em;margin-bottom: 2em;">
-                Single-Click to Select/Double-Click to Open Permit Details
             </div>
         </div>
 
         <table id="dtPermitNumberData"></table>
+
+        @*show loader*@
+        <div id="loaderOverlay">
+            <span id="blockUIMessage">
+                <i class="fas fa-spinner fa-spin"></i> Please wait...
+            </span>
+        </div>
+
+
 
         <div class="permit-number-buttons">
             <button id="updatePermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="updatePermitNumber()">Update Permit Number</button>
@@ -220,15 +468,14 @@
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title"> Parking Information</span>
-            <a id="editbuildingParking" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="editbuildingParkingInfo()" href="#">Edit Parking Information</a>
-            <a id="canceleditbuildingParking" class="k-button k-button-icontext k-grid-add" style="margin-left :15px;" role="bu444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444tton" onclick="canceleditbuildingParkingInfo()" href="#">Cancel</a>
-            <a id="updatebuildingParking" class="k-button k-button-icontext k-grid-add" role="button" onclick="updatebuildingParkingInfo()" href="#">Update</a>
+            <button id="editbuildingParking" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="editbuildingParkingInfo()">Edit Parking Information</button>
+            <button id="canceleditbuildingParking" class="k-button k-button-icontext k-grid-add" style="margin-left :15px;" role="button" onclick="canceleditbuildingParkingInfo()">Cancel</button>
+            <button id="updatebuildingParking" class="k-button k-button-icontext k-grid-add" role="button" onclick="updatebuildingParkingInfo()">Update</button>
         </div>
     </div>
     <div class="hide-hover">
-        <div id="idForm">
-        @* @using (Ajax.BeginForm("BuildingUpdateForm", "ConstructionNew", new AjaxOptions { HttpMethod = "POST", OnBegin = "OnBuildingSaveBegin", OnSuccess = "OnBuildingSaveSuccess", OnFailure = "OnBuildingSaveFailure" }, new { @id = "idForm" }))
-        { *@
+        <form id="idForm">
+
             <table style="width:100%" id="tblparkinginfo">
                 <tr>
                     <td style="width:45%">
@@ -237,10 +484,10 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color:transparent !important; font-size:15px; border-right: 1px solid #dee2e6 ">
-                                            <label class="">ComplianceMatrix.lblResidentialParking</label>
+                                            <label class="">Residential Parking</label>
                                         </th>
                                         <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color: transparent !important; font-size: 15px; ">
-                                            <label class="">ComplianceMatrix.lblCommercialParking</label>
+                                            <label class="">Commercial Parking</label>
                                         </th>
                                     </tr>
                                 </thead>
@@ -365,18 +612,18 @@
                     </td>
                 </tr>
             </table>
-        @* } *@
+
+        </form>
     </div>
 </div>
-
 <script type="text/javascript">
     $(document).ready(function () {
 
         $("#idForm").submit(function (event) {
             event.preventDefault(); // Prevent normal form submission
-
+            debugger;
             $.ajax({
-                url: "Construction/ProjectDetail/BuildingUpdateForm",
+                 url: "@Url.Action("UpdateParkingDetail", new { controller = "ProjectDetail", area = "Construction" })",
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend: function () {
@@ -391,6 +638,7 @@
             });
         });
         resetBulidingParkingEdit();
+        resetBulidingSummaryEdit();
         calculateTotal("chargingStations", "chargingStationsTotal");
         $('.input-parking').on("keypress", function (e) {
             var charCode = (e.which) ? e.which : event.keyCode
@@ -416,56 +664,61 @@
     });
 
     function initPermitNumberList() {
-        dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
-            ajax: {
-                url: '@Url.Action("GetPermitNumbersPost", "ProjectDetail", new { })',
-                data: function (d) {
-                    d.PropSnapshotID = '@Model.PropSnapshotID'
+        if (!$.fn.DataTable.isDataTable('#dtPermitNumberData')) {
+            dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
+                ajax: {
+                    url: '@Url.Action("GetPermitNumbers", "ProjectDetail", new { area = "Construction" })',
+                    data: function (d) {
+                        d.PropSnapshotID = '@Model.PropSnapshotID'
+                    },
+                    type: 'Post',
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    dataType: 'json'
                 },
-                type: 'Post',
-                "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                dataType: 'json'
+                columns: [{ data: 'permitData' }],
+                processing: true,
+                serverSide: true,
+                pageLength: 1,
+                pagingType: 'numbers',
+                paging: true,
+                searching: false,
+                ordering: false,
+                sorting: false,
+                dom: "<'row'<'<'col-sm-12'p>>",
+                oLanguage: {
+                    sEmptyTable: "No record found."
+                }
+            })
+            .on('preXhr.dt', function () {
+                $('#loaderOverlay').fadeIn(100); // Show loading spinner
+            })
+            .on('xhr.dt', function () {
+                $('#loaderOverlay').fadeOut(300); // Hide loading spinner
+            });
 
-            },
-            "columns": [{ "data": 'permitData' }],
+            dtPermitNumberDataTable.on('draw.dt', function () {
+                if ($("#dtPermitNumberData_paginate .select-site-title").length == 0) {
+                    $("#dtPermitNumberData_paginate").prepend("<div class='select-site-title'>Permit Numbers: </div><br/>");
+                }
 
-            processing: true,
-            serverSide: true,
-            pageLength: 1,
-            pagingType: 'numbers',
-            "paging": true,
-            "searching": false,
-            "ordering": false,
-            "sorting": false,
-            "dom": "<'row'<'<'col-sm-12'p>>",
-            "oLanguage": {
-                "sEmptyTable": "No record found."
-            }
-        });
+                $(".dataTables_length").hide();
+                var PermitNumberData = $('#dtPermitNumberData').dataTable().fnGetData();
 
-        dtPermitNumberDataTable.on('draw.dt', function () {
-            if ($("#dtPermitNumberData_paginate .select-site-title").length == 0) {
-                $("#dtPermitNumberData_paginate").prepend("<div class='select-site-title'>Permit Numbers: </div><br/>")
-            }
-            $(".dataTables_length").hide();
-            var PermitNumberData = $('#dtPermitNumberData').dataTable().fnGetData();
-            if (PermitNumberData.length > 0) {
-                $("#dtPermitNumberData_paginate").show()
-                var pageItems = $("#dtPermitNumberData_paginate .paginate_button");
-                var permitList = PermitNumberData[0].PermitList;
-                //BuildingInformationData = PermitNumberData[0].BuildingInformationData;
+                if (PermitNumberData.length > 0) {
+                    $("#dtPermitNumberData_paginate").show();
+                    var pageItems = $("#dtPermitNumberData_paginate .paginate_button ");
+                    var permitList = PermitNumberData[0].permitList;
 
-                // for (var i = 0; i < pageItems.length; i++) {
-                //     if (pageItems[i].text != '…') {
-                //         if (parseInt(pageItems[i].text) !== NaN) {
-                //             $(pageItems[i]).text(permitList[parseInt(pageItems[i].text) - 1]);
-                //         }
-                //     }
-                // }
-                 
-                 for (var i = 0; i < pageItems.length; i++) {
+                    // for (var i = 0; i < pageItems.length; i++) {
+                    //     if (pageItems[i].text != '…') {
+                    //         if (!isNaN(parseInt(pageItems[i].text))) {
+                    //             $(pageItems[i]).text(permitList[parseInt(pageItems[i].text) - 1]);
+                    //         }
+                    //     }
+                    // }
+                    for (var i = 0; i < pageItems.length; i++) {
                      var text = pageItems[i].text
                      if (text != '…') {
                          if (parseInt(text) !== NaN) {
@@ -475,83 +728,138 @@
                  }
 
 
-                if (pageItems.length == 0) {
-                    $(".permit-number-buttons").attr("hidden", true);
-                    $("#dtPermitNumberData_wrapper").attr("hidden", true);
-                    $("#permit-number-directions").attr("hidden", true);
-                }
-                else {
-                    $(".permit-number-buttons").attr("hidden", false);
-                    $("#dtPermitNumberData_wrapper").attr("hidden", false);
-                    $("#permit-number-directions").attr("hidden", false);
-                }
-            }
-            else {
-                $("#dtPermitNumberData_paginate").hide();
-            }
-
-            $("a.page-link[aria-controls='dtPermitNumberData']").on('dblclick', function () {
-
-                var params = this.text.split(" ");
-
-                $("#permitNumberInformationPopup").modal("show");
-                $("#permitNumberInformationPopupTitle").html(`Permit Details: ${this.text}`)
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("GetPermitDetails", new { controller = "ProjectDetail" })",
-                    data: {
-                        PropsnapshotID: @Model.PropSnapshotID,
-                        PermitNumber: params[0],
-                        Department: params[1],
-                    },
-                    success: function (data) {
-                        $("#permitNumberInformationPopup .modal-body").html(data);
-                    },
-                    error: function (result) {
-                        console.log(result)
+                    if (pageItems.length == 0) {
+                        $(".permit-number-buttons").attr("hidden", true);
+                        $("#dtPermitNumberData_wrapper").attr("hidden", true);
+                        $("#permit-number-directions").attr("hidden", true);
+                    } else {
+                        $(".permit-number-buttons").attr("hidden", false);
+                        $("#dtPermitNumberData_wrapper").attr("hidden", false);
+                        $("#permit-number-directions").attr("hidden", false);
                     }
-                });
-            });
+                     $('#loaderOverlay').fadeOut(300);
+                } else {
+                    $("#dtPermitNumberData_paginate").hide();
+                    $('#loaderOverlay').fadeOut(300);
+                }
 
-            $("#dtPermitNumberData .sorting_disabled").attr("hidden", true);
+                $("a.paginate_button[aria-controls='dtPermitNumberData']").on('dblclick', function () {
+                    var params = this.text.split(" ");
+                    $("#permitNumberInformationPopup").modal("show");
+                    $("#permitNumberInformationPopupTitle").html(`Permit Details: ${this.text}`);
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("GetPermitDetails", new { controller = "ProjectDetail", area = "Construction" })",
+                        data: {
+                            PropsnapshotID: @Model.PropSnapshotID,
+                            PermitNumber: params[0]
+                        },
+                        success: function (data) {
+                            $("#permitNumberInformationPopup .modal-body").html(data);
+                        },
+                        error: function (result) {
+                            console.log(result)
+                        }
+                    });
+                });
+
+                $("#dtPermitNumberData .sorting_disabled").attr("hidden", true);
+            });
+        } else {
+            var table = $('#dtPermitNumberData').DataTable();
+            $('#loaderOverlay').fadeIn(100); // Show loader before refresh
+            table.clear().draw();
+            table.ajax.reload(null, false); // false to stay on current page
+            table.one('xhr', function () {
+                $('#loaderOverlay').fadeOut(300); // Hide loader after refresh
+            });
+        }
+    }
+
+
+    function syncPermitNumbers() {
+
+        $('#invalid-permit-message').empty().hide();
+        var propsnapshotID = @Model.PropSnapshotID;
+
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("SaveLADBSData", new { controller = "ProjectDetail", area = "Construction" })",
+            data: {
+                PropsnapshotID: propsnapshotID,
+                PermitNumber: null
+            },
+            success: function (data) {
+                console.log(data)
+                initPermitNumberList();
+                // Show invalid permits, if any
+                if (data.invalid && data.invalid.length > 0) {
+                    const quotedInvalids = data.invalid.map(p => `"${p}"`).join(", ");
+
+                    $('#invalid-permit-message')
+                        .html(`
+            <div class="alert alert-danger mt-2">
+                <strong>Invalid Permit Numbers:</strong> ${quotedInvalids}<br/>
+                <small class="text-muted">
+                    Note: Permit numbers should contain dashes (e.g., 20016-10000-12345).
+                    Other special characters, spaces, or unstructured words will be treated as invalid.
+                </small>
+            </div>
+        `).show();
+                } else {
+                    $('#invalid-permit-message').empty().hide();
+                }
+            },
+            error: function (result) {
+                console.log(result)
+            }
         });
+
     }
 
     function linkPermitNumber() {
 
+        $('#invalid-permit-message').empty().hide();
         var permitNumber = $("#LADBS_PermitNumber").val();
-        var dept = $("#depts").children("option:selected").val();
         var propsnapshotID = @Model.PropSnapshotID;
 
-        if ((permitNumber === null || permitNumber.trim() === "") || (dept === null || dept.trim() === "")) {
+        if ((permitNumber === null || permitNumber.trim() === "")) {
             $("#LADBSerror").text("Permit Number or Department field is empty!");
             $("#LADBSerror").attr("hidden", false);
         }
         else {
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+                url: "@Url.Action("SaveLADBSData", new { controller = "ProjectDetail", area = "Construction" })",
                 data: {
                     PropsnapshotID: propsnapshotID,
-                    PermitNumber: permitNumber,
-                    Department: dept,
+                    PermitNumber: permitNumber
                 },
                 success: function (data) {
+                    console.log(data)
+                    // Show invalid permits, if any
+                    if (data.invalid && data.invalid.length > 0) {
+                        const quotedInvalids = data.invalid.map(p => `"${p}"`).join(", ");
 
-                    if (data != "OK") {
-                        $("#LADBSerror").text(data);
-                        $("#LADBSerror").attr("hidden", false);
-                    }
-                    else {
-                        $("#LADBSerror").attr("hidden", true);
+                        $('#invalid-permit-message')
+                            .html(`
+                            <div class="alert alert-danger mt-2">
+                                Permit number <strong>${quotedInvalids}</strong> does not exist.<br/>
+                                <small class="text-muted">
+                                    Note: Permit numbers should contain dashes (e.g., 20016-10000-12345).
+                                    Other special characters, spaces, or unstructured words will be treated as invalid.
+                                </small>
+                            </div>`).show();
+                    } else {
+                        $('#invalid-permit-message').empty().hide();
                     }
                 },
                 error: function (result) {
                     console.log(result)
                 }
             });
-
-            $('#dtPermitNumberData').DataTable().destroy();
+            $('#loaderOverlay').fadeIn(100); // Show loading spinner
+            $('#dtPermitNumberData').DataTable().clear().draw();
 
             initPermitNumberList();
         }
@@ -559,18 +867,19 @@
 
     function updatePermitNumber() {
 
+        $('#invalid-permit-message').empty().hide();
         var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
         console.log(params)
         $.ajax({
             type: "POST",
-            url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+            url: "@Url.Action("SaveLADBSData", new { controller = "ProjectDetail", area = "Construction" })",
             data: {
                 PropsnapshotID: @Model.PropSnapshotID,
-                PermitNumber: params[0],
-                Department: params[1]
+                PermitNumber: params[0]
             },
             success: function (data) {
                 if (data == "OK") {
+                    $/*('#loaderOverlay').fadeIn(100); // Show loading spinner*/
                     $("#LADBSerror").attr("hidden", true);
                     $("#dtPermitNumberData_wrapper .active a").dblclick();
                 }
@@ -585,22 +894,24 @@
     }
 
     function deletePermitNumber() {
+
+        $('#invalid-permit-message').empty().hide();
         var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
 
         $.ajax({
             type: "POST",
-            url: "@Url.Action("SaveLADBSData", new { controller = "Construction", area = "Construction" })",
+            url: "@Url.Action("SaveLADBSData", new { controller = "ProjectDetail", area = "Construction" })",
             data: {
                 PropsnapshotID: @Model.PropSnapshotID,
                 PermitNumber: params[0],
-                Department: params[1],
                 Delete: true
             },
             success: function (data) {
                 if (data == "OK") {
+                    $('#loaderOverlay').fadeIn(100); // Show loading spinner
                     $("#LADBSerror").attr("hidden", true);
 
-                    $('#dtPermitNumberData').DataTable().destroy();
+                    $('#dtPermitNumberData').DataTable().clear().draw();
 
                     initPermitNumberList();
                 }
@@ -613,25 +924,16 @@
             }
         });
     }
-    //  function OnBuildingSaveBegin() {
-    //     console.log("Submitting...");
-    // }
-
-    // function OnBuildingSaveSuccess(response) {
-    //     $("#resultDiv").html("<strong>Success:</strong> " + response);
-    // }
-
-    // function OnBuildingSaveFailure(error) {
-    //     alert("Error: " + error);
-    // }
-
-    /*Building Edit Method*/
+    
+    //Building Edit Method
     function ReloadBuildingDt() {
         if (dtBuildingDataTable)
             dtBuildingDataTable.api().ajax.reload();
     }
     function editbuildingParkingInfo() {
-        debugger;        $(".input-parking").addClass("input-parking-edit");
+        $(".input-parking").addClass("input-parking-edit");
+        $(".input-parking-edit").removeClass("input-parking");
+
         $("#editbuildingParking").hide();
         $("#updatebuildingParking").show();
         $("#canceleditbuildingParking").show();
@@ -639,6 +941,7 @@
         $(".radio-parking").attr("disabled", false);
     }
     function canceleditbuildingParkingInfo() {
+        debugger;
         resetBulidingParkingEdit();
         ReloadBuildingDt();
     }
@@ -646,7 +949,9 @@
         $('#idForm').submit();
         }
     function resetBulidingParkingEdit() {
+        $(".input-parking-edit").addClass("input-parking");
         $(".input-parking").removeClass("input-parking-edit");
+
         $(".radio-parking").attr("disabled",true);
 
         $("#editbuildingParking").show();
@@ -685,4 +990,114 @@
     }
     /*Building Edit Method*/
 
+    //Buliding Sumary update
+     function addBuildingInfo() {
+         // var url='@Url.Action("AddBuildingFromNewCompliance", "BuildingIntake", new { area = "ComplianceMatrix" })'
+         // var model = { SiteInformationData : SiteInformationData,  caseId: Id };
+         // AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
+         // function (response) {
+         // $("#modal-building-add").empty().html(response).modal('show');
+         // return false;
+         // },
+         // null, true, null, false);
+     }
+
+    function editBuildingSummary(projectSiteId) 
+    {
+         var url = '@Url.Action("GetBuildingDetails", "ProjectDetail", new { area = "Construction" })'
+         var model = { projectSiteId :projectSiteId,  caseId:Id };
+         AjaxCommunication.CreateRequest(this.window, "GET", url, 'object', model,
+         function (response) {
+            var $dropdown = $('#BuildingDescriptionDL');
+            $dropdown.empty(); // Clear existing options
+            var buildingDescriptionDL = response.buildingDescriptionList;
+            $.each(buildingDescriptionDL, function (i, item) {
+            $dropdown.append($('<option>').val(item.text).text(item.text));
+            });
+            $('#BuildingDescriptionDL').val($('#lblBuildingDescription').text().trim()).change();
+
+            //Address
+            $dropdown = $('#BuildingAddressDL');
+            $dropdown.empty(); // Clear existing options
+
+            $dropdown.append($('<option>').val('').text('Choose Building Address'));
+            var list = response.buildingAddressList;
+            $.each(list, function (i, item) {
+                $dropdown.append($('<option>').val(item.value).text(item.text));
+            });
+            $('#BuildingAddressDL').val($('#BuildingAddressId').val()).change();
+
+            //ApplicableCodesDL
+            $dropdown = $('#ApplicableCodesDL');
+            $dropdown.empty(); // Clear existing options
+            list = response.lutApplicableAccessibilityStandardList;
+            $.each(list, function (i, item) {
+                $dropdown.append($('<option>').val(item.value).text(item.text));
+            });
+
+            $('#ApplicableCodesDL').multiselect({
+            nonSelectedText: 'None Selected',
+            includeSelectAllOption: true,
+            enableFiltering: false,
+            maxHeight: 300,
+            numberDisplayed: 30,
+
+            });
+            $('#ApplicableCodesDL').val($('#LutApplicableAccessibilityStandardId').val().split(",")).change()
+            $('#ApplicableCodesDL').multiselect("refresh");
+            $(".input-building-summary").addClass("input-building-summary-edit");
+            $(".input-building-summary").removeClass("view-control-height");
+             $("#editBuildingSummary").hide();
+             $("#updatebuildingSummary").show();
+             $("#canceleditbuildingSummary").show();
+             $("#ResidentialSpaces").focus();
+             $(".radio-building-summary").attr("disabled", false);
+             $(".radio-building-summary-lable").hide();
+             $(".radio-building-summary-edit").show();
+             return false;
+        }, null, true, null, false);
+
+    }
+    function canceleditbuildingSummary() 
+    {
+        resetBulidingSummaryEdit();
+        ReloadBuildingDt();
+    }
+    function updatebuildingSummary()
+    {
+        $('#buildingSummaryForm').submit();
+    }
+    function resetBulidingSummaryEdit() {
+        $(".input-building-summary").removeClass("input-building-summary-edit");
+        $(".input-building-summary").addClass("view-control-height");
+        $(".radio-building-summary").attr("disabled", true);
+        $(".radio-building-summary-lable").show();
+        $(".radio-building-summary-edit").hide();
+
+        $("#editBuildingSummary").show();
+        $("#canceleditbuildingSummary").hide();
+        $("#updatebuildingSummary").hide();
+    }
+        // function OnBuildingSummarySaveSuccess(data) {
+        // $('#cm_loader').attr("hidden", true);
+        // $('.btn.btn-primary').attr("disabled", false);
+        // BuildingInformationData = [];
+        // resetBulidingSummaryEdit();
+        // ReloadBuildingDt();
+        // showMessage("Success", "Building Informantion Updated Successfully.");
+        // }
+        // function OnBuildingSummarySaveBegin() {
+        // $('#cm_loader').attr("hidden", false);
+        // $('.blockUI').attr("hidden", true);
+        // $('.btn.btn-primary').attr("disabled", true);
+        // }
+        // function OnBuildingSaveSummaryFailure(data)
+        // {
+        // $('#cm_loader').attr("hidden", true);
+        // $('.btn.btn-primary').attr("disabled", false);
+        // resetBulidingParkingEdit();
+        // ReloadBuildingDt();
+        // showMessage("Error", "Error occurred, please try again.");
+        // }
+    //Building Edit Method
 </script>

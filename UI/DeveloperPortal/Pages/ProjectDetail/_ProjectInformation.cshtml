@@ -188,25 +188,25 @@
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { })',
+                    url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { area = "Construction" })',
                     dataType: "json"
                     , method: "post"
                     ,contentType: "application/json" 
                 },
                 update: {
-                    url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { })',
+                    url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                     ,contentType: "application/json"
                 },
                 destroy: {
-                    url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { })',
+                    url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                      ,contentType: "application/json"
                 },
                 create: {
-                    url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { })',
+                    url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                     ,contentType: "application/json"

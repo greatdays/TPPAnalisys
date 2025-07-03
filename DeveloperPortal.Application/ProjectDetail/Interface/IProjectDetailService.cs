@@ -1,11 +1,12 @@
 ﻿using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.Domain.ProjectDetail;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 
 namespace DeveloperPortal.Application.ProjectDetail.Interface
 {
@@ -92,14 +93,52 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="caseId"></param>
         /// <returns></returns>
         List<BuildingParkingInformationModal> GetBuildingInformation(int caseId);
-        
+
+        /// <summary>
+        /// Save Building parking Attributes
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<bool> SaveBuildingParkingAttributes(BuildingParkingInformationModal buildingModel, string userName);
+        /// <summary>
+        /// SaveLADBSData
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <param name="models"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<string> SaveLADBSData(int propSnapshotId, List<PcisPermitDetail> models, string userName);
+
+        /// <summary>
+        /// GetAllPermitNumbers
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        Task<List<string>> GetAllPermitNumbers(int propSnapshotId);
         /// <summary>
         /// GetLADBSPermitNumberList
         /// </summary>
-        /// <param name="PropsnapshotId"></param>
+        /// <param name="propSnapshotId"></param>
         /// <returns></returns>
-        List<string> GetLADBSPermitNumberList(int PropsnapshotId);
+        Task<List<string>> GetLADBSPermitNumberList(int propSnapshotId);
 
+        /// <summary>
+        /// GetLADBSDataByPermitNumber
+        /// </summary>
+        /// <param name="PermitNumber"></param>
+        /// <param name="Department"></param>
+        /// <returns></returns>
+        Task<PcisPermitDetail> GetLADBSDataByPermitNumber(string PermitNumber, string Department);
+        
+        /// <summary>
+        /// GetLADBSPermitDetails
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <param name="permitNumber"></param>
+        /// <returns></returns>
+        Task<PcisPermitDetail> GetLADBSPermitDetails(int propSnapshotId, string permitNumber);
+        
         /// <summary>
         /// GetLutTotalBedrooms
         /// </summary>
@@ -111,6 +150,19 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// </summary>
         /// <returns></returns>
         List<SelectListItem> GetLutUnitType();
+
+        /// <summary>
+        /// GetBuildingDetailForEdit
+        /// </summary>
+        /// <param name="projectsiteId"></param>
+        /// <returns></returns>
+        BuildingModel GetBuildingDetailForEdit(int projectsiteId);
+
+        /// <summary>
+        /// GetApplicableAccessibilityStandard
+        /// </summary>
+        /// <returns></returns>
+        List<SelectListItem> GetApplicableAccessibilityStandard();
 
     }
 }

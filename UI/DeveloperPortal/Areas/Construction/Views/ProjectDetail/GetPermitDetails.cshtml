@@ -1,0 +1,303 @@
+﻿@using DeveloperPortal.Domain.ProjectDetail;
+@model PcisPermitDetail
+
+<style>
+    h4 {
+        margin-top: 2em;
+        margin-bottom: 1em;
+    }
+
+    .table td {
+        text-align: left
+    }
+
+    .table-hover tbody tr:hover {
+        color: peru;
+    }
+
+    .headertext {
+        font-size: 1.5em;
+        color: royalblue;
+    }
+
+</style>
+
+<div class="headertext">
+    Los Angeles Department of Building and Safety (LADBS) Permit, Temporary Certificate of Occupancy and Certificate of Occupancy Information
+</div>
+<div>
+    <h4>Address: @Model.ProjectAddress</h4>
+    <table id="permitSummarytbl" class="table table-bordered table-hover">
+        <tbody>
+            <tr>
+                <th>
+                    C of O Date
+                </th>
+                <td>
+                    @Model.ProjectDetailsList[0].Issue_Date
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Application / Permit Number
+                </th>
+                <td>
+                    @Model.PermitNumber
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Plan Check / Job #
+                </th>
+                <td>
+                    @Model.PlanCheckNumber
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Work Description
+                </th>
+                <td>
+                    @Model.ProjectDetailsList[0].Work_Des
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Permit Issued
+                </th>
+                <td>
+                    @Model.ProjectDetailsList[0].Issue_Y_N
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Current Status
+                </th>
+                <td>
+                    @Model.ProjectDetailsList[0].Crnt_Stat on @Model.ProjectDetailsList[0].Crnt_Stat_Date
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>Permit Application History</h4>
+    <table id="permitApplicationHistorytbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PcisPermitHistory permit in Model.PermitHistoryList)
+            {
+                <tr>
+                    <td>
+                        @permit.Doc_Status
+                    </td>
+                    <td>
+                        @permit.Doc_Date
+                    </td>
+                    <td>
+                        @permit.Fname @permit.Lname
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>Permit Application Clearance Information</h4>
+    <table id="permitApplicationClearanceInformationtbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Permit Application
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PcisPermitClearances permit in Model.PermitClearanceList)
+            {
+                <tr>
+                    <td>
+                        @permit.Status_Actual
+                    </td>
+                    <td>
+                        @permit.Status
+                    </td>
+                    <td>
+                        @permit.Stat_Date
+                    </td>
+                    <td>
+                        @permit.Stat_Name
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*<div>
+    <h4>Temporary Certificate of Occupancy Information</h4>
+    <table id="temporaryCofOInformationtbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Temporary Certificate of Occupancy Information (TCO)
+                </th>
+                <th>
+                    Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>*@
+<div>
+    <h4>Certificate of Occupancy Information</h4>
+    <table id="CofOInformationtbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Certificate of Occupancy Information (C of O)
+                </th>
+                <th>
+                    Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (CFOSingleStatus permit in Model.CofOList)
+            {
+                <tr>
+                    <td>
+                        @permit.CFO_Description (@permit.CFO_Status)
+                    </td>
+                    <td>
+                        @permit.CFO_Date
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>Inspector Information</h4>
+    <table id="inspectorInformationtbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Phone #
+                </th>
+                <th>
+                    Office Hours
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PcisPermitInspectionInfo permit in Model.PermitInspInfoList)
+            {
+                <tr>
+                    <td>
+                        @permit.Insp_Name_Phone.Split(',')[0]
+                    </td>
+                    <td>
+                        @permit.Insp_Name_Phone.Split(',')[1]
+                    </td>
+                    <td>
+                        @permit.Off_Hours
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>Pending Inspections</h4>
+    <table id="pendingInspectionstbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Inspection Type
+                </th>
+                <th>
+                    Date
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PcisPermitPendingInsp permit in Model.PermitPendingInspInfoList)
+            {
+                <tr>
+                    <td>
+                        @permit.Insp_Type
+                    </td>
+                    <td>
+                        @permit.Insp_Date
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h4>Inspection Request History</h4>
+    <table id="inspectionRequestHistorytbl" class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Inspection Type
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PcisPermitCompletedInsp permit in Model.PermitCompletedInpsList)
+            {
+                <tr>
+                    <td>
+                        @permit.Insp_Type_C
+                    </td>
+                    <td>
+                        @permit.Insp_Date_C
+                    </td>
+                    <td>
+                        @permit.Status_C
+                    </td>
+                    <td>
+                        @permit.Insp_Name_C
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

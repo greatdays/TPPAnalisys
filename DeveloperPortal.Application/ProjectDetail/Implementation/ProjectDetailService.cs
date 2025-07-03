@@ -5,15 +5,18 @@ using DeveloperPortal.DataAccess.Entity.Models;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.DataAccess.Entity.ViewModel;
+using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
+using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Models.Common;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Data;
 using System.Reflection;
-using System.Web.Mvc;
 using static Azure.Core.HttpHeader;
 using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
@@ -23,15 +26,17 @@ namespace DeveloperPortal.Application.ProjectDetail
     {
         #region Constructor
 
-        IConfiguration _config;
+        private IConfiguration _config;
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+        private readonly IProjectDetailRepository _projectDetailRepository;
         private readonly AAHREntities _context;
 
         public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor,
-            AAHREntities context)
+            AAHREntities context, IProjectDetailRepository projectDetailRepository)
         {
-            _config = configuration;
+            _config = configuration;    
             _storedProcedureExecutor = storedProcedureExecutor;
+            _projectDetailRepository = projectDetailRepository;
             _context = context;
         }
 
@@ -358,7 +363,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         public bool DeleteUnit(int propId, string username)
         {
             // mark a single construction unit and unitattribute record as deleted
-            var propsnapshot = _context.PropSnapshots.Include(c=>c.Unit).FirstOrDefault(x => x.PropSnapshotId == propId && x.IdentifierType == "Unit");
+            var propsnapshot = _context.PropSnapshots.Include(c => c.Unit).FirstOrDefault(x => x.PropSnapshotId == propId && x.IdentifierType == "Unit");
             if (propsnapshot != null)
             {
                 propsnapshot.Status = "X";
@@ -482,6 +487,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             List<BuildingParkingInformationModal> buildingInformation = new List<BuildingParkingInformationModal>();
             List<SelectListItem> LutApplicableAccessibilityStandard = GetApplicableAccessibilityStandard();
+
             var sqlParameters = new List<SqlParameter>
                 {
                     new SqlParameter() { ParameterName = "@CaseId", Value = caseId }
@@ -492,15 +498,232 @@ namespace DeveloperPortal.Application.ProjectDetail
             buildingInformation = dt.ConvertDataTable<BuildingParkingInformationModal>();
             foreach (var buildingInfo in buildingInformation)
             {
+                buildingInfo.LutApplicableAccessibilityList = LutApplicableAccessibilityStandard;
                 if (!string.IsNullOrEmpty(buildingInfo.LutApplicableAccessibilityStandardId))
                 {
+                   
                     var listId = buildingInfo.LutApplicableAccessibilityStandardId.Split(',');
                     buildingInfo.ApplicableCodes = string.Join(", ", LutApplicableAccessibilityStandard.Where(x => listId.Contains(x.Value)).Select(y => y.Text).ToList());
                 }
             }
+
             return buildingInformation;
         }
 
+        /// <summary>
+        /// Save Building parking Attributes
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveBuildingParkingAttributes(BuildingParkingInformationModal buildingModel, string userName)
+        {
+            try
+            {
+                var structureAttribute = _context.StructureAttributes.FirstOrDefault(p => p.PropSnapshotId == buildingModel.PropSnapshotID);
+                if (structureAttribute != null)
+                {
+                    structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
+                    structureAttribute.ResindentialSpaces = buildingModel.ResindentialSpaces;
+                    structureAttribute.AccessibleSpaces = buildingModel.AccessibleSpaces;
+                    structureAttribute.VanAccessibleSpaces = buildingModel.VanAccessibleSpaces;
+                    structureAttribute.StandardCommercialSpaces = buildingModel.StandardCommercialSpaces;
+                    structureAttribute.CommercialAccessibleSpaces = buildingModel.CommercialAccessibleSpaces;
+                    structureAttribute.CommercialVanAccessibleSpaces = buildingModel.CommercialVanAccessibleSpaces;
+                    structureAttribute.ElectricVehicleChargingStations = buildingModel.ElectricVehicleChargingStations;
+                    structureAttribute.TotalResidentialParking = buildingModel.TotalResidentialParking;
+                    structureAttribute.TotalCommercialParking = buildingModel.TotalCommercialParking;
+                    structureAttribute.CommercialVehicleChargingStations = buildingModel.CommercialVehicleChargingStations;
+                    //structureAttribute.TotalNumberofElectricVehicleChargingStations = buildingModel.TotalNumberofElectricVehicleChargingStations;
+                    structureAttribute.StandardAccessibleChargingStations = buildingModel.StandardAccessibleChargingStations;
+                    structureAttribute.VanAccessibleChargingStations = buildingModel.VanAccessibleChargingStations;
+                    structureAttribute.AmbulatoryChargingStations = buildingModel.AmbulatoryChargingStations;
+                    structureAttribute.StandardVisitorSpaces = buildingModel.StandardVisitorSpaces;
+                    structureAttribute.VisitorAccessibleSpaces = buildingModel.VisitorAccessibleSpaces;
+                    structureAttribute.TotalVisitorParking = buildingModel.TotalVisitorParking;
+                    structureAttribute.VisitorVanAccessibleSpaces = buildingModel.VisitorVanAccessibleSpaces;
+                    structureAttribute.CommercialElectricVanAccessibleChargingStation = buildingModel.CommercialElectricVanAccessibleChargingStation;
+                    structureAttribute.CommercialElectricAmbulatoryChargingStation = buildingModel.CommercialElectricAmbulatoryChargingStation;
+                    structureAttribute.TotalNumberofCommercialElectricVehicleChargingStations = buildingModel.TotalNumberofCommercialElectricVehicleChargingStations;
+                    structureAttribute.CommercialElectricStandardAccessibleChargingStation = buildingModel.CommercialElectricStandardAccessibleChargingStation;
+                    structureAttribute.ModifiedOn = DateTime.Now;
+                    structureAttribute.ModifiedBy = userName;
+                    await _projectDetailRepository.UpdateStructureAttributesAsync(structureAttribute);
+                    return true;
+                }
+                return false;
+            }
+
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// GetLADBSPermitDetails
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <param name="permitNumber"></param>
+        /// <returns></returns>
+        public async Task<PcisPermitDetail> GetLADBSPermitDetails(int propSnapshotId, string permitNumber)
+        {
+            var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+            if (structureAttributes != null)
+            {
+                string LADBSjson = structureAttributes.Ladbsjson ?? "";
+
+                List<PcisPermitDetail> allPermits = JsonConvert.DeserializeObject<List<PcisPermitDetail>>(LADBSjson);
+
+                if (allPermits != null)
+                {
+                    PcisPermitDetail Permit = allPermits.FirstOrDefault(m => m.PermitNumber == permitNumber && m.Department == "HPP");
+                    return Permit;
+                }
+            }
+
+            return null;
+        }
+        /// <summary>
+        /// GetAllPermitNumbers
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<List<string>> GetAllPermitNumbers(int propSnapshotId)
+        {
+            try
+            {
+                var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+                if (structureAttributes != null)
+                {
+                    return new List<string>()
+                    {
+                        structureAttributes.FirstBuldingPermitNumber,
+                        structureAttributes.MostRecentBuldingPermitNumber,
+                        structureAttributes.CurrentBuldingPermitNumber,
+                        Convert.ToString(structureAttributes.BuildingPermitNumber),
+                        structureAttributes.HistoricBuildingPermitNumber,
+                        structureAttributes.DbsretrofitBuildingPermitNumber
+                    };
+                }
+
+                return new List<string>();
+
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<PcisPermitDetail> GetLADBSDataByPermitNumber(string PermitNumber, string Department)
+        {
+
+            ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
+            string LADBS_API_URL = "";// AppConfig.GetConfigValue("LADBSAPI", "1");
+            PermitNumber = PermitNumber.Replace("-", "").Trim();
+            Department = Department.Replace("(", "").Replace(")", "");
+            string requestUrl = string.Format(LADBS_API_URL, PermitNumber, Department);
+            PcisPermitDetail result = null;
+            try
+            {
+                PcisPermitDetail baseResponse = serviceClient.CreateRequest<PcisPermitDetail>(null, requestUrl, ServiceClient.ServiceClient.ActionType.GET);
+                if (baseResponse != null)
+                {
+                    result = new PcisPermitDetail();
+                    result = baseResponse;
+                    result.Department = Department;
+                }
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                return result;
+            }
+        }
+
+
+        /// <summary>
+        /// GetLADBSPermitNumberList
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<List<string>> GetLADBSPermitNumberList(int propSnapshotId)
+        {
+            try
+            {
+                var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+                if (structureAttributes != null)
+                {
+                    string LADBSjson = structureAttributes.Ladbsjson ?? "";
+                    List<PcisPermitDetail> pcisPermitDetails = JsonConvert.DeserializeObject<List<PcisPermitDetail>>(LADBSjson);
+                    if (pcisPermitDetails != null)
+                        return pcisPermitDetails.Select(m => m.PermitNumber + " (" + m.Department + ")").ToList();
+
+                }
+
+                return new List<string>();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        /// <summary>
+        /// SaveLADBSData
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <param name="models"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<string> SaveLADBSData(int propSnapshotId, List<PcisPermitDetail> models, string userName)
+        {
+            try
+            {
+                var structureAttribute = _context.StructureAttributes.FirstOrDefault(m => m.PropSnapshotId == propSnapshotId);
+                List<PcisPermitDetail> permits = new List<PcisPermitDetail>();
+                if (structureAttribute == null)
+                {
+                    return "";
+                }
+                if (structureAttribute.Ladbsjson != null)
+                    permits = JsonConvert.DeserializeObject<List<PcisPermitDetail>>(structureAttribute.Ladbsjson);
+
+                foreach (var model in models)
+                {
+                    // Add if doesn't exist
+                    if (!permits.Any(m => m.PermitNumber == model.PermitNumber && m.Department == model.Department))
+                    {
+                        permits.Add(model);
+                    }
+                    // Remove and Add if it does (Refresh)
+                    else if (permits.Any(m => m.PermitNumber == model.PermitNumber && m.Department == model.Department) && !model.Delete)
+                    {
+                        permits.RemoveAll(m => m.PermitNumber == model.PermitNumber && m.Department == model.Department);
+                        permits.Add(model);
+                    }
+                    else if (model.Delete)
+                    {
+                        permits.RemoveAll(m => m.PermitNumber == model.PermitNumber && m.Department == model.Department);
+                    }
+                }
+
+                structureAttribute.Ladbsjson = JsonConvert.SerializeObject(permits);
+                structureAttribute.ModifiedOn = DateTime.Now;
+                structureAttribute.ModifiedBy = userName;
+                await _projectDetailRepository.UpdateStructureAttributesAsync(structureAttribute);
+
+
+                return "OK";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
 
         /// <summary>
         ///Get  LutTotalBedrooms
@@ -566,6 +789,84 @@ namespace DeveloperPortal.Application.ProjectDetail
             //List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
         }
 
+        public BuildingModel GetBuildingDetailForEdit(int projectsiteId)
+        {
+            BuildingModel model = new BuildingModel();
+            SelectListItem address = new SelectListItem();
+            List<SelectListItem> lstAddress = new List<SelectListItem>();
+            var propSSProjectSite = _context.PropSnapshots.Include(x=>x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectsiteId);
+            if (propSSProjectSite != null)
+            {
+                var lstSiteAddress = _context.Apns.FirstOrDefault(m => m.Apn1 == propSSProjectSite.ProjectSite.PrimaryApn).SiteAddresses.ToList();
+                foreach (var sa in lstSiteAddress.GroupBy(p => p.FullAddress)
+                                                      .Select(g => g.First())
+                                                      .ToList())
+                {
+                    lstAddress.Add(address = new SelectListItem
+                    {
+                        Text = sa.FullAddress,
+                        Value = sa.SiteAddressId.ToString()
+                    });
+                }
+                model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
+                model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
+                model.ProjectId = (int)propSSProjectSite.ProjectId;
+                model.APNId = (int)propSSProjectSite.Apnid;
+            }
+            model.BuildingAddressList = lstAddress;
+            //model.LutTypeofProject= _dbAAHPContext.LUTPRO.FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteID == projectsiteId)
+
+            model.BuildingDescriptionList = new List<SelectListItem>
+            {
+                new SelectListItem{Text = "Select"},
+                new SelectListItem{Text = "Parking structure"},
+                new SelectListItem{Text = "Common area"},
+                new SelectListItem{Text = "Community room"},
+                new SelectListItem{Text = "Gym"},
+                new SelectListItem{Text = "Exterior area"},
+                new SelectListItem{Text = "Conference Room"},
+                new SelectListItem{Text = "Pools"},
+                new SelectListItem{Text = "Rec area"},
+                new SelectListItem{Text = "Common Parking"},
+                new SelectListItem{Text = "Dog walk area"},
+                new SelectListItem{Text = "Medical building/area"},
+                new SelectListItem{Text = "Daycare"}
+            };
+
+            return model;
+        }
+
+
+        /// <summary>
+        /// GetApplicableAccessibilityStandard
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetApplicableAccessibilityStandard()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Section 504" },
+                new SelectListItem { Value = "2", Text = "2010 ADA w/ 11 HUD Exceptions" },
+                new SelectListItem { Value = "3", Text = "2010 ADA" },
+                new SelectListItem { Value = "4", Text = "Fair Housing Act" },
+                new SelectListItem { Value = "5", Text = "CBC 2013 Chapter 11A" },
+                new SelectListItem { Value = "6", Text = "CBC 2013 Chapter 11B" },
+                new SelectListItem { Value = "7", Text = "CBC 2016 Chapter 11A" },
+                new SelectListItem { Value = "8", Text = "CBC 2016 Chapter 11B" },
+                new SelectListItem { Value = "9", Text = "CBC 2019 Chapter 11A" },
+                new SelectListItem { Value = "10", Text = "CBC 2019 Chapter 11B" },
+                new SelectListItem { Value = "11", Text = "Community Development Department of County of Los Angeles Universal Design Principles" },
+                new SelectListItem { Value = "12", Text = "California Tax Credit Allocation Committee Regulations 50% Mobility Units" },
+                new SelectListItem { Value = "13", Text = "UFAS" },
+                new SelectListItem { Value = "14", Text = "Enhanced Accessiblity Program (EAP)" },
+                new SelectListItem { Value = "15", Text = "2019 CBC w/ intervening cycle effective July 1st, 2021" },
+                new SelectListItem { Value = "16", Text = "LACDA NOFA" },
+                new SelectListItem { Value = "17", Text = "TCAC Universal Design" },
+                new SelectListItem { Value = "18", Text = "CBC 2022 Chapter 11A" },
+                new SelectListItem { Value = "19", Text = "CBC 2022 Chapter 11B" }
+            };
+        }
+
 
         #region Private Methods
         /// <summary>
@@ -604,35 +905,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             //    }
             //}
         }
-        /// <summary>
-        /// GetApplicableAccessibilityStandard
-        /// </summary>
-        /// <returns></returns>
-        private static List<SelectListItem> GetApplicableAccessibilityStandard()
-        {
-            return new List<SelectListItem>
-            {
-                new SelectListItem { Value = "1", Text = "Section 504" },
-                new SelectListItem { Value = "2", Text = "2010 ADA w/ 11 HUD Exceptions" },
-                new SelectListItem { Value = "3", Text = "2010 ADA" },
-                new SelectListItem { Value = "4", Text = "Fair Housing Act" },
-                new SelectListItem { Value = "5", Text = "CBC 2013 Chapter 11A" },
-                new SelectListItem { Value = "6", Text = "CBC 2013 Chapter 11B" },
-                new SelectListItem { Value = "7", Text = "CBC 2016 Chapter 11A" },
-                new SelectListItem { Value = "8", Text = "CBC 2016 Chapter 11B" },
-                new SelectListItem { Value = "9", Text = "CBC 2019 Chapter 11A" },
-                new SelectListItem { Value = "10", Text = "CBC 2019 Chapter 11B" },
-                new SelectListItem { Value = "11", Text = "Community Development Department of County of Los Angeles Universal Design Principles" },
-                new SelectListItem { Value = "12", Text = "California Tax Credit Allocation Committee Regulations 50% Mobility Units" },
-                new SelectListItem { Value = "13", Text = "UFAS" },
-                new SelectListItem { Value = "14", Text = "Enhanced Accessiblity Program (EAP)" },
-                new SelectListItem { Value = "15", Text = "2019 CBC w/ intervening cycle effective July 1st, 2021" },
-                new SelectListItem { Value = "16", Text = "LACDA NOFA" },
-                new SelectListItem { Value = "17", Text = "TCAC Universal Design" },
-                new SelectListItem { Value = "18", Text = "CBC 2022 Chapter 11A" },
-                new SelectListItem { Value = "19", Text = "CBC 2022 Chapter 11B" }
-            };
-        }
+        
 
         /// <summary>
         /// SetBuildingReferenceData
@@ -650,7 +923,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 model.SiteAddressID = i.SiteAddressId;
                 model.ProjectId = i.ProjectId;
                 model.ProjectSiteId = i.ProjectSiteId;
-                model.LevelId = i.LevelId ;
+                model.LevelId = i.LevelId;
                 if (i.ServiceRequests.Any())
                 {
                     model.CaseId = i.ServiceRequests.First().CaseId;
@@ -660,21 +933,7 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         }
         #endregion
-        public List<string> GetLADBSPermitNumberList(int PropsnapshotID)
-        {
-            try
-            {
-                string LADBSjson = _context.StructureAttributes.FirstOrDefault(m => m.PropSnapshotId == PropsnapshotID).Ladbsjson ?? "";
-                List<PcisPermitDetail> pcisPermitDetails = JsonConvert.DeserializeObject<List<PcisPermitDetail>>(LADBSjson);
-                if (pcisPermitDetails != null)
-                    return pcisPermitDetails.Select(m => m.PermitNumber + " (" + m.Department + ")").ToList();
-                return new List<string>();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+
     }
 }
 

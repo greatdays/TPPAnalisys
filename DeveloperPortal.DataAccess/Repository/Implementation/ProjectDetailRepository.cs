@@ -28,6 +28,18 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
 
 
+
+        /// <summary>
+        /// UpdateStructureAttributesAsync
+        /// </summary>
+        /// <param name="structureAttribute"></param>
+        /// <returns></returns>
+        public async Task<StructureAttribute> UpdateStructureAttributesAsync(StructureAttribute structureAttribute)
+        {
+            _context.StructureAttributes.Update(structureAttribute);
+            await _context.SaveChangesAsync();
+            return structureAttribute;
+        }
         public bool UpdateUnitDetails(UnitDataModel unitModel, string userName)
         {
             var unitAtt = _context.UnitAttributes.FirstOrDefault(u => u.PropSnapshotId == unitModel.PropSnapshotID);

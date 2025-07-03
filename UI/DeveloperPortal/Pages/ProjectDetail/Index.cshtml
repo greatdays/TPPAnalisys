@@ -151,6 +151,53 @@
         background-color: #2C3E5C !important;
         border: 1px solid #2C3E5C !important;
     }
+
+
+    a#dtPermitNumberData_paginate {
+        color: #fff !important;
+    }
+
+    #dtPermitNumberData_paginate span {
+        float: left;
+        padding-right: 30px;
+    }
+
+    #dtPermitNumberData_paginate .paginate_button:hover {
+        color: white !important;
+        border: 1px solid #111;
+        background-color: #111;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+        background: -o-linear-gradient(top, #585858 0%, #111 100%);
+        background: linear-gradient(to bottom, #585858 0%, #111 100%)
+    }
+
+    #dtPermitNumberData_paginate .paginate_button.current {
+        color: white !important;
+        border: 1px solid #111;
+        background-color: #111;
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+        background: -o-linear-gradient(top, #585858 0%, #111 100%);
+        background: linear-gradient(to bottom, #585858 0%, #111 100%)
+    }
+
+    #dtPermitNumberData_paginate a.paginate_button {
+        position: relative;
+        padding: .5rem .75rem !important;
+        margin: 1px !important;
+        ;
+        line-height: 1.25;
+        color: #fff !important;
+        background-color: #2C3E5C !important;
+        border: 1px solid #2C3E5C !important;
+    }
+
+    
 </style>
 <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
@@ -499,7 +546,7 @@
 
         var dtSiteDataTable = $('#dtSiteData').dataTable({
             ajax: {
-                url: '@Url.Action("GetSiteInformations", "ProjectDetail", new { })',
+                url: '@Url.Action("GetSiteInformation", "ProjectDetail", new { area = "Construction" })',
                 type: 'POST',
                 data: function (d) {
                     d.SiteInformationData = SiteInformationData,
@@ -617,7 +664,7 @@
 
      var   dtBuildingDataTable = $('#dtPrkingData').dataTable({
             ajax: {
-                url: '@Url.Action("GetBuildingInformation", "ProjectDetail", new { })',
+                url: '@Url.Action("GetBuildingInformation", "ProjectDetail", new {  area = "Construction" })',
                 data: function (d) {
                     d.caseId = Id;
                     if (reloadParkingGrid==false)
@@ -691,7 +738,7 @@
     }
 
      function GetUnitModalData() {
-         var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { })';
+         var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { area = "Construction" })';
           AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
                 function (result) {
                     kgridEditModelData=result;
