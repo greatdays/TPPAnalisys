@@ -18,6 +18,15 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// <returns></returns>
         Task<StructureAttribute> UpdateStructureAttributesAsync(StructureAttribute structureAttribute);
 
+
+        /// <summary>
+        /// SaveBuildingSummary
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName);
+
         bool UpdateUnitDetails(UnitDataModel unitModel, string userName);
     }
 }

@@ -164,5 +164,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <returns></returns>
         List<SelectListItem> GetApplicableAccessibilityStandard();
 
+        /// <summary>
+        /// Save Building Summary
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName);
+
     }
 }

@@ -16,7 +16,10 @@
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
     <link href="~/content/font-awesome.css" rel="stylesheet" />
 
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
+    
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -124,7 +127,7 @@
                 <div class="modal-header comcom-header">
                     <h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
 
-                    <button type="button" class="close " data-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
+                    <button type="button" class="close " data-bs-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
 
                 </div>
                 <div class="modal-body comcom-body" style="padding:0">
@@ -159,7 +162,7 @@
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
     <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -169,7 +172,7 @@
     <script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
     <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
     <script src="~/js/customcommon.js"></script>
-
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -194,7 +194,7 @@
 <div class="site-parking-summary" style="margin-top:15px;">
     <div class="row">
         <div class="col-sm-12">
-            <div id="buildingSummaryForm">
+            <form id="buildingSummaryForm">
                 @Html.HiddenFor(m => m.BuildingAddressId)
                 @Html.HiddenFor(m => m.LutApplicableAccessibilityStandardId)
                 @Html.HiddenFor(m => m.BuildingId)
@@ -222,8 +222,8 @@
                     </div>
                     <div class="col-sm-4">
                         
-                        <button id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access" role="button" style="background: #003399;color: white;" role-access="true" onclick="editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</button>
-                        <button id="canceleditbuildingSummary" class="k-button k-button-icontext k-grid-add" style="background: #003399;color: white;margin-left :15px;" role="button" onclick="canceleditbuildingSummary()">Cancel</button>
+                        <a id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access"  style="background: #003399;color: white;" role-access="true" onclick="editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</a>
+                        <a id="canceleditbuildingSummary" class="k-button k-button-icontext k-grid-add" style="background: #003399;color: white;margin-left :15px;" onclick="canceleditbuildingSummary()">Cancel</a>
                         <button id="updatebuildingSummary" class="k-button k-button-icontext k-grid-add"  style="background: #003399;color: white;" onclick="updatebuildingSummary()">Update</button>
                     </div>
                    
@@ -422,7 +422,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
@@ -637,6 +637,27 @@
                 }
             });
         });
+
+        $("#buildingSummaryForm").submit(function (event) {
+            event.preventDefault(); // Prevent normal form submission
+            debugger;
+            $.ajax({
+                 url: "@Url.Action("SaveBuildingSummary", new { controller = "ProjectDetail", area = "Construction" })",
+                type: "POST",
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    OnBuildingSummarySaveBegin();
+                    
+                },
+                success: function (response) {
+                    OnBuildingSummarySaveSuccess(response);
+                },
+                error: function (xhr) {
+                    OnBuildingSummarySaveFailure(xhr.responseText);
+                }
+            });
+        });
+
         resetBulidingParkingEdit();
         resetBulidingSummaryEdit();
         calculateTotal("chargingStations", "chargingStationsTotal");
@@ -992,14 +1013,15 @@
 
     //Buliding Sumary update
      function addBuildingInfo() {
-         // var url='@Url.Action("AddBuildingFromNewCompliance", "BuildingIntake", new { area = "ComplianceMatrix" })'
-         // var model = { SiteInformationData : SiteInformationData,  caseId: Id };
-         // AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
-         // function (response) {
-         // $("#modal-building-add").empty().html(response).modal('show');
-         // return false;
-         // },
-         // null, true, null, false);
+          var url='@Url.Action("AddBuilding", "ProjectDetail", new { area = "Construction" })'
+          debugger;
+          var model = { SiteInformationData : SiteInformationData,  caseId: Id };
+          AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
+          function (response) {
+          $("#modal-building-add").empty().html(response).modal('show');
+          return false;
+          },
+          null, true, null, false);
      }
 
     function editBuildingSummary(projectSiteId) 
@@ -1078,26 +1100,26 @@
         $("#canceleditbuildingSummary").hide();
         $("#updatebuildingSummary").hide();
     }
-        // function OnBuildingSummarySaveSuccess(data) {
-        // $('#cm_loader').attr("hidden", true);
-        // $('.btn.btn-primary').attr("disabled", false);
-        // BuildingInformationData = [];
-        // resetBulidingSummaryEdit();
-        // ReloadBuildingDt();
-        // showMessage("Success", "Building Informantion Updated Successfully.");
-        // }
-        // function OnBuildingSummarySaveBegin() {
-        // $('#cm_loader').attr("hidden", false);
-        // $('.blockUI').attr("hidden", true);
-        // $('.btn.btn-primary').attr("disabled", true);
-        // }
-        // function OnBuildingSaveSummaryFailure(data)
-        // {
-        // $('#cm_loader').attr("hidden", true);
-        // $('.btn.btn-primary').attr("disabled", false);
-        // resetBulidingParkingEdit();
-        // ReloadBuildingDt();
-        // showMessage("Error", "Error occurred, please try again.");
-        // }
+    function OnBuildingSummarySaveSuccess(data) {
+        $('#cm_loader').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", false);
+        BuildingInformationData = [];
+        resetBulidingSummaryEdit();
+        ReloadBuildingDt();
+        showMessage("Success", "Building Informantion Updated Successfully.");
+    }
+    function OnBuildingSummarySaveBegin() {
+        $('#cm_loader').attr("hidden", false);
+        $('.blockUI').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", true);
+    }
+    function OnBuildingSaveSummaryFailure(data)
+    {
+        $('#cm_loader').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", false);
+        resetBulidingParkingEdit();
+        ReloadBuildingDt();
+        showMessage("Error", "Error occurred, please try again.");
+    }
     //Building Edit Method
 </script>

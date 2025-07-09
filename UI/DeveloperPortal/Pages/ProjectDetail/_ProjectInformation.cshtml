@@ -146,6 +146,7 @@
     <div class="k-grid " style="margin-top:20px;">
         <div class="k-header k-grid-toolbar">
             <span class="k-grid-header-title"> Building Information</span>
+            <a id="addBuildingInformation" class="k-button k-button-icontext k-grid-add" role="button" role-access="true" onclick="addBuildingInfo()" >Add Building</a>
         </div>
     </div>
 
@@ -154,6 +155,7 @@
         <table id="dtPrkingData"></table>
     </div>
 </div>
+<div class="modal fade" id="modal-building-add" role="dialog" data-keyboard="false" data-backdrop="static"></div>
 <script type="text/x-kendo-template" id="windowTemplate">
     <p>ACHPNo  <strong>#= achpNo #</strong> ? </p>
      <div class=" multi-button" style="float:right">

@@ -738,11 +738,13 @@
     }
 
      function GetUnitModalData() {
+         window.setTimeout(function(){
          var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { area = "Construction" })';
           AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
                 function (result) {
                     kgridEditModelData=result;
                 }, null, true, null, false);
+         },1000);
     }
 </script>
 

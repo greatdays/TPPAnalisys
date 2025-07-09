@@ -1,5 +1,6 @@
 ﻿using ComCon.DataAccess.Attributes;
 using ComCon.PropertySnapshot.Models;
+using DeveloperPortal.Domain.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -26,36 +27,36 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string BuildingAddress { get; set; }
         public int BuildingID { get; set; }
         public string BuildingFileNumber { get; set; }
-        public List<SelectListItem> BuildingAddressList { get; set; }
+        public List<SelectListItem> BuildingAddressList { get; set; } = new List<SelectListItem>();
         public int? ProjectSiteId { get; set; }
         public int ProjectId { get; set; }
         public int APNId { get; set; }
         public List<UnitModel> UnitModel { get; set; }
         //public StructureAttribute StructureAttribute { get; set; }
-        public List<SelectListItem> LutStructureType { get; set; }
+        public List<SelectListItem> LutStructureType { get; set; } = new List<SelectListItem>();
         public int LutStructureTypeId { get; set; }
         public string Username { get; set; }
         //public List<StructureUnitInformation> StructureUnitInformation { get; set; }
         //public List<StructureAssociatedAssessorsParcelNumber> StructureAssociatedAssessorsParcelNumber { get; set; }
         public string StructureApn { get; set; }
-        public List<SelectListItem> LUTUnitTypeID { get; set; }
-        public List<SelectListItem> LUTTotalBedroomID { get; set; }
-        public List<SelectListItem> LutFHAStandards { get; set; }
+        public List<SelectListItem> LUTUnitTypeID { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> LUTTotalBedroomID { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> LutFHAStandards { get; set; } = new List<SelectListItem>();
         public bool IsAddAddress { get; set; }
         public string HouseNum { get; set; }
         public string HouseFracNum { get; set; }
         public string LutPreDirCd { get; set; }
-       // public List<LutPreDir> LutPreDirCdList { get; set; }
+        public List<LutPreDir> LutPreDirCdList { get; set; } = new List<LutPreDir>();
         public string StreetName { get; set; }
         public string LutStreetTypeCD { get; set; }
-       // public List<LutStreetType> LutStreetTypeList { get; set; }
+        public List<LutStreetType> LutStreetTypeList { get; set; }=new List<LutStreetType>();
         public string PostDirCd { get; set; }
         public string City { get; set; }
         public string LutStateCD { get; set; }
-        //public List<LutState> LutStateCDList { get; set; }
-        public List<SelectListItem> LutStateCDListItems { get; set; }
-        public List<SelectListItem> LutPreDirCdListItems { get; set; }
-        public List<SelectListItem> LutStreetTypeListItems { get; set; }
+        public List<LutState> LutStateCDList { get; set; } = new List<LutState>();
+        public List<SelectListItem> LutStateCDListItems { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> LutPreDirCdListItems { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> LutStreetTypeListItems { get; set; } = new List<SelectListItem>();
         public string Zip { get; set; }
         public string ZipSuffix { get; set; }
         public int ServiceRequestId { get; set; }

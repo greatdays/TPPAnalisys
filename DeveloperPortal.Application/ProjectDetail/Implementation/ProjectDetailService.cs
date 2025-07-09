@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Data;
 using System.Reflection;
+using System.Threading.Tasks;
 using static Azure.Core.HttpHeader;
 using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
@@ -34,7 +35,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor,
             AAHREntities context, IProjectDetailRepository projectDetailRepository)
         {
-            _config = configuration;    
+            _config = configuration;
             _storedProcedureExecutor = storedProcedureExecutor;
             _projectDetailRepository = projectDetailRepository;
             _context = context;
@@ -501,7 +502,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 buildingInfo.LutApplicableAccessibilityList = LutApplicableAccessibilityStandard;
                 if (!string.IsNullOrEmpty(buildingInfo.LutApplicableAccessibilityStandardId))
                 {
-                   
+
                     var listId = buildingInfo.LutApplicableAccessibilityStandardId.Split(',');
                     buildingInfo.ApplicableCodes = string.Join(", ", LutApplicableAccessibilityStandard.Where(x => listId.Contains(x.Value)).Select(y => y.Text).ToList());
                 }
@@ -554,6 +555,26 @@ namespace DeveloperPortal.Application.ProjectDetail
                 return false;
             }
 
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Save Building Summary
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName)
+        {
+            try
+            {
+                return await  _projectDetailRepository.SaveBuildingSummary(buildingModel, userName);
+            }
             catch (Exception ex)
             {
                 return false;
@@ -794,7 +815,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             BuildingModel model = new BuildingModel();
             SelectListItem address = new SelectListItem();
             List<SelectListItem> lstAddress = new List<SelectListItem>();
-            var propSSProjectSite = _context.PropSnapshots.Include(x=>x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectsiteId);
+            var propSSProjectSite = _context.PropSnapshots.Include(x => x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectsiteId);
             if (propSSProjectSite != null)
             {
                 var lstSiteAddress = _context.Apns.FirstOrDefault(m => m.Apn1 == propSSProjectSite.ProjectSite.PrimaryApn).SiteAddresses.ToList();
@@ -905,7 +926,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             //    }
             //}
         }
-        
+
 
         /// <summary>
         /// SetBuildingReferenceData
