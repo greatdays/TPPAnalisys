@@ -118,11 +118,11 @@
            var applicantJson = localStorage.getItem('ApplicantJson');
 
              $.ajax({
-                url: "/Account/CreateAccount",
+               url: "/Account/XDebugCreateAccount",
                 type: 'POST',
-               contentType: 'application/x-www-form-urlencoded', // sending JSON
-                data: { data: applicantJson}, // this is already a JSON string
-                success: function (data) {
+                contentType: 'application/json',
+               data: applicantJson,
+               success: function (data) {
                     localStorage.setItem('ApplicantJson', '');
                     $('#successModal').fadeIn();
                     $('#goToDashboardBtn').on('click', function () {
@@ -134,7 +134,7 @@
                    console.error("Response:", xhr.responseText);
                }
             });
-         });
+        });
      });
 </script>
 

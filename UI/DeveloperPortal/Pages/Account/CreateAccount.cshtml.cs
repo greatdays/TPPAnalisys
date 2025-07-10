@@ -10,11 +10,9 @@ namespace DeveloperPortal.Pages.Account
         public CreateAccountModel(IConfiguration config)
         {
             _config = config;
+            string url = _config["AAHRApiSettings:ApiURL"];
         }
-        public CreateAccountModel(string api)
-        {
-            string url = api;
-        }
+
         public void OnGet()
         {
             //Models.IDM.ApplicantSignupModel model = new UserServiceClient(_config).GetLookupLists_P2();

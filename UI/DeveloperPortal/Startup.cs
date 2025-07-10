@@ -35,7 +35,7 @@ namespace DeveloperPortal
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             services.AddDistributedMemoryCache();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(45);
