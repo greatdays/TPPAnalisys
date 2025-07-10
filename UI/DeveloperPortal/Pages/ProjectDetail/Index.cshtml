@@ -163,6 +163,8 @@
 <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
 <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
 
+
+
 <div class="page-content">
     <div class="row">
         <div class="col-md-8">
@@ -464,9 +466,8 @@
                 LoadTabData(url, "divPolicyContacts");
                 break;
             case "tabDocuments":
-                var url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document", caseId = "__id__" })';
+                var url = '@Url.Action("GetFilesById", "DMS", new { area = "Document", caseId = "__id__" })';
                 url = url.replace("__id__", Id);
-                console.log(url);
                 LoadTabData(url, "divDocument", true);
                 break;
             case "tabLogs":

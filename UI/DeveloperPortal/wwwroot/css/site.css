@@ -11405,3 +11405,21 @@ a {
     margin-top: -10px;
     border: solid 1px #135b79;
 }
+.btnAddFileDocuments {
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+    margin: 0 0 15px 0;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+.btnAddFileDocuments button.btn.btn-primary {
+        padding: 10px 35px;
+}
+
+.btnAddFileDocuments button.btn.btn-primary {
+        padding: 10px 35px;
+}
+.btnAddFileDocuments button.btn.btn-primary span.fas.fa-file-alt {
+            padding-right: 5px;
+}

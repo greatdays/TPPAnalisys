@@ -60,6 +60,7 @@ namespace DeveloperPortal
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UsePathBase("/AcHP.API");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
@@ -75,6 +76,8 @@ namespace DeveloperPortal
                 endpoints.MapControllerRoute(name: "default",
                pattern: "{controller=Dashboard}/{action=GetProjectData}");
             });
+
+           
             // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",

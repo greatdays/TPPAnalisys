@@ -8,7 +8,7 @@
 
         @if (Model.ShowFilter != null && Model.ShowFilter.Value)    
         {
-            <div class="d-flex align-items-center mb-2">
+           @*  <div class="d-flex align-items-center mb-2">
                 <label for="DMSFilter_@Model.ControlId" class="me-2 mb-0 ">
                     Filter by Category: 
                 </label>
@@ -16,7 +16,7 @@
                          result.SubCategorySelectList ?? new SelectList(Enumerable.Empty<SelectListItem>()),
                          "All",
                          new { @class = "form-control form-control-sm w-auto", title = "File Category" })
-            </div>
+            </div> *@
         }
 
         if (result.Data != null && result.Data.Columns.Count > 0)
