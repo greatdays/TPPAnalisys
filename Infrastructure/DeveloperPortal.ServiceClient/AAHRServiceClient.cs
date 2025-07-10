@@ -115,6 +115,31 @@ namespace DeveloperPortal.ServiceClient
             }
 
         }
+
+        public static async Task<(Stream Stream, string FileName, string ContentType)?> DownloadDocument(string baseAddress, string fileID)
+        {
+            string url = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.DownloadDocument}?fileId={fileID}";
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
+
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var contentDisposition = response.Content.Headers.ContentDisposition;
+                    var fileName = contentDisposition?.FileName?.Trim('"') ?? "downloaded_file";
+                    var contentType = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
+
+                    return (stream, fileName, contentType);
+                }
+
+                return null;
+            }
+        }
     }
 
     public static class AAHRServiceConstant
@@ -122,6 +147,6 @@ namespace DeveloperPortal.ServiceClient
         public const string GetFolderData = "api/GoogleDrive/GetFolderData";
         public const string CreateFolder = "api/GoogleDrive/CreateFolder";
         public const string UploadFile = "api/GoogleDrive/UploadFile";
-
+        public const string DownloadDocument = "api/GoogleDrive/DownloadDocument";
     }
 }

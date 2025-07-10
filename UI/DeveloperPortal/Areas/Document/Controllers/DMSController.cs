@@ -10,6 +10,8 @@ using DeveloperPortal.ServiceClient;
 using DeveloperPortal.Models.PlanReview;
 using Microsoft.AspNetCore.StaticFiles;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.ServiceClient;
+using System.Net.Http.Headers;
 
 
 namespace DeveloperPortal.Areas.Document.Controllers
@@ -190,6 +192,25 @@ namespace DeveloperPortal.Areas.Document.Controllers
 
             return PartialView("~/Areas/Document/Views/DMS/DMSViewNew.cshtml", model);
         }*/
+
+        [HttpGet]
+        [Route("DownloadDocument")]
+        public async Task<IActionResult> DownloadDocument(string fileID)
+        {
+            var result = await AAHRServiceClient.DownloadDocument(_BaseURL, fileID);
+
+            if (result == null)
+            {
+                string script = "<script>alert('File could not be found.'); window.history.back();</script>";
+                return Content(script, "text/html");
+
+            }
+
+            var (stream, fileName, contentType) = result.Value;
+            //return Content($"Stream Length: {stream.Length}, FileName: {fileName}, ContentType: {contentType}");
+
+            return File(stream, contentType, fileName);
+        }
 
     }
 }

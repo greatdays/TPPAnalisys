@@ -35,6 +35,18 @@
             {
                 foreach (var file in Model.FolderModel.Files)
                 {
+
+                    var driveFileId = "";
+                    if (!string.IsNullOrEmpty(file.Link))
+                    {
+                        var parts = file.Link.Split('/');
+                        var index = Array.IndexOf(parts, "d");
+                        if (index >= 0 && index + 1 < parts.Length)
+                        {
+                            driveFileId = parts[index + 1];
+                        }
+                    }
+
                     <tr>
                         <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
                         <td>@file.Name</td>
@@ -44,7 +56,10 @@
                         <td>
                             @if (!string.IsNullOrWhiteSpace(file.Link))
                             {
-                                <a href="@file.Link" class="btn btn-sm btn-primary" target="_blank">Download</a>
+                                <a href="@Url.Action("DownloadDocument", "DMS", new { fileID = driveFileId })"
+                                   class="btn btn-sm btn-primary">
+                                    Download
+                                </a>
                             }
                             else
                             {

@@ -5,6 +5,7 @@ using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity;
 using DeveloperPortal.DataAccess.Repository;
 using DeveloperPortal.Serilog;
 using Microsoft.EntityFrameworkCore;
