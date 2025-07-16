@@ -172,5 +172,28 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <returns></returns>
         Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName);
 
+        /// <summary>
+        /// GetAddBuildingDetails
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        Task<BuildingModel> GetAddBuildingDetails(int projectSiteId);
+
+        /// <summary>
+        /// GetBuildingAddressDetails
+        /// </summary>
+        /// <param name="projectSiteIds"></param>
+        /// <returns></returns>
+        Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds);
+
+        /// <summary>
+        /// GetPropSnapshotDetails
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId);
+
+        
+
     }
 }

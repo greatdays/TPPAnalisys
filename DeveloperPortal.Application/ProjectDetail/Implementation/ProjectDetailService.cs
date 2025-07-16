@@ -582,6 +582,123 @@ namespace DeveloperPortal.Application.ProjectDetail
         }
 
         /// <summary>
+        /// GetAddBuildingDetails
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        public async Task<BuildingModel> GetAddBuildingDetails(int projectSiteId)
+        {
+            BuildingModel model = new BuildingModel();
+            SelectListItem address = new SelectListItem();
+            List<SelectListItem> lstAddress = new List<SelectListItem>();
+
+            var propSSProjectSite = _context.PropSnapshots.Include(x => x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectSiteId);
+
+            var apn = _context.Apns. FirstOrDefault(m => m.Apn1 == propSSProjectSite.ProjectSite.PrimaryApn);
+            if (apn != null)
+            {
+                var lstSiteAddress = apn.SiteAddresses.ToList();
+                foreach (var sa in lstSiteAddress.GroupBy(p => p.FullAddress)
+                                                      .Select(g => g.First())
+                                                      .ToList())
+                {
+                    lstAddress.Add(address = new SelectListItem
+                    {
+                        Text = sa.FullAddress,
+                        Value = sa.SiteAddressId.ToString()
+                    });
+                }
+            }
+            model.BuildingAddressList = lstAddress;
+            model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
+            model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
+            model.ProjectId = (int)propSSProjectSite.ProjectId;
+            model.APNId = (int)propSSProjectSite.Apnid;
+
+            var lutPreDirCdList = await _context.LutPreDirs.Where(x => x.LutPreDirCd != "").ToListAsync();
+            foreach (var item in lutPreDirCdList)
+            {
+                model.LutPreDirCdListItems.Add(new SelectListItem
+                { 
+                    Value= item.LutPreDirCd
+                });
+            }
+            var lutStreetTypeList = await _context.LutStreetTypes.Where(x => x.IsDeleted == false && x.LutStreetTypeCd != "").ToListAsync();
+            foreach (var item in lutStreetTypeList)
+            {
+                model.LutStreetTypeListItems.Add(new SelectListItem
+                {
+                    Value=item.LutStreetTypeCd,
+                    
+                });
+            }
+            var LutStateCDList = await _context.LutStates.Where(x => x.IsDeleted == false).ToListAsync();
+            foreach (var item in LutStateCDList)
+            {
+                model.LutStateCDListItems.Add(new SelectListItem
+                {
+                    Text = item.Description,
+                    Value=item.LutStateCd
+                });
+            }
+            return model;
+        }
+        /// <summary>
+        /// GetBuildingAddressDetails
+        /// </summary>
+        /// <param name="projectSiteIds"></param>
+        /// <returns></returns>
+        public async Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds)
+        {
+            SelectListItem address = new SelectListItem();
+            List<SelectListItem> lstAddress = new List<SelectListItem>();
+            var primaryAPNList = await  _context.PropSnapshots.Include(x => x.ProjectSite).Where(x => x.IdentifierType == "ProjectSite" && projectSiteIds.Contains(x.ProjectSiteId.Value)).Select(x => x.ProjectSite.PrimaryApn).ToListAsync();
+            foreach (var primaryAPN in primaryAPNList)
+            {
+                var apn = _context.Apns.FirstOrDefault(m => m.Apn1 == primaryAPN);
+                if (apn != null)
+                {
+                    var lstSiteAddress = apn.SiteAddresses.ToList();
+                    if (lstSiteAddress != null && lstSiteAddress.Count > 0)
+                    {
+                        lstAddress.AddRange(lstSiteAddress
+                                    .GroupBy(p => p.FullAddress)
+                                    .Select(g => g.First())
+                                    .Select(sa => new SelectListItem
+                                    {
+                                        Text = sa.FullAddress,
+                                        Value = sa.SiteAddressId .ToString()
+                                    })
+                        );
+                    }
+                }
+            }
+
+            return lstAddress.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// GetPropSnapshotDetails
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        public async Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId)
+        {
+            BuildingModel model = new BuildingModel();
+            var propSSProjectSite = await _context.PropSnapshots.FirstOrDefaultAsync(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectSiteId);
+            if (propSSProjectSite != null)
+            {
+                model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
+                model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
+                model.ProjectId = (int)propSSProjectSite.ProjectId;
+                model.APNId = (int)propSSProjectSite.Apnid;
+            }
+            return model;
+        }
+
+       
+
+        /// <summary>
         /// GetLADBSPermitDetails
         /// </summary>
         /// <param name="propSnapshotId"></param>

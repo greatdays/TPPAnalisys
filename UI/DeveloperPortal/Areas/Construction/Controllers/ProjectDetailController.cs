@@ -24,6 +24,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
         private IProjectDetailService _projectDetailService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
+        private readonly string UserName;
 
         public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
         {
@@ -32,6 +33,8 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
             _env = env;
+            //Username = UserSession.GetUserSession().UserName
+            UserName = "jhirpara";
         }
 
         #endregion
@@ -106,7 +109,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 if (updateModels != null && updateModels.Count > 0)
                 {
                     var updateModel = updateModels[0];
-                    result = _projectDetailService.UpdateUnitDetails(updateModel, "jhirpara");
+                    result = _projectDetailService.UpdateUnitDetails(updateModel, UserName);
                 }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Updated Successfully." });
             }
@@ -128,7 +131,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             {
                 if (deleteModels != null && deleteModels.Count > 0)
                 {
-                    result = _projectDetailService.DeleteUnit(deleteModels[0].PropSnapshotID, "jhirpara");
+                    result = _projectDetailService.DeleteUnit(deleteModels[0].PropSnapshotID, UserName);
                 }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Deleted Successfully." });
             }
@@ -154,7 +157,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                     saveMode.UnitID = 0;
                     if (saveMode != null)
                     {
-                        result = _projectDetailService.AddUnitDetail(saveMode, "jhirpara");
+                        result = _projectDetailService.AddUnitDetail(saveMode, UserName);
                     }
                 }
 
@@ -212,7 +215,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                         if (excelData.Tables.Count == 2)
                         {
                             //Import data to database 
-                            var dtResult = await _unitImportService.ExecuteImportUnitInfoAsync(excelData, caseId, "jhirpara");
+                            var dtResult = await _unitImportService.ExecuteImportUnitInfoAsync(excelData, caseId, UserName);
                             var totalRecord = dtResult.Rows.Count;
                             dtResult.DefaultView.RowFilter = "Status ='Success'";
                             var validRecord = dtResult.DefaultView.Count;
@@ -372,7 +375,6 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             try
             {
                 List<string> inValidPermitNumbers = new List<string>();
-                string username = "jignesh";
                 string status = string.Empty;
                 if (string.IsNullOrEmpty(permitNumber)) // option to use all existing permit numbers on the building
                 {
@@ -391,7 +393,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                             inValidPermitNumbers.Add(permit);
                         }
                     }
-                    status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, username);
+                    status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, UserName);
                     return Json(new
                     {
                         valid = string.Join(", ", PermitNumbers),
@@ -405,7 +407,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                     {
                         model.Delete = Delete;
                         List<PcisPermitDetail> data = new List<PcisPermitDetail>() { model };
-                        status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, username);
+                        status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, UserName);
                         return Json(status);
                     }
                     else
@@ -430,7 +432,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                     };
 
                     List<PcisPermitDetail> data = new List<PcisPermitDetail>() { model };
-                    status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, username);
+                    status = await _projectDetailService.SaveLADBSData(propSnapshotId, data, UserName);
                     return Json(status);
                 }
             }
@@ -440,17 +442,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             }
         }
 
-        ///// <summary>
-        ///// SaveLADBSData
-        ///// </summary>
-        ///// <returns></returns>
-        //public async Task<BaseResponse> SaveLADBSData(int propSnapshotId, List<PcisPermitDetail> models, string username)
-        //{
-        //    BaseResponse baseResponse = new BaseResponse();
-        //    baseResponse.Response = await _projectDetailService.SaveLADBSData(propSnapshotId, models, "jignesh");
-        //    baseResponse.ResponseCode = HttpStatusCode.OK;
-        //    return baseResponse;
-        //}
+        
 
         /// <summary>
         /// UpdateParkingDetail
@@ -466,7 +458,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 var result = false;
                 if (buildingModel != null && buildingModel.PropSnapshotID > 0)
                 {
-                    result = await _projectDetailService.SaveBuildingParkingAttributes(buildingModel, "jignesh");
+                    result = await _projectDetailService.SaveBuildingParkingAttributes(buildingModel, UserName);
                 }
                 return Json(result);
             }
@@ -490,7 +482,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             {
                 if (buildingModel != null && buildingModel.PropSnapshotID > 0)
                 {
-                    result = await _projectDetailService.SaveBuildingSummary(buildingModel, "jignesh");
+                    result = await _projectDetailService.SaveBuildingSummary(buildingModel, UserName);
                 }
             }
             catch (Exception e)
@@ -526,10 +518,10 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             if (paramModel.SiteInformationData!= null && paramModel.SiteInformationData.Count > 0)
             {
                 projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
-                //buildingModel = _caseService.GetAddBuildingDetails(projectSiteId);
+                buildingModel = await _projectDetailService.GetAddBuildingDetails(projectSiteId);
                 // If show all addresses then uncomment below code
                 var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
-                //buildingModel.BuildingAddressList = _caseService.GetBuildingAddressDetails(projectSiteIdList);
+                buildingModel.BuildingAddressList = await  _projectDetailService.GetBuildingAddressDetails(projectSiteIdList);
                 buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
                 {
                     Text = x.FileNumber,
@@ -543,10 +535,12 @@ namespace DeveloperPortal.Areas.Construction.Controllers
 
             }
             buildingModel.CaseId = caseId;
-           // TempData["buildingModel"] = buildingModel;
-            var data=await  this.RenderViewAsync("../../Areas/Construction/Views/ProjectDetail/_AddBuilding", buildingModel, true); // PartialView("~/Areas/Construction/Views/ProjectDetail/_AddBuilding", buildingModel);
+            var data=await  this.RenderViewAsync("../../Areas/Construction/Views/ProjectDetail/_AddBuilding", buildingModel, true);
             return Json(data);
         }
+
+        
+
 
         #endregion
 

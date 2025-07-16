@@ -1,6 +1,5 @@
 ﻿using ComCon.DataAccess.Attributes;
 using ComCon.PropertySnapshot.Models;
-using DeveloperPortal.Domain.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -46,14 +45,11 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string HouseNum { get; set; }
         public string HouseFracNum { get; set; }
         public string LutPreDirCd { get; set; }
-        public List<LutPreDir> LutPreDirCdList { get; set; } = new List<LutPreDir>();
         public string StreetName { get; set; }
         public string LutStreetTypeCD { get; set; }
-        public List<LutStreetType> LutStreetTypeList { get; set; }=new List<LutStreetType>();
         public string PostDirCd { get; set; }
         public string City { get; set; }
         public string LutStateCD { get; set; }
-        public List<LutState> LutStateCDList { get; set; } = new List<LutState>();
         public List<SelectListItem> LutStateCDListItems { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> LutPreDirCdListItems { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> LutStreetTypeListItems { get; set; } = new List<SelectListItem>();
@@ -64,6 +60,7 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public int? TotalProjectUnit { get; set; }
         public int? SortOrder { get; set; }
         public string CaseType { get; set; }
+        public string SelectedSiteId { get; set; }
 
         [Display(Name = "Building Description")]
         public string BuildingDescription { get; set; }
