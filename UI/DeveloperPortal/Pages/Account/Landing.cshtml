@@ -1,7 +1,6 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.Account.SignUpModel
 
-
 <header class="landing-banner">
     <div>
         <h1>Welcome to the ACHP Construction Portal</h1>
@@ -13,6 +12,7 @@
 
     <div class="landing-signup-actions">
         <button type="submit" class="landing-signin-button" id="btnSignIn">Sign In</button>
+        @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
     </div>
 
     <p class="divider">Or</p>
@@ -26,51 +26,16 @@
 
 
 <script>
-    // SIGN IN POST
-    document.getElementById("landing-signin").addEventListener("submit", async function(evt) {
-        evt.preventDefault();
 
-        const payload = {
-          Username:   document.getElementById("email").value.trim(),
-          Password:   document.getElementById("password").value,
-          RememberMe: document.getElementById("rememberMe").checked
-        };
-
-        try {
-          const response = await fetch("/Login/LoginSql", {
-            method:  "POST",
-            headers: { "Content-Type": "application/json" },
-            body:    JSON.stringify(payload)
-          });
-
-          // if server doesn't return JSON
-          const contentType = response.headers.get("content-type") || "";
-          console.log("Content-Type:", contentType);
-          if (!contentType.includes("application/json")) {
-            document.getElementById("loginError").innerText = `Unexpected server response (${response.status})`;
-            return;
-          }
-
-          const json = await response.json();
-
-          if (json.success) {
-            window.location.href = json.redirectUrl; // direct to dashboard
-          } else {
-            document.getElementById("loginError").innerText = json.message;
-          }
-        } catch (error) {
-          console.error("LoginSql request failed:", error);
-          document.getElementById("loginError").innerText
-            = "Unexpected error. Please try again later.";
-        }
+        document.getElementById("btnSignIn").addEventListener("click", function () {
+        window.location.href = '@Url.Action("Login", "Account")';
     });
 
-    // ANGELO SIGN IN 
-    // document.getElementById('btnAngelenoSignIn').addEventListener('click', function () {
-    //     window.location.href = '/Login/AngelenoLogin';
-    // });
+    document.getElementById("landing-signin").addEventListener("submit", async function(evt) {
+        evt.preventDefault();
+    });
 
-    // SIGN UP
+   
     document.getElementById('btnSignUp').onclick = function() {
     window.location.href = 'Account/SignUp';
     };
