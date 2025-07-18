@@ -1,6 +1,4 @@
 ﻿using System.Data;
-using System.Threading.Tasks;
-using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.Dashboard;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +37,12 @@ namespace DeveloperPortal.Controllers
             List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUser();
                       
             return list;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View("Dashboard"); // this loads Views/Dashboard/Dashboard.cshtml
         }
 
         // GET: api/<DashboardController>

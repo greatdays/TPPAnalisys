@@ -41,7 +41,10 @@ namespace DeveloperPortal.Controllers
             _config = config;
             _contextAccessor = httpConfig;
         }
-        public IActionResult Login(string ReturnUrl)
+
+        [Route("account/login")]
+        [HttpGet]
+        public IActionResult Login(string ReturnUrl = null)
         {
             return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["ThisApplication:ApplicationURL"]}{ReturnUrl}");
         }

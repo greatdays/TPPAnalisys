@@ -23,7 +23,6 @@ namespace DeveloperPortal.Application.Services
         private readonly JwtGenerator _jwtGenerator;
         private readonly TPPDbContext _db;
 
-        private const string AppKey = "AAHRDeveloperPortal";
 
         public SignInServices (IConfiguration config, TPPDbContext db, JwtGenerator jwtGenerator)
         {
@@ -36,7 +35,7 @@ namespace DeveloperPortal.Application.Services
         {
             var userToAuth = new User
             {
-                AppKey = AppKey,
+                AppKey = _config["ThisApplication:AppKey"],
                 UserName = model.Username.Trim(),
                 Password = model.Password.Trim(),
                 Provider = "SQL"
@@ -58,13 +57,13 @@ namespace DeveloperPortal.Application.Services
                 throw;
             }
 
-            if (authResponse == null || authResponse.UserId <= 0)
+            if (authResponse == null || authResponse.UserId <= 0 )
                 throw new UnauthorizedAccessException(
                     authResponse?.ErrorMessage ?? "Invalid credentials");
 
             // ensure user has access to TPP
             var detail = authResponse.ApplicationDetail
-                            .FirstOrDefault(d => d.AppKey == AppKey);
+                            .FirstOrDefault(d => d.AppKey == _config["ThisApplication:AppKey"]);
             if (detail == null)
                 throw new UnauthorizedAccessException("Not authorized for TPP");
 
@@ -122,8 +121,8 @@ namespace DeveloperPortal.Application.Services
             var detail = new ApplicationDetail
             {
                 ApplicationId = 29,
-                AppKey = "AAHRDeveloperPortal",
-                AppName = "AAHRDeveloperPortal",
+                AppKey = _config["ThisApplication:AppKey"],
+                AppName = _config["ThisApplication:Application"],
                 ApplicationURL = "/dashboard",   
                 JWTAccessCode = _config["ThisApplication:JwtAccessCode"],
                 JWTToken = jwt,      
@@ -171,7 +170,7 @@ namespace DeveloperPortal.Application.Services
             }
             authResponse.UserId = local.UserId;
 
-            var detail = authResponse.ApplicationDetail.First(d => d.AppKey == AppKey);
+            var detail = authResponse.ApplicationDetail.First(d => d.AppKey == _config["ThisApplication:AppKey"]);
             var roles = detail.Roles ?? new List<string>();
 
             var identity = new ClaimsIdentity(new[]
@@ -240,8 +239,8 @@ namespace DeveloperPortal.Application.Services
             var session = UserSession.AssignValues(
                 httpContext,
                 authResponse,
-                null,    
-                AppKey
+                null,
+                _config["ThisApplication:AppKey"]
             );
             UserSession.SetUserInSession(httpContext, session);
         }
