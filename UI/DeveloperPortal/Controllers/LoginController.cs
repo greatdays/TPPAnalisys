@@ -270,8 +270,7 @@ namespace DeveloperPortal.Controllers
                         var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                         UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, null, applicationName));
-
-                        return RedirectToAction("GetProjectData", "Dashboard");
+                        return RedirectToPage("/Dashboard");
                     }
                 }
             }
