@@ -146,6 +146,7 @@
     <div class="k-grid " style="margin-top:20px;">
         <div class="k-header k-grid-toolbar">
             <span class="k-grid-header-title"> Building Information</span>
+            <a id="addBuildingInformation" class="k-button k-button-icontext k-grid-add" role="button" role-access="true" onclick="addBuildingInfo()" >Add Building</a>
         </div>
     </div>
 
@@ -154,6 +155,7 @@
         <table id="dtPrkingData"></table>
     </div>
 </div>
+<div class="modal fade" id="modal-building-add" role="dialog" data-keyboard="false" data-backdrop="static"></div>
 <script type="text/x-kendo-template" id="windowTemplate">
     <p>ACHPNo  <strong>#= achpNo #</strong> ? </p>
      <div class=" multi-button" style="float:right">
@@ -181,28 +183,32 @@
     }).data("kendoWindow");
     /*Start Unit Kendo Grid */
     function LoadProjectInformation() {
+
+             $("#uploadUnitExcel").click(function () {
+       $("#modalImportUnits").modal('show');
+     });
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { })',
+                    url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { area = "Construction" })',
                     dataType: "json"
                     , method: "post"
                     ,contentType: "application/json" 
                 },
                 update: {
-                    url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { })',
+                    url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                     ,contentType: "application/json"
                 },
                 destroy: {
-                    url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { })',
+                    url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                      ,contentType: "application/json"
                 },
                 create: {
-                    url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { })',
+                    url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { area = "Construction" })',
                     method: "post",
                     dataType: "json"
                     ,contentType: "application/json"

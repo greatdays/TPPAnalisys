@@ -1,31 +1,18 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.Account.SignUpModel
 
-
 <header class="landing-banner">
     <div>
-        <h1>Welcome to the AcHP Construction/ Retrofit Third-Party Portal</h1>
+        <h1>Welcome to the ACHP Construction Portal</h1>
         <p>This is your one stop shop for uploading and receiving property files</p>
     </div>
 </header>
 
-<form id="landing-signup">
-    <h2>Sign In to Your Account</h2>
-
-    <div class="landing-signup-field">
-        <label for="email" class="sr-only">Email Address</label>
-        <input id="email" name="email" type="email" placeholder="Email Address" required autocomplete="email">
-    </div>
-
-    <div class="landing-signup-field">
-        <label for="password" class="sr-only">Password</label>
-        <input id="password" name="password" type="password" placeholder="Password" required autocomplete="new-password">
-    </div>
-
-    <p class="forgot-password"><a href="#">Forgot Your Password?</a></p>
+<form id="landing-signin">
 
     <div class="landing-signup-actions">
         <button type="submit" class="landing-signin-button" id="btnSignIn">Sign In</button>
+        @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
     </div>
 
     <p class="divider">Or</p>
@@ -34,20 +21,24 @@
         <button type="submit" class="landing-signup-button" id="btnSignUp">Sign Up</button>
     </div>
     
+    <div id="loginError" style="color: red; margin-top: 1em;"></div>
 </form>
 
 
 <script>
-    $(document).ready(function    ( ) {
-        $('#btnSignUp').click(function    ( ) {
-            window.location = 'Account/signup';
-            return false;
-        })
-        $('#btnSignIn').click(function    ( ) {
-            window.location = 'Account/Login';
-            return false;
-        })
 
-    })
+        document.getElementById("btnSignIn").addEventListener("click", function () {
+        window.location.href = '@Url.Action("Login", "Account")';
+    });
+
+    document.getElementById("landing-signin").addEventListener("submit", async function(evt) {
+        evt.preventDefault();
+    });
+
+   
+    document.getElementById('btnSignUp').onclick = function() {
+    window.location.href = 'Account/SignUp';
+    };
 </script>
+
 

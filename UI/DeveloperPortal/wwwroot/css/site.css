@@ -85,12 +85,12 @@
     padding-left: 0;
 }
 
-#landing-signup {
+#landing-signin {
     display: flex;
     flex-direction: column;
     margin: auto;
     width: 600px;
-    height: 500px;
+/*    height: 575px;*/
     padding: 3em 4em;
     color: black;
     background-color: white;
@@ -100,24 +100,18 @@
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.08)
 } 
     
-    #landing-signup h2 {
+    #landing-signin h2 {
         margin-bottom: 1.5em;
         font-size: 25px;
         font-weight: 600;
         color: black;
     }
 
-.landing-signup-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.landing-signup-field {
+.landing-signin-field {
     margin-bottom: 1em;
 }
 
-    .landing-signup-field input {
+    .landing-signin-field input {
         width: 100%;
         box-sizing: border-box;
         padding: 0.75rem 1rem;
@@ -129,27 +123,20 @@
         border: 1px solid #ccd1d9;
     }
 
-        .landing-signup-field input:focus {
+        .landing-signin-field input:focus {
             box-shadow: 0 0 0 3px rgba(0, 97, 255, 0.25);
         }
 
-    .landing-signup-field select {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0.75rem 1rem;
-        background-color: #e0e3e7;
-        border-radius: 4px;
-        font-size: 1rem;
-        color: #1a1a1a;
-        outline: none;
-        transition: box-shadow 0.2s ease-in-out;
-        border: 1px solid #ccd1d9;
-    }
+.landing-signin-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
 
 .landing-signup-button {
     width: 100%;
     padding: 0.75rem 1rem;
-    background-color: #e4002b;
+    background-color: #d50028;
     color: white;
     border: none;
     border-radius: 4px;
@@ -170,14 +157,17 @@
     transition: background-color 0.2s ease;
 }
 
-.forgot-password {
-    text-align: right;
+#btnSignIn {
     margin-bottom: 1em;
+}
+
+#btnAngelenoSignIn {
+    background-color: #0c6b59;
 }
 
 .forgot-password a {
     color: darkblue;
-    font-size: 17px;
+    font-size: 15px;
 }
 
 .divider {
@@ -208,7 +198,7 @@ header._hcidla-service-portal-header._fixed-Header {
 
 .form-control {
     font-size: 14px !important;
-    border: 1px solid #000000 !important;
+    border: 1px solid #000000;
 }
 
 body {
@@ -2013,7 +2003,6 @@ div#myNavbar {
 
 a.Accountbtn {
     border: 0;
-    background-color: #fff;
     border-radius: 20px;
     padding: 2px 15px !important;
     color: #006381;
@@ -11114,6 +11103,10 @@ fieldset .form_body label {
     color: #b10000;
 }
 
+#Sign_progressbar {
+    border-bottom: 0;
+}
+
 #Sign_progressbar li {
     list-style-type: none;
     font-size: 15px;
@@ -11156,7 +11149,7 @@ fieldset .form_body label {
     color: #757575;
 }
 .nav-tabs {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 .nav.nav-tabs li.wizard-item:first-child:after {
     width: 50% !important;
@@ -11380,11 +11373,11 @@ h1.white-text{
 /*Signup Page CSS - End*/
 
 a {
- cursor:pointer;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
 }
 
 .dataTables_length select {
-    border: solid 1px;
     height: 38px;
     border: 1px solid #e4e4e4;
     margin: 0px 9px;
@@ -11405,21 +11398,137 @@ a {
     margin-top: -10px;
     border: solid 1px #135b79;
 }
-.btnAddFileDocuments {
-    display: flex;
-    align-items: end;
-    justify-content: flex-end;
-    margin: 0 0 15px 0;
-    margin-top: 15px;
-    margin-right: 15px;
-}
-.btnAddFileDocuments button.btn.btn-primary {
-        padding: 10px 35px;
+
+#tblMyProjects_wrapper .dataTables_length {
+    padding-top: 20px;
+    padding-left: 15px;
 }
 
-.btnAddFileDocuments button.btn.btn-primary {
-        padding: 10px 35px;
+#tblMyProjects_wrapper .dataTables_filter {
+    padding-top: 20px;
+    padding-right: 5px;
 }
-.btnAddFileDocuments button.btn.btn-primary span.fas.fa-file-alt {
-            padding-right: 5px;
+
+#tblMyProjects_wrapper .dataTables_info {
+    padding-left: 15px;
+}
+
+#tblMyProjects_wrapper .dataTables_paginate,
+#dmsDataTable_wrapper .dataTables_paginate {
+    padding-top: 12px;
+    padding-right: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#tblMyProjects_wrapper .paginate_button,
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#tblMyProjects_wrapper .paginate_button.current,
+#dmsDataTable_wrapper .paginate_button.current {
+    background-color: #2C3E5C;
+    color: #fff !important;
+}
+
+#tblMyProjects_wrapper .paginate_button:hover,
+#dmsDataTable_wrapper .paginate_button:hover {
+    background: #2C3E5C !important;
+    color: #fff !important;
+    border-color: #2C3E5C !important;
+    cursor: pointer;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_previous,
+#dmsDataTable_wrapper a#dmsDataTable_previous {
+    border-top-left-radius: 0.2rem;
+    border-bottom-left-radius: 0.2rem;
+}
+
+#tblMyProjects_wrapper a#tblMyProjects_next,
+#dmsDataTable_wrapper a#dmsDataTable_next {
+    border-top-right-radius: 0.15rem;
+    border-bottom-right-radius: 0.15rem;
+}
+
+#tblMyProjects_previous,
+#tblMyProjects_next,
+#dmsDataTable_previous,
+#dmsDataTable_next {
+    display: inline-block !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    line-height: 30px !important;
+    padding: 0 12px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    background-color: #fff !important;
+}
+
+#tblMyProjects th,
+#tblMyProjects td,
+#dmsDataTable th,
+#dmsDataTable td {
+    padding-left: 20px;
+    padding-right: 20px;
+    line-height: 1.25;
+}
+
+#dmsDataTable_wrapper .dataTables_length {
+    padding-top: 14px;
+    padding-left: 2px;
+}
+
+#dmsDataTable_wrapper .dataTables_filter {
+    padding-top: 14px;
+}
+
+#dmsDataTable_wrapper .dataTables_paginate {
+    padding-right: 0px;
+}
+
+#dmsDataTable_wrapper .paginate_button {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 30px;
+    font-size: 1rem;
+    color: #2C3E5C !important;
+    background-color: #fff;
+    border: 1px solid #2C3E5C;
+    border-radius: 0;
+    margin: 0 2px;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#dmsDataTable .btn-primary {
+    background-color: #2C3E5C !important;
+    color: #fff !important;
+}
+
+#dmsDataTable.dataTable tbody tr > [class^="sorting_"] {
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+}
+
+#dmsDataTable.dataTable tbody tr:hover > [class^="sorting_"] {
+    background-color: #f5f5f5 !important; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
 }

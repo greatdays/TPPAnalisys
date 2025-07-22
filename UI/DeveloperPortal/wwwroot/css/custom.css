@@ -295,13 +295,17 @@ a.nav-link.nav-link-basic:hover {
     margin-right: 0px;
 }
 
-.smallView-menu {
-    margin-left: 25px;
-    background-color: transparent !important;
-    border: 1px solid white !important;
-    color: white;
-    padding: 2px;
-}
+    .SignInContatiner .navbar-right {
+        font-size: 16px;
+    }
+
+    .smallView-menu {
+        margin-left: 25px;
+        background-color: transparent !important;
+        border: 1px solid white !important;
+        color: white;
+        padding: 2px;
+    }
 
 .lft-dropdown {
     position: unset !important;

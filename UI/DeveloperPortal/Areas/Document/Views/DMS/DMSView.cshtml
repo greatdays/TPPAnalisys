@@ -19,7 +19,7 @@
 
 <!-- Documents Table -->
 <div class="table-responsive">
-    <table id="dmsDataTable" class="display table table-bordered table-striped table-sm" style="width:100%">
+    <table id="dmsDataTable" class="display table table-bordered" style="width:100%">
         <thead>
             <tr>
                 <th>Date</th>
@@ -68,6 +68,13 @@
                         </td>
                     </tr>
                 }
+            }
+            else
+            {
+                @*This dummy row ensures cell count matches column count*@
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No data available</td>
+                </tr>
             }
         </tbody>
     </table>
@@ -140,11 +147,11 @@
     $(document).ready(function () {
         // Initialize DataTable
         $('#dmsDataTable').DataTable({
+            stripeClasses: [],
             paging: true,
-            searching: false,
-            ordering: true,
-            info: false,
-            autoWidth: false,
+            info: true,
+            searching: true,
+            scrollX: true,
             language: {
                 emptyTable: "No documents available"
             }

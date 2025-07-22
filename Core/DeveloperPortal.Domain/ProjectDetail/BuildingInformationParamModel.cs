@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,8 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string BuildingPermitNumber { get; set; }
         public string ApplicableCodes { get; set; }
         public string LutApplicableAccessibilityStandardId { get; set; }
-
+        public List<SelectListItem> LutApplicableAccessibilityList { get; set; }
+        public string[] LutApplicableAccessibilityStandardIdList { get; set; }
         public int? NumberOfUnits { get; set; }
         public string NumberOfMobilityUnits { get; set; }
         public string NumberOfCommunicationUnits { get; set; }
@@ -60,7 +62,14 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public bool IsElevator { get; set; }
         public int? NumberOfFloors { get; set; }
         public int? NumberOfParkings { get; set; }
+        public string StructureNo { get; set; }
 
+        public int ProjectSiteId { get; set; }
+
+        public string FullAddress { get; set; }
+        public int? BuildingAddressId { get; set; }
+        public bool? NonResidental { get; set; }
+        public string BuildingDescription { get; set; }
 
 
 

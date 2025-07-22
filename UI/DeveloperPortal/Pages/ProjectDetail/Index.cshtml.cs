@@ -16,6 +16,7 @@ namespace DeveloperPortal.Pages.ProjectDetails
         [FromQuery(Name = "tabName")]
         public string TabName { get; set; }
         public ProjectSummaryModel ProjectSummary { get; set; }
+        public SiteDataModel SiteData { get; set; }
 
         private IConfiguration _config;
         private IProjectDetailService _projectDetailService;
@@ -36,6 +37,10 @@ namespace DeveloperPortal.Pages.ProjectDetails
                 ProjectSummary = _projectDetailService.GetProjectSummary(Convert.ToInt32(Id));
                 TempData["commentCategory"] = ProjectSummary.ProblemCase;
                 ProjectSummary.ProjectAssessors = _projectDetailService.GetProjectAssessors(Convert.ToInt32(ProjectSummary.ProjectId));
+                SiteData = new SiteDataModel();
+                SiteData.ProjectSiteID = ProjectSummary.ProjectSiteId;
+                SiteData.ProjectId = ProjectSummary.ProjectId;
+                
                 //ProjectSummary.ProjectDetailModel  = ProjectDetailServiceClient.GetProjectDetailByCaseId(Id); ;
                 //if (null != projectSummary.ProjectDetailModel)
                 //{

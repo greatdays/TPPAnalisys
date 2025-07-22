@@ -28,8 +28,8 @@ using ComCon.DataAccess.Models.Helpers;
 
 namespace DeveloperPortal.Controllers
 {
-    
-    [Controller]
+    [ApiController]
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private IConfiguration _config;
@@ -41,7 +41,10 @@ namespace DeveloperPortal.Controllers
             _config = config;
             _contextAccessor = httpConfig;
         }
-        public IActionResult Login(string ReturnUrl)
+
+        [Route("account/login")]
+        [HttpGet]
+        public IActionResult Login(string ReturnUrl = null)
         {
             return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["ThisApplication:ApplicationURL"]}{ReturnUrl}");
         }
@@ -52,101 +55,69 @@ namespace DeveloperPortal.Controllers
         }
 
         #region Create Account
-        [HttpPost]
-        public ActionResult CreateAccount(string data)
+        [HttpPost("XDebugCreateAccount")]
+        public IActionResult XDebugCreateAccount([FromBody]JObject data)
         {
-            ApplicantSignupModel signupModel = new ApplicantSignupModel(_config);
+            var signupModel = new ApplicantSignupModel(_config);
             string accountType = string.Empty;
 
-            JObject keyValuePairs = JObject.Parse(JsonConvert.DeserializeObject(data).ToString());
-            foreach (JProperty property in keyValuePairs.Properties())
+            var allStepItems = data.Properties()
+                .SelectMany(prop => JArray.Parse(prop.Value.ToString()))
+                .ToList();  // List<JToken>
+
+            foreach (var item in allStepItems)
             {
-                var applicantJson = property.Value.ToString();
-                JArray jArray = JArray.Parse(applicantJson);
+                string stepName = item["step"].ToString();
+                var tokens = item["Data"].ToList();
 
-                foreach (var item in jArray)
+                switch (stepName)
                 {
-                    string step1 = item["step"].ToString();
-                    var stepJson = item["Data"];
-                    List<JToken> lst = stepJson.ToList();
+                    case "AccountType":
+                        accountType = GetApplicantDataByKey("accountType", tokens);
+                        break;
 
-                    switch (step1)
-                    {
-                        case "AccountType":
-                            accountType = GetApplicantDataByKey("accountType", lst);
+                    case "YourInfo":
+                        signupModel.FirstName = GetApplicantDataByKey("firstName", tokens);
+                        signupModel.LastName = GetApplicantDataByKey("lastName", tokens);
+                        signupModel.MiddleName = GetApplicantDataByKey("middleName", tokens);
+                        signupModel.EmailId = GetApplicantDataByKey("email", tokens);
+                        signupModel.CompanyName = GetApplicantDataByKey("companyName", tokens);
+                        signupModel.Title = GetApplicantDataByKey("title", tokens);
+                        signupModel.Password = GetApplicantDataByKey("password", tokens);
+                        break;
 
-                            break;
-                        case "YourInfo":
-                            string first = GetApplicantDataByKey("firstName", lst);
-                            string last = GetApplicantDataByKey("lastName", lst);
-                            string middle = GetApplicantDataByKey("middleName", lst);
-                            string email = GetApplicantDataByKey("email", lst);
-                            string companyName = GetApplicantDataByKey("companyName", lst);
-                            string title = GetApplicantDataByKey("title", lst);
-                            string password = GetApplicantDataByKey("password", lst);
+                    case "ContactInfo":
+                        signupModel.PhoneNumber = GetApplicantDataByKey("phoneNumber", tokens);
+                        signupModel.City = GetApplicantDataByKey("city", tokens);
+                        signupModel.State = GetApplicantDataByKey("state", tokens);
+                        signupModel.Zipcode = GetApplicantDataByKey("zipCode", tokens);
+                        signupModel.PhoneType = GetApplicantDataByKey("phoneType", tokens);
+                        signupModel.PhoneExtension = GetApplicantDataByKey("extension", tokens);
 
-                            signupModel.FirstName = first;
-                            signupModel.LastName = last;
-                            signupModel.MiddleName = middle;
-                            signupModel.Password = password;
-                            signupModel.EmailId = email;
-                            signupModel.CompanyName = companyName;
-                            signupModel.Title = title;
-                            break;
-                        case "ContactInfo":
-                            string phoneNumber = GetApplicantDataByKey("phoneNumber", lst);
-                            string city = GetApplicantDataByKey("city", lst);
-                            string state = GetApplicantDataByKey("state", lst);
-                            string zipCode = GetApplicantDataByKey("zipCode", lst);
-                            string phoneType = GetApplicantDataByKey("phoneType", lst);
-                            string extension = GetApplicantDataByKey("extension", lst);
-                            string streetNumber = GetApplicantDataByKey("streetNumber", lst);
-                            string streetDirection = GetApplicantDataByKey("streetDirection", lst);
-                            string streetName = GetApplicantDataByKey("streetName", lst);
-                            string streetType = GetApplicantDataByKey("streetType", lst);
-                            string unitNumber = GetApplicantDataByKey("unitNumber", lst);
-                            string poBoxNumber = GetApplicantDataByKey("poBoxNumber", lst);
-                            string poBox = GetApplicantDataByKey("poBox", lst);
+                        if (int.TryParse(GetApplicantDataByKey("streetNumber", tokens), out var num))
+                            signupModel.StreetNum = num;
 
-                            signupModel.PhoneNumber = phoneNumber;
-                            signupModel.City = city;
-                            signupModel.State = state;
-                            signupModel.Zipcode = zipCode;
-                            signupModel.PhoneType = phoneType;
-                            signupModel.PhoneExtension = extension;
+                        signupModel.StreetDir = GetApplicantDataByKey("streetDirection", tokens);
+                        signupModel.StreetName = GetApplicantDataByKey("streetName", tokens);
+                        signupModel.StreetType = GetApplicantDataByKey("streetType", tokens);
+                        signupModel.UnitNumber = GetApplicantDataByKey("unitNumber", tokens);
+                        signupModel.PostBoxNum = GetApplicantDataByKey("poBoxNumber", tokens);
+                        signupModel.IsPostBox = GetApplicantDataByKey("poBox", tokens)
+                                                      .Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                        break;
 
-                            int result = -1;
-                            int.TryParse(streetNumber, out result);
-                            signupModel.StreetNum = result;
+                    case "ProjectList":
+                        signupModel.Projects = JArray.Parse(item["Data"].ToString())
+                                                     .Select(x => x.ToString())
+                                                     .ToList();
+                        break;
 
-                            signupModel.StreetName = streetName;
-                            signupModel.StreetDir = streetDirection;
-                            signupModel.StreetType = streetType;
-                            signupModel.UnitNumber = unitNumber;
-                            signupModel.PostBoxNum = poBoxNumber;
-                            signupModel.IsPostBox = (poBox == "Yes");
-                            break;
-                        case "ProjectList":
-                            List<string> projList = new List<string>();
-                            JArray arr = JArray.Parse(stepJson.ToString());
-                            foreach (var item1 in arr)
-                            {
-                                string proj = item1.ToString();
-                                projList.Add(proj);
-                            }
-
-                            signupModel.Projects = projList;
-                            break;
-                        default:
-                            break;
-                    }
+                    default:
+                        break;
                 }
             }
 
-            ActionResult response = CreateIDMAccount(signupModel, accountType);
-
-
-            return response;
+            return CreateIDMAccount(signupModel, accountType);
         }
 
         public ActionResult CreateIDMAccount(ApplicantSignupModel signupModel, string selectedRole)
@@ -526,6 +497,7 @@ namespace DeveloperPortal.Controllers
             return tokenValue;
         }
 
+        [HttpGet("GetLookUpData")]
         public async Task<JsonResult> GetLookupData()
         {
             string lookup = Request.Query["lookup"].FirstOrDefault();

@@ -1,24 +1,74 @@
-﻿using DeveloperPortal.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using ComCon.DataAccess.Models.Helpers;
+using DeveloperPortal.Application.Security;
+using DeveloperPortal.DataAccess;
+using DeveloperPortal.DataAccess.Entity.EntityModels;
+using DeveloperPortal.Domain.IDM;
+using DeveloperPortal.Domain.Interfaces;
+using DeveloperPortal.Models.IDM;
+using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Security.Claims;
-using DeveloperPortal.ServiceClient;
-using DeveloperPortal.Models.IDM;
+using System.Security.Cryptography;
 using UserSession = DeveloperPortal.Models.IDM.UserSession;
-using ComCon.DataAccess.Models.Helpers;
 
 namespace DeveloperPortal.Controllers
 {
     public class LoginController : Controller
     {
         private IConfiguration _config;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IAngelenoAuthentication _angelenoAuthentication;
+        private readonly ISignInServices _signInService;
+        private readonly JwtGenerator _jwtGenerator;
+        private readonly TPPDbContext _db;
+
         // Here we are using Dependency Injection to inject the Configuration object
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config, ILogger<AccountController> logger, 
+            IAngelenoAuthentication angelenoAuthentication, ISignInServices signInService, JwtGenerator jwtGenerator)
         {
+            _logger = logger;
             _config = config;
+            _angelenoAuthentication = angelenoAuthentication;
+            _signInService = signInService;
+            _jwtGenerator = jwtGenerator;
         }
+
+        // test user: tsony11@yopmail.com
+
+        /// <summary>
+        /// POST /Login/LoginSql
+        /// </summary>
+        [HttpPost("/Login/LoginSql")]
+        public async Task<IActionResult> LoginSql([FromBody] LoginModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(new { success = false, message = "Email and password are required." });
+
+            AuthenticateResponse authResponse;
+            try
+            {
+                authResponse = await _signInService.AuthenticateSqlAsync(model);
+            }
+            catch (UnauthorizedAccessException uex)
+            {
+                _logger.LogWarning(uex, "LoginSql failed");
+                return BadRequest(new { success = false, message = uex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error in LoginSql");
+                return BadRequest(new { success = false, message = "Could not reach IDM service." });
+            }
+
+            await _signInService.SignInAsync(authResponse, HttpContext, model.RememberMe);
+            return Ok(new { success = true, redirectUrl = "/dashboard" });
+        }
+
 
         /// <summary>
         /// Login based on AppSetting 'AuthenticationMode'
@@ -35,6 +85,40 @@ namespace DeveloperPortal.Controllers
                 return UserLogin(userName, tabname);
             }
             return RedirectToAction("GetProjectData", "Dashboard");
+        }
+
+        [HttpGet("/Login/AngelenoLogin")]
+        public async Task<IActionResult> AngelenoLogin()
+        {
+            string guid = await _angelenoAuthentication.GenerateSessionID();
+
+            HttpContext.Session.SetString("AngelenoState", guid);
+
+            string redirectUrl =
+                _config["Angeleno:BaseUrl"] +
+                _config["Angeleno:AuthUrl"] +
+                _config["Angeleno:RedirectUrl"] +
+                guid;
+
+            return Redirect(redirectUrl);
+        }
+
+        [HttpGet("/login/angelenocallback")]
+        public async Task<IActionResult> AngelenoCallback([FromQuery] string guid,
+                                 [FromQuery(Name = "email")] string email,
+                                 [FromQuery(Name = "firstName")] string firstName,
+                                 [FromQuery(Name = "lastName")] string lastName)
+        {
+            var originalGuid = HttpContext.Session.GetString("AngelenoState");
+            HttpContext.Session.Remove("AngelenoState");
+            if (originalGuid != guid)
+                return BadRequest("Invalid state");
+
+            var authResponse = await _signInService.AuthenticateAngelenoAsync(email, firstName, lastName);
+
+            await _signInService.SignInAsync(authResponse, HttpContext, false);
+
+            return Redirect("/dashboard");
         }
 
 
@@ -92,6 +176,59 @@ namespace DeveloperPortal.Controllers
         #endregion
 
         /// <summary>
+        /// POST /Account/RefreshToken
+        /// Issues a new access token using the refresh token stored in the cookie.
+        /// </summary>
+        [HttpPost("RefreshToken")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            if (!Request.Cookies.TryGetValue("TPP_RefreshToken", out var refreshToken))
+                return Unauthorized();
+
+            var dbToken = await _db.RefreshTokens
+                .SingleOrDefaultAsync(r => r.Token == refreshToken && !r.IsRevoked);
+
+            if (dbToken == null || dbToken.ExpiresOn < DateTime.UtcNow)
+                return Unauthorized();
+
+            // Revoke the used refresh token
+            dbToken.IsRevoked = true;
+            _db.RefreshTokens.Update(dbToken);
+
+            // Optionally rotate the refresh token
+            var newRefreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            var newExpiresOn = DateTime.UtcNow.AddDays(30);
+            _db.RefreshTokens.Add(new RefreshToken
+            {
+                UserId = dbToken.UserId,
+                Token = newRefreshToken,
+                ExpiresOn = newExpiresOn,
+                CreatedOn = DateTime.UtcNow
+            });
+
+            await _db.SaveChangesAsync();
+
+            // Issue a new access token
+            var user = await _db.TPPUsers.FindAsync(dbToken.UserId);
+            var roles = new[] { "Guest" }; // or fetch actual roles
+            var jwt = _jwtGenerator.CreateToken(user.UserId, user.Email, roles);
+
+            // Set the new refresh token cookie
+            Response.Cookies.Append(
+                "TPP_RefreshToken", newRefreshToken,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = newExpiresOn
+                }
+            );
+
+            return Ok(new { token = jwt });
+        }
+
+        /// <summary>
         /// authenticate idm user based on token.
         /// </summary>
         /// <param name="jwtToken"></param>
@@ -99,6 +236,7 @@ namespace DeveloperPortal.Controllers
         /// <returns>
         /// Redirect to landing page if authentication success.
         /// </returns>
+        /// 
         public ActionResult ValidateToken(string jwtToken, string tabname)
         {
             UserSession userSession = UserSession.GetUserSession(HttpContext);
@@ -132,8 +270,7 @@ namespace DeveloperPortal.Controllers
                         var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                         UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, null, applicationName));
-
-                        return RedirectToAction("GetProjectData", "Dashboard");
+                        return RedirectToPage("/Dashboard");
                     }
                 }
             }
@@ -157,7 +294,8 @@ namespace DeveloperPortal.Controllers
             HttpContext.Session.Clear();
             string applicationURL = _config["ThisApplication:ApplicationURL"].ToString();
 
-            return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={applicationURL}");
+            // return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={applicationURL}");
+            return Redirect("/");
         }
 
         #region Authenticate Windows User
