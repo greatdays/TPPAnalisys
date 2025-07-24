@@ -71,7 +71,7 @@
             </div>
             <div class="setup-content" id="step-1" style="display: none;">
                 @{
-                    string api = Configuration["AAHRApiSettings:PropertyApiURL"];
+                    string api = Configuration["AreaMgmtAPIURL:PropertyApiURL"];
                     var accountModel = new CreateAccountModel(Configuration);
                     <partial name="CreateAccount" model="accountModel"></partial>
                 }

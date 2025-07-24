@@ -121,12 +121,12 @@ namespace DeveloperPortal.Controllers
             }
             else if (contactDisplayConfig.ContextRefType == "Structure")
             {
-                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null, appConfigService.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByStructure, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
+                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null,  _config["AreaMgmtAPIURL:PropertyApiURL"] + string.Format(WebApiConstant.GetAPNByStructure, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
                 contactDisplayConfig.APN = JsonConvert.DeserializeObject<string>(JsonConvert.SerializeObject(apnResponse.Response));
             }
             else if (contactDisplayConfig.ContextRefType == "Unit")
             {
-                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null, appConfigService.GetConfigValue("AreaMgmtAPIURL") + string.Format(WebApiConstant.GetAPNByUnit, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
+                BaseResponse apnResponse = serviceClient.CreateRequest<BaseResponse>(null,  _config["AreaMgmtAPIURL:PropertyApiURL"] + string.Format(WebApiConstant.GetAPNByUnit, strPara), (Application.ServiceClient.ServiceClient.ActionType)ActionType.GET);
                 contactDisplayConfig.APN = JsonConvert.DeserializeObject<string>(JsonConvert.SerializeObject(apnResponse.Response));
             }
             else if (contactDisplayConfig.ContextRefType == "Project")
