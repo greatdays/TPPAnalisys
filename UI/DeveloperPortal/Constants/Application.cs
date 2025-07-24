@@ -15,7 +15,7 @@
             switch (key)
             {
                 case "Name":
-                    retVal = _config["ThisApplication:Application"] ?? string.Empty;
+                    retVal = _config["AppSettings:Application"] ?? string.Empty;
                     break;
                 default:
                     break;

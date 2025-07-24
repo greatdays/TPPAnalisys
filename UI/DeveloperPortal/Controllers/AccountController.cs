@@ -46,7 +46,7 @@ namespace DeveloperPortal.Controllers
         [HttpGet]
         public IActionResult Login(string ReturnUrl = null)
         {
-            return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["ThisApplication:ApplicationURL"]}{ReturnUrl}");
+            return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["AppSettings:ApplicationURL"]}{ReturnUrl}");
         }
 
         public IActionResult AccessDenied(string ReturnUrl)
@@ -239,8 +239,8 @@ namespace DeveloperPortal.Controllers
                         idmuser.AppList = new List<AppDetail>();
                         idmuser.AppList.Add(new AppDetail()
                         {
-                            AppKey = GetConfigValue("ThisApplication:AppKey"),
-                            AppName = GetConfigValue("ThisApplication:AppKey"),
+                            AppKey = GetConfigValue("AppSettings:AppKey"),
+                            AppName = GetConfigValue("AppSettings:AppKey"),
                             Roles = roles
                         }); ;
 
@@ -264,7 +264,7 @@ namespace DeveloperPortal.Controllers
                                 if (objUser.IDMUserId > 0)
                                 {
                                     //var userDetail = objUser.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(_config["ThisApplication:Application"]));
-                                    ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("ThisApplication:Application")));
+                                    ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("AppSettings:Application")));
                                     var authenticateResponse = new IDMServiceClient(_config).ValidateToken(thisapp.JWTToken);
                                     //// add response to session.                                
                                     //FormsAuthentication.SetAuthCookie(objUser.UserName, true);
@@ -399,7 +399,7 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public ActionResult GetACHPDetails(string achpNumber)
         {
-            string apiUrl = _config["ThisApplication:AAHRLookupAPI"] ?? string.Empty;
+            string apiUrl = _config["AppSettings:AAHRLookupAPI"] ?? string.Empty;
             JsonResult response = new JsonResult(string.Empty);
             PropertyAdvancedSearchResultModel searchResult = new PropertyAdvancedSearchResultModel();
             PropertyAdvancedSearchModel propertyAdvancedSearchModel = new PropertyAdvancedSearchModel();

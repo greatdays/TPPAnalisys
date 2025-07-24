@@ -17,13 +17,13 @@ namespace DeveloperPortal.DataAccess.Entity.ViewModel
     public partial class ActionViewModel
     {
         private IConfiguration _config;
-        AppConfiguration appConfig;
+       // AppConfiguration appConfig;
         bool IsNotificationEnable;
         public ActionViewModel(IConfiguration config)
         {
             _config = config;
-            appConfig = new AppConfiguration(_config);
-            IsNotificationEnable = appConfig.GetConfigValue<bool>("SendNotification");
+            //appConfig = new AppConfiguration(_config);
+            IsNotificationEnable = Convert.ToBoolean(_config["SendNotification"]);
         }
         #region Variable Declaration
 

@@ -37,7 +37,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             var resultTable = new DataTable();
 
             // Get EF Core's underlying connection
-            using var conn = _context.Database.GetDbConnection();
+            using var conn =  _context.Database.GetDbConnection();
             await conn.OpenAsync();
 
             using var command = conn.CreateCommand();
