@@ -2,12 +2,7 @@
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
-using DeveloperPortal.Models.Common;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -328,9 +323,6 @@ namespace DeveloperPortal.Areas.Construction.Controllers
         {
 
             List<string> permitList = await _projectDetailService.GetLADBSPermitNumberList(PropSnapshotID);
-            permitList.Add("19010-10000-05824");
-            permitList.Add("19011-10000-05824");
-            permitList.Add("19012-10000-05824");
             List<PermitNumberInformation> data = new List<PermitNumberInformation>()
             {
                 new PermitNumberInformation() {
@@ -379,7 +371,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 if (string.IsNullOrEmpty(permitNumber)) // option to use all existing permit numbers on the building
                 {
                     List<string> PermitNumbers = await _projectDetailService.GetAllPermitNumbers(propSnapshotId);
-                    PermitNumbers = removeUnWantedSpaceComma(PermitNumbers);
+                    PermitNumbers = RemoveUnWantedSpaceComma(PermitNumbers);
                     List<PcisPermitDetail> data = new List<PcisPermitDetail>();
                     foreach (string permit in PermitNumbers)
                     {
@@ -441,9 +433,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 return Json("No records found. Wrong Permit # or Department");
             }
         }
-
         
-
         /// <summary>
         /// UpdateParkingDetail
         /// </summary>
@@ -467,80 +457,6 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 return Json(false);
             }
         }
-
-        /// <summary>
-        /// SaveBuildingSummary
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="formCollection"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult> SaveBuildingSummary([FromForm] BuildingParkingInformationModal buildingModel)
-        {
-            var result = false;
-            try
-            {
-                if (buildingModel != null && buildingModel.PropSnapshotID > 0)
-                {
-                    result = await _projectDetailService.SaveBuildingSummary(buildingModel, UserName);
-                }
-            }
-            catch (Exception e)
-            {
-                result = false;
-            }
-            return Json(result);
-        }
-
-        /// <summary>
-        /// GET - AddBuildingFromNewCompliance
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<ActionResult> GetBuildingDetails(int projectSiteId, int caseId)
-        {
-            BuildingModel buildingModel = _projectDetailService.GetBuildingDetailForEdit(projectSiteId);
-            buildingModel.LutApplicableAccessibilityStandardList = _projectDetailService.GetApplicableAccessibilityStandard();
-            return Json(buildingModel);
-        }
-
-
-        // <summary>
-        /// Post - AddBuildingFromNewCompliance
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult> AddBuilding(SiteInformationParamModel paramModel, int caseId)
-        {
-            int projectSiteId = 0;
-            BuildingModel buildingModel = new BuildingModel();
-            buildingModel.SiteList = new List<SelectListItem>();
-            if (paramModel.SiteInformationData!= null && paramModel.SiteInformationData.Count > 0)
-            {
-                projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
-                buildingModel = await _projectDetailService.GetAddBuildingDetails(projectSiteId);
-                // If show all addresses then uncomment below code
-                var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
-                buildingModel.BuildingAddressList = await  _projectDetailService.GetBuildingAddressDetails(projectSiteIdList);
-                buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.FileNumber,
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-                buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.CaseID.ToString(),
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-
-            }
-            buildingModel.CaseId = caseId;
-            var data=await  this.RenderViewAsync("../../Areas/Construction/Views/ProjectDetail/_AddBuilding", buildingModel, true);
-            return Json(data);
-        }
-
-        
-
 
         #endregion
 
@@ -671,7 +587,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
         /// </summary>
         /// <param name="permitNumbers"></param>
         /// <returns></returns>
-        private List<string> removeUnWantedSpaceComma(List<string> permitNumbers)
+        private List<string> RemoveUnWantedSpaceComma(List<string> permitNumbers)
         {
             var cleanedPermitNumbers = permitNumbers
                 .Where(s => !string.IsNullOrWhiteSpace(s))           // Remove null or empty strings

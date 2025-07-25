@@ -12,21 +12,25 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
     {
 
         /// <summary>
+        /// StructureAttribute
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+         Task<StructureAttribute?> StructureAttribute(int propSnapshotId);
+
+        /// <summary>
         /// UpdateStructureAttributesAsync
         /// </summary>
         /// <param name="structureAttribute"></param>
         /// <returns></returns>
         Task<StructureAttribute> UpdateStructureAttributesAsync(StructureAttribute structureAttribute);
 
-
         /// <summary>
-        /// SaveBuildingSummary
+        /// UpdateUnitDetails
         /// </summary>
-        /// <param name="buildingModel"></param>
+        /// <param name="unitModel"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName);
-
         bool UpdateUnitDetails(UnitDataModel unitModel, string userName);
     }
 }

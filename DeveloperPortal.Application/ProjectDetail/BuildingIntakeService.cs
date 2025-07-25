@@ -1,8 +1,11 @@
 ﻿using DeveloperPortal.Application.ProjectDetail.Implementation;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -11,19 +14,13 @@ namespace DeveloperPortal.Application.ProjectDetail
     public class BuildingIntakeService : IBuildingIntakeService
     {
         #region Constructor
-
         private IConfiguration _config;
-        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
-        private readonly IProjectDetailRepository _projectDetailRepository;
-        private readonly AAHREntities _context;
+        private readonly IBuildingIntakeRepository _buildingIntakeRepository;
 
-        public BuildingIntakeService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor,
-            AAHREntities context, IProjectDetailRepository projectDetailRepository)
+        public BuildingIntakeService(IConfiguration configuration, IBuildingIntakeRepository buildingIntakeRepository)
         {
             _config = configuration;
-            _storedProcedureExecutor = storedProcedureExecutor;
-            _projectDetailRepository = projectDetailRepository;
-            _context = context;
+            _buildingIntakeRepository = buildingIntakeRepository;
         }
 
         #endregion
@@ -37,58 +34,53 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-
-
                 bool isSaved = false;
-
-                ServiceRequest serviceRequest = await _context.ServiceRequests.FirstOrDefaultAsync(f => f.CaseId == model.CaseId);
+                var serviceRequest = await _buildingIntakeRepository.ServiceRequest(model.CaseId);
                 if (null != serviceRequest)
                 {
-                    PropSnapshot caseProjectSite = serviceRequest.PropSnapshots.Where(w => w.IdentifierType == "ProjectSite").OrderByDescending(o => o.ProjectSiteId).FirstOrDefault();
                     // building or structure.
-                    Structure structure = new Structure();
-                    structure.StructureNo = model.BuildingName;
-                    structure.Apnid = model.APNId;
-                    structure.LutStructureTypeId = 1;
-                    structure.TotalUnits = model.NumberofUnits;
-                    structure.Source = "Construction";
-                    structure.Attributes = "{\"Status\":\"V\"}";
-                    structure.Status = "X";
-                    structure.Description = model.BuildingDescription;
-                    //structure.BuildingFileNumber = generatedFileNumber;
-                    structure.CreatedBy = model.Username;
-                    structure.CreatedOn = DateTime.Now;
-                    structure.ModifiedBy = model.Username;
-                    structure.ModifiedOn = DateTime.Now;
-                    _context.Structures.Add(structure);
+                    Structure structure = new Structure
+                    {
+                        StructureNo = model.BuildingName,
+                        Apnid = model.APNId,
+                        LutStructureTypeId = 1,
+                        TotalUnits = model.NumberofUnits,
+                        Source = "Construction",
+                        Attributes = "{\"Status\":\"V\"}",
+                        Status = "X",
+                        Description = model.BuildingDescription,
+                        //structure.BuildingFileNumber = generatedFileNumber;
+                        CreatedBy = model.Username,
+                        CreatedOn = DateTime.Now,
+                        ModifiedBy = model.Username,
+                        ModifiedOn = DateTime.Now
+                    };
+                    await _buildingIntakeRepository.SaveStructureAsync(structure);
 
                     // site address
-                    int? siteAddressId = 0;
+                    int? siteAddressId = siteAddressId = model.BuildingAddressID;
                     if (model.IsAddAddress)
                     {
-                        SiteAddress siteAddress = new SiteAddress();
-
-                        siteAddress.HouseNum = model.HouseNum.ToString();
-                        siteAddress.HouseFracNum = model.HouseFracNum;
-                        siteAddress.PreDirCd = model.LutPreDirCd;
-                        siteAddress.StreetName = model.StreetName;
-                        siteAddress.StreetTypeCd = model.LutStreetTypeCD;
-                        siteAddress.City = model.City;
-                        siteAddress.State = model.LutStateCD;
-                        siteAddress.Zip = model.Zip;
-                        siteAddress.Source = "Construction";
-                        siteAddress.Status = "X";
-                        siteAddress.IsDeleted = false;
-                        siteAddress.CreatedBy = model.Username;
-                        siteAddress.CreatedOn = DateTime.Now;
-                        siteAddress.ModifiedBy = model.Username;
-                        siteAddress.ModifiedOn = DateTime.Now;
-                        _context.SiteAddresses.Add(siteAddress);
+                        SiteAddress siteAddress = new SiteAddress
+                        {
+                            HouseNum = model.HouseNum.ToString(),
+                            HouseFracNum = model.HouseFracNum,
+                            PreDirCd = model.LutPreDirCd,
+                            StreetName = model.StreetName,
+                            StreetTypeCd = model.LutStreetTypeCD,
+                            City = model.City,
+                            State = model.LutStateCD,
+                            Zip = model.Zip,
+                            Source = "Construction",
+                            Status = "X",
+                            IsDeleted = false,
+                            CreatedBy = model.Username,
+                            CreatedOn = DateTime.Now,
+                            ModifiedBy = model.Username,
+                            ModifiedOn = DateTime.Now
+                        };
+                        await _buildingIntakeRepository.SaveSiteAddressAsync(siteAddress);
                         siteAddressId = siteAddress.SiteAddressId;
-                    }
-                    else
-                    {
-                        siteAddressId = model.BuildingAddressID;
                     }
 
                     // structure attribute.
@@ -99,6 +91,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     structureAttribute.CreatedOn = DateTime.Now;
                     structureAttribute.ModifiedBy = model.Username;
                     structureAttribute.ModifiedOn = DateTime.Now;
+                    structureAttribute.StructureId = structure.StructureId;
 
                     // property snap shot
                     PropSnapshot propSnapshot = new PropSnapshot();
@@ -115,9 +108,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     propSnapshot.ModifiedOn = DateTime.Now;
                     propSnapshot.StructureAttributes.Add(structureAttribute);
                     serviceRequest.PropSnapshots.Add(propSnapshot);
-                    await _context.SaveChangesAsync();
-                    structureAttribute.StructureId = structure.StructureId;
-                    await _context.SaveChangesAsync();
+                    await _buildingIntakeRepository.SaveChangesAsync();
                     isSaved = true;
                 }
 
@@ -125,10 +116,166 @@ namespace DeveloperPortal.Application.ProjectDetail
             }
             catch (Exception)
             {
-
-                throw;
                 return false;
             }
         }
+
+
+        /// <summary>
+        /// Save Building Summary
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName)
+        {
+            try
+            {
+                return await _buildingIntakeRepository.SaveBuildingSummary(buildingModel, userName);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// GetAddBuildingDetails
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        public async Task<BuildingModel> GetAddBuildingDetails(int projectSiteId)
+        {
+            BuildingModel model = new BuildingModel();
+            SelectListItem address = new SelectListItem();
+            model.BuildingAddressList = new List<SelectListItem>();
+            var propSSProjectSite = await _buildingIntakeRepository.PropSnapshots(projectSiteId);
+            if (propSSProjectSite != null)
+            {
+                model.BuildingAddressList = await GetBuildingAddressDetails(new List<int>() { projectSiteId });
+                model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
+                model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
+                model.ProjectId = (int)propSSProjectSite.ProjectId;
+                model.APNId = (int)propSSProjectSite.Apnid;
+            }
+
+            await _buildingIntakeRepository.SetBuildingModelData(model);
+            return model;
+        }
+
+        /// <summary>
+        /// GetBuildingAddressDetails
+        /// </summary>
+        /// <param name="projectSiteIds"></param>
+        /// <returns></returns>
+        public async Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds)
+        {
+            List<SelectListItem> lstAddress = [];
+            var apnList = await _buildingIntakeRepository.GetApns(projectSiteIds);
+            if (apnList != null && apnList.Any())
+            {
+                foreach (var apn in apnList)
+                {
+                    var lstSiteAddress = apn.SiteAddresses.ToList();
+                    if (lstSiteAddress != null && lstSiteAddress.Count > 0)
+                    {
+                        lstAddress.AddRange(lstSiteAddress
+                                    .GroupBy(p => p.FullAddress)
+                                    .Select(g => g.First())
+                                    .Select(sa => new SelectListItem
+                                    {
+                                        Text = sa.FullAddress,
+                                        Value = sa.SiteAddressId.ToString()
+                                    })
+                        );
+                    }
+
+                }
+            }
+
+
+            return lstAddress.Distinct().ToList();
+        }
+
+        /// <summary>
+        /// GetBuildingDetailForEdit
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        public async Task<BuildingModel> GetBuildingDetailForEdit(int projectSiteId)
+        {
+            BuildingModel buildingModel = new BuildingModel();
+            SelectListItem address = new SelectListItem();
+            List<SelectListItem> lstAddress = new List<SelectListItem>();
+            var propSSProjectSite = await _buildingIntakeRepository.PropSnapshots(projectSiteId);
+            if (propSSProjectSite != null)
+            {
+                lstAddress = await GetBuildingAddressDetails(new List<int>() { projectSiteId });
+                buildingModel.siteAddressId = (int)propSSProjectSite.SiteAddressId;
+                buildingModel.ProjectSiteId = propSSProjectSite.ProjectSiteId;
+                buildingModel.ProjectId = (int)propSSProjectSite.ProjectId;
+                buildingModel.APNId = (int)propSSProjectSite.Apnid;
+            }
+            buildingModel.BuildingAddressList = lstAddress;
+            //model.LutTypeofProject= _dbAAHPContext.LUTPRO.FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteID == projectsiteId)
+
+            buildingModel.BuildingDescriptionList=BuildingDescriptionList();
+            buildingModel.LutApplicableAccessibilityStandardList = GetApplicableAccessibilityStandard();
+
+
+            return buildingModel;
+        }
+
+
+        #region Private
+
+        /// <summary>
+        /// BuildingDescriptionList
+        /// </summary>
+        /// <returns></returns>
+        private static List<SelectListItem> BuildingDescriptionList() => [
+                new SelectListItem{Text = "Select"},
+                new SelectListItem{Text = "Parking structure"},
+                new SelectListItem{Text = "Common area"},
+                new SelectListItem{Text = "Community room"},
+                new SelectListItem{Text = "Gym"},
+                new SelectListItem{Text = "Exterior area"},
+                new SelectListItem{Text = "Conference Room"},
+                new SelectListItem{Text = "Pools"},
+                new SelectListItem{Text = "Rec area"},
+                new SelectListItem{Text = "Common Parking"},
+                new SelectListItem{Text = "Dog walk area"},
+                new SelectListItem{Text = "Medical building/area"},
+                new SelectListItem{Text = "Daycare"}
+            ];
+
+        /// <summary>
+        /// GetApplicableAccessibilityStandard
+        /// </summary>
+        /// <returns></returns>
+        private List<SelectListItem> GetApplicableAccessibilityStandard() => new List<SelectListItem>
+            {
+                new SelectListItem { Value = "1", Text = "Section 504" },
+                new SelectListItem { Value = "2", Text = "2010 ADA w/ 11 HUD Exceptions" },
+                new SelectListItem { Value = "3", Text = "2010 ADA" },
+                new SelectListItem { Value = "4", Text = "Fair Housing Act" },
+                new SelectListItem { Value = "5", Text = "CBC 2013 Chapter 11A" },
+                new SelectListItem { Value = "6", Text = "CBC 2013 Chapter 11B" },
+                new SelectListItem { Value = "7", Text = "CBC 2016 Chapter 11A" },
+                new SelectListItem { Value = "8", Text = "CBC 2016 Chapter 11B" },
+                new SelectListItem { Value = "9", Text = "CBC 2019 Chapter 11A" },
+                new SelectListItem { Value = "10", Text = "CBC 2019 Chapter 11B" },
+                new SelectListItem { Value = "11", Text = "Community Development Department of County of Los Angeles Universal Design Principles" },
+                new SelectListItem { Value = "12", Text = "California Tax Credit Allocation Committee Regulations 50% Mobility Units" },
+                new SelectListItem { Value = "13", Text = "UFAS" },
+                new SelectListItem { Value = "14", Text = "Enhanced Accessiblity Program (EAP)" },
+                new SelectListItem { Value = "15", Text = "2019 CBC w/ intervening cycle effective July 1st, 2021" },
+                new SelectListItem { Value = "16", Text = "LACDA NOFA" },
+                new SelectListItem { Value = "17", Text = "TCAC Universal Design" },
+                new SelectListItem { Value = "18", Text = "CBC 2022 Chapter 11A" },
+                new SelectListItem { Value = "19", Text = "CBC 2022 Chapter 11B" }
+            };
+
+        #endregion
     }
 }
