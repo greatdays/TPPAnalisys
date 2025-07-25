@@ -92,7 +92,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
 
             }
             buildingModel.CaseId = caseId;
-            var data = await this.RenderViewAsync("../../Areas/Construction/Views/ProjectDetail/_AddBuilding", buildingModel, true);
+            var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
             return Json(data);
         }
 
