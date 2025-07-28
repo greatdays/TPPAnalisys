@@ -642,7 +642,7 @@
             event.preventDefault(); // Prevent normal form submission
             debugger;
             $.ajax({
-                 url: "@Url.Action("SaveBuildingSummary", new { controller = "ProjectDetail", area = "Construction" })",
+                 url: "@Url.Action("SaveBuildingSummary", new { controller = "BuildingIntake", area = "Construction" })",
                 type: "POST",
                 data: $(this).serialize(),
                 beforeSend: function () {
@@ -1013,7 +1013,7 @@
 
     //Buliding Sumary update
      function addBuildingInfo() {
-          var url='@Url.Action("AddBuilding", "ProjectDetail", new { area = "Construction" })'
+          var url='@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'
           debugger;
           var model = { SiteInformationData : SiteInformationData,  caseId: Id };
           AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
@@ -1026,7 +1026,7 @@
 
     function editBuildingSummary(projectSiteId) 
     {
-         var url = '@Url.Action("GetBuildingDetails", "ProjectDetail", new { area = "Construction" })'
+         var url = '@Url.Action("GetBuildingDetails", "BuildingIntake", new { area = "Construction" })'
          var model = { projectSiteId :projectSiteId,  caseId:Id };
          AjaxCommunication.CreateRequest(this.window, "GET", url, 'object', model,
          function (response) {

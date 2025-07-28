@@ -28,6 +28,15 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
 
 
+        /// <summary>
+        /// StructureAttribute
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<StructureAttribute?> StructureAttribute(int propSnapshotId)
+        {
+            return await _context.StructureAttributes.FirstOrDefaultAsync(p => p.PropSnapshotId == propSnapshotId);
+        }
 
         /// <summary>
         /// UpdateStructureAttributesAsync
@@ -40,65 +49,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             await _context.SaveChangesAsync();
             return structureAttribute;
         }
-
-
-        /// <summary>
-        /// SaveBuildingSummary
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public async Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName)
-        {
-            var propSnapshot = _context.PropSnapshots.FirstOrDefault(p => p.PropSnapshotId == buildingModel.PropSnapshotID && p.IdentifierType == "Building");
-            if (propSnapshot != null)
-            {
-                propSnapshot.SiteAddressId = buildingModel.BuildingAddressId;
-                var structureAttribute = _context.StructureAttributes.FirstOrDefault(p => p.PropSnapshotId == buildingModel.PropSnapshotID);
-                if (structureAttribute != null)
-                {
-                    if (!string.IsNullOrWhiteSpace(buildingModel.BuildingPermitNumber))
-                    {
-                        structureAttribute.BuildingPermitNumber = Convert.ToInt32(buildingModel.BuildingPermitNumber);
-                    }
-
-                    structureAttribute.BuildingDescription = buildingModel.BuildingDescription;
-                    structureAttribute.NonResidental = buildingModel.NonResidental;
-                    structureAttribute.LutApplicableAccessibilityStandardId = "";
-                    if (buildingModel.LutApplicableAccessibilityStandardIdList.Any())
-                    {
-                        structureAttribute.LutApplicableAccessibilityStandardId = string.Join(",", buildingModel.LutApplicableAccessibilityStandardIdList);
-                    }
-
-                    structureAttribute.MobilityDesignatedUnitNumbers = buildingModel.NumberOfMobilityUnits;
-                    structureAttribute.HearingVisionDesignatedUnitNumbers = buildingModel.NumberOfCommunicationUnits;
-                    structureAttribute.UnitDesignationTotal = buildingModel.NumberOfAdaptableUnits;
-                    structureAttribute.NumberOfFloors = buildingModel.NumberOfFloors;
-                    structureAttribute.Elevator = buildingModel.IsElevator;
-                    structureAttribute.TotalResidentialParking = buildingModel.NumberOfParkings;
-                    structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
-                    structureAttribute.ModifiedBy = userName;
-                    structureAttribute.ModifiedOn = DateTime.Now;
-                    _context.StructureAttributes.Update(structureAttribute);
-                }
-                var structure = _context.Structures.FirstOrDefault(p => p.StructureId == buildingModel.BuildingId && p.Source == "Construction");
-                if (structure != null)
-                {
-                    structure.StructureNo = buildingModel.StructureNo;
-                    structure.TotalUnits = buildingModel.NumberOfUnits;
-                    structure.Description = buildingModel.BuildingDescription;
-                    structure.ModifiedBy = userName;
-                    structure.ModifiedOn = DateTime.Now;
-                    _context.Structures.Update(structure);
-                }
-                propSnapshot.ModifiedBy = userName;
-                propSnapshot.ModifiedOn = DateTime.Now;
-                _context.PropSnapshots.Update(propSnapshot);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            return false;
-        }
+        
         public bool UpdateUnitDetails(UnitDataModel unitModel, string userName)
         {
             var unitAtt = _context.UnitAttributes.FirstOrDefault(u => u.PropSnapshotId == unitModel.PropSnapshotID);

@@ -20,6 +20,7 @@ namespace DeveloperPortal.DataAccess.Repository
             services.AddScoped<IApnpinRepository, ApnpinRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IProjectDetailRepository, ProjectDetailRepository>();
+            services.AddScoped<IBuildingIntakeRepository, BuildingIntakeRepository>();
             return services;
         }
     }

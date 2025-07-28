@@ -1,15 +1,10 @@
-﻿using DeveloperPortal.Application.Common;
-using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
-using DeveloperPortal.DataAccess.Entity.Models;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.DataAccess.Entity.ViewModel;
-using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
-using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
-using DeveloperPortal.Models.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Data;
 using System.Reflection;
-using System.Threading.Tasks;
-using static Azure.Core.HttpHeader;
-using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
 namespace DeveloperPortal.Application.ProjectDetail
 {
@@ -139,9 +131,8 @@ namespace DeveloperPortal.Application.ProjectDetail
                     new SqlParameter() { ParameterName = "@projectId", Value = gridRequestModel.ProjectId }
                 };
 
-            var data = ExecuteStoreProcedure("AAHPCC.uspGetUnitsForComplianceMetrix", sqlParameters);
+            var data = _storedProcedureExecutor.ExecuteStoreProcedure("AAHPCC.uspGetUnitsForComplianceMetrix", sqlParameters);
             var metrixData = data.ConvertDataTable<uspGetUnitsForComplianceMetrix>();
-            //var metrixData = uspGetUnitsForComplianceMetrix(gridRequestModel.CaseId, gridRequestModel.ProjectId);
             if (metrixData != null && metrixData.Count > 0)
             {
                 resultList = metrixData.Select(x => new UnitDataModel
@@ -425,8 +416,6 @@ namespace DeveloperPortal.Application.ProjectDetail
                 }
                 return siteInformations;
             }
-
-            return siteInformations;
         }
 
         /// <summary>
@@ -521,7 +510,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-                var structureAttribute = _context.StructureAttributes.FirstOrDefault(p => p.PropSnapshotId == buildingModel.PropSnapshotID);
+                StructureAttribute? structureAttribute = await _projectDetailRepository.StructureAttribute(buildingModel.PropSnapshotID); 
                 if (structureAttribute != null)
                 {
                     structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
@@ -561,121 +550,9 @@ namespace DeveloperPortal.Application.ProjectDetail
             }
         }
 
+        
 
 
-        /// <summary>
-        /// Save Building Summary
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public async Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName)
-        {
-            try
-            {
-                return await  _projectDetailRepository.SaveBuildingSummary(buildingModel, userName);
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// GetAddBuildingDetails
-        /// </summary>
-        /// <param name="projectSiteId"></param>
-        /// <returns></returns>
-        public async Task<BuildingModel> GetAddBuildingDetails(int projectSiteId)
-        {
-            BuildingModel model = new BuildingModel();
-            SelectListItem address = new SelectListItem();
-            List<SelectListItem> lstAddress = new List<SelectListItem>();
-
-            var propSSProjectSite = _context.PropSnapshots.Include(x => x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectSiteId);
-
-            var apn = _context.Apns. FirstOrDefault(m => m.Apn1 == propSSProjectSite.ProjectSite.PrimaryApn);
-            if (apn != null)
-            {
-                var lstSiteAddress = apn.SiteAddresses.ToList();
-                foreach (var sa in lstSiteAddress.GroupBy(p => p.FullAddress)
-                                                      .Select(g => g.First())
-                                                      .ToList())
-                {
-                    lstAddress.Add(address = new SelectListItem
-                    {
-                        Text = sa.FullAddress,
-                        Value = sa.SiteAddressId.ToString()
-                    });
-                }
-            }
-            model.BuildingAddressList = lstAddress;
-            model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
-            model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
-            model.ProjectId = (int)propSSProjectSite.ProjectId;
-            model.APNId = (int)propSSProjectSite.Apnid;
-
-            var lutPreDirCdList = await _context.LutPreDirs.Where(x => x.LutPreDirCd != "").ToListAsync();
-            foreach (var item in lutPreDirCdList)
-            {
-                model.LutPreDirCdListItems.Add(new SelectListItem
-                { 
-                    Value= item.LutPreDirCd
-                });
-            }
-            var lutStreetTypeList = await _context.LutStreetTypes.Where(x => x.IsDeleted == false && x.LutStreetTypeCd != "").ToListAsync();
-            foreach (var item in lutStreetTypeList)
-            {
-                model.LutStreetTypeListItems.Add(new SelectListItem
-                {
-                    Value=item.LutStreetTypeCd,
-                    
-                });
-            }
-            var LutStateCDList = await _context.LutStates.Where(x => x.IsDeleted == false).ToListAsync();
-            foreach (var item in LutStateCDList)
-            {
-                model.LutStateCDListItems.Add(new SelectListItem
-                {
-                    Text = item.Description,
-                    Value=item.LutStateCd
-                });
-            }
-            return model;
-        }
-        /// <summary>
-        /// GetBuildingAddressDetails
-        /// </summary>
-        /// <param name="projectSiteIds"></param>
-        /// <returns></returns>
-        public async Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds)
-        {
-            SelectListItem address = new SelectListItem();
-            List<SelectListItem> lstAddress = new List<SelectListItem>();
-            var primaryAPNList = await  _context.PropSnapshots.Include(x => x.ProjectSite).Where(x => x.IdentifierType == "ProjectSite" && projectSiteIds.Contains(x.ProjectSiteId.Value)).Select(x => x.ProjectSite.PrimaryApn).ToListAsync();
-            foreach (var primaryAPN in primaryAPNList)
-            {
-                var apn = _context.Apns.FirstOrDefault(m => m.Apn1 == primaryAPN);
-                if (apn != null)
-                {
-                    var lstSiteAddress = apn.SiteAddresses.ToList();
-                    if (lstSiteAddress != null && lstSiteAddress.Count > 0)
-                    {
-                        lstAddress.AddRange(lstSiteAddress
-                                    .GroupBy(p => p.FullAddress)
-                                    .Select(g => g.First())
-                                    .Select(sa => new SelectListItem
-                                    {
-                                        Text = sa.FullAddress,
-                                        Value = sa.SiteAddressId .ToString()
-                                    })
-                        );
-                    }
-                }
-            }
-
-            return lstAddress.Distinct().ToList();
-        }
 
         /// <summary>
         /// GetPropSnapshotDetails
@@ -759,7 +636,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
 
             ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
-            string LADBS_API_URL = "";// AppConfig.GetConfigValue("LADBSAPI", "1");
+            string LADBS_API_URL = "https://ladbsservices3.lacity.org/ePlan_api/Permit/DetailsFiltered?PermitNumber={0}&DeptFilter={1}&ApplicationState=PROD";// AppConfig.GetConfigValue("LADBSAPI", "1");
             PermitNumber = PermitNumber.Replace("-", "").Trim();
             Department = Department.Replace("(", "").Replace(")", "");
             string requestUrl = string.Format(LADBS_API_URL, PermitNumber, Department);
@@ -927,52 +804,6 @@ namespace DeveloperPortal.Application.ProjectDetail
             //List<DataAccess.Entity.Models.StoredProcedureModels.ProjectParticipantsModel> proj = projectParticipants.Result;
         }
 
-        public BuildingModel GetBuildingDetailForEdit(int projectsiteId)
-        {
-            BuildingModel model = new BuildingModel();
-            SelectListItem address = new SelectListItem();
-            List<SelectListItem> lstAddress = new List<SelectListItem>();
-            var propSSProjectSite = _context.PropSnapshots.Include(x => x.ProjectSite).FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectsiteId);
-            if (propSSProjectSite != null)
-            {
-                var lstSiteAddress = _context.Apns.FirstOrDefault(m => m.Apn1 == propSSProjectSite.ProjectSite.PrimaryApn).SiteAddresses.ToList();
-                foreach (var sa in lstSiteAddress.GroupBy(p => p.FullAddress)
-                                                      .Select(g => g.First())
-                                                      .ToList())
-                {
-                    lstAddress.Add(address = new SelectListItem
-                    {
-                        Text = sa.FullAddress,
-                        Value = sa.SiteAddressId.ToString()
-                    });
-                }
-                model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
-                model.ProjectSiteId = propSSProjectSite.ProjectSiteId;
-                model.ProjectId = (int)propSSProjectSite.ProjectId;
-                model.APNId = (int)propSSProjectSite.Apnid;
-            }
-            model.BuildingAddressList = lstAddress;
-            //model.LutTypeofProject= _dbAAHPContext.LUTPRO.FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteID == projectsiteId)
-
-            model.BuildingDescriptionList = new List<SelectListItem>
-            {
-                new SelectListItem{Text = "Select"},
-                new SelectListItem{Text = "Parking structure"},
-                new SelectListItem{Text = "Common area"},
-                new SelectListItem{Text = "Community room"},
-                new SelectListItem{Text = "Gym"},
-                new SelectListItem{Text = "Exterior area"},
-                new SelectListItem{Text = "Conference Room"},
-                new SelectListItem{Text = "Pools"},
-                new SelectListItem{Text = "Rec area"},
-                new SelectListItem{Text = "Common Parking"},
-                new SelectListItem{Text = "Dog walk area"},
-                new SelectListItem{Text = "Medical building/area"},
-                new SelectListItem{Text = "Daycare"}
-            };
-
-            return model;
-        }
 
 
         /// <summary>
@@ -1007,41 +838,16 @@ namespace DeveloperPortal.Application.ProjectDetail
 
 
         #region Private Methods
+
         /// <summary>
-        /// Get all construction cases to be displayed on the dashboard
+        /// 
         /// </summary>
-        /// <returns>List</returns>
-        private List<uspGetUnitsForComplianceMetrix> uspGetUnitsForComplianceMetrix(int caseId, int projectId)
-        {
-
-            var sqlParameters = new List<SqlParameter>
-                {
-                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
-                    new SqlParameter() { ParameterName = "@projectId", Value = projectId }
-                };
-
-            var data = ExecuteStoreProcedure("AAHPCC.uspGetUnitsForComplianceMetrix", sqlParameters);
-            return _storedProcedureExecutor.ExecuteStoredProcAsync<uspGetUnitsForComplianceMetrix>($"[AAHPCC].[uspGetUnitsForComplianceMetrix] @CaseId = {caseId}, @projectId= {projectId}").Result;
-        }
-
-
+        /// <param name="procedureName"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
         private DataTable ExecuteStoreProcedure(string procedureName, List<SqlParameter> parameters)
         {
             return _storedProcedureExecutor.ExecuteStoreProcedure(procedureName, parameters);
-            //using (var command = _context.Database.GetDbConnection().CreateCommand())
-            //{
-            //    command.CommandText = procedureName;
-            //    command.CommandType = System.Data.CommandType.StoredProcedure;
-            //    command.Parameters.AddRange(parameters.ToArray());
-
-            //    _context.Database.OpenConnection();
-            //    using (var reader = command.ExecuteReader())
-            //    {
-            //        DataTable dt = new DataTable();
-            //        dt.Load(reader);
-            //        return dt;
-            //    }
-            //}
         }
 
 
@@ -1067,8 +873,6 @@ namespace DeveloperPortal.Application.ProjectDetail
                     model.CaseId = i.ServiceRequests.First().CaseId;
                 }
             }
-
-
         }
         #endregion
 

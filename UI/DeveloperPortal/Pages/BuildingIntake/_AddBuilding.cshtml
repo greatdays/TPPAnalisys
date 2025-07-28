@@ -202,7 +202,7 @@
 
     // form success.
     function SuccessSaveAddBuilding(data) {
-        if (data.Result.Status) {
+        if (data.result.status) {
             reloadParkingGrid = true;
             ReloadBuildingDt();
             $("#modal-building-add").modal('hide');
