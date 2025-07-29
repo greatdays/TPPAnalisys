@@ -48,31 +48,45 @@ namespace DeveloperPortal.Areas.Document.Controllers
             model.ProjectFolderName = projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName;
 
             // Get folder from Google Drive or other service
-            model.DMSFolders =  AAHRServiceClient.GetFolderData(_BaseURL, _GoogleDriveId, model.ProjectFolderName);
+            //  model.DMSFolders =  AAHRServiceClient.GetFolderData(_BaseURL, _GoogleDriveId, model.ProjectFolderName);
 
             // If folder doesn't exist, create it
-            if (model.DMSFolders == null || string.IsNullOrEmpty(model.DMSFolders.Name))
+            /*  if (model.DMSFolders == null || string.IsNullOrEmpty(model.DMSFolders.Name))
+              {
+                  var folderModel = new FolderModel
+                  {
+                      Name = model.ProjectFolderName,
+                      ParentFolderName = "ACHPAPITEST",
+                      ProjectId = model.ProjectId
+                  };//Check performance issue - create new sp to check whether the folder exists or not....
+
+                  var driveFolderData = AAHRServiceClient.CreateFolder(_BaseURL, _GoogleDriveId, folderModel.Name, folderModel.ParentFolderName);
+                  folderModel.Attributes = driveFolderData;
+                  folderModel= await _documentService.SaveFolder(folderModel);
+
+                  // You can fetch the folder details again or just set a default
+                  model.FolderModel = new FolderDetails()
+                  {
+                      Name= folderModel.Name,
+                      Id= folderModel.FolderId.ToString(),
+
+
+                  };// Optional: populate this if needed
+              }*/
+
+            var folderModel = new FolderModel
             {
-                var folderModel = new FolderModel
-                {
-                    Name = model.ProjectFolderName,
-                    ParentFolderName = "ACHPAPITEST",
-                    ProjectId = model.ProjectId
-                };//Check performance issue - create new sp to check whether the folder exists or not....
+                Name = model.ProjectFolderName,
+                ParentFolderName = "ACHPAPITEST",
+                ProjectId = model.ProjectId
+            };//Check performance issue - create new sp to check whether the folder exists or not....
+            model.FolderModel = new FolderDetails()
+            {
+                Name = folderModel.Name,
+                Id = folderModel.FolderId.ToString(),
 
-                var driveFolderData = AAHRServiceClient.CreateFolder(_BaseURL, _GoogleDriveId, folderModel.Name, folderModel.ParentFolderName);
-                folderModel.Attributes = driveFolderData;
-                folderModel= await _documentService.SaveFolder(folderModel);
 
-                // You can fetch the folder details again or just set a default
-                model.FolderModel = new FolderDetails()
-                {
-                    Name= folderModel.Name,
-                    Id= folderModel.FolderId.ToString(),
-                    
-
-                };// Optional: populate this if needed
-            }
+            };// Optional: populate this if needed
 
             // Get existing documents for this case/project
             model.FolderModel.Files = await _documentService.GetAllDocumentsBasedOnProjectId(caseId);

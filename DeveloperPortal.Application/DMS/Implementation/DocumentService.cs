@@ -8,6 +8,7 @@ using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Models.PlanReview;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 using static DeveloperPortal.DataAccess.Entity.ViewModels.CommentModel;
 
@@ -16,12 +17,13 @@ namespace DeveloperPortal.Application.DMS.Implementation
     public class DocumentService: IDocumentService
     {
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
-        private readonly AAHREntities _aAHREntitiesr;
+        private readonly IDocumentRepository _documentRepository;
 
-        public DocumentService( IStoredProcedureExecutor storedProcedureExecutor, AAHREntities aAHREntities)
+
+        public DocumentService( IStoredProcedureExecutor storedProcedureExecutor, IDocumentRepository documentRepository)
         {
             _storedProcedureExecutor= storedProcedureExecutor;
-            _aAHREntitiesr = aAHREntities;
+            _documentRepository = documentRepository;
         }
 
         public async Task<List<Domain.DMS.FileModel>> GetAllDocumentsBasedOnProjectId(int caseId)
@@ -54,127 +56,37 @@ namespace DeveloperPortal.Application.DMS.Implementation
         }
         public async Task<DocumentModel> SaveDocument(DocumentModel documentModel)
         {
-            //AAHREntities _context = new AAHREntities();
-            var username = documentModel.CreatedBy;
-            if (documentModel == null)
+          
+            bool isSuccess = await _documentRepository.SaveDocument(documentModel);
+            if (isSuccess)
             {
                 return documentModel;
             }
-            if (documentModel.DocumentId > 0)
-            {
-                var document = _aAHREntitiesr.Documents.FirstOrDefault(x => x.DocumentId == documentModel.DocumentId);
-                if (document != null)
-                {
-                    document.Name = documentModel.Name;
-                    document.Link = documentModel.Link;
-                    document.FileSize = documentModel.FileSize;
-                    document.OtherDocumentType = documentModel.OtherDocumentType;
-                    document.Comment = documentModel.Comment;
-                    document.Attributes = documentModel.Attributes;
-                    document.CreatedBy = username;
-                    document.CreatedOn = DateTime.Now;
-                    document.ModifiedBy = username;
-                    document.ModifiedOn = DateTime.Now;
-                    _aAHREntitiesr.SaveChanges(username);
-                }
-            }
             else
             {
-                var document = new Document
-                {
-                    Name = documentModel.Name,
-                    Link = documentModel.Link,
-                    FileSize = documentModel.FileSize,
-                    Comment = documentModel.Comment,
-                    Attributes = documentModel.Attributes,
-                    OtherDocumentType = documentModel.OtherDocumentType,
-                    CreatedBy = username,
-                    CreatedOn = DateTime.Now,
-                    ModifiedBy = username,
-                    ModifiedOn = DateTime.Now,
-                    IsDeleted = false,
-                    AssnDocuments =
-                    {
-                        new AssnDocument
-                        {
-                            ReferenceId = documentModel.CaseId.ToString(),
-                            ReferenceType = ReferenceType.Case.ToString(),
-                            CreatedBy = username,
-                            CreatedOn =  DateTime.Now,
-                            ModifiedBy = username,
-                            ModifiedOn =  DateTime.Now
-                        }
-                    },
-                    AssnFolderDocuments =
-                    {
-                        new AssnFolderDocument
-                        {
-                            FolderId = documentModel.FolderId,
-                            CreatedBy = username,
-                            CreatedOn =  DateTime.Now,
-                            ModifiedBy = username,
-                            ModifiedOn =  DateTime.Now
-                        }
-                    }
-                };
-                _aAHREntitiesr.Documents.Add(document);
-                await _aAHREntitiesr.SaveChangesAsync();
-                documentModel.FolderId = document.DocumentId;
+                return new DocumentModel();
             }
-            return documentModel;
+
         }
         public async Task<FolderModel> SaveFolder(FolderModel folderModel)
         {
             var username = "jhirpara";
-            //AAHREntities _context = new AAHREntities();
-            
-            if (folderModel == null)
-            {
-                return folderModel;
-            }
-            if (folderModel.FolderId > 0)
-            {
-                var folder = _aAHREntitiesr.Folders.FirstOrDefault(x => x.FolderId == folderModel.FolderId);
-                if (folder != null)
-                {
-                    folder.Name = folderModel.Name;
-                    folder.Comment = folderModel.Comment;
-                    folder.Attributes = folderModel.Attributes;
-                    folder.ModifiedBy = username;
-                    folder.ModifiedOn = DateTime.Now;
-                    _aAHREntitiesr.SaveChanges(username);
-                }
-            }
+            bool isSuccess = true;
+            if(folderModel==null)
+                return new FolderModel();
             else
             {
-                var folder = new Folder
+                isSuccess = await _documentRepository.SaveFolder(folderModel, username);
+                if (isSuccess) 
+                { 
+                    return folderModel;
+                }
+                else
                 {
-                    Name = folderModel.Name,
-                    Comment = folderModel.Comment,
-                    Attributes = folderModel.Attributes,
-                    RefFolderId = folderModel.RefFolderId,
-                    CreatedBy = username,
-                    CreatedOn = DateTime.Now,
-                    ModifiedBy = username,
-                    ModifiedOn = DateTime.Now,
-                    IsDeleted = false,
-                    AssnFolders =
-                    {
-                        new AssnFolder
-                        {
-                            ProjectId = folderModel.ProjectId,
-                            CreatedBy = username,
-                            CreatedOn =  DateTime.Now,
-                            ModifiedBy = username,
-                            ModifiedOn =  DateTime.Now
-                        }
-                    }
-                };
-                _aAHREntitiesr.Folders.Add(folder);
-                await _aAHREntitiesr.SaveChangesAsync();
-                folderModel.FolderId = folder.FolderId;
+                    return new FolderModel();
+                }
             }
-            return folderModel;
+           
         }
         public async Task<List<FolderModel>> GetFolderDetails(int projectId)
         {
