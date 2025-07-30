@@ -165,9 +165,9 @@ namespace DeveloperPortal.Application.ServiceClient
                         result = reader.ReadToEnd();
                     }*/
                 }
-                if (result == "null")
-                { 
-                    result = string.Empty; 
+                if (result == "null" || string.IsNullOrWhiteSpace(result))
+                {
+                    return default;
                 }
 
                 JObject jResult = JsonConvert.DeserializeObject<JObject>(result);

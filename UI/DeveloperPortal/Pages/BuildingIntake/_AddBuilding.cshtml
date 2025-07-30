@@ -1,4 +1,8 @@
 ﻿@using DeveloperPortal.Domain.ProjectDetail
+<!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<!-- jQuery Validation Unobtrusive -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
 @model BuildingModel
 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
     <div class="modal-content">
@@ -27,7 +31,6 @@
                         @Html.LabelFor(model => model.BuildingName, "Building Name", new { @class = " control-label required-label" })
                         @Html.TextBoxFor(x => x.BuildingName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.BuildingName, "", new { @class = "text-danger" })
-                        <p id="LblAssigneeValidation" class="text-danger"></p>
                     </div>
                 </div>
                 <div id="divExistingAddress">
@@ -36,7 +39,7 @@
                             @Html.LabelFor(model => model.BuildingAddressID, "Building Address", new { @class = " control-label required-label" })
                             @Html.DropDownListFor(x => x.BuildingAddressID, new SelectList(Model.BuildingAddressList, "Value", "Text"), "Choose Building Address", new { @class = "form-control", @name = "Comment", @id = "BuildingAddressID" })
                             @Html.ValidationMessageFor(model => model.BuildingAddressID, "", new { @class = "text-danger" })
-                            <p id="LblBuildingAddress" class="text-danger"></p>
+                            <p id="LblBuildingAddressID" class="text-danger"></p>
                         </div>
                         <div class="col-md-6 mb-1" style="padding-top:35px;">
                             <div class="custom-control custom-checkbox">
@@ -109,8 +112,6 @@
                         @Html.LabelFor(model => model.NumberofUnits, "Number of Units", new { @class = " control-label required-label" })
                         @Html.TextBoxFor(model => model.NumberofUnits, new { @class = "form-control", @maxlength = "15" })
                         @Html.ValidationMessageFor(model => model.NumberofUnits, "", new { @class = "text-danger" })
-                        <p id="Lblnumbertext" class="text-danger"></p>
-                        <p id="LblNumberOfUnit" class="text-danger"></p>
                     </div>
 
                     <div class="col-md-6 mb-1">
@@ -163,7 +164,6 @@
 
 <script>
     $("#frmSaveAddBuilding").submit(function (event) {
-        debugger;
          var selectedSite= SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
          if(selectedSite!=null)
          {
@@ -171,31 +171,33 @@
          }
 
             event.preventDefault(); // Prevent normal form submission
+    if(BeginSaveAddBuilding())
+    {
             $.ajax({
                  url: "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
                 type: "POST",
                 data: $(this).serialize(),
-                beforeSend: function () {
-                    BeginSaveAddBuilding();
-                },
                 success: function (response) {
                     SuccessSaveAddBuilding(response);
                 }
             });
+    }
         });
+
     // form begin.
     function BeginSaveAddBuilding() {
         var errorCnt = 0;
+         debugger;
         var form = $("#frmSaveAddBuilding");
-        // $(form).removeData("validator").removeData("unobtrusiveValidation");
-        // $.validator.unobtrusive.parse($(form));
-        // var validator = $(form).validate();
-        // var isModelValid = $(form).valid();
+         $(form).removeData("validator").removeData("unobtrusiveValidation");
+         $.validator.unobtrusive.parse($(form));
+         var validator = $(form).validate();
+         var isModelValid = $(form).valid();
 
-        // if (false == isModelValid) {
-        //     validator.focusInvalid();
-        //     return false;
-        // }
+         if (false == isModelValid) {
+             validator.focusInvalid();
+             return false;
+         }
 
         return true;
     }
