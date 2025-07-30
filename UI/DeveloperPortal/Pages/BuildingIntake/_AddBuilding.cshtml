@@ -1,14 +1,18 @@
 ﻿@using DeveloperPortal.Domain.ProjectDetail
+<!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<!-- jQuery Validation Unobtrusive -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
 @model BuildingModel
 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Add Building</h4>
             <button type="button" class="close" data-bs-dismiss="modal"><i class="far fa-times-circle"></i></button>
-        </div>
-        <form id="frmSaveAddBuilding">
+        </div>  <div class="modal-body">
+            <form id="frmSaveAddBuilding">
 
-            <div class="modal-body">
+
                 @Html.HiddenFor(m => m.siteAddressId)
                 @Html.HiddenFor(m => m.ProjectId)
                 @Html.HiddenFor(m => m.APNId)
@@ -27,7 +31,6 @@
                         @Html.LabelFor(model => model.BuildingName, "Building Name", new { @class = " control-label required-label" })
                         @Html.TextBoxFor(x => x.BuildingName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.BuildingName, "", new { @class = "text-danger" })
-                        <p id="LblAssigneeValidation" class="text-danger"></p>
                     </div>
                 </div>
                 <div id="divExistingAddress">
@@ -36,7 +39,7 @@
                             @Html.LabelFor(model => model.BuildingAddressID, "Building Address", new { @class = " control-label required-label" })
                             @Html.DropDownListFor(x => x.BuildingAddressID, new SelectList(Model.BuildingAddressList, "Value", "Text"), "Choose Building Address", new { @class = "form-control", @name = "Comment", @id = "BuildingAddressID" })
                             @Html.ValidationMessageFor(model => model.BuildingAddressID, "", new { @class = "text-danger" })
-                            <p id="LblBuildingAddress" class="text-danger"></p>
+                            <p id="LblBuildingAddressID" class="text-danger"></p>
                         </div>
                         <div class="col-md-6 mb-1" style="padding-top:35px;">
                             <div class="custom-control custom-checkbox">
@@ -51,27 +54,24 @@
                         @Html.LabelFor(model => model.HouseNum, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
                             @Html.TextBoxFor(model => model.HouseNum, new { @class = "form-control", maxlength = 9, placeholder = "House Number", @autocomplete = "address-line1", @type = "number" })
-                            @Html.ValidationMessageFor(model => model.HouseNum, "", new { @class = "text-danger", @role = "alert" })
                         </div>
                     </div>
                     <div class="form-row mb-2">
                         @Html.LabelFor(model => model.HouseFracNum, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
-                            @Html.TextBoxFor(model => model.HouseFracNum, new { @class = "form-control", maxlength = 10, placeholder = "Fraction", @aria_label = "HouseFracNum" })
-                            @Html.ValidationMessageFor(model => model.HouseFracNum, "", new { @class = "text-danger", @role = "alert" })
+                            @Html.TextBoxFor(model => model.HouseFracNum, new { @class = "form-control", maxlength = 10, placeholder = "House Fraction Number", @aria_label = "HouseFracNum" })
                         </div>
                     </div>
                     <div class="form-row mb-2">
                         @Html.LabelFor(model => model.LutPreDirCd, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
                             @Html.DropDownListFor(model => model.LutPreDirCd, new SelectList(Model.LutPreDirCdListItems, "Value", "Value"), "Select", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LutPreDirCd, "", new { @class = "text-danger", @role = "alert" })
                         </div>
                     </div>
                     <div class="form-row mb-2">
                         @Html.LabelFor(model => model.StreetName, new { @class = "col-md-4 control-label required-label" })
                         <div class="col-md-8">
-                            @Html.TextBoxFor(model => model.StreetName, new { @class = "form-control", maxlength = 50, placeholder = "StreetName", @autocomplete = "address-level3" })
+                            @Html.TextBoxFor(model => model.StreetName, new { @class = "form-control", maxlength = 50, placeholder = "Street Name", @autocomplete = "address-level3" })
                             @Html.ValidationMessageFor(model => model.StreetName, "", new { @class = "text-danger", @role = "alert" })
                         </div>
                     </div>
@@ -79,7 +79,6 @@
                         @Html.LabelFor(model => model.LutStreetTypeCD, new { @class = "col-md-4 control-label" })
                         <div class="col-md-8">
                             @Html.DropDownListFor(model => model.LutStreetTypeCD, new SelectList(Model.LutStreetTypeListItems, "Value", "Value"), "Select", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.LutStreetTypeCD, "", new { @class = "text-danger", @role = "alert" })
                         </div>
                     </div>
                     <div class="form-row mb-2">
@@ -99,7 +98,7 @@
                     <div class="form-row mb-2">
                         @Html.LabelFor(model => model.Zip, new { @class = "col-md-4 control-label required-label" })
                         <div class="col-md-8 ">
-                            @Html.TextBoxFor(model => model.Zip, new { @class = "form-control", maxlength = 5, placeholder = "ZipCode", @autocomplete = "postal-code", @type = "number" })
+                            @Html.TextBoxFor(model => model.Zip, new { @class = "form-control", maxlength = 5, placeholder = "Zip Code", @autocomplete = "postal-code", @type = "number" })
                             @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger", @role = "alert" })
                         </div>
                     </div>
@@ -109,8 +108,6 @@
                         @Html.LabelFor(model => model.NumberofUnits, "Number of Units", new { @class = " control-label required-label" })
                         @Html.TextBoxFor(model => model.NumberofUnits, new { @class = "form-control", @maxlength = "15" })
                         @Html.ValidationMessageFor(model => model.NumberofUnits, "", new { @class = "text-danger" })
-                        <p id="Lblnumbertext" class="text-danger"></p>
-                        <p id="LblNumberOfUnit" class="text-danger"></p>
                     </div>
 
                     <div class="col-md-6 mb-1">
@@ -130,7 +127,6 @@
                             <option value="Medical building/area">Medical building/area</option>
                             <option value="Daycare">Daycare</option>
                         </select>
-                        @Html.ValidationMessageFor(model => model.BuildingDescription, "", new { @class = "text-danger", @role = "alert" })
                     </div>
                 </div>
                 <div class="form-row mt-3">
@@ -152,18 +148,17 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer multi-button comcom-fotter">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                <button class="btn btn-primary" type="submit" title="Save">Save</button>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="modal-footer multi-button comcom-fotter">
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal" title="Cancel">Cancel</button>
+            <button class="btn btn-primary" type="submit" title="Save" onclick="SaveAddBuilding()">Save</button>
+        </div>
     </div>
 </div>
 
 <script>
     $("#frmSaveAddBuilding").submit(function (event) {
-        debugger;
          var selectedSite= SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
          if(selectedSite!=null)
          {
@@ -171,31 +166,32 @@
          }
 
             event.preventDefault(); // Prevent normal form submission
+    if(BeginSaveAddBuilding())
+    {
             $.ajax({
                  url: "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
                 type: "POST",
                 data: $(this).serialize(),
-                beforeSend: function () {
-                    BeginSaveAddBuilding();
-                },
                 success: function (response) {
                     SuccessSaveAddBuilding(response);
                 }
             });
+    }
         });
+
     // form begin.
     function BeginSaveAddBuilding() {
         var errorCnt = 0;
         var form = $("#frmSaveAddBuilding");
-        // $(form).removeData("validator").removeData("unobtrusiveValidation");
-        // $.validator.unobtrusive.parse($(form));
-        // var validator = $(form).validate();
-        // var isModelValid = $(form).valid();
+         $(form).removeData("validator").removeData("unobtrusiveValidation");
+         $.validator.unobtrusive.parse($(form));
+         var validator = $(form).validate();
+         var isModelValid = $(form).valid();
 
-        // if (false == isModelValid) {
-        //     validator.focusInvalid();
-        //     return false;
-        // }
+         if (false == isModelValid) {
+             validator.focusInvalid();
+             return false;
+         }
 
         return true;
     }

@@ -636,7 +636,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
 
             ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
-            string LADBS_API_URL = "https://ladbsservices3.lacity.org/ePlan_api/Permit/DetailsFiltered?PermitNumber={0}&DeptFilter={1}&ApplicationState=PROD";// AppConfig.GetConfigValue("LADBSAPI", "1");
+            string LADBS_API_URL = _config["AppSettings:LADBSAPIURL"];
             PermitNumber = PermitNumber.Replace("-", "").Trim();
             Department = Department.Replace("(", "").Replace(")", "");
             string requestUrl = string.Format(LADBS_API_URL, PermitNumber, Department);
