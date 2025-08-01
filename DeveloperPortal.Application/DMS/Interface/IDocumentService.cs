@@ -11,7 +11,7 @@ namespace DeveloperPortal.Application.DMS.Interface
 {
     public interface IDocumentService
     {
-        Task<List<Domain.DMS.FileModel>> GetAllDocumentsBasedOnProjectId(int caseId);
+        Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId);
         Task<DocumentModel> SaveDocument(DocumentModel documentModel);
         Task<FolderModel> SaveFolder(FolderModel folderModel);
         Task<List<FolderModel>> GetFolderDetails(int projectId);

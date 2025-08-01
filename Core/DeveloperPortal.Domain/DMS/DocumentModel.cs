@@ -14,6 +14,8 @@ namespace DeveloperPortal.Domain.DMS
 
         public string Name { get; set; } = null!;
 
+        public string FolderName { get; set; } = null!;
+
         public string Link { get; set; } = null!;
 
         public string FileSize { get; set; } = null!;

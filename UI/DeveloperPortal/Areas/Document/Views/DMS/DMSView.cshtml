@@ -80,9 +80,14 @@
     </table>
 </div>
 
+@{
+    var folderNameParts = (Model?.FolderModel?.Name ?? "").Split('_');
+    var projectIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : "";
+}
+
 <!-- Hidden Inputs -->
-<input type="hidden" id="ProjectId" value="@Model.ProjectId" />
-<input type="hidden" id="FolderName" value="@Model.ProjectFolderName" />
+<input type="hidden" id="ProjectId" value="@projectIdFromName" />
+<input type="hidden" id="FolderName" value="@Model.FolderModel.Name" />
 <input type="hidden" id="FolderId" value="@Model.FolderModel.Id" />
 
 <!-- Add File Button -->
@@ -180,8 +185,8 @@
 
             var url = '@Url.Action("UploadFile", "DMS", new { area = "Document" })';
 
-            // Show loader
-            $('#uploadLoader').show();
+            // Show global loader
+            $('#loadingOverlay').show();
 
             $.ajax({
                 url: url,
@@ -189,35 +194,34 @@
                 processData: false,
                 contentType: false,
                 type: "POST",
-                      success: function (data) {
-                        $('#addFileModal').modal('hide');
-                        $('#uploadLoader').show();
+                success: function (data) {
+                    $('#addFileModal').modal('hide');
 
-                        // Wait for modal to close, then reload Documents tab only
-                        $('#addFileModal').on('hidden.bs.modal', function () {
-                            var caseId = $('#ProjectId').val(); // assuming this is your caseId
-                            var controlViewModelId = $('#FolderId').val(); // assuming this maps
+                    // Wait for modal to close, then reload Documents tab
+                    $('#addFileModal').on('hidden.bs.modal', function () {
+                        var caseId = $('#ProjectId').val();
+                        var controlViewModelId = $('#FolderId').val();
 
-                            $.ajax({
-                                url: `/Document/DMS/GetFilesById`,
-                                type: 'GET',
-                                data: {
-                                    caseId: caseId,
-                                    controlViewModelId: controlViewModelId
-                                },
-                                success: function (html) {
-                                    $('#divDocument').html(html); // update only the Documents tab
-                                    $('#uploadLoader').hide();
-                                },
-                                error: function (xhr) {
-                                    $('#uploadLoader').hide();
-                                    alert("Failed to reload documents tab: " + xhr.responseText);
-                                }
-                            });
+                        $.ajax({
+                            url: `/Document/DMS/GetFilesById`,
+                            type: 'GET',
+                            data: {
+                                caseId: caseId,
+                                controlViewModelId: controlViewModelId
+                            },
+                            success: function (html) {
+                                $('#divDocument').html(html);
+                                $('#loadingOverlay').hide(); // Hide loader
+                            },
+                            error: function (xhr) {
+                                $('#loadingOverlay').hide();
+                                alert("Failed to reload documents tab: " + xhr.responseText);
+                            }
                         });
-                    },
+                    });
+                },
                 error: function (xhr, status, error) {
-                    $('#uploadLoader').hide();
+                    $('#loadingOverlay').hide();
                     alert("Upload failed: " + xhr.responseText);
                 }
             });

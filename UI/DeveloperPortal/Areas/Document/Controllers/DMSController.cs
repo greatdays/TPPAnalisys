@@ -40,64 +40,14 @@ namespace DeveloperPortal.Areas.Document.Controllers
         [Route("Document/DMS/GetFilesById")]
         public async Task<IActionResult> GetFilesById(int caseId, int controlViewModelId)
         {
-            var model = new DMSModel();
-
-            var projectSummary = _projectDetailService.GetProjectSummary(caseId);
-            model.ProjectName = projectSummary?.ProjectName ?? "";
-            model.ProjectId = projectSummary?.CaseID ?? 0;
-            model.ProjectFolderName = projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName;
-
-            // Get folder from Google Drive or other service
-            //  model.DMSFolders =  AAHRServiceClient.GetFolderData(_BaseURL, _GoogleDriveId, model.ProjectFolderName);
-
-            // If folder doesn't exist, create it
-            /*  if (model.DMSFolders == null || string.IsNullOrEmpty(model.DMSFolders.Name))
-              {
-                  var folderModel = new FolderModel
-                  {
-                      Name = model.ProjectFolderName,
-                      ParentFolderName = "ACHPAPITEST",
-                      ProjectId = model.ProjectId
-                  };//Check performance issue - create new sp to check whether the folder exists or not....
-
-                  var driveFolderData = AAHRServiceClient.CreateFolder(_BaseURL, _GoogleDriveId, folderModel.Name, folderModel.ParentFolderName);
-                  folderModel.Attributes = driveFolderData;
-                  folderModel= await _documentService.SaveFolder(folderModel);
-
-                  // You can fetch the folder details again or just set a default
-                  model.FolderModel = new FolderDetails()
-                  {
-                      Name= folderModel.Name,
-                      Id= folderModel.FolderId.ToString(),
-
-
-                  };// Optional: populate this if needed
-              }*/
-
-            var folderModel = new FolderModel
+            var model = new DMSModel
             {
-                Name = model.ProjectFolderName,
-                ParentFolderName = "ACHPAPITEST",
-                ProjectId = model.ProjectId
-            };//Check performance issue - create new sp to check whether the folder exists or not....
-            model.FolderModel = new FolderDetails()
-            {
-                Name = folderModel.Name,
-                Id = folderModel.FolderId.ToString(),
-
-
-            };// Optional: populate this if needed
-
-            // Get existing documents for this case/project
-            model.FolderModel.Files = await _documentService.GetAllDocumentsBasedOnProjectId(caseId);
-
-            // Optionally store controlViewModelId if used later
-           // model.ControlId = controlViewModelId;
+                FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId)
+            };
 
             return View("~/Areas/Document/Views/DMS/DMSView.cshtml", model);
-            //var list = await _documentService.GetAllDocumentsBasedOnProjectId(caseId);
-            //return View("~/Areas/Document/Views/DMS/DMSView.cshtml", list); // Or Json(list) if it's an API
         }
+
         [HttpPost]
         [Route("CreateFolder")]
         public JsonResult CreateFolder(string folderName, string parentFolderName)
@@ -111,9 +61,9 @@ namespace DeveloperPortal.Areas.Document.Controllers
         {
             IFormFile file = HttpContext.Request.Form.Files[0];
             var fileType = GetMimeTypeForFileExtension(file.FileName);
-            var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]);
+            var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
             var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
-            var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
+            //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
 
 
@@ -125,7 +75,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
                 Attributes = "",
                 FileSize = file.Length.ToString(),
                 CaseId = caseId,
-                FolderId = folderId,
+                FolderId = 0,
                 OtherDocumentType = documentType,
                 CreatedBy="jalcanter",
                 CreatedOn=DateTime.Now

@@ -26,11 +26,12 @@ namespace DeveloperPortal.Application.DMS.Implementation
             _documentRepository = documentRepository;
         }
 
-        public async Task<List<Domain.DMS.FileModel>> GetAllDocumentsBasedOnProjectId(int caseId)
+        public async Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId)
         {
             List<DocumentModel> resultDocuments = new List<DocumentModel>();
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
+            FolderDetails folderDetails = null;
             var projectIdParam = new SqlParameter("ProjectID", caseId);
 
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
@@ -38,6 +39,9 @@ namespace DeveloperPortal.Application.DMS.Implementation
                                                     projectIdParam);
             if(resultDocuments!=null && resultDocuments.Count>0)
             {
+                folderDetails = new FolderDetails();
+                folderDetails.Name= resultDocuments[0].FolderName;
+         
                 foreach (var document in resultDocuments)
                 {
                     fileModel = new Domain.DMS.FileModel();
@@ -51,8 +55,9 @@ namespace DeveloperPortal.Application.DMS.Implementation
 
                     fileModels.Add(fileModel);
                 }
+                folderDetails.Files = fileModels;
             }
-            return fileModels;
+            return folderDetails;
         }
         public async Task<DocumentModel> SaveDocument(DocumentModel documentModel)
         {
