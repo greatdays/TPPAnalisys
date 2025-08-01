@@ -15,19 +15,19 @@ namespace DeveloperPortal.Application.ServiceClient
 
         public AppConfigService(IConfiguration configuration) { _config = configuration; }
 
-        public T GetConfigValue<T>(string key, string application = null)
-        {
-            T value = default;
-            DataAccess.Entity.AppConfiguration appConfig = new DataAccess.Entity.AppConfiguration(_config);
+        //public T GetConfigValue<T>(string key, string application = null)
+        //{
+        //    T value = default;
+        //    DataAccess.Entity.AppConfiguration appConfig = new DataAccess.Entity.AppConfiguration(_config);
 
-            value = appConfig.GetConfigValue<T>(key, application);
-            return value;
-        }
+        //    value = appConfig.GetConfigValue<T>(key, application);
+        //    return value;
+        //}
 
-        public string GetConfigValue(string key, string application = null)
-        {
-            return GetConfigValue<string>(key, application);
-        }
+        //public string GetConfigValue(string key, string application = null)
+        //{
+        //    return GetConfigValue<string>(key, application);
+        //}
 
         public ControlViewMaster GetControlViewMasterById(int controlViewId)
         {

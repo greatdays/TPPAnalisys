@@ -29,7 +29,7 @@ namespace DeveloperPortal.ServiceClient
         public  ApplicantSignupModel GetLookupLists_P2()
         {
             baseUrl = string.Format("{0}", new WebApiConstant(_config).GetConfigData("AAHRApiSettings:URL"));
-            propertyBaseUrl = string.Format("{0}", new WebApiConstant(_config).GetConfigData("AAHRApiSettings:PropertyApiURL"));
+            propertyBaseUrl = string.Format("{0}", new WebApiConstant(_config).GetConfigData("AreaMgmtAPIURL:PropertyApiURL"));
             string requestUrl = baseUrl + WebApiConstant.GetLookupLists;
 
             //BaseResponse baseResponse = CreateRequest<BaseResponse>(new { }, requestUrl, ActionType.GET);

@@ -136,8 +136,8 @@ namespace DeveloperPortal.Controllers
                 UserName = GetLogonUser();
             }
 
-            string applicationName = _config["ThisApplication:Application"].ToString();
-            string applicationURL = _config["ThisApplication:ApplicationURL"].ToString();
+            string applicationName = _config["AppSettings:Application"].ToString();
+            string applicationURL = _config["AppSettings:ApplicationURL"].ToString();
 
             if (!string.IsNullOrEmpty(UserName))
             {
@@ -241,15 +241,15 @@ namespace DeveloperPortal.Controllers
         {
             UserSession userSession = UserSession.GetUserSession(HttpContext);
 
-            string applicationName = _config["ThisApplication:Application"].ToString();
-            string applicationURL = _config["ThisApplication:ApplicationURL"].ToString();
+            string applicationName = _config["AppSettings:Application"].ToString();
+            string applicationURL = _config["AppSettings:ApplicationURL"].ToString();
 
             if (!string.IsNullOrEmpty(jwtToken))
             {
                 //Common.Common.SetSession("JWTToken", jwtToken);
                 // authenticate user token from api.             
                 AuthenticateResponse authenticateResponse = IDMServiceClient.ValidateToken(jwtToken,
-                    _config["ThisApplication:JwtAccessCode"].ToString(),
+                    _config["AppSettings:JwtAccessCode"].ToString(),
                     _config["IDMSettings:SourceApp"].ToString(),
                     _config["IDMSettings:TargetApp"].ToString(),
                     _config["IDMSettings:IDMPath"].ToString());
@@ -292,7 +292,7 @@ namespace DeveloperPortal.Controllers
         {
             var login = HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
-            string applicationURL = _config["ThisApplication:ApplicationURL"].ToString();
+            string applicationURL = _config["AppSettings:ApplicationURL"].ToString();
 
             // return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={applicationURL}");
             return Redirect("/");
@@ -356,7 +356,7 @@ namespace DeveloperPortal.Controllers
 
             if (ModelState.IsValid)
             {
-                string Status = IDMServiceClient.ChangePassword(changepasswordModel.UserName, changepasswordModel.CurrentPassword, changepasswordModel.NewPassword, _config["IDMSettings:IDMPath"].ToString(), _config["ThisApplication:AppKey"].ToString());
+                string Status = IDMServiceClient.ChangePassword(changepasswordModel.UserName, changepasswordModel.CurrentPassword, changepasswordModel.NewPassword, _config["IDMSettings:IDMPath"].ToString(), _config["AppSettings:AppKey"].ToString());
                 if (Status == null || Status != "")
                 {
                     if (Status.Contains("IDM106"))

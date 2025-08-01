@@ -152,48 +152,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         List<SelectListItem> GetLutUnitType();
 
         /// <summary>
-        /// GetBuildingDetailForEdit
-        /// </summary>
-        /// <param name="projectsiteId"></param>
-        /// <returns></returns>
-        BuildingModel GetBuildingDetailForEdit(int projectsiteId);
-
-        /// <summary>
-        /// GetApplicableAccessibilityStandard
-        /// </summary>
-        /// <returns></returns>
-        List<SelectListItem> GetApplicableAccessibilityStandard();
-
-        /// <summary>
-        /// Save Building Summary
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        Task<bool> SaveBuildingSummary(BuildingParkingInformationModal buildingModel, string userName);
-
-        /// <summary>
-        /// GetAddBuildingDetails
-        /// </summary>
-        /// <param name="projectSiteId"></param>
-        /// <returns></returns>
-        Task<BuildingModel> GetAddBuildingDetails(int projectSiteId);
-
-        /// <summary>
-        /// GetBuildingAddressDetails
-        /// </summary>
-        /// <param name="projectSiteIds"></param>
-        /// <returns></returns>
-        Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds);
-
-        /// <summary>
         /// GetPropSnapshotDetails
         /// </summary>
         /// <param name="projectSiteId"></param>
         /// <returns></returns>
         Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId);
-
-        
-
     }
 }

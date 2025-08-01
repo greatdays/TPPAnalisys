@@ -419,7 +419,7 @@ namespace DeveloperPortal.Models.IDM
                 contact.IsRemovePropContactAssnType = false;*/
                 int contactID = 0;
                 /*Property API*/
-                client.BaseAddress = new Uri(_config["AAHRApiSettings:PropertyApiURL"]);
+                client.BaseAddress = new Uri(_config["AreaMgmtAPIURL:PropertyApiURL"]);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 

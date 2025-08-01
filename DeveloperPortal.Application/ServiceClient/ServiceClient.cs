@@ -55,9 +55,9 @@ namespace DeveloperPortal.Application.ServiceClient
             try
             {
                 string serializeqObject = string.Empty;
-                AppConfiguration appConfig = new AppConfiguration(_config);
+                var enableTLS  = _config["EnableTLS"];
                 // security protocol type.
-                if (appConfig.GetConfigValue<bool>("EnableTLS"))
+                if (Convert.ToBoolean(enableTLS))
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 if (actionType == ActionType.GET)
@@ -164,6 +164,10 @@ namespace DeveloperPortal.Application.ServiceClient
                     {
                         result = reader.ReadToEnd();
                     }*/
+                }
+                if (result == "null" || string.IsNullOrWhiteSpace(result))
+                {
+                    return default;
                 }
 
                 JObject jResult = JsonConvert.DeserializeObject<JObject>(result);

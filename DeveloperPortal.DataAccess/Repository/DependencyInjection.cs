@@ -21,6 +21,7 @@ namespace DeveloperPortal.DataAccess.Repository
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IProjectDetailRepository, ProjectDetailRepository>();
+            services.AddScoped<IBuildingIntakeRepository, BuildingIntakeRepository>();
             return services;
         }
     }
