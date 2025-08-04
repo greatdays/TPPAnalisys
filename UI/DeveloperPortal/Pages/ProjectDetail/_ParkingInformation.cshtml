@@ -1014,7 +1014,6 @@
     //Buliding Sumary update
      function addBuildingInfo() {
           var url='@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'
-          debugger;
           var model = { SiteInformationData : SiteInformationData,  caseId: Id };
           AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
           function (response) {

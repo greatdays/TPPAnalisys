@@ -184,7 +184,7 @@
     /*Start Unit Kendo Grid */
     function LoadProjectInformation() {
 
-             $("#uploadUnitExcel").click(function () {
+    $("#uploadUnitExcel").click(function () {
        $("#modalImportUnits").modal('show');
      });
         dataSource = new kendo.data.DataSource({
@@ -356,14 +356,14 @@
           GetUnitModalData();
       
     }
-    function onGridEdit(arg) {
+      function onGridEdit(arg) {
         var buildingId = arg.model.BuildingId;
         var ftDatasource = []
         if (buildingId) {
             var buildingddl = $("[name^='achpNo']").data("kendoDropDownList");
             buildingddl.readonly();
         }
-    }
+        }
 
     function BuildingDropDownEditor(container, options) {
         $('<input required name="' + options.field + '"/>')
@@ -396,7 +396,7 @@
                 dataSource: kgridEditModelData.lutTotalBedrooms,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
-                    options.model.set("LutTotalBedroomID", dataItem.Value);
+                    options.model.set("LutTotalBedroomID", dataItem.value);
                 }
             });
 
@@ -411,7 +411,7 @@
                 dataSource: kgridEditModelData.lutUnitType,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
-                    options.model.set("LutUnitTypeID", dataItem.Value);
+                    options.model.set("LutUnitTypeID", dataItem.value);
                 }
 
             });
@@ -435,7 +435,7 @@
                 data.totalBedroom = "5 Bedroom";
                 break;
             default:
-
+    
                 break;
         }
         return data.totalBedroom == null ? "" : data.totalBedroom;
@@ -489,7 +489,7 @@
 
     }
 
-     $('#search-unit-grid').keyup(function (e) {
+ $('#search-unit-grid').keyup(function (e) {
         var value = this.value.toLowerCase().trim();
 
         $('#unitKgrid').find('table tr').each(function (index) {

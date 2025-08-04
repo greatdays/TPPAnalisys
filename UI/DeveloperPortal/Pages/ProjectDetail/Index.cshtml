@@ -458,6 +458,12 @@
     </div>
 </div>
 
+
+@* Page Script *@
+@* <script src="~/PageScripts/ProjectDetail/unitMatrix.js"></script> *@
+<script src="~/PageScripts/BuildingIntake/AddBuilding.js"></script>
+
+
 <script type="text/javascript">
     var baseUrl = window.location.origin;
     var Id = @Model.Id
@@ -525,15 +531,7 @@
     }
 
 
-    function LoadTabData(url, tabId, forceLoad = false) {
-        //return;
-        if ($("#" + tabId).html() == "" || forceLoad) {
-            AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-                function (result) {
-                    $("#" + tabId).html(result);
-                }, null, true, null, false);
-        }
-    }
+    
 
     /*Start Project Site Data table */
     function LoadSiteInformation() {
@@ -716,24 +714,7 @@
         });
         }
         /*End Building Data table */
-
-
-
-    function SetRoleAccess(accesstype) {
-        var roleElements = $('[role-access');
-        accesstype = accesstype.toUpperCase();
-        roleElements.each(function (index,item) {
-
-            if (accesstype == "FULLACCESS" || accesstype == "EDITACCESS") {
-                $(item).removeClass("no-access");
-                $(item).addClass("allow-access");
-            }
-            else if (accesstype == "READONLYACCESS") {
-                $(item).removeClass("no-access");
-                $(item).addClass("readonly-access");
-            }
-        });
-    }
+   
 
      function GetUnitModalData() {
          window.setTimeout(function(){
