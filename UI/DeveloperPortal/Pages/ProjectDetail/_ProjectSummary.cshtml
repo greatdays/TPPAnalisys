@@ -5,51 +5,7 @@
          padding-bottom:10px;
         margin-top: 0px;
     }</style>
-@* <style>
-    .tooltip-p .tooltip-s {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-        opacity: 1 !important;
-    }
-
-
-    .tooltip-p .tooltiptext {
-        visibility: hidden;
-        width: 400px;
-        background-color: #135b79;
-        color: #fff;
-        text-align: left;
-        border-radius: 6px;
-        padding: 5px 5px;
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1 !important;
-    }
-
-    .tooltip-s .tooltiptext {
-        visibility: hidden;
-        width: 400px;
-        background-color: #135b79;
-        color: #fff;
-        text-align: left;
-        border-radius: 6px;
-        padding: 5px 5px;
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1 !important;
-    }
-
-    .tooltip-p:hover .tooltiptext {
-        visibility: visible;
-    }
-
-    .tooltip-s:hover .tooltiptext {
-        visibility: visible;
-    }
-</style> *@
-
-<div class="accordion" id="accfolder">
+<div class="accordion" >
     @{
         <div class="row GridviewViewRow">
             <div class="col-sm-12">
@@ -156,8 +112,8 @@
                                     <div id="divProjectActions" style="    display: contents;">
                                      
                                     </div>
-                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=Assign for Review&amp;caseId=25662&amp;formId=3459" onclick="OpenActionPopUp1(this, false)">Edit Project Information</a>
-                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=ReAssign&amp;caseId=25662&amp;formId=3444" onclick="OpenActionPopUp1(this, false)">Add Floor Plan</a>
+                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=Assign for Review&amp;caseId=25662&amp;formId=3459" onclick="OpenActionPopUp(this, false)">Edit Project Information</a>
+                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=ReAssign&amp;caseId=25662&amp;formId=3444" onclick="OpenActionPopUp(this, false)">Add Floor Plan</a>
                                 </div>
                             </div>
                         </div>
@@ -171,19 +127,6 @@
 
 <script type="text/javascript">
       $(document).ready(function () {
-    var url = '@Url.Action("GetProjectActionsByCaseId", "ProjectDetail", new {  })';
-       $.ajax({
-           url: url,
-           data: {caseId: Id, projectId: ProjectId},
-           type: "GET",
-           contentType: "application/json",
-           success: function (result) {
-               $('#divProjectActions').html(result);
-           },
-           error: function (error) {
-               console.log("There was an error in getting project actions.")
-               console.log(error);
-           }
-       });
+      ProjectInformation.projectActions();
       });
 </script>

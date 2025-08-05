@@ -55,6 +55,36 @@ function SetRoleAccess(accesstype) {
         }
     });
 }
+
+/* Function OpenActionPopUp
+*** This function is used for Open Action PopUp.***
+--------------------------------------------------------------------------------------------------------------------------*/
+function OpenActionPopUp(link,openInWindow) {
+    $(".modal-dialog.modal-dialog-centered").removeClass("modal-lg");
+    var title = $(link).html();
+    var url = $(link).attr('modal-data');
+    if (!url) {
+        url = '/ComCon/Action/ActionNotFound';
+    }
+    if (openInWindow.toString().toLowerCase() == 'true') {
+        window.location.href = url;
+    }
+    else {
+
+        AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
+            function (result) {
+                var form = $('form[name=submitForm]')
+                form.removeData("validator") // added by the raw jquery.validate plugin /
+                    .removeData("unobtrusiveValidation");  // added by the jquery unobtrusive plugin
+                $.validator.unobtrusive.parse(form);
+                $('.ActioModalTitle').html(title);
+                $(".ActioModalBody").html(result);
+                $('#ActioModal').modal('show');
+            }, null, true, null, false);
+    }
+}
+
+
 //function ShowMessage(title, body, isShow = true) {
 //    $("#modalSuccessTitle").text(title);
 //    $("#modalSuccessBody").html(body);

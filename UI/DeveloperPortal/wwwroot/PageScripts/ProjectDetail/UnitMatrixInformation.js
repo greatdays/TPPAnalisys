@@ -36,8 +36,6 @@ function UnitMatrixInit()
 
 }
 function LoadProjectInformation() {
-
-
     dataSource = new kendo.data.DataSource({
         transport: {
             read: {

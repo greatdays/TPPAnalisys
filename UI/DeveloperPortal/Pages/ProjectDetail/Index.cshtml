@@ -208,8 +208,11 @@
 <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
 
 @* Page Script *@
-<script src="~/PageScripts/ProjectDetail/unitMatrix.js"></script>
-<script src="~/PageScripts/BuildingIntake/AddBuilding.js"></script>
+<script src="~/PageScripts/ProjectDetail/ProjectInformation.js"></script>
+<script src="~/PageScripts/ProjectDetail/UnitMatrixInformation.js"></script>
+<script src="~/PageScripts/ProjectDetail/ParkingInformation.js"></script>
+<script src="~/PageScripts/ProjectDetail/LadbsInfomation.js"></script>
+<script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 
 <div class="page-content">
     <div class="row">
@@ -220,12 +223,12 @@
             <div class="page-title left-data">
                 <ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
                     <li id="help">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="HelpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#003399 !important">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#003399 !important">
                             <img src="~/Images/help.png" height="20" width="20">
                         </a>
                     </li>
                     <li id="PrintAll">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="printSelectedTabs()" data-original-title="Print" style="background:#003399 !important; margin-left:10px;">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#003399 !important; margin-left:10px;">
                             <img src="~/Images/printer.svg">
                         </a>
                     </li>
@@ -242,12 +245,11 @@
     <div style="padding-left: 010px; padding-right: 10px;">
         <!-- Tab links -->
         <div class="tab">
-            <button class="tablinks active" onclick="openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
-            <button class="tablinks" onclick="openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-            <button class="tablinks hide" onclick="openTab(event, 'tabProjectParticipants')">Project Participants</button>
-            <button class="tablinks hide" onclick="openTab(event, 'tabImportantDates')">Important Dates</button>
-            <button class="tablinks" onclick="openTab(event, 'tabDocuments')">Documents</button>
-            <button class="tablinks hide" onclick="openTab(event, 'tabLogs')">Plan Review</button>
+            <button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
+            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
+            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
+            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
         </div>
 
         <!-- Tab content -->
@@ -480,59 +482,16 @@
     var popupTitle = "";
     var oldPageSize = 0;
     var selectedEvents = [];
-    var reloadUntiGrid = false;
     var reloadParkingGrid = false;
     var accessType="FULLACCESS";
     var SiteInformationData = [];
     var IsLoadSiteInformationTab = false;
+    var   dtBuildingDataTable;
 
     $.fn.dataTableExt.pager.numbers_length = 50;
     //Load on init
     LoadProjectInformation();
     LoadSiteInformation();
-    function openTab(evt, tabName) {
-        // Get all elements with class="tabcontent" and hide them
-        $(".tabcontent").css("display", "none");
-        // Get all elements with class="tablinks" and remove the class "active"
-        $(".tablinks").removeClass("active");
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(tabName).style.display = "block";
-        if (evt) { evt.currentTarget.className += " active"; }
-        var url = "";
-
-        switch (tabName) {
-            case "tabSiteInformation":
-                LoadSiteInformation();
-                break;
-            case "tabImportantDates":
-                url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
-                LoadTabData(url, "divImportantDates");
-                break;
-            case "tabProjectParticipants":
-                console.log("Id: " + Id);
-                url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
-                LoadTabData(url, "divProjectParticipants");
-                break;
-            case "tabPolicyContacts":
-                url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
-                LoadTabData(url, "divPolicyContacts");
-                break;
-            case "tabDocuments":
-                var url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document", caseId = "__id__" })';
-                url = url.replace("__id__", Id);
-                console.log(url);
-                LoadTabData(url, "divDocument", true);
-                break;
-            case "tabLogs":
-                url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
-                LoadTabData(url, "divLogs");
-                break;
-            default:
-        }
-    }
-
-
-    
 
     /*Start Project Site Data table */
     function LoadSiteInformation() {
@@ -617,49 +576,11 @@
     }
     /*End Project Site Data table */
 
-    function printSelectedTabs()
-    {
-
-     }
-
-    function HelpImage()
-    {
-        $("#myModalHelp").modal('show');
-    }
-
-     // SUmmary Popup
-      function OpenActionPopUp1(link, OpenInWindow) {
-        $(".modal-dialog.modal-dialog-centered").removeClass("modal-lg");
-        var title = $(link).html();
-        var url = $(link).attr('modal-data');
-        if (!url) {
-            url = '@Url.Action("ActionNotFound", "Action", new { area = "ComCon" })';
-        }
-        if (OpenInWindow == 'True') {
-            window.location.href = url;
-        }
-        else {
-
-            AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-                function (result) {
-                    var form = $('form[name=submitForm]')
-                    form.removeData("validator") // added by the raw jquery.validate plugin /
-                        .removeData("unobtrusiveValidation");  // added by the jquery unobtrusive plugin
-                    $.validator.unobtrusive.parse(form);
-
-
-                    $('.ActioModalTitle').html(title);
-                    $(".ActioModalBody").html(result);
-                    $('#ActioModal').modal('show');
-                }, null, true, null, false);
-        }
-    }
-
        /*Start Building Data table */
     function LoadParkingInfo()
     {
 
-     var   dtBuildingDataTable = $('#dtPrkingData').dataTable({
+      dtBuildingDataTable = $('#dtPrkingData').dataTable({
             ajax: {
                 url: '@Url.Action("GetBuildingInformation", "ProjectDetail", new {  area = "Construction" })',
                 data: function (d) {
