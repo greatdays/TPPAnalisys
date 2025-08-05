@@ -1012,17 +1012,7 @@
     /*Building Edit Method*/
 
     //Buliding Sumary update
-     function addBuildingInfo() {
-          var url='@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'
-          var model = { SiteInformationData : SiteInformationData,  caseId: Id };
-          AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
-          function (response) {
-          $("#modal-building-add").empty().html(response).modal('show');
-          return false;
-          },
-          null, true, null, false);
-     }
-
+   
     function editBuildingSummary(projectSiteId) 
     {
          var url = '@Url.Action("GetBuildingDetails", "BuildingIntake", new { area = "Construction" })'

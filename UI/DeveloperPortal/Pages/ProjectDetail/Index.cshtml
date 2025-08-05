@@ -207,6 +207,9 @@
 <script src="~/js/kendojs/kendo.timezones.min.js"></script>
 <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
 
+@* Page Script *@
+<script src="~/PageScripts/ProjectDetail/unitMatrix.js"></script>
+<script src="~/PageScripts/BuildingIntake/AddBuilding.js"></script>
 
 <div class="page-content">
     <div class="row">
@@ -459,9 +462,7 @@
 </div>
 
 
-@* Page Script *@
-@* <script src="~/PageScripts/ProjectDetail/unitMatrix.js"></script> *@
-<script src="~/PageScripts/BuildingIntake/AddBuilding.js"></script>
+
 
 
 <script type="text/javascript">
@@ -716,15 +717,7 @@
         /*End Building Data table */
    
 
-     function GetUnitModalData() {
-         window.setTimeout(function(){
-         var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { area = "Construction" })';
-          AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-                function (result) {
-                    kgridEditModelData=result;
-                }, null, true, null, false);
-         },1000);
-    }
+     
 </script>
 
 

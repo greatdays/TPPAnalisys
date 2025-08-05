@@ -1,4 +1,17 @@
-﻿$("#frmSaveAddBuilding").submit(function (event) {
+﻿
+function addBuildingInfo() {
+    /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
+    var url = "/Construction/BuildingIntake/AddBuilding"
+    var model = { SiteInformationData: SiteInformationData, caseId: Id };
+    AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
+        function (response) {
+            $("#modal-building-add").empty().html(response).modal('show');
+            return false;
+        },
+        null, true, null, false);
+}
+
+$("#frmSaveAddBuilding").submit(function (event) {
     var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
     if (selectedSite != null) {
         $("#SelectedSiteId").val(selectedSite.caseID);
@@ -45,7 +58,6 @@ function BeginSaveAddBuilding() {
 function SaveAddBuilding() {
     $('#frmSaveAddBuilding').submit();
 }
-
 function HideShowAddressPanel() {
     var addAddress = document.getElementById('AddAddress');
     if (addAddress.checked == true) {
