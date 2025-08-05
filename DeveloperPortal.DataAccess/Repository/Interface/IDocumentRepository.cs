@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Models.PlanReview;
+
+namespace DeveloperPortal.DataAccess.Repository.Interface
+{
+    public interface IDocumentRepository
+    {
+        Task<bool> SaveDocument(DocumentModel documentModel);
+        Task<bool> SaveFolder(FolderModel folderModel, string userName);
+
+    }
+}

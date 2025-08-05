@@ -208,6 +208,8 @@
 <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
 
 
+
+
 <div class="page-content">
     <div class="row">
         <div class="col-md-8">
@@ -511,9 +513,8 @@
                 LoadTabData(url, "divPolicyContacts");
                 break;
             case "tabDocuments":
-                var url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document", caseId = "__id__" })';
+                var url = '@Url.Action("GetFilesById", "DMS", new { area = "Document", caseId = "__id__" })';
                 url = url.replace("__id__", Id);
-                console.log(url);
                 LoadTabData(url, "divDocument", true);
                 break;
             case "tabLogs":

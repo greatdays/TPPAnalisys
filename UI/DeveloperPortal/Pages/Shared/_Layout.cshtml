@@ -179,5 +179,39 @@
     
     
     @await RenderSectionAsync("Scripts", required: false)
+
+    @Html.Partial("_LoadingOverlay")
 </body>
 </html>
+<script>
+    function showLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "block";
+    }
+
+    function hideLoadingOverlay() {
+        document.getElementById("loadingOverlay").style.display = "none";
+    }
+
+    // Show on form submission
+    document.addEventListener("submit", function (e) {
+        const form = e.target;
+        if (form.tagName === "FORM") {
+            showLoadingOverlay();
+        }
+    }, true);
+
+    // Show on link clicks
+    document.addEventListener("click", function (e) {
+        const link = e.target.closest("a");
+        if (link && link.href && !link.target && !link.href.startsWith("javascript:")) {
+            showLoadingOverlay();
+        }
+    });
+
+    // Optional: Show for all AJAX calls (jQuery)
+    $(document).ajaxStart(function () {
+        showLoadingOverlay();
+    }).ajaxStop(function () {
+        hideLoadingOverlay();
+    });
+</script>

@@ -1,6 +1,7 @@
 ﻿using DeveloperPortal.Models;
 using DeveloperPortal.Models.PlanReview;
 using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,28 +18,37 @@ namespace DeveloperPortal.ServiceClient
 
         public static FolderModel GetFolderData(string baseAddress, string driveID, string folderName)
         {
+            // 🧼 Make sure folder name is URL-encoded
+            string encodedFolderName = Uri.EscapeDataString(folderName);
 
+            // ✅ Combine full URL
+            string fullUrl = $"{baseAddress.TrimEnd('/')}/api/GoogleDrive/GetFolderData?folderName={encodedFolderName}&driveID={driveID}";
 
-            var url = AAHRServiceConstant.GetFolderData + "?folderName=" + folderName + "&driveID=" + driveID;
             using (HttpClient client = new HttpClient())
             {
-                client.BaseAddress = new Uri(baseAddress);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response;
-                response = client.PostAsJsonAsync(url, new object()).Result;
+                HttpResponseMessage response = client.PostAsJsonAsync(fullUrl, new object()).Result;
+
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;
-                    FolderModel RetIdmUser = JsonConvert.DeserializeObject<FolderModel>(JsonConvert.DeserializeObject(result).ToString());
-                    return RetIdmUser;
+                    if (result != null && result!= string.Empty)
+                    {
+                        var folderModelJson = JsonConvert.DeserializeObject(result)?.ToString();
+                        return JsonConvert.DeserializeObject<FolderModel>(folderModelJson);
+                    }
+                    else
+                        return new FolderModel(); ;
+                        
                 }
                 response.Dispose();
                 response.Headers.ConnectionClose = true;
                 return new FolderModel();
             }
         }
+
         public static string CreateFolder(string baseAddress, string driveID, string folderName, string parentFolderName)
         {
             var parameter = "?newFolderName=" + folderName.Trim() + "&parentFolderName=" + parentFolderName + "&driveID=" + driveID;
@@ -64,35 +74,79 @@ namespace DeveloperPortal.ServiceClient
 
         public static string UploadFiel(string baseAddress, string driveID, string folderName, IFormFile file, string filteType)
         {
-            var parameter = "?folderName=" + folderName.Trim() + "&driveID=" + driveID;
-            var url = AAHRServiceConstant.UploadFile + parameter;
+            /* string encodedFolderName = Uri.EscapeDataString(folderName);
+             string fullUrl = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.UploadFile}?folderName={Uri.EscapeDataString(folderName)}&driveID={Uri.EscapeDataString(driveID)}";
+             using (HttpClient client = new HttpClient())
+             {
+                 client.BaseAddress = new Uri(baseAddress);
+                 client.DefaultRequestHeaders.Accept.Clear();
+                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(filteType));
+
+                 HttpResponseMessage response = client.PostAsJsonAsync(fullUrl, file).Result;
+                 if (response.IsSuccessStatusCode)
+                 {
+                     var result = response.Content.ReadAsStringAsync().Result;
+                     if(result != null && result != string.Empty)
+                     {
+                         return result;
+                     }
+                 }
+                 response.Dispose();
+                 response.Headers.ConnectionClose = true;
+                 return "";
+             }*/
+            string fullUrl = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.UploadFile}/?folderName={Uri.EscapeDataString(folderName)}&driveID={Uri.EscapeDataString(driveID)}";
+
             using (HttpClient client = new HttpClient())
+            using (var form = new MultipartFormDataContent())
+            using (var fileContent = new StreamContent(file.OpenReadStream()))
             {
-                client.BaseAddress = new Uri(baseAddress);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(filteType));
-                HttpResponseMessage response;
-                response = client.PostAsJsonAsync(url, file).Result;
+                fileContent.Headers.ContentType = new MediaTypeHeaderValue(filteType); // e.g., "application/pdf", "image/jpeg"
+                form.Add(fileContent, "file", file.FileName); // "file" must match the parameter name in the API
+
+                HttpResponseMessage response = client.PostAsync(fullUrl, form).Result;
+
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = response.Content.ReadAsStringAsync().Result;
-                    return result;
+                    return response.Content.ReadAsStringAsync().Result;
                 }
-                response.Dispose();
-                response.Headers.ConnectionClose = true;
-                return "";
+
+                return $"Error: {response.StatusCode}, Reason: {response.ReasonPhrase}";
             }
+
         }
 
-       
-    }
+        public static async Task<(Stream Stream, string FileName, string ContentType)?> DownloadDocument(string baseAddress, string fileID)
+        {
+            string url = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.DownloadDocument}?fileId={fileID}";
 
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
+
+                var response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var stream = await response.Content.ReadAsStreamAsync();
+                    var contentDisposition = response.Content.Headers.ContentDisposition;
+                    var fileName = contentDisposition?.FileName?.Trim('"') ?? "downloaded_file";
+                    var contentType = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
+
+                    return (stream, fileName, contentType);
+                }
+
+                return null;
+            }
+        }
+    }
 
     public static class AAHRServiceConstant
     {
         public const string GetFolderData = "api/GoogleDrive/GetFolderData";
         public const string CreateFolder = "api/GoogleDrive/CreateFolder";
         public const string UploadFile = "api/GoogleDrive/UploadFile";
-
+        public const string DownloadDocument = "api/GoogleDrive/DownloadDocument";
     }
 }

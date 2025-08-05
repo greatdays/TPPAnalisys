@@ -13,6 +13,13 @@ namespace DeveloperPortal.Models.PlanReview
         public string? Name { get; set; }
         public string? Link { get; set; }
         public string? ID { get; set; }
+        public string? ParentFolderName { get; set; }
+        public int FolderId { get; set; }
+        public int ProjectId { get; set; }
+        public string? Comment { get; set; }
+        public string? Attributes { get; set; }
+        public int? RefFolderId { get; set; }
+
         public List<FolderModel> Folders { get; set; }
         public List<FileModel> Files { get; set; }
 
