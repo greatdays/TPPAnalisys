@@ -105,6 +105,11 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                             <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                            <li>
+                                @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
+                            </li>
+
+                          
                         </ul>
                     }
                 </div>
@@ -163,7 +168,13 @@
 
 
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
-
+   <script type="text/javascript">
+             //my Account
+        document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
+            console.log("Clikced");
+           window.location.href = 'Account/MyAccount';
+        });
+   </script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>

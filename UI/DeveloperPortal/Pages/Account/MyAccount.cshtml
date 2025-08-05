@@ -1,0 +1,220 @@
+﻿@page
+@model DeveloperPortal.Pages.Account.MyAccountModel
+@{
+    ViewData["Title"] = "My Account";
+}
+
+
+<div class="container mt-4">
+    <div class="card shadow-sm p-4" style="max-width: 900px; margin: auto;">
+        <h4 class="mb-4 fw-bold">My Account</h4>
+
+        <div class="alert alert-success d-none" id="successMsg"></div>
+
+        <form id="myAccountForm" method="post">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <!-- Profile picture and change password -->
+                <div class="col-md-3 text-center mb-3">
+                    <img src="~/images/profile-placeholder.png" class="img-thumbnail mb-3" style="width: 150px; height: 150px;" />
+                    <button type="button" class="btn btn-outline-primary btn-sm">Change Password</button>
+                </div>
+
+                <!-- Form fields -->
+                <div class="col-md-9">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label>First Name *</label>
+                            <input name="FirstName" class="form-control" value="@Model.Account.FirstName" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Middle Name</label>
+                            <input name="MiddleName" class="form-control" value="@Model.Account.MiddleName" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Last Name *</label>
+                            <input name="LastName" class="form-control" value="@Model.Account.LastName" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Email *</label>
+                            <input name="Email" class="form-control" value="@Model.Account.Email" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Phone Type *</label>
+                            <select name="PhoneType" class="form-control">
+                                <option value="Mobile" selected="@(@Model.Account.PhoneType == "Mobile")">Mobile</option>
+                                <option value="Work" selected="@(@Model.Account.PhoneType == "Work")">Work</option>
+                                <option value="Home" selected="@(@Model.Account.PhoneType == "Home")">Home</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Phone Number *</label>
+                            <input name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
+                        </div>
+
+                        <div class="col-md-2">
+                            <label>Extension</label>
+                            <input name="Extension" class="form-control" value="@Model.Account.Extension" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Company Name *</label>
+                            <input name="CompanyName" class="form-control" value="@Model.Account.CompanyName" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Title *</label>
+                            <input name="Title" class="form-control" value="@Model.Account.Title" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>Architectural License Number *</label>
+                            <input name="ArchitecturalLicenseNumber" class="form-control" value="@Model.Account.ArchitecturalLicenseNumber" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label>P.O. Box *</label><br />
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="HasPOBox" value="true" @(Model.Account.HasPOBox ? "checked" : "") />
+                                <label class="form-check-label">Yes</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="HasPOBox" value="false" @(!Model.Account.HasPOBox ? "checked" : "") />
+                                <label class="form-check-label">No</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Street Number *</label>
+                            <input name="StreetNumber" class="form-control" value="@Model.Account.StreetNumber" />
+                        </div>
+                        <div class="col-md-3">
+                            <label>Street Direction</label>
+                            <input name="StreetDirection" class="form-control" value="@Model.Account.StreetDirection" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Street Name *</label>
+                            <input name="StreetName" class="form-control" value="@Model.Account.StreetName" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Street Type *</label>
+                            <input name="StreetType" class="form-control" value="@Model.Account.StreetType" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Unit Number</label>
+                            <input name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>City *</label>
+                            <input name="City" class="form-control" value="@Model.Account.City" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>State *</label>
+                            <input name="State" class="form-control" value="@Model.Account.State" />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Zip Code *</label>
+                            <input name="ZipCode" class="form-control" value="@Model.Account.ZipCode" />
+                        </div>
+
+                        <div class="col-12 text-end mt-3">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("myAccountForm");
+            const successMsg = document.getElementById("successMsg");
+
+            // Automatically remove success message after 2 seconds
+            function hideSuccessMessage() {
+                setTimeout(() => {
+                    successMsg.classList.add("d-none"); // Hide the success message after 2 seconds
+                }, 2000);
+            }
+
+       
+ 
+
+            const storageKey = "myAccountFormData";
+
+            // 🔄 Load from localStorage if available
+            const savedData = JSON.parse(localStorage.getItem(storageKey));
+            if (savedData) {
+                Object.entries(savedData).forEach(([key, value]) => {
+                    const input = form.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        if (input.type === "radio") {
+                            const radioToCheck = form.querySelector(`[name="${key}"][value="${value}"]`);
+                            if (radioToCheck) radioToCheck.checked = true;
+                        } else {
+                            input.value = value;
+                        }
+                    }
+                });
+            }
+
+            // 📝 Save changes to localStorage on input
+            form.addEventListener("input", () => {
+                const formData = new FormData(form);
+                const obj = {};
+                formData.forEach((value, key) => {
+                    obj[key] = value;
+                });
+                localStorage.setItem(storageKey, JSON.stringify(obj)); // Save the form data to localStorage
+            });
+
+            // 🚀 Submit and POST via AJAX
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const obj = {};
+                formData.forEach((value, key) => {
+                    obj[key] = value === "true" ? true : value === "false" ? false : value;
+                });
+
+                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
+
+                fetch("/Account/MyAccount?handler=Update", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "RequestVerificationToken": token
+                    },
+                    body: JSON.stringify(obj)
+                })
+                .then(res => res.text())
+                .then(text => {
+                    try {
+                        const result = JSON.parse(text);
+                        if (result.success) {
+                            successMsg.classList.remove("d-none");
+                            successMsg.innerText = result.message;
+
+                            // ✅ Save the updated form data to localStorage after successful update
+                            localStorage.setItem(storageKey, JSON.stringify(obj)); // Save the updated data
+
+                            // Automatically hide the success message after 2 seconds
+                            hideSuccessMessage();
+                        }
+                    } catch (err) {
+                        console.error("Invalid response:", text);
+                    }
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                });
+            });
+        });
+    </script>
+}
+

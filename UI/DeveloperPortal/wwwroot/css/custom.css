@@ -268,7 +268,7 @@ a.nav-link.nav-link-basic:hover {
         justify-content: center;
     }
 
-#loginLink, #registerLink {
+#loginLink, #registerLink, #btnMyAccount {
     margin-right: 20px;
     justify-content: center;
     font-size: 14px;
@@ -289,6 +289,10 @@ a.nav-link.nav-link-basic:hover {
 #registerLink {
     background-color: white;
     color: #1d4ed8;
+}
+#btnMyAccount {
+    background-color: white;
+    color: red;
 }
 
 .SignInContatiner {
