@@ -31,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model != null && Model.FolderModel != null)
+            @if (Model != null && Model.FolderModel != null && Model.FolderModel.Files!=null)
             {
                 foreach (var file in Model.FolderModel.Files)
                 {
@@ -81,9 +81,15 @@
 </div>
 
 @{
-    var folderNameParts = (Model?.FolderModel?.Name ?? "").Split('_');
-    var projectIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : "";
+    string projectIdFromName = "";
+
+    if (Model?.FolderModel?.Name != null)
+    {
+        var folderNameParts = Model.FolderModel.Name.Split('_');
+        projectIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : "";
+    }
 }
+
 
 <!-- Hidden Inputs -->
 <input type="hidden" id="ProjectId" value="@projectIdFromName" />

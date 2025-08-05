@@ -57,7 +57,11 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 }
                 folderDetails.Files = fileModels;
             }
-            return folderDetails;
+            else
+            {
+                folderDetails = new FolderDetails();
+            }
+                return folderDetails;
         }
         public async Task<DocumentModel> SaveDocument(DocumentModel documentModel)
         {

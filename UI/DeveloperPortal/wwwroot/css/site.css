@@ -11546,8 +11546,8 @@ label.control-label.required-label:after {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 9999;
 }
 
@@ -11561,7 +11561,7 @@ label.control-label.required-label:after {
 }
 
 .loading-overlay-message {
-    position: absolute;
+    position: fixed; /* instead of absolute */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -11572,4 +11572,6 @@ label.control-label.required-label:after {
     font-weight: bold;
     color: #333;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 10000; /* Make sure it's above everything */
 }
+
