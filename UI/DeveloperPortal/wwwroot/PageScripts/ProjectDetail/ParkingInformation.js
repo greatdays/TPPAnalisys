@@ -33,7 +33,7 @@ var ParkingInformation=
             });
         });
         ParkingInformation.reset();
-        ParkingInformation.calculateTotal("chargingStations", "chargingStationsTotal");
+        ParkingInformation.CalculateTotal("chargingStations", "chargingStationsTotal");
 
         $('.input-parking').on("keypress", function (e) {
             var charCode = (e.which) ? e.which : event.keyCode
@@ -41,20 +41,20 @@ var ParkingInformation=
                 return false;
         });
         $('.residentialSpaces').on('change', function () {
-            calculateTotal("residentialSpaces", "residentialSpacesTotal")
+            ParkingInformation.CalculateTotal("residentialSpaces", "residentialSpacesTotal")
         });
         $('.comercialSpaces').on('change', function () {
-            calculateTotal("comercialSpaces", "comercialSpacesTotal")
+            ParkingInformation.CalculateTotal("comercialSpaces", "comercialSpacesTotal")
         });
         $('.commercialcharging').on('change', function () {
-            calculateTotal("commercialcharging", "commercialchargingTotal")
+            ParkingInformation.CalculateTotal("commercialcharging", "commercialchargingTotal")
         });
         $('.chargingStations').on('change', function () {
-            calculateTotal("chargingStations", "chargingStationsTotal")
+            ParkingInformation.CalculateTotal("chargingStations", "chargingStationsTotal")
         });
     },
    
-    calculateTotal: function (sourceElement,totalElement) {
+    CalculateTotal: function (sourceElement,totalElement) {
         var total = 0;
         $("." + sourceElement).each(function (index, elem) {
             if (!isNaN($(elem).val()) && $(elem).val() !== '') {
