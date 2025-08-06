@@ -1596,3 +1596,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 
 
 /*====New Site Information Page==============*/
+/* Dashboad pop window style fix */
+#projectForm .form-control{ 
+    padding:18px 15px;
+}
