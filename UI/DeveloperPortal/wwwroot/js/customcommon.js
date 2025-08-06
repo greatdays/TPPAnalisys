@@ -85,13 +85,16 @@ function OpenActionPopUp(link,openInWindow) {
 }
 
 
-//function ShowMessage(title, body, isShow = true) {
-//    $("#modalSuccessTitle").text(title);
-//    $("#modalSuccessBody").html(body);
-//    if (isShow) {
-//        $("#divModalImportSuccess").modal('show');
-//    }
-//    else {
-//        $("#divModalImportSuccess").modal('hide');
-//    }
-//}
+/* Function ShowMessage
+*** This function is used for Show Message.***
+--------------------------------------------------------------------------------------------------------------------------*/
+function ShowMessage(title, body, isShow = true) {
+    $("#modalSuccessTitle").text(title);
+    $("#modalSuccessBody").html(body);
+    if (isShow) {
+        $("#divModalImportSuccess").modal('show');
+    }
+    else {
+        $("#divModalImportSuccess").modal('hide');
+    }
+}

@@ -1,10 +1,4 @@
-﻿@* @page
-@model DeveloperPortal.Pages.ProjectDetail.UploadUnitInfoModel
-@{
-}
-
- *@
-@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
+﻿@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
 
 <div id="modalImportUnits" class="modal fade" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="true" tabindex='-1'>
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -78,98 +72,10 @@
     Dropzone.autoDiscover = false;
     $("#unit-upload-form").data('unobtrusiveValidation');
 	eval("var dropzone" +   " = null;");
-	$(document).ready(function() {
-		var myDropzone = new Dropzone("div#divDropZone", {
-            url: '@Url.Action("ImportUnitInformation", "ProjectDetail", new { area = "Construction" })' ,
-			paramName: "file",
-			clickable: "#divDropZone",
-			filesizeBase: 1024,
-			uploadMultiple: false,
-			autoProcessQueue: false,
-			addRemoveLinks: true,
-			autoDiscover: false,
-			acceptedFiles: ".xls,.xlsx", // file types.
-			dictMaxFilesExceeded: 'You can not upload any more files.',
-			dictRemoveFile: 'Remove file',
-			dictDefaultMessage: 'Drop files here to upload',
-			dictCancelUpload: 'Cancel upload',
-			init: function () {
-				myDropzone = this;
-				this.on("sending", function (data, xhr, formData) {
-                    formData.delete('ProjectId');
-                    formData.delete('ProjectSiteID');
-                    formData.delete('Id');
-					formData.delete('FileNumber');
-
-                    formData.append('ProjectId', $('#ProjectId').val());
-                    formData.append('ProjectSiteID', $('#ProjectSiteID').val());
-                    formData.append('Id', $('#Id').val());
-                    formData.append('FileNumber', $('#FileNumber').val());
-				});
-
-				this.on('success', function(file, response) {
-					fnUnblockUI();
-					var myDropZone = eval("dropzone");
-					if (response.result.status) {
-						myDropzone.removeAllFiles();
-						myDropZone.removeAllFiles();
-
-                        ShowMessage("Suceess!", response.result.message, true);
-						$("#modalImportUnits").modal('hide');
-
-					} else {
-                        myDropzone.removeAllFiles();
-                        $("#modalImportUnits").modal('show');
-                        ShowMessage("Error!", response.result.errorMessage, true);
-					}
-				});
-
-				this.on("error", function(file, message) {
-					this.removeFile(file);
-					fnUnblockUI();
-                    ShowMessage("Error!", message, true);
-				});
-			}
-		});
-
-		eval("dropzone" + " = myDropzone");
-		$("#modalDismiss").click(function () {
-            reloadUntiGrid = true;
-            $('#unitKgrid').data('kendoGrid').dataSource.read();
-            $('#unitKgrid').data('kendoGrid').refresh();
-            reloadParkingGrid = true;
-            $('#dtPrkingData').DataTable().ajax.reload();
-		});
-
+	$(document).ready(function() 
+    {
+        UnitMatrixInformation.ImportInit();
 	});
-
-    $("#unitImport").click(function() {
-        debugger;
-		myDropzone = eval("dropzone");
-		if (myDropzone.getQueuedFiles().length < 1) {
-			$("#errorMsg").show();
-			$("#errorMsg").html('At least one file is required');
-			return false;
-		}
-		$("#errorMsg").hide();
-		if ($("#unit-upload-form").valid()) {
-			fnBlockUI();
-			myDropzone.processQueue();
-			}
-		return true;
-	});
-
-    function ShowMessage(title,body, isShow=true) {
-        $("#modalSuccessTitle").text(title);
-        $("#modalSuccessBody").html(body);
-		if (isShow) {
-			$("#divModalImportSuccess").modal('show');
-		}
-		else {
-            $("#divModalImportSuccess").modal('hide');
-        }
-    }
-
 </script>
 <style>
     .modal-error {

@@ -1,4 +1,6 @@
-﻿var ParkingInformation=
+﻿var dtBuildingDataTable;
+
+var ParkingInformation=
 {   
     init:function () 
     {
@@ -51,6 +53,7 @@
             calculateTotal("chargingStations", "chargingStationsTotal")
         });
     },
+   
     calculateTotal: function (sourceElement,totalElement) {
         var total = 0;
         $("." + sourceElement).each(function (index, elem) {

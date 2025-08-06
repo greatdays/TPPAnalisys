@@ -32,8 +32,8 @@
 
             switch (tabName) {
                 case "tabSiteInformation":
-                    LoadSiteInformation();
-                    break;
+                    SiteInformation.LoadSiteInformation();
+                break;
                 // case "tabImportantDates":
                 //     url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
                 //     LoadTabData(url, "divImportantDates");

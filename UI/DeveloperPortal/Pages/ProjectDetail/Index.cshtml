@@ -213,6 +213,7 @@
 <script src="~/PageScripts/ProjectDetail/ParkingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/LadbsInfomation.js"></script>
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
+<script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 
 <div class="page-content">
     <div class="row">
@@ -282,163 +283,9 @@
     Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
 }
 <div id="Help">
-
-    <div id="myModalHelp" tabindex="-1" class="modal fade" role="dialog">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" text-align="center">Workflow Image </h4>
-                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                </div>
-                @if (Model.ProjectSummary.CaseType == "Retrofit Site" || Model.ProjectSummary.CaseType == "Existing Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RetrofitSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Retrofit Project" || Model.ProjectSummary.CaseType == "Existing Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RetrofitProject.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Sub Rehab Project" || Model.ProjectSummary.CaseType == "Sub Rehab/Retrofit Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "New Construction Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Other Alterations Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Sub Rehab/New Construction Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
-
-                    </div>
-                }
-
-                else if (Model.ProjectSummary.CaseType == "Sub Rehab Site" || Model.ProjectSummary.CaseType == "Sub Rehab/Retrofit Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "New Construction Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Other Alterations Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Sub Rehab/New Construction Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Retrofit Bid Package")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/BidPackage.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "New Construction/Modular Project" || Model.ProjectSummary.CaseType == "New Construction/Retrofit Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCProject.png" class="WF-image" />
-
-                    </div>
-                }
-
-                else if (Model.ProjectSummary.CaseType == "New Construction/Modular Site" || Model.ProjectSummary.CaseType == "New Construction/Retrofit Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/RehabNCSite.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Enforcement")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/wf_enforcement.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "CAP")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/wf_CAP.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Policy Project")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/wf_PolicyProject.png" class="WF-image" />
-
-                    </div>
-                }
-                else if (Model.ProjectSummary.CaseType == "Policy Site")
-                {
-                    <div class="modal-body">
-
-                        <img src="~/Images/wf_PolicySite.png" class="WF-image" />
-
-                    </div>
-                }
-                <div class="modal-footer">
-
-
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
+@{
+    Html.RenderPartial("_Help", Model.ProjectSummary);
+}
 </div>
 
 <!--START Printing Deatils Popup -->
@@ -463,20 +310,16 @@
     </div>
 </div>
 
-
-
-
-
 <script type="text/javascript">
     var baseUrl = window.location.origin;
-    var Id = @Model.Id
-    var ProjectId = @Model.ProjectId
+    var Id = @Model.Id;
+    var ProjectId = @Model.ProjectId;
     var isEditAccess = true;
     var reloadUntiGrid = false;
     var documentControlViewModelId = 7313;
     var logsControlViewModelId = 1006;
     var ContactControlViewModelId = 1028;
-    var PolicyContactControlViewModelId = 12505;
+    // var PolicyContactControlViewModelId = 12505;
     var popupCaseId = 0;
     var popuprefProjectSiteID = 0;
     var popupTitle = "";
@@ -486,159 +329,12 @@
     var accessType="FULLACCESS";
     var SiteInformationData = [];
     var IsLoadSiteInformationTab = false;
-    var   dtBuildingDataTable;
-
     $.fn.dataTableExt.pager.numbers_length = 50;
+    
     //Load on init
-    LoadProjectInformation();
-    LoadSiteInformation();
-
-    /*Start Project Site Data table */
-    function LoadSiteInformation() {
-          $.fn.dataTableExt.pager.numbers_length = 50;
-        if (IsLoadSiteInformationTab) {
-            return;
-        }
-
-        var dtSiteDataTable = $('#dtSiteData').dataTable({
-            ajax: {
-                url: '@Url.Action("GetSiteInformation", "ProjectDetail", new { area = "Construction" })',
-                type: 'POST',
-                data: function (d) {
-                    d.SiteInformationData = SiteInformationData,
-                        d.caseId = Id
-
-                },
-                "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                dataType: 'json'
-
-            },
-            "columns": [
-                {
-                    "data": 'siteInfomationData'
-                }
-            ],
-            processing: true,
-            serverSide: true,
-            pagingType: 'numbers',
-            pageLength: 1,
-            "paging": true,
-            "searching": true,
-            "ordering": false,
-            "dom": "<'row'<'<'col-sm-12'p>>",
-            "oLanguage": {
-                "sEmptyTable": "No record found."
-            }
-        });
-        dtSiteDataTable.on('draw.dt', function () {
-             if ($("#dtSiteData_paginate .select-site-title").length == 0) {
-                $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:</div>")
-            }
-
-            $(".dataTables_length").hide();
-            var siteData = $('#dtSiteData').dataTable().fnGetData();
-
-            var siteLength = siteData.length;
-            if (siteLength > 0) {
-                $("#dtSiteData_paginate").show();
-                documentControlViewModelId = siteData[0].documentControlViewModelId;
-                logsControlViewModelId = siteData[0].logsControlViewModelId;
-                ContactControlViewModelId = siteData[0].contactControlViewModelId;
-                SiteInformationData = siteData[0].siteInformationData;
-                var pageItems = $("#tabSiteInformation .paginate_button");
-                var siteList = siteData[0].siteList;
-                for (var i = 0; i < pageItems.length; i++) {
-                    var text = pageItems[i].text
-                     if (text != '…') {
-                         if (parseInt(text).toString() != "NaN") {
-                             pageItems[i].text=siteList[parseInt(text) - 1];
-                         }
-                     }
-                }
-                $("#btnSiteInformation").text("Site Information (" + siteList.length + ")");
-            }
-            else { $("#dtSiteData_paginate").hide(); }
-        });
-        $("#siteInformationPopup").on("hide.bs.modal", function (e) {
-            if ($(e.target).attr("id") !== "siteInformationPopup") {
-                $('#siteInformationPopup').modal("show");
-            }
-        })
-        $("#siteInformationPopup").on("hidden.bs.modal", function (e) {
-            if ($(e.target).attr("id") !== "siteInformationPopup") {
-                $('#siteInformationPopup').modal("show");
-            }
-
-        })
-        IsLoadSiteInformationTab = true;
-    }
-    /*End Project Site Data table */
-
-       /*Start Building Data table */
-    function LoadParkingInfo()
-    {
-
-      dtBuildingDataTable = $('#dtPrkingData').dataTable({
-            ajax: {
-                url: '@Url.Action("GetBuildingInformation", "ProjectDetail", new {  area = "Construction" })',
-                data: function (d) {
-                    d.caseId = Id;
-                    if (reloadParkingGrid==false)
-                    {
-                        d.BuildingInformationData = JSON.stringify(BuildingInformationData);
-                    }
-                    reloadParkingGrid = false
-                },
-                type: 'Post',
-                "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                dataType: 'json'
-            },
-            "columns": [{ "data": 'parkingData' }],
-
-            processing: true,
-            serverSide: true,
-            pageLength: 1,
-            pagingType: 'numbers',
-            "paging": true,
-            "searching": false,
-            "ordering": false,
-            "dom": "<'row'<'<'col-sm-12'p>>",
-            "oLanguage": {
-                "sEmptyTable": "No record found."
-            }
-        });
-
-        dtBuildingDataTable.on('draw.dt', function () {
-            if ($("#dtPrkingData_paginate .select-site-title").length == 0) {
-                $("#dtPrkingData_paginate").prepend("<div class='select-site-title'>Select Building:</div>")
-            }
-            $(".dataTables_length").hide();
-            var buildingData =dtBuildingDataTable.fnGetData();
-            if (buildingData.length > 0) {
-                $("#dtPrkingData_paginate").show()
-                var pageItems = $("#dtPrkingData_paginate .paginate_button");
-                var buildingList = buildingData[0].buildingList;
-                BuildingInformationData = buildingData[0].buildingInformationData;
-                 for (var i = 0; i < pageItems.length; i++) {
-                     var text = pageItems[i].text
-                     if (text != '…') {
-                         if (parseInt(text).toString() != "NaN") {
-                             pageItems[i].text=buildingList[parseInt(text) - 1];
-                         }
-                     }
-                 }
-            }
-            else { $("#dtPrkingData_paginate").hide();}
-        });
-        }
-        /*End Building Data table */
-   
-
-     
+    UnitMatrixInformation.LoadUnitMatrix();
+    BuildingInformation.load();
+    SiteInformation.LoadSiteInformation()
 </script>
 
 

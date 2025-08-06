@@ -1,5 +1,63 @@
-﻿var BuildingInformation =
+﻿var dtBuildingDataTable;
+var BuildingInformation =
 {
+     load: function()
+    {
+        dtBuildingDataTable = $('#dtPrkingData').dataTable({
+            ajax: {
+                url: 'Construction/ProjectDetail/GetBuildingInformation',
+                data: function (d) {
+                    d.caseId = Id;
+                    if (reloadParkingGrid==false)
+                    {
+                        d.BuildingInformationData = JSON.stringify(BuildingInformationData);
+                    }
+                    reloadParkingGrid = false
+                },
+                type: 'Post',
+                "headers": {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                dataType: 'json'
+            },
+            "columns": [{ "data": 'parkingData' }],
+
+            processing: true,
+            serverSide: true,
+            pageLength: 1,
+            pagingType: 'numbers',
+            "paging": true,
+            "searching": false,
+            "ordering": false,
+            "dom": "<'row'<'<'col-sm-12'p>>",
+            "oLanguage": {
+                "sEmptyTable": "No record found."
+            }
+        });
+
+        dtBuildingDataTable.on('draw.dt', function () {
+            if ($("#dtPrkingData_paginate .select-site-title").length == 0) {
+                $("#dtPrkingData_paginate").prepend("<div class='select-site-title'>Select Building:</div>")
+            }
+            $(".dataTables_length").hide();
+            var buildingData =dtBuildingDataTable.fnGetData();
+            if (buildingData.length > 0) {
+                $("#dtPrkingData_paginate").show()
+                var pageItems = $("#dtPrkingData_paginate .paginate_button");
+                var buildingList = buildingData[0].buildingList;
+                BuildingInformationData = buildingData[0].buildingInformationData;
+                    for (var i = 0; i < pageItems.length; i++) {
+                        var text = pageItems[i].text
+                        if (text != '…') {
+                            if (parseInt(text).toString() != "NaN") {
+                                pageItems[i].text=buildingList[parseInt(text) - 1];
+                            }
+                        }
+                    }
+            }
+            else { $("#dtPrkingData_paginate").hide();}
+        });
+    },
     initBuildingSummary:function ()  {
         $("#buildingSummaryForm").submit(function (event) {
             event.preventDefault(); // Prevent normal form submission

@@ -1,0 +1,158 @@
+﻿@model DeveloperPortal.Domain.ProjectDetail.ProjectSummaryModel
+
+<div id="myModalHelp" tabindex="-1" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" text-align="center">Workflow Image </h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            @if (Model.CaseType == "Retrofit Site" || Model.CaseType == "Existing Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RetrofitSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Retrofit Project" || Model.CaseType == "Existing Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RetrofitProject.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Sub Rehab Project" || Model.CaseType == "Sub Rehab/Retrofit Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "New Construction Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Other Alterations Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Sub Rehab/New Construction Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                </div>
+            }
+
+            else if (Model.CaseType == "Sub Rehab Site" || Model.CaseType == "Sub Rehab/Retrofit Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "New Construction Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Other Alterations Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Sub Rehab/New Construction Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Retrofit Bid Package")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/BidPackage.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "New Construction/Modular Project" || Model.CaseType == "New Construction/Retrofit Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCProject.png" class="WF-image" />
+
+                </div>
+            }
+
+            else if (Model.CaseType == "New Construction/Modular Site" || Model.CaseType == "New Construction/Retrofit Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/RehabNCSite.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Enforcement")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/wf_enforcement.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "CAP")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/wf_CAP.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Policy Project")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/wf_PolicyProject.png" class="WF-image" />
+
+                </div>
+            }
+            else if (Model.CaseType == "Policy Site")
+            {
+                <div class="modal-body">
+
+                    <img src="~/Images/wf_PolicySite.png" class="WF-image" />
+
+                </div>
+            }
+            <div class="modal-footer">
+
+
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

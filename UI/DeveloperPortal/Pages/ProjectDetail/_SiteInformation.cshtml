@@ -52,173 +52,22 @@
             <h3 class="site-more-info">  More Information</h3>
             <div class="row">
                 <div class="col-sm-12 link">
-                    <a href="#" onclick='showActionPopupClick("SitInformation","",@Model.CaseID,@Model.RefProjectSiteID)'>Site Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("BuidlingInformation","@(Model.FileNumber + " Building Information")",@Model.CaseID,@Model.RefProjectSiteID)'>Building Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("Contacts","@(Model.FileNumber + " Contacts")",@Model.CaseID,@Model.RefProjectSiteID)'>Contact Information</a>
-                    <br />
-                    <a href="#" onclick='showActionPopupClick("ImportantDates","@(Model.FileNumber + " Important Dates")",@Model.CaseID,@Model.RefProjectSiteID)'>Important Dates</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("Inspection","@(Model.FileNumber + " Inspection History")",@Model.CaseID,@Model.RefProjectSiteID)'> Inspection</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("Violations","@(Model.FileNumber + " Violations")",@Model.CaseID,@Model.RefProjectSiteID)'> Violations </a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("Documents","@(Model.FileNumber + " Documents")",@Model.CaseID,@Model.RefProjectSiteID)'>Documents</a> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <a href="#" onclick='showActionPopupClick("Logs","@(Model.FileNumber + " Logs")",@Model.CaseID,@Model.RefProjectSiteID)'> Logs</a>
+                    <a href="#" onclick='SiteInformation.ShowActionPopupClick("SitInformation","",@Model.CaseID,@Model.RefProjectSiteID)'>Site Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='SiteInformation.ShowActionPopupClick("BuidlingInformation","@(Model.FileNumber + " Building Information")",@Model.CaseID,@Model.RefProjectSiteID)'>Building Information</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='SiteInformation.ShowActionPopupClick("Contacts","@(Model.FileNumber + " Contacts")",@Model.CaseID,@Model.RefProjectSiteID)'>Contact Information</a>
+                    <a href="#" onclick='SiteInformation.ShowActionPopupClick("Documents","@(Model.FileNumber + " Documents")",@Model.CaseID,@Model.RefProjectSiteID)'>Documents</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <a href="#" onclick='SiteInformation.ShowActionPopupClick("Logs","@(Model.FileNumber + " Logs")",@Model.CaseID,@Model.RefProjectSiteID)'> Logs</a>
                 </div>
             </div>
 
         </div>
         <div class="col-sm-4">
-            <h3 class="site-more-info">Actions</h3>
+           @*  <h3 class="site-more-info">Actions</h3>
             <div class="row">
                 <div class="col-sm-12 link action-link">
                     @Html.Raw(Model.Actions)
                 </div>
-            </div>
+            </div> *@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    /*Site actions*/
-    function showActionPopupClick(actionType, title, caseId, refProjectSiteID) 
-    {
-        popupCaseId = caseId;
-        popuprefProjectSiteID = refProjectSiteID;
-        popupTitle = title;
-        if ($.fn.DataTable.isDataTable('#tableSiteDetails')) { $('#tableSiteDetails').DataTable().destroy(); }
-        $('#tableSiteDetails').empty(); var url = "";
-        switch (actionType) {
-            case "SitInformation":
-                url = '@Url.Action("RenderTab", "Tab", new { area = "ComCon" })?tabName=Retrofit%20Site%20Case%20Detail%20-%20New&Id=' + caseId + '&projectSiteId=' + refProjectSiteID;
-                window.open(url,'_blank');
-                break;
-            case "BuidlingInformation":
-                var columns = [
-                    { data: 'BuildingAddress', title: "Building Address" },
-                    { data: 'OwnerNameOrCompany', title: "Owner Name / Company" },
-                    { data: 'PMName', title: "PM Name" },
-                    { data: 'BuildingFileNumber', title: "Building File #" }
-                ];
-                url = '@Url.Action("GetBuildingInformation", "ConstructionNew", new { area = "Construction" })?caseId=' + caseId;
-                LoadSiteActionTable(title, url, columns);
-                break;
-            case "AllSiteInformation":
-                var columns = [
-                    { data: 'ServiceRequestNumber', title: "Site #" },
-                    { data: 'NoOfBuldings', title: "Number Of Buildings" },
-                    { data: 'AcHPSiteNumber', title: "AcHP Site #" },
-                    { data: 'AssigneeName', title: "Assignee" },
-                    { data: 'Status', title: "Site Status" }
-                ];
-                url = '@Url.Action("GetAllSiteCasesForSiteDetail", "ConstructionNew", new { area = "Construction" })?caseId=' + caseId;
-                LoadSiteActionTable(title, url, columns);
-                break;
-
-            case "Contacts":
-                url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + ContactControlViewModelId;
-                LoadSiteAction(title, url);
-                break;
-            case "ImportantDates":
-                url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + caseId;
-                    LoadSiteAction(title, url);
-                break;
-            case "Inspection":
-                var columns = [
-                    { data: 'Inspectionid', title: "Inspection id" },
-                    { data: 'InspectionRound', title: "Inspection Round" },
-                    { data: 'InspectedStartOn', title: "Inspection Start Date" },
-                    { data: 'InspectedEndOn', title: "Inspection End Date" },
-                    { data: 'Inpector', title: "Inspector" },
-                    { data: 'ViolationsAdded', title: "Violations Added" },
-                    { data: 'ViolationsCleared', title: "Violations Cleared" },
-                    { data: 'ViolationsRemaining', title: "Violations Remaining" },
-                    { data: 'Status', title: "Status" },
-                    { data: 'Notice', title: "Notice" }
-                ];
-                url = '@Url.Action("GetInpectionHistoryForProject", "ConstructionNew", new { area = "Construction" })?caseId=' + caseId;
-                LoadSiteActionTable(title, url, columns);
-                break;
-            case "Violations":
-                url = '@Url.Action("ViolationFilters", "Violation", new { area = "Construction" })?id=' + caseId;
-                LoadSiteAction(title, url);
-                break;
-            case "Documents":
-                url = '@Url.Action("GetFilesById", "DMS", new { area = "Documents" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + documentControlViewModelId
-                LoadSiteAction(title, url);
-                break;
-            case "Logs":
-                url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + logsControlViewModelId;
-                LoadSiteAction(title, url);
-                break;
-            default:
-        }
-
-    }
-
-    function LoadSiteAction(title, url) 
-    {
-        AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-            function (result) {
-                showActionPopup(title, result);
-            }, null, true, null, false);
-    }
-
-         function LoadSiteActionTable(title, url, columns) {
-            $('#tableSiteDetails').dataTable({
-                ajax: {
-                    url: url,
-                    type: 'Get',
-                    "headers": {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    dataType: 'json',
-                    dataSrc: ''
-                },
-                "columns": columns,
-                "paging": true,
-                "searching": true,
-                "ordering": false,
-                "dom": "<'row'<'col-sm-4'l><'col-sm-4'p><'col-sm-4'f>>",
-                "oLanguage": {
-                    "sEmptyTable": "No record found."
-                }
-            });
-            showActionPopup(title, "");
-        }
-        function OpenActionPopUp1(link, OpenInWindow) {
-            //Checking modal pop size if pop is large, then we reomving the 'modal-lg' class form that popup.
-            //popup name ---- Submit Draw Request / Invoice--
-            $(".modal-dialog.modal-dialog-centered").removeClass("modal-lg");
-
-            var title = $(link).html();
-            var url = $(link).attr('modal-data');
-            if (!url) {
-                url = '/ComCon/Action/ActionNotFound';
-            } url = url.replaceAll("&amp;", "&");
-            if (OpenInWindow.toString().toLowerCase() == 'true') {
-                if (isLocalEnv) {
-                    url = "/AAHP.UI/" + url;
-                }
-                window.location.href =url;
-            }
-            else {
-                if (isLocalEnv) {
-                    url = "/AAHP.UI/" + url;
-                }
-                AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-                    function (result) {
-                        var form = $('form[name=submitForm]')
-                        form.removeData("validator") // added by the raw jquery.validate plugin /
-                            .removeData("unobtrusiveValidation");  // added by the jquery unobtrusive plugin*/
-                        $.validator.unobtrusive.parse(form);
-                        $('.ActioModalTitle').html(title);
-                        $(".ActioModalBody").html(result);
-                        $('#ActioModal').modal('show');
-                    }, null, true, null, false);
-            }
-        }
-             function showActionPopup(title, data) 
-             {
-            $("#siteInformationPopupTitle").html(title)
-            $("#siteInformationPopupBody").html(data)
-            $('#siteInformationPopup').modal("show");
-        }
-</script>
