@@ -1,12 +1,6 @@
 ﻿using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace DeveloperPortal.Application.ProjectDetail.Interface
 {
@@ -62,7 +56,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="unitModel"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        bool UpdateUnitDetails(UnitDataModel unitModel, string userName);
+        Task<bool> UpdateUnitDetails(UnitDataModel unitModel, string userName);
 
         /// <summary>
         /// AddUnitDetail
@@ -70,14 +64,14 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="model"></param>
         /// <param name="Username"></param>
         /// <returns></returns>
-        bool AddUnitDetail(UnitDataModel model, string Username);
+        Task<bool> AddUnitDetail(UnitDataModel model, string Username);
         /// <summary>
         /// DeleteUnit
         /// </summary>
         /// <param name="propId"></param>
         /// <param name="User"></param>
         /// <returns></returns>
-        bool DeleteUnit(int propId, string User);
+        Task<bool> DeleteUnit(int propId, string User);
 
         /// <summary>
         /// Get Project actions by Case Id and logged in user roles
@@ -130,7 +124,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="Department"></param>
         /// <returns></returns>
         Task<PcisPermitDetail> GetLADBSDataByPermitNumber(string PermitNumber, string Department);
-        
+
         /// <summary>
         /// GetLADBSPermitDetails
         /// </summary>
@@ -138,18 +132,18 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="permitNumber"></param>
         /// <returns></returns>
         Task<PcisPermitDetail> GetLADBSPermitDetails(int propSnapshotId, string permitNumber);
-        
+
         /// <summary>
         /// GetLutTotalBedrooms
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> GetLutTotalBedrooms();
-        
+        Task<List<SelectListItem>> GetLutTotalBedrooms();
+
         /// <summary>
         /// GetLutUnitType
         /// </summary>
         /// <returns></returns>
-        List<SelectListItem> GetLutUnitType();
+        Task< List<SelectListItem>> GetLutUnitType();
 
         /// <summary>
         /// GetPropSnapshotDetails

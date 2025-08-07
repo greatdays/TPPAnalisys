@@ -1,30 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DeveloperPortal.DataAccess.Entity.Data;
+﻿using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
-using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeveloperPortal.DataAccess.Repository.Implementation
 {
     public class ProjectDetailRepository : IProjectDetailRepository
     {
-        
-        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
-        private readonly AAHREntities _context;
-       
 
-        public ProjectDetailRepository(IStoredProcedureExecutor storedProcedureExecutor,
-            AAHREntities context)
+        private readonly AAHREntities _context;
+
+
+        public ProjectDetailRepository(AAHREntities context)
         {
-           
-            _storedProcedureExecutor = storedProcedureExecutor;
             _context = context;
-           
         }
 
 
@@ -49,50 +38,188 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             await _context.SaveChangesAsync();
             return structureAttribute;
         }
-        
-        public bool UpdateUnitDetails(UnitDataModel unitModel, string userName)
+
+        /// <summary>
+        /// UnitAttribute
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<UnitAttribute?> UnitAttribute(long propSnapshotId)
         {
-            var unitAtt = _context.UnitAttributes.FirstOrDefault(u => u.PropSnapshotId == unitModel.PropSnapshotID);
-            if (unitAtt != null)
+            return await _context.UnitAttributes.FirstOrDefaultAsync(u => u.PropSnapshotId == propSnapshotId);
+        }
+
+        /// <summary>
+        /// Unit
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<Unit?> Unit(long propSnapshotId)
+        {
+            var prop = await _context.PropSnapshots.FirstOrDefaultAsync(p => p.PropSnapshotId == propSnapshotId);
+            if (prop == null)
             {
-                var prop = _context.PropSnapshots.FirstOrDefault(p => p.PropSnapshotId == unitModel.PropSnapshotID);
-                var unit = _context.Units.FirstOrDefault(u => u.UnitId == prop.UnitId);
-                if (unit != null)
+                return null;
+            }
+            return await _context.Units.FirstOrDefaultAsync(u => u.UnitId == prop.UnitId);
+
+        }
+
+
+        /// <summary>
+        /// AddUnit
+        /// </summary>
+        /// <param name="unit"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> AddUnit(Unit unit, string userName)
+        {
+            _context.Units.Add(unit);
+            return await SaveChangesWithAuditAsync(userName);
+        }
+
+
+        /// <summary>
+        /// PolicyComplianceDetail
+        /// </summary>
+        /// <param name="serviceRequestId"></param>
+        /// <returns></returns>
+        public async Task<PolicyComplianceDetail?> PolicyComplianceDetail(long? serviceRequestId)
+        {
+            return await _context.PolicyComplianceDetails.Where(p => p.ServiceRequestId == serviceRequestId).FirstOrDefaultAsync();
+        }
+
+
+
+        /// <summary>
+        /// AddPolicyComplianceDetail
+        /// </summary>
+        /// <param name="policyComplianceDetail"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> AddPolicyComplianceDetail(PolicyComplianceDetail policyComplianceDetail, string userName)
+        {
+            policyComplianceDetail.CreatedBy = userName;
+            policyComplianceDetail.CreatedOn = System.DateTime.Now;
+            policyComplianceDetail.ModifiedBy = userName;
+            policyComplianceDetail.ModifiedOn = System.DateTime.Now;
+            _context.PolicyComplianceDetails.Add(policyComplianceDetail);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// UpdatePolicyComplianceDetail
+        /// </summary>
+        /// <param name="policyComplianceDetail"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> UpdatePolicyComplianceDetail(PolicyComplianceDetail policyComplianceDetail, string userName)
+        {
+            policyComplianceDetail.ModifiedBy = userName;
+            policyComplianceDetail.ModifiedOn = System.DateTime.Now;
+            //_context.Entry(policyComplianceDetail).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// SaveChangesWithAuditAsync
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> SaveChangesWithAuditAsync(string userName)
+        {
+            await _context.SaveChangesWithAuditAsync(userName);
+            return true;
+        }
+
+        /// <summary>
+        /// AddPropSnapshots
+        /// </summary>
+        /// <param name="caseId"></param>
+        /// <param name="ps"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<bool> AddPropSnapshots(int caseId, PropSnapshot ps, string userName)
+        {
+            var serviceRequest = _context.ServiceRequests.FirstOrDefault(s => s.CaseId == caseId);
+            if (serviceRequest != null)
+            {
+                serviceRequest.PropSnapshots.Add(ps);
+                return await SaveChangesWithAuditAsync(userName);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// DeleteUnit
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteUnit(int propSnapshotId, string username)
+        {
+            // mark a single construction unit and unitattribute record as deleted
+            var propSnapshot = _context.PropSnapshots.Include(c => c.Unit).FirstOrDefault(x => x.PropSnapshotId == propSnapshotId && x.IdentifierType == "Unit");
+            if (propSnapshot != null)
+            {
+                propSnapshot.Status = "X";
+                if (propSnapshot.Unit != null)
                 {
-                    unit.UnitNum = unitModel.UnitNum;
+                    propSnapshot.Unit.Status = "X";
+                    propSnapshot.Unit.IsDeleted = true;
+                    propSnapshot.Unit.Attributes = "{\"Status\":\"X\"}";
                 }
-                unitAtt.IsCsa = unitModel.IsCSA;
-                unitAtt.IsVca = unitModel.IsVCA;
-                unitAtt.LutTotalBedroomId = unitModel.LutTotalBedroomID;
-                unitAtt.LutUnitTypeId = unitModel.LutUnitTypeID;
-                unitAtt.FloorPlanType = unitModel.FloorPlanType;
-                unitAtt.AccessibleFeatureType = unitModel.AdditionalAccecibility;
-                unitAtt.IsManagersUnit = unitModel.ManagersUnit.HasValue ? unitModel.ManagersUnit.HasValue : false;
-                _context.SaveChanges(userName);
-                PolicyComplianceDetail pcd = _context.PolicyComplianceDetails.Where(p => p.ServiceRequestId == unitModel.ServiceRequestId).FirstOrDefault();
-                if (pcd == null && unitModel.IsCompliant)
-                {
-                    PolicyComplianceDetail newpcd = new PolicyComplianceDetail();
-                    newpcd.ServiceRequestId = unitModel.ServiceRequestId;
-                    newpcd.CaseId = Convert.ToInt32(unitModel.CaseId);
-                    newpcd.IsCompliant = unitModel.IsCompliant;
-                    newpcd.CreatedBy = userName;
-                    newpcd.CreatedOn = System.DateTime.Now;
-                    newpcd.ModifiedBy = userName;
-                    newpcd.ModifiedOn = System.DateTime.Now;
-                    _context.PolicyComplianceDetails.Add(newpcd);
-                    _context.SaveChanges(userName);
-                }
-                else if (pcd != null && pcd.IsCompliant != unitModel.IsCompliant)
-                {
-                    pcd.IsCompliant = unitModel.IsCompliant;
-                    pcd.ModifiedBy = userName;
-                    pcd.ModifiedOn = System.DateTime.Now;
-                    _context.Entry(pcd).State = EntityState.Modified;
-                    _context.SaveChanges(userName);
-                }
+                //if (propsnapshot.UnitAttributes.FirstOrDefault() != null)
+                //{
+                //    propsnapshot.UnitAttributes.FirstOrDefault().IsDeleted = true;
+                //}
+
+                return await SaveChangesWithAuditAsync(username);
             }
             return true;
         }
+
+        /// <summary>
+        /// PropSnapshot By Building Type
+        /// </summary>
+        /// <param name="structureId"></param>
+        /// <returns></returns>
+        public async Task<List<PropSnapshot>> PropSnapshotByBuilding(int structureId)
+        {
+            return await _context.PropSnapshots.Where(x => x.StructureId == structureId && x.IdentifierType == "Building").ToListAsync();
+        }
+
+        /// <summary>
+        /// PropSnapshot By Project
+        /// </summary>
+        /// <param name="projectSiteId"></param>
+
+        /// <returns></returns>
+        public async Task<PropSnapshot> PropSnapshotByProject(int projectSiteId)
+        {
+            return await _context.PropSnapshots.FirstOrDefaultAsync(x => x.ProjectSiteId == projectSiteId && x.IdentifierType == "ProjectSite");
+        }
+
+        /// <summary>
+        /// LutTotalBedrooms
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<LutTotalBedroom>> LutTotalBedrooms()
+        {
+            return await _context.LutTotalBedrooms.OrderBy(o => o.SortOrder).ToListAsync();
+        }
+
+        /// <summary>
+        /// LutUnitTypes
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<LutUnitType>> LutUnitTypes()
+        {
+            return await _context.LutUnitTypes.Where(x => x.IsDeleted == false).OrderBy(o => o.SortOrder).ToListAsync();
+        }
+
+
     }
 }

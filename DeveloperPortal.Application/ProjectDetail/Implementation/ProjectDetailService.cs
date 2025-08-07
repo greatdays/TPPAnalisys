@@ -22,15 +22,19 @@ namespace DeveloperPortal.Application.ProjectDetail
         private IConfiguration _config;
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
         private readonly IProjectDetailRepository _projectDetailRepository;
-        private readonly AAHREntities _context;
 
+        /// <summary>
+        /// ProjectDetailService
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="storedProcedureExecutor"></param>
+        /// <param name="projectDetailRepository"></param>
         public ProjectDetailService(IConfiguration configuration, IStoredProcedureExecutor storedProcedureExecutor,
-            AAHREntities context, IProjectDetailRepository projectDetailRepository)
+            IProjectDetailRepository projectDetailRepository)
         {
             _config = configuration;
             _storedProcedureExecutor = storedProcedureExecutor;
             _projectDetailRepository = projectDetailRepository;
-            _context = context;
         }
 
         #endregion
@@ -218,13 +222,12 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <param name="unitModel"></param>
         /// <param name="userName"></param>
         /// <returns></returns>
-        public bool UpdateUnitDetails(UnitDataModel unitModel, string userName)
+        public async Task<bool> UpdateUnitDetails(UnitDataModel unitModel, string userName)
         {
-            var unitAtt = _context.UnitAttributes.FirstOrDefault(u => u.PropSnapshotId == unitModel.PropSnapshotID);
+            var unitAtt = await _projectDetailRepository.UnitAttribute(unitModel.PropSnapshotID);
             if (unitAtt != null)
             {
-                var prop = _context.PropSnapshots.FirstOrDefault(p => p.PropSnapshotId == unitModel.PropSnapshotID);
-                var unit = _context.Units.FirstOrDefault(u => u.UnitId == prop.UnitId);
+                Unit? unit = await _projectDetailRepository.Unit(unitModel.PropSnapshotID);
                 if (unit != null)
                 {
                     unit.UnitNum = unitModel.UnitNum;
@@ -236,28 +239,23 @@ namespace DeveloperPortal.Application.ProjectDetail
                 unitAtt.FloorPlanType = unitModel.FloorPlanType;
                 unitAtt.AccessibleFeatureType = unitModel.AdditionalAccecibility;
                 unitAtt.IsManagersUnit = unitModel.ManagersUnit.HasValue ? unitModel.ManagersUnit.HasValue : false;
-                _context.SaveChanges(userName);
-                PolicyComplianceDetail pcd = _context.PolicyComplianceDetails.Where(p => p.ServiceRequestId == unitModel.ServiceRequestId).FirstOrDefault();
-                if (pcd == null && unitModel.IsCompliant)
+                await _projectDetailRepository.SaveChangesWithAuditAsync(userName);
+                var policyComplianceDetail = await _projectDetailRepository.PolicyComplianceDetail(unitModel.ServiceRequestId);
+                if (policyComplianceDetail == null && unitModel.IsCompliant)
                 {
-                    PolicyComplianceDetail newpcd = new PolicyComplianceDetail();
-                    newpcd.ServiceRequestId = unitModel.ServiceRequestId;
-                    newpcd.CaseId = Convert.ToInt32(unitModel.CaseId);
-                    newpcd.IsCompliant = unitModel.IsCompliant;
-                    newpcd.CreatedBy = userName;
-                    newpcd.CreatedOn = System.DateTime.Now;
-                    newpcd.ModifiedBy = userName;
-                    newpcd.ModifiedOn = System.DateTime.Now;
-                    _context.PolicyComplianceDetails.Add(newpcd);
-                    _context.SaveChanges(userName);
+                    PolicyComplianceDetail newPolicyComplianceDetail = new PolicyComplianceDetail
+                    {
+                        ServiceRequestId = unitModel.ServiceRequestId,
+                        CaseId = Convert.ToInt32(unitModel.CaseId),
+                        IsCompliant = unitModel.IsCompliant
+                    };
+                    await _projectDetailRepository.AddPolicyComplianceDetail(newPolicyComplianceDetail, userName);
                 }
-                else if (pcd != null && pcd.IsCompliant != unitModel.IsCompliant)
+                else if (policyComplianceDetail != null && policyComplianceDetail.IsCompliant != unitModel.IsCompliant)
                 {
-                    pcd.IsCompliant = unitModel.IsCompliant;
-                    pcd.ModifiedBy = userName;
-                    pcd.ModifiedOn = System.DateTime.Now;
-                    _context.Entry(pcd).State = EntityState.Modified;
-                    _context.SaveChanges(userName);
+                    policyComplianceDetail.IsCompliant = unitModel.IsCompliant;
+                    await _projectDetailRepository.UpdatePolicyComplianceDetail(policyComplianceDetail, userName);
+
                 }
                 //Added by Dipti
                 //Jira Ticket - ACHP Improvement / Task ACHP-17 -> calling Property Api to update PCMS Unit table 
@@ -276,11 +274,11 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <param name="model"></param>
         /// <param name="Username"></param>
         /// <returns></returns>
-        public bool AddUnitDetail(UnitDataModel model, string userName)
+        public async Task<bool> AddUnitDetail(UnitDataModel model, string userName)
         {
             Unit unit = new Unit();
-            SetBuildingReferenceData(model);
-            PropSnapshot ps = new PropSnapshot();
+            await SetBuildingReferenceData(model);
+            PropSnapshot propSnapshot = new PropSnapshot();
             if (model.UnitID == 0)
             {
                 unit.Apnid = model.APNId;
@@ -295,8 +293,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 unit.Source = "Construction";
                 unit.Attributes = "{\"Status\":\"V\"}";
                 unit.IsDeleted = false;
-                _context.Units.Add(unit);
-                _context.SaveChanges(userName);
+                await _projectDetailRepository.AddUnit(unit, userName);
 
                 //Added by Dipti
                 //Jira Ticket - ACHP Improvement / Task ACHP-17 -> calling Property Api to update PCMS Unit table 
@@ -306,21 +303,21 @@ namespace DeveloperPortal.Application.ProjectDetail
                 //});
                 //end
 
-                ps.UnitId = unit.UnitId;
-                ps.IdentifierType = "Unit";
-                ps.Status = "X";
-                ps.ProjectId = unit.ProjectId;
-                ps.ProjectSiteId = unit.ProjectSiteId;
-                ps.SiteAddressId = unit.SiteAddressId;
-                ps.StructureId = unit.BuildingId;
-                ps.Apnid = unit.Apnid;
-                ps.CreatedOn = DateTime.Now;
+                propSnapshot.UnitId = unit.UnitId;
+                propSnapshot.IdentifierType = "Unit";
+                propSnapshot.Status = "X";
+                propSnapshot.ProjectId = unit.ProjectId;
+                propSnapshot.ProjectSiteId = unit.ProjectSiteId;
+                propSnapshot.SiteAddressId = unit.SiteAddressId;
+                propSnapshot.StructureId = unit.BuildingId;
+                propSnapshot.Apnid = unit.Apnid;
+                propSnapshot.CreatedOn = DateTime.Now;
 
                 #region Create New UnitAttribute For  UnitModel
                 var newUnitAttribute = new UnitAttribute()
                 {
                     UnitAttributeId = 0,
-                    PropSnapshotId = ps.PropSnapshotId,
+                    PropSnapshotId = propSnapshot.PropSnapshotId,
                     SquareFeet = 0,
                     IsVca = model.IsVCA,
                     IsCsa = model.IsCSA,
@@ -336,15 +333,12 @@ namespace DeveloperPortal.Application.ProjectDetail
                 //ps.UnitAttributes.Add(newUnitAttribute);
 
                 #endregion
-                var serviceRequest = _context.ServiceRequests.FirstOrDefault(s => s.CaseId == model.CaseId);
-                serviceRequest.PropSnapshots.Add(ps);
-                _context.SaveChanges(userName);
+                await _projectDetailRepository.AddPropSnapshots(model.CaseId, propSnapshot, userName);
                 return true;
 
             }
             return false;
         }
-
 
         /// <summary>
         /// 
@@ -352,24 +346,9 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <param name="propId"></param>
         /// <param name="User"></param>
         /// <returns></returns>
-        public bool DeleteUnit(int propId, string username)
+        public async Task<bool> DeleteUnit(int propId, string username)
         {
-            // mark a single construction unit and unitattribute record as deleted
-            var propsnapshot = _context.PropSnapshots.Include(c => c.Unit).FirstOrDefault(x => x.PropSnapshotId == propId && x.IdentifierType == "Unit");
-            if (propsnapshot != null)
-            {
-                propsnapshot.Status = "X";
-                propsnapshot.Unit.Status = "X";
-                propsnapshot.Unit.IsDeleted = true;
-                propsnapshot.Unit.Attributes = "{\"Status\":\"X\"}";
-                //if (propsnapshot.UnitAttributes.FirstOrDefault() != null)
-                //{
-                //    propsnapshot.UnitAttributes.FirstOrDefault().IsDeleted = true;
-                //}
-
-                _context.SaveChanges(username);
-            }
-            return true;
+            return await _projectDetailRepository.DeleteUnit(propId, username);
         }
 
 
@@ -425,12 +404,12 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <returns></returns>
         public ControlViewModel GetControlViewModelById(int controlViewModelId)
         {
-            ControlViewMaster controlView = _context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
+            // ControlViewMaster controlView = _context.ControlViewMasters.FirstOrDefault(m => m.Id == controlViewModelId);
             ControlViewModel controlViewModel = new ControlViewModel(_config);
-            if (controlView != null)
-            {
-                controlViewModel.Populate(controlView, null);
-            }
+            //if (controlView != null)
+            //{
+            //    controlViewModel.Populate(controlView, null);
+            //}
 
             return controlViewModel;
         }
@@ -510,7 +489,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-                StructureAttribute? structureAttribute = await _projectDetailRepository.StructureAttribute(buildingModel.PropSnapshotID); 
+                StructureAttribute? structureAttribute = await _projectDetailRepository.StructureAttribute(buildingModel.PropSnapshotID);
                 if (structureAttribute != null)
                 {
                     structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
@@ -550,7 +529,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             }
         }
 
-        
+
 
 
 
@@ -562,7 +541,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         public async Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId)
         {
             BuildingModel model = new BuildingModel();
-            var propSSProjectSite = await _context.PropSnapshots.FirstOrDefaultAsync(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectSiteId);
+            var propSSProjectSite = await _projectDetailRepository.PropSnapshotByProject(projectSiteId);
             if (propSSProjectSite != null)
             {
                 model.siteAddressId = (int)propSSProjectSite.SiteAddressId;
@@ -573,7 +552,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             return model;
         }
 
-       
+
 
         /// <summary>
         /// GetLADBSPermitDetails
@@ -583,7 +562,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// <returns></returns>
         public async Task<PcisPermitDetail> GetLADBSPermitDetails(int propSnapshotId, string permitNumber)
         {
-            var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+            var structureAttributes = await _projectDetailRepository.StructureAttribute(propSnapshotId);
             if (structureAttributes != null)
             {
                 string LADBSjson = structureAttributes.Ladbsjson ?? "";
@@ -608,7 +587,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-                var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+                var structureAttributes = await _projectDetailRepository.StructureAttribute(propSnapshotId);
                 if (structureAttributes != null)
                 {
                     return new List<string>()
@@ -669,7 +648,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-                var structureAttributes = await _context.StructureAttributes.FirstOrDefaultAsync(m => m.PropSnapshotId == propSnapshotId);
+                var structureAttributes = await _projectDetailRepository.StructureAttribute(propSnapshotId);
                 if (structureAttributes != null)
                 {
                     string LADBSjson = structureAttributes.Ladbsjson ?? "";
@@ -698,7 +677,7 @@ namespace DeveloperPortal.Application.ProjectDetail
         {
             try
             {
-                var structureAttribute = _context.StructureAttributes.FirstOrDefault(m => m.PropSnapshotId == propSnapshotId);
+                var structureAttribute = await _projectDetailRepository.StructureAttribute(propSnapshotId);
                 List<PcisPermitDetail> permits = new List<PcisPermitDetail>();
                 if (structureAttribute == null)
                 {
@@ -741,12 +720,13 @@ namespace DeveloperPortal.Application.ProjectDetail
         }
 
         /// <summary>
-        ///Get  LutTotalBedrooms
+        ///Get LutTotalBedrooms
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> GetLutTotalBedrooms()
+        public async Task<List<SelectListItem>> GetLutTotalBedrooms()
         {
-            var lutTotalBedrooms = _context.LutTotalBedrooms.OrderBy(o => o.SortOrder).Select(a => new SelectListItem
+            var lutTotalBedroomList = await _projectDetailRepository.LutTotalBedrooms();
+            var lutTotalBedrooms = lutTotalBedroomList.Select(a => new SelectListItem
             {
                 Value = a.LutTotalBedroomsId.ToString(),
                 Text = a.Description
@@ -781,9 +761,10 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// Ge tLutUnitType
         /// </summary>
         /// <returns></returns>
-        public List<SelectListItem> GetLutUnitType()
+        public async Task<List<SelectListItem>> GetLutUnitType()
         {
-            var lutUnitTypes = _context.LutUnitTypes.Where(x => x.IsDeleted == false).OrderBy(o => o.SortOrder).Select(a => new SelectListItem
+            var lutUnitTypesList = await _projectDetailRepository.LutUnitTypes();
+            var lutUnitTypes = lutUnitTypesList.Select(a => new SelectListItem
             {
                 Value = a.LutUnitTypeId.ToString(),
                 Text = a.UnitType
@@ -855,11 +836,10 @@ namespace DeveloperPortal.Application.ProjectDetail
         /// SetBuildingReferenceData
         /// </summary>
         /// <param name="model"></param>
-        private void SetBuildingReferenceData(UnitDataModel model)
+        private async Task SetBuildingReferenceData(UnitDataModel model)
         {
-
-            var propsnapshot = _context.PropSnapshots.Where(x => x.StructureId == model.BuildingId && x.IdentifierType == "Building").ToList();
-            foreach (var i in propsnapshot)
+            List<PropSnapshot> propSnapshots = await _projectDetailRepository.PropSnapshotByBuilding(model.BuildingId);
+            foreach (var i in propSnapshots)
             {
                 var siteAddressId = i.SiteAddressId;
                 model.APNId = i.Apnid;
@@ -874,6 +854,8 @@ namespace DeveloperPortal.Application.ProjectDetail
                 }
             }
         }
+
+
         #endregion
 
     }
