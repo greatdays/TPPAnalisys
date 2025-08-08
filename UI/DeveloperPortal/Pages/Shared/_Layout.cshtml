@@ -28,7 +28,23 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
+    <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-block-ui/blockuicollection.js"></script>
+    <script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
+    <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
+    <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <script src="~/"></script>
+    <script src="~/js/kendojs/kendo.all.min.js"></script>
+    <script src="~/js/kendojs/kendo.timezones.min.js"></script>
+    <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
+    <script src="~/js/customcommon.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
     <script>
+        var APPURL= '@Url.Action("", "", new { area = "" })';
         //CurrentScroll();
         NewScroll();
 
@@ -67,7 +83,7 @@
 
 </head>
 <body>
-    <script src="//navbar.lacity.org/global_nav.js"></script>
+    @* <script src="//navbar.lacity.org/global_nav.js"></script> *@
     <header id="header-navs">
         <div class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow topNavBar">
             <div class="navbarContainer topNavBar-container">
@@ -108,8 +124,6 @@
                             <li>
                                 @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
                             </li>
-
-                          
                         </ul>
                     }
                 </div>
@@ -165,38 +179,17 @@
         </div>
     </div>
     <!-- Modal PopUp End -->
-
-
-    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
-   <script type="text/javascript">
-             //my Account
-        document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
-            console.log("Clikced");
-           window.location.href = 'Account/MyAccount';
-        });
-   </script>
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
-    <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
-    <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/jquery-block-ui/blockuicollection.js"></script>
-    @* <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap.min.js" type="text/javascript"></script> *@
-    <script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
-    <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
-    <script src="~/js/customcommon.js"></script>
-    
-    
-    @await RenderSectionAsync("Scripts", required: false)
-
     @Html.Partial("_LoadingOverlay")
 </body>
-</html>
+
 <script>
+          //my Account
+      document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
+          console.log("Clikced");
+         window.location.href = 'Account/MyAccount';
+      });
     function showLoadingOverlay() {
-        document.getElementById("loadingOverlay").style.display = "block";
+       document.getElementById("loadingOverlay").style.display = "block";
     }
 
     function hideLoadingOverlay() {
@@ -226,3 +219,4 @@
         hideLoadingOverlay();
     });
 </script>
+</html>

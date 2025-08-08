@@ -14,17 +14,13 @@ namespace DeveloperPortal.Areas.Construction.Controllers
     {
         #region Construtor
 
-        private IConfiguration _config;
-        private IHttpContextAccessor _contextAccessor;
         private IProjectDetailService _projectDetailService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
         {
-            _config = configuration;
-            _contextAccessor = contextAccessor;
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
             _env = env;
@@ -82,12 +78,9 @@ namespace DeveloperPortal.Areas.Construction.Controllers
         [HttpGet]
         public async Task<JsonResult> GetUnitModalData()
         {
-            var unitModels = new List<UnitDataModel>();
-            var lutUnitType = _projectDetailService.GetLutUnitType();
-            var lutTotalBedrooms = _projectDetailService.GetLutTotalBedrooms();
-
+            var lutUnitType = await _projectDetailService.GetLutUnitType();
+            var lutTotalBedrooms = await _projectDetailService.GetLutTotalBedrooms();
             return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms });
-
         }
 
 
@@ -104,7 +97,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                 if (updateModels != null && updateModels.Count > 0)
                 {
                     var updateModel = updateModels[0];
-                    result = _projectDetailService.UpdateUnitDetails(updateModel, UserName);
+                    result = await _projectDetailService.UpdateUnitDetails(updateModel, UserName);
                 }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Updated Successfully." });
             }
@@ -126,7 +119,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
             {
                 if (deleteModels != null && deleteModels.Count > 0)
                 {
-                    result = _projectDetailService.DeleteUnit(deleteModels[0].PropSnapshotID, UserName);
+                    result = await _projectDetailService.DeleteUnit(deleteModels[0].PropSnapshotID, UserName);
                 }
                 return Json(new { success = result, isRefreshGrid = true, message = "Record Deleted Successfully." });
             }
@@ -152,7 +145,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
                     saveMode.UnitID = 0;
                     if (saveMode != null)
                     {
-                        result = _projectDetailService.AddUnitDetail(saveMode, UserName);
+                        result = await _projectDetailService.AddUnitDetail(saveMode, UserName);
                     }
                 }
 

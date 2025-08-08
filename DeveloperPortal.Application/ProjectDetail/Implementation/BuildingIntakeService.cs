@@ -1,25 +1,21 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Implementation;
-using DeveloperPortal.Application.ProjectDetail.Interface;
-using DeveloperPortal.DataAccess.Entity.Data;
+﻿using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Data;
-namespace DeveloperPortal.Application.ProjectDetail
+
+namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
+
     public class BuildingIntakeService : IBuildingIntakeService
     {
         #region Constructor
-        private IConfiguration _config;
+        
         private readonly IBuildingIntakeRepository _buildingIntakeRepository;
 
-        public BuildingIntakeService(IConfiguration configuration, IBuildingIntakeRepository buildingIntakeRepository)
+        public BuildingIntakeService(IBuildingIntakeRepository buildingIntakeRepository)
         {
-            _config = configuration;
             _buildingIntakeRepository = buildingIntakeRepository;
         }
 
@@ -219,7 +215,7 @@ namespace DeveloperPortal.Application.ProjectDetail
             buildingModel.BuildingAddressList = lstAddress;
             //model.LutTypeofProject= _dbAAHPContext.LUTPRO.FirstOrDefault(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteID == projectsiteId)
 
-            buildingModel.BuildingDescriptionList=BuildingDescriptionList();
+            buildingModel.BuildingDescriptionList = BuildingDescriptionList();
             buildingModel.LutApplicableAccessibilityStandardList = GetApplicableAccessibilityStandard();
 
 
