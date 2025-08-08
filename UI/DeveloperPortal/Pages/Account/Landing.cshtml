@@ -20,6 +20,9 @@
     <div class="landing-signup-actions">
         <button type="submit" class="landing-signup-button" id="btnSignUp">Sign Up</button>
     </div>
+   @*  <div class="landing-signup-actions">
+        <button type="submit" class="landing-signup-button" id="btnMyAccount">My Account</button>
+    </div> *@
     
     <div id="loginError" style="color: red; margin-top: 1em;"></div>
 </form>
@@ -34,6 +37,7 @@
     document.getElementById("landing-signin").addEventListener("submit", async function(evt) {
         evt.preventDefault();
     });
+  
 
    
     document.getElementById('btnSignUp').onclick = function() {

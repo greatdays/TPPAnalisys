@@ -10,9 +10,11 @@ namespace DeveloperPortal.Domain.DMS
     {
         public int DocumentId { get; set; }
         public int FolderId { get; set; }
-        public int ProjectId { get; set; }
+        public int CaseId { get; set; }
 
         public string Name { get; set; } = null!;
+
+        public string FolderName { get; set; } = null!;
 
         public string Link { get; set; } = null!;
 
@@ -41,7 +43,7 @@ namespace DeveloperPortal.Domain.DMS
         /// <summary>
         /// Created By
         /// </summary>
-        public string CreatedBy { get; set; } = null!;
+        public string? CreatedBy { get; set; } = null!;
 
         /// <summary>
         /// Created On

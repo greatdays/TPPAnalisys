@@ -1,6 +1,23 @@
-﻿@model List<DeveloperPortal.Domain.DMS.FileModel>
+﻿@model DMSModel
+@using DeveloperPortal.Areas.Document.Models
 @using Newtonsoft.Json
 
+<!-- Required Styles and Scripts -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Loader Overlay -->
+<div id="uploadLoader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); z-index:1055; text-align:center; padding-top:20%;">
+    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+        <span class="visually-hidden">Uploading...</span>
+    </div>
+    <div style="margin-top: 10px; font-weight: bold;">Please wait, uploading...</div>
+</div>
+
+<!-- Documents Table -->
 <div class="table-responsive">
     <table id="dmsDataTable" class="display table table-bordered" style="width:100%">
         <thead>
@@ -14,10 +31,22 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model != null && Model.Any())
+            @if (Model != null && Model.FolderModel != null && Model.FolderModel.Files!=null)
             {
-                foreach (var file in Model)
+                foreach (var file in Model.FolderModel.Files)
                 {
+
+                    var driveFileId = "";
+                    if (!string.IsNullOrEmpty(file.Link))
+                    {
+                        var parts = file.Link.Split('/');
+                        var index = Array.IndexOf(parts, "d");
+                        if (index >= 0 && index + 1 < parts.Length)
+                        {
+                            driveFileId = parts[index + 1];
+                        }
+                    }
+
                     <tr>
                         <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
                         <td>@file.Name</td>
@@ -27,7 +56,10 @@
                         <td>
                             @if (!string.IsNullOrWhiteSpace(file.Link))
                             {
-                                <a href="@file.Link" class="btn btn-sm btn-primary" target="_blank">Download</a>
+                                <a href="@Url.Action("DownloadDocument", "DMS", new { fileID = driveFileId })"
+                                   class="btn btn-sm btn-primary">
+                                    Download
+                                </a>
                             }
                             else
                             {
@@ -48,8 +80,83 @@
     </table>
 </div>
 
+@{
+    string projectIdFromName = "";
+
+    if (Model?.FolderModel?.Name != null)
+    {
+        var folderNameParts = Model.FolderModel.Name.Split('_');
+        projectIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : "";
+    }
+}
+
+
+<!-- Hidden Inputs -->
+<input type="hidden" id="ProjectId" value="@projectIdFromName" />
+<input type="hidden" id="FolderName" value="@Model.FolderModel.Name" />
+<input type="hidden" id="FolderId" value="@Model.FolderModel.Id" />
+
+<!-- Add File Button -->
+<div class="btnAddFileDocuments my-3">
+    <button type="button" class="btn btn-primary" id="btn-add-file">
+        <span class="fas fa-file-alt"></span> Add File
+    </button>
+</div>
+
+<!-- Add File Modal -->
+<div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="AddFileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="AddFileModalLabel">Upload File</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label for="category">Category*</label>
+                        <select class="form-control" id="category" name="Category">
+                            <option value="Category 1">Category 1</option>
+                            <option value="Category 2">Category 2</option>
+                            <option value="Category 3">Category 3</option>
+                            <option value="Category 4">Category 4</option>
+                            <option value="Category 5">Category 5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="status">Status*</label>
+                        <select class="form-control" id="status" name="Status">
+                            <option value="Status 1">Status 1</option>
+                            <option value="Status 2">Status 2</option>
+                            <option value="Status 3">Status 3</option>
+                            <option value="Status 4">Status 4</option>
+                            <option value="Status 5">Status 5</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>Upload File</label>
+                        <input type="file" id="fileuploader" name="File" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="cancelUpload" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="uploadFile" type="button" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Upload & Modal Logic -->
 <script>
     $(document).ready(function () {
+        // Initialize DataTable
         $('#dmsDataTable').DataTable({
             stripeClasses: [],
             paging: true,
@@ -59,6 +166,71 @@
             language: {
                 emptyTable: "No documents available"
             }
+        });
+
+        // Show modal on Add File button click
+        $('#btn-add-file').on('click', function () {
+            var addFileModal = new bootstrap.Modal(document.getElementById('addFileModal'));
+            addFileModal.show();
+        });
+
+        // Handle file upload
+        $('#uploadFile').on('click', function () {
+            var files = $("#fileuploader").get(0).files;
+            if (files.length === 0) {
+                alert("Please select a file to upload.");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("File", files[0]);
+            formData.append("ProjectId", $('#ProjectId').val());
+            formData.append("FolderName", $('#FolderName').val());
+            formData.append("FolderId", $('#FolderId').val());
+            formData.append("DocumentType", files[0].type);
+
+            var url = '@Url.Action("UploadFile", "DMS", new { area = "Document" })';
+
+            // Show global loader
+            $('#loadingOverlay').show();
+
+            $.ajax({
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: "POST",
+                success: function (data) {
+                    $('#addFileModal').modal('hide');
+
+                    // Wait for modal to close, then reload Documents tab
+                    $('#addFileModal').on('hidden.bs.modal', function () {
+                        var caseId = $('#ProjectId').val();
+                        var controlViewModelId = $('#FolderId').val();
+
+                        $.ajax({
+                            url: `/Document/DMS/GetFilesById`,
+                            type: 'GET',
+                            data: {
+                                caseId: caseId,
+                                controlViewModelId: controlViewModelId
+                            },
+                            success: function (html) {
+                                $('#divDocument').html(html);
+                                $('#loadingOverlay').hide(); // Hide loader
+                            },
+                            error: function (xhr) {
+                                $('#loadingOverlay').hide();
+                                alert("Failed to reload documents tab: " + xhr.responseText);
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, status, error) {
+                    $('#loadingOverlay').hide();
+                    alert("Upload failed: " + xhr.responseText);
+                }
+            });
         });
     });
 </script>

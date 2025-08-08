@@ -9,6 +9,7 @@ using DeveloperPortal.Application.Services;
 using DeveloperPortal.DataAccess;
 using DeveloperPortal.Domain.Interfaces;
 using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity;
 using DeveloperPortal.DataAccess.Repository;
 using DeveloperPortal.Serilog;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -113,6 +114,7 @@ namespace DeveloperPortal
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+            app.UsePathBase("/AcHP.API");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
@@ -133,6 +135,8 @@ namespace DeveloperPortal
                  pattern: "{controller=Dashboard}/{action=GetProjectData}");
                 endpoints.MapRazorPages(); // Correctly map Razor Pages
             });
+
+           
             // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",

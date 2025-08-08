@@ -10,7 +10,8 @@ namespace DeveloperPortal.Application.Common
     {
         public const string SP_uspRoGetAllConstructionCases = "AAHPCC.uspRoGetAllConstructionCases";
         public const string SP_uspRoGetConstructionCaseDetail = "AAHPCC.uspRoGetConstructionCaseDetail";
-        public const string SP_uspGetDMSDocumentDetails = "DMS.uspGetDMSDocumentDetails ";
+        public const string SP_uspGetDMSDocumentDetails = "DMS.uspGetDMSDocumentDetails";
+        public const string SP_uspGetDMSFolderDetails = "DMS.uspGetDMSFolderDetails";
 
     }
 }
