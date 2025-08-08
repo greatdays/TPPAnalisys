@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using DeveloperPortal.Application.Common;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
@@ -446,7 +447,6 @@ namespace DeveloperPortal.Application.ProjectDetail
             return action;
         }
 
-
         /// <summary>
         /// GetBuildingInformation
         /// </summary>
@@ -529,10 +529,6 @@ namespace DeveloperPortal.Application.ProjectDetail
             }
         }
 
-
-
-
-
         /// <summary>
         /// GetPropSnapshotDetails
         /// </summary>
@@ -551,8 +547,6 @@ namespace DeveloperPortal.Application.ProjectDetail
             }
             return model;
         }
-
-
 
         /// <summary>
         /// GetLADBSPermitDetails
@@ -610,7 +604,12 @@ namespace DeveloperPortal.Application.ProjectDetail
                 throw e;
             }
         }
-
+        /// <summary>
+        /// GetLADBSDataByPermitNumber
+        /// </summary>
+        /// <param name="PermitNumber"></param>
+        /// <param name="Department"></param>
+        /// <returns></returns>
         public async Task<PcisPermitDetail> GetLADBSDataByPermitNumber(string PermitNumber, string Department)
         {
 
@@ -637,7 +636,6 @@ namespace DeveloperPortal.Application.ProjectDetail
                 return result;
             }
         }
-
 
         /// <summary>
         /// GetLADBSPermitNumberList
@@ -858,44 +856,5 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         #endregion
 
-    }
-}
-
-public static class helpers
-{
-    public static List<T> ConvertDataTable<T>(this DataTable dt) where T : class
-    {
-        List<T> data = new List<T>();
-        if (dt != null && dt.Rows.Count > 0)
-        {
-            foreach (DataRow row in dt.Rows)
-            {
-                T item = GetItem<T>(row);
-                data.Add(item);
-            }
-        }
-        return data;
-    }
-
-    private static T GetItem<T>(DataRow dr)
-    {
-        Type temp = typeof(T);
-        T obj = Activator.CreateInstance<T>();
-
-        foreach (DataColumn column in dr.Table.Columns)
-        {
-            foreach (PropertyInfo pro in temp.GetProperties())
-            {
-                if (pro.Name == column.ColumnName)
-                {
-                    if (dr[column.ColumnName] != DBNull.Value)
-                    {
-                        pro.SetValue(obj, dr[column.ColumnName], null);
-                    }
-                    break;
-                }
-            }
-        }
-        return obj;
     }
 }
