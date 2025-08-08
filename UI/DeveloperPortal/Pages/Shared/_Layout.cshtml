@@ -124,8 +124,6 @@
                             <li>
                                 @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
                             </li>
-
-                          
                         </ul>
                     }
                 </div>
@@ -181,18 +179,17 @@
         </div>
     </div>
     <!-- Modal PopUp End -->
-     <script type="text/javascript">
-           //my Account
+    @Html.Partial("_LoadingOverlay")
+</body>
+
+<script>
+          //my Account
       document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
           console.log("Clikced");
          window.location.href = 'Account/MyAccount';
       });
- </script>
-</body>
-</html>
-<script>
     function showLoadingOverlay() {
-        document.getElementById("loadingOverlay").style.display = "block";
+       document.getElementById("loadingOverlay").style.display = "block";
     }
 
     function hideLoadingOverlay() {
@@ -222,3 +219,4 @@
         hideLoadingOverlay();
     });
 </script>
+</html>
