@@ -6,11 +6,13 @@ using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.Reflection;
 
@@ -855,6 +857,126 @@ namespace DeveloperPortal.Application.ProjectDetail
 
 
         #endregion
+
+
+
+        public async Task<List<AssnPropContact>> GetProjectContactParticipantsByProjectId(string projectId)
+        {
+            List<ContactRenderModel> contactRenderModels = new List<ContactRenderModel>();
+            int projId = 0;
+            int.TryParse(projectId, out projId);
+            var assnPropContacts = await _projectDetailRepository.GetProjectParticipantsByProjectId(projId);
+
+            string typeData = "Developer";
+
+            if (typeData.Count() > 0 && !typeData.Contains("null"))
+            {
+
+                assnPropContacts = assnPropContacts.Where(x => typeData.Contains(x.LutContactType.ContactType.Trim())).ToList();
+            }
+
+            foreach (var propContact in assnPropContacts.OrderByDescending(x => x.ContactIdentifierId).ThenByDescending(x => x.IsPrimaryAssnType).ThenBy(x => x.LutContactTypeId).ToList())
+            {
+                if (!contactRenderModels.Any(x => x.ContactId == propContact.ContactIdentifierId))
+                {
+                    ContactRenderModel contactRenderModel = FillContactRenderModelByPropContact(propContact);
+                    if (contactRenderModel != null)
+                    {
+                        contactRenderModels.Add(contactRenderModel);
+                    }
+                }
+                else
+                {
+                    var contactModel = contactRenderModels.FirstOrDefault(x => x.ContactId == propContact.ContactIdentifierId);
+                    if (!contactModel.Type.Contains(propContact.LutContactType.ContactType))
+                    {
+                        contactModel.Type += $", {propContact.LutContactType.ContactType}";
+                    }
+                    if (propContact.IsPrimaryAssnType && !contactModel.PrimaryTypes.Contains(propContact.LutContactType.ContactType))
+                    {
+                        contactModel.PrimaryTypes += $"{(string.IsNullOrEmpty(contactModel.PrimaryTypes) ? "" : ",")}{propContact.LutContactType.ContactType}";
+                    }
+                    //contactModel.Type += $",{propContact.LutPropContactAssnType.Name}";
+                    //contactModel.PrimaryTypes += propContact.IsPrimaryAssnType ? $"{(string.IsNullOrEmpty(contactModel.PrimaryTypes) ? "" : ",")}{propContact.LutPropContactAssnType.Name}" : string.Empty;
+                }
+            }
+
+            return assnPropContacts;
+        }
+
+
+        private ContactRenderModel FillContactRenderModelByPropContact(AssnPropContact propContact)
+        {
+            ContactRenderModel contactRenderModel = new ContactRenderModel();
+            contactRenderModel.ContactId = propContact.ContactIdentifierId;
+            contactRenderModel.ContactTypeId = propContact.LutContactTypeId;
+            contactRenderModel.FirstName = propContact.ContactIdentifier.FirstName;
+            contactRenderModel.LastName = propContact.ContactIdentifier.LastName;
+            contactRenderModel.MiddleName = propContact.ContactIdentifier.MiddleName;
+            contactRenderModel.Name = propContact.ContactIdentifier.BusinessName;//$"{propContact.Contact.FirstName} {propContact.Contact.LastName}";
+            //if (propContact.Contact.ContactAddresses != null && propContact.Contact.ContactAddresses.Count > 0)
+            //{
+            //    contactRenderModel.ContactAddressId = propContact.Contact.ContactAddresses.FirstOrDefault().ContactAddressID;
+            //    contactRenderModel.City = propContact.Contact.ContactAddresses.FirstOrDefault().City;
+            //    contactRenderModel.State = propContact.Contact.ContactAddresses.FirstOrDefault().State;
+            //    contactRenderModel.Zip = propContact.Contact.ContactAddresses.FirstOrDefault().Zip;
+            //    contactRenderModel.HouseNum = propContact.Contact.ContactAddresses.FirstOrDefault().HouseNum;
+            //    contactRenderModel.HouseFracNum = propContact.Contact.ContactAddresses.FirstOrDefault().HouseFracNum;
+            //    contactRenderModel.PreDirection = propContact.Contact.ContactAddresses.FirstOrDefault().PreDirCd;
+            //    contactRenderModel.StreetName = propContact.Contact.ContactAddresses.FirstOrDefault().StreetName;
+            //    contactRenderModel.StreetTypeCd = propContact.Contact.ContactAddresses.FirstOrDefault().StreetTypeCd;
+            //    contactRenderModel.PostDirection = propContact.Contact.ContactAddresses.FirstOrDefault().PostDirCd;
+            //    contactRenderModel.AddressLine1 = propContact.Contact.ContactAddresses.FirstOrDefault().StreetName;
+            //    contactRenderModel.AddressLine2 = propContact.Contact.ContactAddresses.FirstOrDefault().UnitNo;
+            //    contactRenderModel.FullAddress = propContact.Contact.ContactAddresses.FirstOrDefault().FullAddress;
+            //    contactRenderModel.Unit = propContact.Contact.ContactAddresses.FirstOrDefault().UnitNo;
+            //}
+            //contactRenderModel.StreetPrefixes = await _streetPrefix.GetStreetPrefixAsync();
+            //contactRenderModel.StreetSuffixes = await _streetSuffix.GetStreetSuffixAsync();
+            contactRenderModel.Email = propContact.ContactIdentifier.Email;
+            contactRenderModel.ModifiedBy = propContact.ContactIdentifier.ModifiedBy;
+            contactRenderModel.ModifiedOn = Convert.ToDateTime(propContact.ContactIdentifier.ModifiedOn);
+            contactRenderModel.ModifiedOnString = ((DateTime)propContact.ContactIdentifier.ModifiedOn).ToString("MM/dd/yyyy");
+            contactRenderModel.ModifiedIn = !string.IsNullOrEmpty(propContact.ContactIdentifier.Attributes) ? (JObject.Parse(propContact.ContactIdentifier.Attributes).SelectToken("In")?.Value<string>() ?? "Field") : "Field";
+            contactRenderModel.IdentifierType = "Project";
+            contactRenderModel.PhoneHome = propContact.ContactIdentifier.PhoneHome;
+            contactRenderModel.PhoneBusiness = propContact.ContactIdentifier.PhoneWork;
+            contactRenderModel.PhoneExtension = propContact.ContactIdentifier.PhoneExtension;
+            contactRenderModel.PhoneCell = propContact.ContactIdentifier.PhoneMobile;
+            contactRenderModel.ContractorType = !string.IsNullOrEmpty(propContact.ContactIdentifier.Attributes) ? JObject.Parse(propContact.ContactIdentifier.Attributes).SelectToken("ContractorType")?.Value<string>() : "";
+            contactRenderModel.CASpNumber = !string.IsNullOrEmpty(propContact.ContactIdentifier.Attributes) ? JObject.Parse(propContact.ContactIdentifier.Attributes).SelectToken("CASp")?.Value<string>() : "";
+            if (contactRenderModel.IdentifierType == "Project")
+            {
+                contactRenderModel.IdentifierValue = propContact.ProjectId.ToString();
+                contactRenderModel.ProjectId = propContact.ProjectId;
+                contactRenderModel.APN = propContact.Apn;
+            }
+            
+
+            contactRenderModel.Source = propContact.ContactIdentifier.Source;
+            contactRenderModel.IsMarkObsolete = propContact.ContactIdentifier.IsDeleted;
+            contactRenderModel.Status = propContact.ContactIdentifier.Status;
+            //contactRenderModel.IsMarkedForMailing = propContact.ContactIdentifier.ContactAddresses?.FirstOrDefault()?.IsMailingAddress ?? false;
+            contactRenderModel.Company = propContact.ContactIdentifier.AssnOrganizationContacts.Any(x => x.IsDeleted == false) ? propContact.ContactIdentifier.AssnOrganizationContacts.OrderByDescending(x => x.AssnOrganizationContactId).FirstOrDefault().Organization.Name : null;
+            contactRenderModel.OrganizationId = propContact.ContactIdentifier.AssnOrganizationContacts.Any(x => x.IsDeleted == false) ? propContact.ContactIdentifier.AssnOrganizationContacts.OrderByDescending(x => x.AssnOrganizationContactId).FirstOrDefault().OrganizationId : 0;
+            contactRenderModel.PropContactId = propContact.AssnPropContactId;
+            contactRenderModel.Type = propContact.LutContactType.ContactType.Trim();
+            contactRenderModel.PrimaryTypes = propContact.IsPrimaryAssnType ? propContact.LutContactType.ContactType : "";
+            contactRenderModel.IsContactPublic = propContact.IsContactPublic; // AAHP-4367 : Contact information to be displayed on the Registry for the public
+
+            if (contactRenderModel.Status != null && contactRenderModel.Status == "V")
+            {
+                contactRenderModel.IsVerified = true;
+            }
+            else if (contactRenderModel.Status != null && contactRenderModel.Status == "U")
+            {
+                contactRenderModel.IsVerified = false;
+            }
+
+            //contactRenderModel.ContactIdentifierID = new ContactIdentifiersService().GetContactByContactId(propContact.ContactID);
+            contactRenderModel.IsPrimary = Convert.ToBoolean(propContact.ContactIdentifier.IsPrimary);
+            return contactRenderModel;
+        }
 
     }
 }

@@ -221,5 +221,24 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
 
 
+
+        /// <summary>
+        /// GetProjectParticipantsByProjectId
+        /// </summary>
+        /// <returns></returns>
+        /// /// <param name="projectId"></param>
+        public async Task<List<AssnPropContact>> GetProjectParticipantsByProjectId(int projectId)
+        {
+            return await _context.AssnPropContacts
+                .Where(x => x.ProjectId == projectId
+                            && !x.ContactIdentifier.IsDeleted
+                            && x.IsDeleted == false
+                            && x.ContactIdentifier.Source == "Development Protal")
+                .ToListAsync();
+        }
+
+
+        
+
     }
 }

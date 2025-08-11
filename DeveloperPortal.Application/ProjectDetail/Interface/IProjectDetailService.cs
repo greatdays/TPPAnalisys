@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.DataAccess.Entity.ViewModel;
+﻿using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -151,5 +152,12 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="projectSiteId"></param>
         /// <returns></returns>
         Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId);
+
+        /// <summary>
+        /// GetPropSnapshotDetails
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        Task<List<AssnPropContact>> GetProjectContactParticipantsByProjectId(string projectId);
     }
 }

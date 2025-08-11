@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Construction\Views\**" />
+    <Compile Remove="Areas\Document\Data\**" />
+    <Content Remove="Areas\Construction\Views\**" />
+    <Content Remove="Areas\Document\Data\**" />
+    <EmbeddedResource Remove="Areas\Construction\Views\**" />
+    <EmbeddedResource Remove="Areas\Document\Data\**" />
+    <None Remove="Areas\Construction\Views\**" />
+    <None Remove="Areas\Document\Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.17" />
@@ -34,6 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Construction\Views\ProjectDetail\" />
+    <Folder Include="Areas\Document\Data\" />
     <Folder Include="Areas\Document\Data\" />
     <Folder Include="logs\" />
     <Folder Include="wwwroot\Images\" />

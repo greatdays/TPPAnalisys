@@ -121,5 +121,12 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// </summary>
         /// <returns></returns>
         Task<List<LutUnitType>> LutUnitTypes();
+
+        /// <summary>
+        /// GetProjectParticipantsByProjectId
+        /// </summary>
+        /// <returns></returns>
+        /// /// <param name="projectId"></param>
+        Task<List<AssnPropContact>> GetProjectParticipantsByProjectId(int projectId);
     }
 }

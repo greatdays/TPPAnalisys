@@ -29,7 +29,7 @@
             document.getElementById(tabName).style.display = "block";
             if (evt) { evt.currentTarget.className += " active"; }
             var url = "";
-
+            debugger;
             switch (tabName) {
                 case "tabSiteInformation":
                     SiteInformation.LoadSiteInformation();
@@ -38,11 +38,12 @@
                 //     url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
                 //     LoadTabData(url, "divImportantDates");
                 //     break;
-                // case "tabProjectParticipants":
-                //     console.log("Id: " + Id);
-                //     url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
-                //     LoadTabData(url, "divProjectParticipants");
-                //     break;
+                case "tabProjectParticipants":
+                    ProjectParticipants.LoadProjectParticipants();
+                     //console.log("Id: " + Id);
+                     //url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
+                     //LoadTabData(url, "divProjectParticipants");
+                     break;
                 // case "tabPolicyContacts":
                 //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divPolicyContacts");

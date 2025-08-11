@@ -182,3 +182,36 @@ var SiteInformation=
         SiteInformation.ShowActionPopup(title, "");
     }
 }
+
+
+
+var ProjectParticipants =
+{
+    Init: function () {
+    },
+
+    LoadProjectParticipants: function () {
+        $.fn.dataTableExt.pager.numbers_length = 50;
+        //if (IsLoadSiteInformationTab) {
+        //    return;
+        //}
+        $.ajax({
+            url: 'ProjectDetail/RenderContactById',
+            type: 'POST',
+            data: {
+                Id: Id,
+                projectId: ProjectId,
+               
+            },
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            success: function (response) {
+                console.log(response);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+}

@@ -1,8 +1,14 @@
 ﻿using ComCon.DataAccess.Models.Helpers;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Application.PropertySnapshot;
+using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Domain.PropertySnapshot;
 using DeveloperPortal.Extensions;
+using DeveloperPortal.Models.Common;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -615,5 +621,77 @@ namespace DeveloperPortal.Controllers
         }
         #endregion
 
+
+        public IActionResult RenderContactById(int Id, int projectId)
+        {
+            string strParameters = "";
+            ContactDisplayConfig contactDisplayConfig = new ContactDisplayConfig();
+
+
+            //string dataFilterType = string.Join(",", contactDisplayConfig.DataFilterType);
+            //string dataFilterSources = string.Join(",", contactDisplayConfig.DataFilterSource);
+            string strPara = string.Empty;//strParameters.Remove(0, strParameters.Trim().LastIndexOf("=") + 1);
+
+            ServiceRequestsService serviceRequestsService = new ServiceRequestsService();
+            ServiceRequestModel serviceRequestModel = new ServiceRequestModel();
+            serviceRequestModel = serviceRequestsService.GetServiceRequestById(Convert.ToInt32(Id));
+            strPara =  projectId.ToString(); // serviceRequestModel.RefProjectID.ToString();
+
+
+
+           // assnPropContacts = 
+            //local code
+            /*string propertyBaseUrl = "http://ccris2svctest/Property.Api/";
+            BaseResponse baseResponse = CreateRequest<BaseResponse>
+                    (new { referenceId = strPara, referenceType = contactDisplayConfig.ContextRefType, source = dataFilterSources, type = dataFilterType, isHistorical = false, apn = "null" }
+                    , propertyBaseUrl + "api/ContactMgmt/GetAllContacts"
+                    , ActionType.GET);*/
+
+            BaseResponse baseResponse = null;
+
+            contactDisplayConfig.ContactRender = JsonConvert.DeserializeObject<List<ContactRenderModel>>(JsonConvert.SerializeObject(baseResponse.Response));
+
+            //foreach (ContactRenderModel item in contactDisplayConfig.ContactRender)
+            //{
+            //    string fullName = IDMApplicationUser.GetUserByUserName(item.ModifiedBy);
+            //    item.ModifiedBy = fullName ?? item.ModifiedBy;
+            //    item.ContactIdentifierID = contactIdentifiersService.GetContactByContactId(item.ContactId);
+            //}
+
+            
+                contactDisplayConfig.ProjectId = Convert.ToInt32(strPara);
+                contactDisplayConfig.APN = contactDisplayConfig.ContactRender?.FirstOrDefault()?.APN;
+            
+            
+
+            // Data Filter Type
+            //List<string> dataFilterTypeList = new List<string>();
+            //List<SelectListModel> strListDFT = new List<SelectListModel>();
+            //dataFilterTypeList = !string.IsNullOrEmpty(dataFilterType) ? dataFilterType.Split(',').ToList() : contactDisplayConfig.GetJson("Type").Split(',').ToList();
+
+            //foreach (string item in dataFilterTypeList)
+            //{
+            //    strListDFT.Add(new SelectListModel() { DisplayText = item, Value = item });
+            //}
+
+            //// Data Filter Source
+            //List<string> dataFilterSourceList = new List<string>();
+            //List<SelectListModel> strListDFS = new List<SelectListModel>();
+            //dataFilterSourceList = !string.IsNullOrEmpty(dataFilterSources) ? dataFilterSources.Split(',').ToList() : contactDisplayConfig.GetJson("Source").Split(',').ToList();
+
+            //if (dataFilterSourceList != null)
+            //{
+            //    strListDFS = dataFilterSourceList.Select(item => new SelectListModel()
+            //    {
+            //        DisplayText = item,
+            //        Value = item
+            //    }).ToList();
+            //}
+
+            //contactDisplayConfig.DataFilterTypeList = strListDFT;
+            //contactDisplayConfig.DataFilterSourceList = strListDFS;
+
+            return PartialView("~/Pages/ProjectDetail/_ProjectParticipant.cshtml", contactDisplayConfig);
+        }
     }
 }
