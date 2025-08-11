@@ -11,7 +11,7 @@ var ParkingInformation=
         $('.btn.btn-primary').attr("disabled", true);
         $.ajax({
              //   url: "@Url.Action("UpdateParkingDetail", new { controller = "ProjectDetail", area = "Construction" })",
-                url: "Construction/ProjectDetail/UpdateParkingDetail",
+                url: "ProjectDetail/UpdateParkingDetail",
             type: "POST",
             data: $(this).serialize(),
            

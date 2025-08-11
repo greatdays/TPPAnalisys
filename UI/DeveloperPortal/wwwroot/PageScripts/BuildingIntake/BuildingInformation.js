@@ -5,7 +5,7 @@ var BuildingInformation =
     {
         dtBuildingDataTable = $('#dtPrkingData').dataTable({
             ajax: {
-                url: 'Construction/ProjectDetail/GetBuildingInformation',
+                url: 'ProjectDetail/GetBuildingInformation',
                 data: function (d) {
                     d.caseId = Id;
                     if (reloadParkingGrid==false)
@@ -66,8 +66,7 @@ var BuildingInformation =
         BuildingInformation.resetBulidingSummary();
     },
     editBuildingSummary: function (projectSiteId) {
-        /*var url = '@Url.Action("GetBuildingDetails", "BuildingIntake", new { area = "Construction" })'*/
-        var url = 'Construction/BuildingIntake/GetBuildingDetails'
+        var url = 'BuildingIntake/GetBuildingDetails'
         var model = { projectSiteId: projectSiteId, caseId: Id };
         AjaxCommunication.CreateRequest(this.window, "GET", url, 'object', model,
             function (response) {
@@ -126,7 +125,7 @@ var BuildingInformation =
         $('.blockUI').attr("hidden", true);
         $('.btn.btn-primary').attr("disabled", true);
         $.ajax({
-            url: 'Construction/BuildingIntake/SaveBuildingSummary',//"@Url.Action("SaveBuildingSummary", new { controller = "BuildingIntake", area = "Construction" })",
+            url: 'BuildingIntake/SaveBuildingSummary',//"@Url.Action("SaveBuildingSummary", new { controller = "BuildingIntake", area = "Construction" })",
             type: "POST",
             data: data,
             success: function (response) {
@@ -176,7 +175,7 @@ var BuildingInformation =
 
 function addBuildingInfo() {
     /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-    var url = "/Construction/BuildingIntake/AddBuilding"
+    var url = "/BuildingIntake/AddBuilding"
     var model = { SiteInformationData: SiteInformationData, caseId: Id };
     AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
         function (response) {
@@ -199,7 +198,7 @@ $("#frmSaveAddBuilding").submit(function (event) {
         //    },
         //    null, true, null, false);
         $.ajax({
-            url: "/Construction/BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+            url: "/BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
             type: "POST",
             data: $(this).serialize(),
             success: function (data) {

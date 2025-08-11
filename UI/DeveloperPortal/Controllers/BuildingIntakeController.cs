@@ -1,33 +1,26 @@
 ﻿using ComCon.DataAccess.Models.Helpers;
-using DeveloperPortal.Application.ProjectDetail;
-using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace DeveloperPortal.Areas.Construction.Controllers
+namespace DeveloperPortal.Controllers
 {
-    [Area("Construction")]
     public class BuildingIntakeController : Controller
     {
         #region Construtor
-
-        private IConfiguration _config;
-        private IHttpContextAccessor _contextAccessor;
         private IProjectDetailService _projectDetailService;
         private IBuildingIntakeService _buildingIntakeService;
-        private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public BuildingIntakeController(IConfiguration configuration, IHttpContextAccessor contextAccessor, IProjectDetailService projectDetailService,
-            IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService)
+        /// <summary>
+        /// BuildingIntakeController
+        /// </summary>
+        /// <param name="projectDetailService"></param>
+        /// <param name="buildingIntakeService"></param>
+        public BuildingIntakeController( IProjectDetailService projectDetailService,IBuildingIntakeService buildingIntakeService)
         {
-            _config = configuration;
-            _contextAccessor = contextAccessor;
             _projectDetailService = projectDetailService;
-            _env = env;
             _buildingIntakeService = buildingIntakeService;
             //Username = UserSession.GetUserSession().UserName
             UserName = "jhirpara";
@@ -129,7 +122,7 @@ namespace DeveloperPortal.Areas.Construction.Controllers
         [HttpGet]
         public async Task<ActionResult> GetBuildingDetails(int projectSiteId, int caseId)
         {
-            BuildingModel buildingModel =await _buildingIntakeService.GetBuildingDetailForEdit(projectSiteId);
+            BuildingModel buildingModel = await _buildingIntakeService.GetBuildingDetailForEdit(projectSiteId);
             return Json(buildingModel);
         }
         #endregion
