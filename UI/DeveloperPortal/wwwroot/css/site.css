@@ -11540,8 +11540,6 @@ label.control-label.required-label:after {
     font-size: 20px;
 }
 
-}
-
 #loadingOverlay {
     position: fixed;
     top: 0;
@@ -11575,3 +11573,12 @@ label.control-label.required-label:after {
     z-index: 10000; /* Make sure it's above everything */
 }
 
+.approvebtn {
+    background: green !important;
+    color: white !important;
+}
+
+.rejectbtn {
+    background: red !important;
+    color: white !important;
+}

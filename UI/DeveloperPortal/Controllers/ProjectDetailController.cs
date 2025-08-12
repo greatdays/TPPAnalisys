@@ -1,28 +1,32 @@
 ﻿using ComCon.DataAccess.Models.Helpers;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
 namespace DeveloperPortal.Controllers
-{   
+{
     public class ProjectDetailController : Controller
     {
         #region Construtor
 
         private IProjectDetailService _projectDetailService;
+        private IProjectParticipantService _projectParticipantService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IProjectParticipantService projectParticipantService, IWebHostEnvironment env)
         {
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
+            _projectParticipantService = projectParticipantService;
             _env = env;
             //Username = UserSession.GetUserSession().UserName
             UserName = "jhirpara";
@@ -528,6 +532,23 @@ namespace DeveloperPortal.Controllers
             return Content(decodedActions);
         }
 
+        #endregion
+
+
+        #region Project Participate
+
+        /// <summary>
+        /// ProjectParticipants
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="caseId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<Domain.ProjectDetail.ProjectParticipantsModel>> ProjectParticipants(int projectId, int caseId)
+        {
+            var projectParticipantsModel = await _projectParticipantService.ProjectParticipants(projectId, caseId, "");
+            return projectParticipantsModel;
+        }
         #endregion
 
 

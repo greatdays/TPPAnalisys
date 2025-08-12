@@ -64,6 +64,7 @@ namespace DeveloperPortal
             services.AddScoped<IUnitImportService, UnitImportService>();
             services.AddScoped<IBuildingIntakeService, BuildingIntakeService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IProjectParticipantService, ProjectParticipantService>();
 
 
             services.AddSingleton<JwtGenerator>();

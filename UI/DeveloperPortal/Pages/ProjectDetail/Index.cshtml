@@ -62,8 +62,8 @@
         color: #fff !important;
         background-color: #2C3E5C !important;
         border: 1px solid #2C3E5C !important;
-
     }
+
     a#dtPrkingData_paginate {
         color: #fff !important;
     }
@@ -197,7 +197,6 @@
         border: 1px solid #2C3E5C !important;
     }
 
-    
 </style>
 
 @* Page Script *@
@@ -207,6 +206,7 @@
 <script src="~/PageScripts/ProjectDetail/LadbsInfomation.js"></script>
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
+<script src="~/PageScripts/ProjectDetail/ParticipantInformation.js"></script>
 
 <div class="page-content">
     <div class="row">
@@ -239,15 +239,15 @@
     <div style="padding-left: 010px; padding-right: 10px;">
         <!-- Tab links -->
         <div class="tab">
-            <button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
-            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
-            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
-            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
+            <button class="tablinks active" onclick="ProjectInformation.OpenTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
+            <button class="tablinks" onclick="ProjectInformation.OpenTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+            <button class="tablinks" onclick="ProjectInformation.OpenTab(event, 'tabProjectParticipants')">Project Participants</button>
+            <button class="tablinks" onclick="ProjectInformation.OpenTab(event, 'tabDocuments')">Documents</button>
+            <button class="tablinks hide" onclick="ProjectInformation.OpenTab(event, 'tabLogs')">Plan Review</button>
         </div>
 
         <!-- Tab content -->
-         <div id="tabProjectInformation" class="tabcontent" style="display: block ">
+        <div id="tabProjectInformation" class="tabcontent" style="display: block ">
             @{
                 Html.RenderPartial("_ProjectInformation");
             }
@@ -256,10 +256,15 @@
             <table id="dtSiteData"></table>
         </div>
         <div id="tabImportantDates" class="tabcontent">
-            <div id="divImportantDates"></div>
+            <div id="divImportantDates">
+            </div>
         </div>
         <div id="tabProjectParticipants" class="tabcontent">
-            <div id="divProjectParticipants"></div>
+            
+            @{
+                Html.RenderPartial("_ProjectParticipant");
+            }
+            
         </div>
         <div id="tabPolicyContacts" class="tabcontent">
             <div id="divPolicyContacts"></div>
@@ -276,12 +281,12 @@
     Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
 }
 <div id="Help">
-@{
-    Html.RenderPartial("_Help", Model.ProjectSummary);
-}
-</div> 
+    @{
+        Html.RenderPartial("_Help", Model.ProjectSummary);
+    }
+</div>
 
- <!--START Printing Deatils Popup -->
+<!--START Printing Deatils Popup -->
 <div class="modal" id="printDetailsPopup" data-backdrop="static" aria-labelledby="LinkPropertyPopupTitle" aria-modal="true" role="dialog" tabindex="-1" aria-hidden="true" style="overflow: hidden;">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="width:660px">
@@ -323,7 +328,7 @@
     var SiteInformationData = [];
     var IsLoadSiteInformationTab = false;
     $.fn.dataTableExt.pager.numbers_length = 50;
-    
+
     //Load on init
     UnitMatrixInformation.LoadUnitMatrix();
     BuildingInformation.load();
