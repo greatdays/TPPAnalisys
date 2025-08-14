@@ -12,7 +12,7 @@ var LadbsInformation=
             if (!$.fn.DataTable.isDataTable('#dtPermitNumberData')) {
                 dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
                 ajax: {
-                    url: 'ProjectDetail/GetPermitNumbers',
+                        url: APPURL + 'ProjectDetail/GetPermitNumbers',
                     data: function (d) {
                         d.PropSnapshotID =ldbsPropSnapshotId
                     },
@@ -86,7 +86,7 @@ var LadbsInformation=
                     $("#permitNumberInformationPopupTitle").html(`Permit Details: ${this.text}`);
                     $.ajax({
                         type: "GET",
-                        url: "ProjectDetail/GetPermitDetails",
+                        url: APPURL + "ProjectDetail/GetPermitDetails",
                         data: {
                             PropsnapshotID:ldbsPropSnapshotId,
                             PermitNumber: params[0]
@@ -119,7 +119,7 @@ var LadbsInformation=
         
         $.ajax({
             type: "POST",
-            url: "ProjectDetail/SaveLADBSData",
+            url: APPURL + "ProjectDetail/SaveLADBSData",
             data: {
                 PropsnapshotID: ldbsPropSnapshotId,
                 PermitNumber: null
@@ -164,7 +164,7 @@ var LadbsInformation=
         else {
             $.ajax({
                 type: "POST",
-                url: "ProjectDetail/SaveLADBSData",
+                url: APPURL + "ProjectDetail/SaveLADBSData",
                 data: {
                     PropsnapshotID: ldbsPropSnapshotId,
                     PermitNumber: permitNumber
@@ -206,7 +206,7 @@ var LadbsInformation=
         console.log(params)
         $.ajax({
             type: "POST",
-            url: "ProjectDetail/SaveLADBSData",
+            url: APPURL + "ProjectDetail/SaveLADBSData",
             data: {
                 PropsnapshotID: ldbsPropSnapshotId,
                 PermitNumber: params[0]
@@ -234,7 +234,7 @@ var LadbsInformation=
 
         $.ajax({
             type: "POST",
-            url: "ProjectDetail/SaveLADBSData",
+            url: APPURL + "ProjectDetail/SaveLADBSData",
             data: {
                 PropsnapshotID: ldbsPropSnapshotId,
                 PermitNumber: params[0],

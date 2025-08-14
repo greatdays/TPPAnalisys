@@ -13,7 +13,7 @@ var SiteInformation=
         }
         var dtSiteDataTable = $('#dtSiteData').dataTable({
             ajax: {
-                url: 'ProjectDetail/GetSiteInformation',
+                url: APPURL + 'ProjectDetail/GetSiteInformation',
                 type: 'POST',
                 data: function (d) {
                     d.SiteInformationData = SiteInformationData,

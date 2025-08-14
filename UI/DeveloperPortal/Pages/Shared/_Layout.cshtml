@@ -44,7 +44,11 @@
     <script src="~/js/customcommon.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
-        var APPURL= '@Url.Action("", "", new { area = "" })';
+        var APPURL= '/';
+        if(window.location.host.indexOf("localhost")==-1)
+        {
+            APPURL= 'ConstTPP/';
+        }
         //CurrentScroll();
         NewScroll();
 

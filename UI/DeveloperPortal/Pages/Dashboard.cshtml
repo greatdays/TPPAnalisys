@@ -248,7 +248,7 @@
         function PopulateMyProjectData() {
             $('#tblMyProjects').DataTable({
                 ajax: {
-                    url: '/Dashboard/GetMyProjectData',
+                    url: APPURL+'Dashboard/GetMyProjectData',
                     data: { },
                     type: 'POST',
                     "headers": {

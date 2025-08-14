@@ -5,7 +5,7 @@
         },
 
         projectActions: function() {
-             var url = 'ProjectDetail/GetProjectActionsByCaseId';
+            var url = APPURL + 'ProjectDetail/GetProjectActionsByCaseId';
            $.ajax({
                url: url,
                data: {caseId: Id, projectId: ProjectId},
