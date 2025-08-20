@@ -85,6 +85,20 @@
             $("#complienceMatrixMessage").modal('show');
         }
     </script>
+    @* ADA *@
+    <script>
+        // correct lacity global navbar
+        $(document).ready(function () {
+            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+            $("#global_nav_la_4324422-rightwrap > a").each(function () {
+                $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
+            });
+        });
+    </script>
 
 </head>
 <body>
