@@ -84,7 +84,7 @@ body {
 .body-content {
     margin-top: 50px;
     max-width: 100% !important;
-    margin-bottom: 350px;
+ /*   margin-bottom: 350px;*/
 }
 
 .navbar {
