@@ -14,11 +14,9 @@ namespace DeveloperPortal.Application.Notification.Implementation
 {
     public class SendNotificationEmailService : ISendNotificationEmail
     {
-        private readonly ISendNotificationEmail sendEmail;
         private readonly INotificationRepository notificationRepository;
-        public SendNotificationEmailService(ISendNotificationEmail _sendEmail, INotificationRepository _notificationRepository) 
+        public SendNotificationEmailService(INotificationRepository _notificationRepository) 
         { 
-            this.sendEmail = _sendEmail;
             this.notificationRepository = _notificationRepository;
         }
         public async Task<List<NotificationInfoModel>> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null)

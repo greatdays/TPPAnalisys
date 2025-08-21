@@ -42,7 +42,8 @@ namespace DeveloperPortal.Areas.Document.Controllers
         {
             var model = new DMSModel
             {
-                FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId)
+                FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId),
+                ProjectId = caseId
             };
 
             return View("~/Areas/Document/Views/DMS/DMSView.cshtml", model);
@@ -63,6 +64,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
             var fileType = GetMimeTypeForFileExtension(file.FileName);
             var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
             var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
+            var category = Convert.ToString(HttpContext.Request.Form["Category"]);
             //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
 
@@ -76,7 +78,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
                 FileSize = file.Length.ToString(),
                 CaseId = caseId,
                 FolderId = 0,
-                OtherDocumentType = documentType,
+                OtherDocumentType = category,
                 CreatedBy="jalcanter",
                 CreatedOn=DateTime.Now
                
