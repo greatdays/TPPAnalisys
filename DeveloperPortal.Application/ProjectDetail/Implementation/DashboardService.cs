@@ -3,9 +3,11 @@ using System.Data;
 using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Dashboard;
+using DeveloperPortal.Models.IDM;
 using Microsoft.Data.SqlClient;
 using Serilog;
 
@@ -108,6 +110,63 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         Task<List<AllConstructionData>> IDashboardService.GetAllConstructionCasesData()
         {
             return GetAllConstructionCasesData();
+        }
+
+
+        public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID(String UserID )
+        {
+            List<DashboardDataModel> resultList = new List<DashboardDataModel>();
+            var res = await GetAllConstructionCasesDataByUser(UserID);
+            var allCases = res;
+
+            if (allCases != null && allCases.Count > 0)
+            {
+                //Added this log for Serilog testing once testing done We will reomve this line
+                Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+
+                resultList = allCases.Select(x => new DashboardDataModel
+                {
+                    Type = x.Type,
+                    CaseId = x.CaseId,
+                    SiteCases = x.SiteCases,
+                    ComplianceMatrixLink = x.ComplianceMatrixLink,
+                    PropertyDetailsLink = x.PropertyDetailsLink,
+                    Status = x.Status,
+                    AssigneeID = x.AssigneeID,
+                    Summary = x.Summary,
+                    ProjectName = x.ProjectName,
+                    ProjectAddress = x.ProjectAddress,
+                    AcHPFileProjectNumber = x.AcHPFileProjectNumber,
+                    ProblemProject = x.ProblemProject
+                }).ToList();
+            }
+            return resultList;
+        }
+
+
+
+        private async Task<List<AllConstructionData>> GetAllConstructionCasesDataByUser(String UserID)
+        {
+            List<AllConstructionData> obj = new List<AllConstructionData>();
+            try
+            {
+                                var parameters = new[]
+                {
+                    new SqlParameter("UserId", "280378")
+                };
+
+                var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(
+                    StoredProcedureNames.SP_uspRoGetAllConstructionCasesForDevelopmentPortal,
+                    parameters
+                );
+                //var data =    await _apnpinRepository.GetAllApnpinsAsync();
+                return result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new List<AllConstructionData>();
+            }
         }
     }
 }

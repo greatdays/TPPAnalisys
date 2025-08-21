@@ -34,8 +34,12 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public async Task<List<DashboardDataModel>> GetMyProjectData()
         {
-            List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUser();
-                      
+           // List<DashboardDataModel> list =  await _dashboardService.GetAllConstructionCasesForUser();
+
+            List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUserByUserID("280378");
+            
+
+
             return list;
         }
 
