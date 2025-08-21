@@ -376,9 +376,10 @@
 				streetName = streetName.replace(/LOS ANGELES.*/g, ""); // Clean address
 				var ctlIndex = GetControlIndex();
 				var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-				var divACHPWithAddr = '<div class="col-md-4 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
+				var divACHPWithAddr = '<div class="col-md-8 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
 				var hiddenProjectId = '<input type="hidden" name="projectIds[]" value="' + projectId + '"/>';
 				var divDel = '<div class="col-md-2 text-right border-no-left row-padding">' +
+				'<a role="button" class="k-button k-button-icontext k-grid-Delete" href="#"><span class="k-icon k-i-delete"></span></a>' +
 								'<button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
 
 				$('#divProjects').append(divToAdd + divACHPWithAddr + divDel + hiddenProjectId + "</div>");
