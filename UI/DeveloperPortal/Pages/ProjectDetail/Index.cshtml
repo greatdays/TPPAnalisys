@@ -197,21 +197,6 @@
         border: 1px solid #2C3E5C !important;
     }
 
-    .project-notifications p {
-        color: #664d03;
-    }
-    .project-notifications p a {
-        color: #664d03;
-        text-decoration: underline;
-    }
-    .project-notifications p a:hover {
-        color: #473601;
-        text-decoration: none;
-    }
-
-    .bg-warning {
-        background-color: #fff3cd !important;
-    }
 
 </style>
 
@@ -229,7 +214,7 @@
     @if (Model.ProjectSummary?.ReviewNote != null && Model.ProjectSummary.ReviewNote.Any())
     {
         <div class="project-notifications container mt-5">
-            <div class="bg-warning p-3 text-center rounded position-relative">
+            <div class="bg-warning1 p-3 text-center rounded position-relative">
                 <span class="close-btn"></span>
                 <p>
                     <b>You have new comments on @Model.ProjectSummary.ProjectName:</b>

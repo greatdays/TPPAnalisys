@@ -1600,3 +1600,21 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 #projectForm .form-control{ 
     padding:18px 15px;
 }
+
+.project-notifications p {
+    color: #664d03;
+}
+
+    .project-notifications p a {
+        color: #664d03;
+        text-decoration: underline;
+    }
+
+        .project-notifications p a:hover {
+            color: #473601;
+            text-decoration: none;
+        }
+
+.bg-warning1 {
+    background-color: #fff3cd !important;
+}
