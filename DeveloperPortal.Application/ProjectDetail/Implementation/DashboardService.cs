@@ -65,7 +65,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
             if (allCases != null && allCases.Count > 0)
             {
-            //Added this log for Serilog testing once testing done We will reomve this line
+                //Added this log for Serilog testing once testing done We will reomve this line
                 Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
 
                 resultList = allCases.Select(x => new DashboardDataModel
@@ -94,10 +94,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// <returns>List</returns>
         private async Task<List<AllConstructionData>> GetAllConstructionCasesData()
         {
-            List < AllConstructionData > obj = new List < AllConstructionData >();
+            List<AllConstructionData> obj = new List<AllConstructionData>();
             try
             {
-                //var data =    await _apnpinRepository.GetAllApnpinsAsync();
                 return await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(StoredProcedureNames.SP_uspRoGetAllConstructionCases);
             }
             catch (Exception e)
@@ -163,7 +162,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             List<AllConstructionData> obj = new List<AllConstructionData>();
             try
             {
-                                var parameters = new[]
+                var parameters = new[]
                 {
                     new SqlParameter("UserId", UserID)
                 };
@@ -172,7 +171,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     StoredProcedureNames.SP_uspRoGetAllConstructionCasesForDevelopmentPortal,
                     parameters
                 );
-                //var data =    await _apnpinRepository.GetAllApnpinsAsync();
                 return result;
             }
             catch (Exception e)
