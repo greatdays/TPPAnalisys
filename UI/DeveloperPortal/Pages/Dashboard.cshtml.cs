@@ -62,29 +62,7 @@ namespace DeveloperPortal.Pages
         public async Task<JsonResult> OnPostSubmitProjects([FromForm] List<string> projects)
         {
             var achpSet = new HashSet<string>();
-
             var (saved, notSaved) = await _accountService.SaveAssnPropContactAsync(projects, HttpContext);
-
-
-            //foreach (var project in projects)
-            //{
-            //    if (string.IsNullOrWhiteSpace(project)) continue;
-
-            //    var parts = project.Split('-');
-            //    if (parts.Length < 1 || string.IsNullOrWhiteSpace(parts[0]))
-            //    {
-            //        return new JsonResult(new { success = false, message = "Invalid ACHP entry detected." });
-            //    }
-
-            //    var achp = parts[0].Trim();
-
-            //    if (!achpSet.Add(achp))
-            //    {
-            //        return new JsonResult(new { success = false, message = $"Duplicate ACHP number: {achp}" });
-            //    }
-            //}
-
-            //// Save to DB or continue
             return new JsonResult(new { success = true, message = "Projects submitted successfully." });
         }
     }
