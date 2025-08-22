@@ -25,6 +25,7 @@ namespace DeveloperPortal.Domain.Dashboard
         public string OccpancyType { get; set; }
         public int NoofSites { get; set; }
         public int TotalUnits { get; set; }
+        public string ReviewNoteAcHPFileProjectNumber { get; set; }
 
     }
 }

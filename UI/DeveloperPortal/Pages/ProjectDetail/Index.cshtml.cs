@@ -35,6 +35,9 @@ namespace DeveloperPortal.Pages.ProjectDetails
             if (!string.IsNullOrWhiteSpace(Id))
             {
                 ProjectSummary = _projectDetailService.GetProjectSummary(Convert.ToInt32(Id));
+                List<string> reviewNote = new List<string>();
+                reviewNote= _projectDetailService.GetReviewNote(Convert.ToInt32(Id));
+                ProjectSummary.ReviewNote = reviewNote;
                 TempData["commentCategory"] = ProjectSummary.ProblemCase;
                 ProjectSummary.ProjectAssessors = _projectDetailService.GetProjectAssessors(Convert.ToInt32(ProjectSummary.ProjectId));
                 SiteData = new SiteDataModel();

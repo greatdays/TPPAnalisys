@@ -151,5 +151,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <param name="projectSiteId"></param>
         /// <returns></returns>
         Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId);
+        List<string> GetReviewNote(int caseId);
     }
 }
