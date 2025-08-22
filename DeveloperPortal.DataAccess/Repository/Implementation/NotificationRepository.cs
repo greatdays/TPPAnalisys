@@ -3,6 +3,8 @@ using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Notification;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,13 +34,13 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
             return isSuccess;
         }
-        public async Task<List<NotificationInfoModel>> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId,
+        public List<NotificationInfoModel> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId,
             string MailCC = null, string MailBCC = null)
         {
             List<NotificationInfoModel> notificationInfoList = new List<NotificationInfoModel>();
             dictionary = notificationData;
 
-            var NotificationDetails = await _context.NotificationTemplates.Where(s => s.Name == TemplateName).ToListAsync();
+            var NotificationDetails =  _context.NotificationTemplates.Where(s => s.Name == TemplateName).ToList();
             foreach (var notificationDetail in NotificationDetails)
             {
                 NotificationInfoModel notificationModel = new NotificationInfoModel();
@@ -51,6 +53,21 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 notificationInfoList.Add(notificationModel);
             }
             return notificationInfoList;
+        }
+        public NotificationCredential GetNotificationCredential(string appName)
+        {
+            NotificationCredential notificationCredential = new NotificationCredential();
+
+            int? ApplicationID =  _context.ApplicationMasters.FirstOrDefault(m => m.Name == appName)?.Id;
+            var notificationSource =  _context.NotificationSources.FirstOrDefault(s => s.ApplicationId == ApplicationID);
+            notificationCredential.Host = notificationSource.Host;
+            notificationCredential.Port = notificationSource.Port;
+            notificationCredential.CredentialName = notificationSource.CredentialName;
+            notificationCredential.CredentialPwd = notificationSource.CredentialPwd;
+            notificationCredential.FromEmailId = notificationSource.FromEmailId;
+            notificationCredential.EnableSsl = notificationSource.EnableSsl.HasValue ? notificationSource.EnableSsl.Value : false;
+
+            return notificationCredential;
         }
         public string PrepareSubject(string emailSubject)
         {

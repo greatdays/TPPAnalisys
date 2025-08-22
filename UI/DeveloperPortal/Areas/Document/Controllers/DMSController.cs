@@ -10,8 +10,10 @@ using DeveloperPortal.ServiceClient;
 using DeveloperPortal.Models.PlanReview;
 using Microsoft.AspNetCore.StaticFiles;
 using DeveloperPortal.Application.ProjectDetail.Interface;
-using DeveloperPortal.ServiceClient;
 using System.Net.Http.Headers;
+using DeveloperPortal.Application.Notification.Interface;
+using DeveloperPortal.Domain.Notification;
+using DeveloperPortal.Domain.Resources;
 
 
 namespace DeveloperPortal.Areas.Document.Controllers
@@ -22,11 +24,11 @@ namespace DeveloperPortal.Areas.Document.Controllers
         private IConfiguration _config;
         private readonly IDocumentService _documentService;
         private IProjectDetailService _projectDetailService;
-        private string _BaseURL = "";
-        private string _GoogleDriveId = "";
+        private ISendNotificationEmail sendNotificationEmail;
+        private string _BaseURL = "", _GoogleDriveId = "",_AAHP_Google_UName="",AAHP_Google_Pwd="";
         private bool _IsCreatedGoogleDriveFolder = false;
 
-        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService, IConfiguration config)
+        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService, IConfiguration config, ISendNotificationEmail _sendNotificationEmail)
         {
             this._config = config;
             this._documentService= documentService;
@@ -34,12 +36,25 @@ namespace DeveloperPortal.Areas.Document.Controllers
             this._BaseURL = _config["AAHRApiSettings:URL"].ToString();
             this._GoogleDriveId = _config["AAHRApiSettings:GoogleDrive"].ToString();
             this._IsCreatedGoogleDriveFolder = true;//Convert.ToBoolean(_config["AAHRApiSettings:IsCreatedGoogleDriveFolder"].ToString());
+            this.sendNotificationEmail= _sendNotificationEmail;
+            this._AAHP_Google_UName = _config["LAHD:username"].ToString();
+            this.AAHP_Google_Pwd = _config["LAHD:password"].ToString();
+
         }
 
         [HttpGet]
         [Route("Document/DMS/GetFilesById")]
         public async Task<IActionResult> GetFilesById(int caseId, int controlViewModelId)
         {
+           /* NotificationCredential notificationCredential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
+
+            List<NotificationInfoModel> notificationInfoModels =  sendNotificationEmail.GetNotificationInfo("email to applicant signing up",null, "ananthakrishnan.mohandas@lacity.org", "", "");
+
+           
+            await sendNotificationEmail.SendMail(notificationInfoModels, notificationCredential, "SignUp");*/
+                //sendNotification.SendMail(this.notificationInfoList, new NotificationCredential(), emailAction);
+           
+
             var model = new DMSModel
             {
                 FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId),
@@ -69,11 +84,12 @@ namespace DeveloperPortal.Areas.Document.Controllers
             var documentType = fileType;
 
 
-            var folderPath = AAHRServiceClient.UploadFiel(_BaseURL, _GoogleDriveId, folderName, file, fileType);
+            this._AAHP_Google_UName = _config["LAHD:username"].ToString();
+            var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
             var documentModel = new DocumentModel()
             {
                 Name = file.FileName,
-                Link = folderPath,
+                Link = folderPath.ToString(),
                 Attributes = "",
                 FileSize = file.Length.ToString(),
                 CaseId = caseId,

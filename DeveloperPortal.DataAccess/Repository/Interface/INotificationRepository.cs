@@ -11,7 +11,8 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
     public interface INotificationRepository
     {
         Task<bool> SaveNotificationLog(NotificationLog notificationLog);
-        Task<List<NotificationInfoModel>> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId,
+        List<NotificationInfoModel> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId,
             string MailCC = null, string MailBCC = null);
+        NotificationCredential GetNotificationCredential(string appName);
     }
 }

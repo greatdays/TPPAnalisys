@@ -19,11 +19,11 @@ namespace DeveloperPortal.Application.Notification.Implementation
         { 
             this.notificationRepository = _notificationRepository;
         }
-        public async Task<List<NotificationInfoModel>> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null)
+        public  List<NotificationInfoModel> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null)
         {
             List<NotificationInfoModel> notificationInfoModels = new List<NotificationInfoModel>();
 
-            notificationInfoModels = await notificationRepository.GetNotificationInfo(TemplateName, notificationData, MailId, MailCC, MailBCC);
+            notificationInfoModels =  notificationRepository.GetNotificationInfo(TemplateName, notificationData, MailId, MailCC, MailBCC);
 
             return notificationInfoModels;
         }
@@ -151,6 +151,11 @@ namespace DeveloperPortal.Application.Notification.Implementation
                     }
                 }
             }
+        }
+        
+        public NotificationCredential GetNotificationCrdential(string appName)
+        {
+            return notificationRepository.GetNotificationCredential(appName);
         }
         public bool IsValidEmail(string email)
         {

@@ -10,6 +10,8 @@ namespace DeveloperPortal.Application.Notification.Interface
     public interface ISendNotificationEmail
     {
         Task SendMail(List<NotificationInfoModel> notificationInfoList, NotificationCredential notificationCredential, string actionName, byte[] file = null, string filename = "", string fileType = "", string filePath = "");
-        Task<List<NotificationInfoModel>> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null);
+        List<NotificationInfoModel> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null);
+
+        NotificationCredential GetNotificationCrdential(string appName);
     }
 }

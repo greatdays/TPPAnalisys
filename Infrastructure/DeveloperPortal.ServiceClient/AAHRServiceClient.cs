@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -15,7 +16,6 @@ namespace DeveloperPortal.ServiceClient
 {
     public class AAHRServiceClient
     {
-
         public static FolderModel GetFolderData(string baseAddress, string driveID, string folderName)
         {
             // 🧼 Make sure folder name is URL-encoded
@@ -72,32 +72,18 @@ namespace DeveloperPortal.ServiceClient
             }
         }
 
-        public static string UploadFiel(string baseAddress, string driveID, string folderName, IFormFile file, string filteType)
+        /*public static string UploadFile(string baseAddress, string driveID, string folderName, IFormFile file, string filteType,
+            string gAPIUname=null,string gAPIpwd=null)
         {
-            /* string encodedFolderName = Uri.EscapeDataString(folderName);
-             string fullUrl = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.UploadFile}?folderName={Uri.EscapeDataString(folderName)}&driveID={Uri.EscapeDataString(driveID)}";
-             using (HttpClient client = new HttpClient())
-             {
-                 client.BaseAddress = new Uri(baseAddress);
-                 client.DefaultRequestHeaders.Accept.Clear();
-                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(filteType));
 
-                 HttpResponseMessage response = client.PostAsJsonAsync(fullUrl, file).Result;
-                 if (response.IsSuccessStatusCode)
-                 {
-                     var result = response.Content.ReadAsStringAsync().Result;
-                     if(result != null && result != string.Empty)
-                     {
-                         return result;
-                     }
-                 }
-                 response.Dispose();
-                 response.Headers.ConnectionClose = true;
-                 return "";
-             }*/
             string fullUrl = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.UploadFile}/?folderName={Uri.EscapeDataString(folderName)}&driveID={Uri.EscapeDataString(driveID)}";
+            var URL = new Uri(fullUrl);
+            var referrer = $"{URL.Scheme}://{URL.Authority}";
+            
+            HttpClient client = CreateHttpClient(gAPIUname, gAPIpwd);
+            client.DefaultRequestHeaders.Referrer = new Uri(referrer);
 
-            using (HttpClient client = new HttpClient())
+            //using (HttpClient client = new HttpClient())
             using (var form = new MultipartFormDataContent())
             using (var fileContent = new StreamContent(file.OpenReadStream()))
             {
@@ -114,11 +100,48 @@ namespace DeveloperPortal.ServiceClient
                 return $"Error: {response.StatusCode}, Reason: {response.ReasonPhrase}";
             }
 
+        }*/
+        public static string UploadFileAsync(
+        string baseAddress,
+        string driveID,
+        string folderName,
+        IFormFile file,
+        string fileType,
+        string gAPIUname = null,
+        string gAPIpwd = null)
+        {
+            // Ensure base URL and endpoint are correctly combined
+            string endpoint = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.UploadFile}";
+            var query = $"?folderName={Uri.EscapeDataString(folderName)}&driveID={Uri.EscapeDataString(driveID)}";
+            string fullUrl = endpoint + query;
+
+            using var client = CreateHttpClient(gAPIUname, gAPIpwd);
+
+            // Set referrer based on base address
+            var url = new Uri(fullUrl);
+            client.DefaultRequestHeaders.Referrer = new Uri($"{url.Scheme}://{url.Authority}");
+
+            using var form = new MultipartFormDataContent();
+            using var fileContent = new StreamContent(file.OpenReadStream());
+
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(fileType);
+            form.Add(fileContent, "file", file.FileName);
+
+            HttpResponseMessage response =  client.PostAsync(fullUrl, form).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return response.Content.ReadAsStringAsync().Result;
+            }
+
+            return $"Error: {response.StatusCode}, Reason: {response.ReasonPhrase}, URL: {fullUrl}";
         }
+
 
         public static async Task<(Stream Stream, string FileName, string ContentType)?> DownloadDocument(string baseAddress, string fileID)
         {
             string url = $"{baseAddress.TrimEnd('/')}/{AAHRServiceConstant.DownloadDocument}?fileId={fileID}";
+
 
             using (HttpClient client = new HttpClient())
             {
@@ -140,6 +163,43 @@ namespace DeveloperPortal.ServiceClient
                 return null;
             }
         }
+        private static HttpClient CreateHttpClient(string username, string password)
+        {
+            var handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+                UseCookies = false
+            };
+
+            var httpClient = new HttpClient(handler)
+            {
+                Timeout = TimeSpan.FromMinutes(10)
+            };
+
+            // Accept JSON (most APIs return JSON), fallback to anything
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+
+            // Language
+            httpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue("en-US"));
+
+            // User-Agent (keep minimal)
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("HttpClient/1.0");
+
+            // GZip compression
+            httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+
+            // Only add auth if provided
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+            {
+                var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{username}:{password}"));
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            }
+
+            return httpClient;
+        }
+
     }
 
     public static class AAHRServiceConstant
