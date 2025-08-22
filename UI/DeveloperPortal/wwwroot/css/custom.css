@@ -234,7 +234,7 @@ a.nav-link.nav-link-basic:hover {
     height: 55px;
     position: fixed;
     width: 100%;
-    top: 101px;
+    top: 55px;
     z-index: 1000;
     -webkit-transition: top .2s ease-out;
     transition: top .2s ease-out;

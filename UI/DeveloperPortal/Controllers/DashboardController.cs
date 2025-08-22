@@ -1,6 +1,8 @@
 ﻿using System.Data;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.Dashboard;
+using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -34,8 +36,9 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public async Task<List<DashboardDataModel>> GetMyProjectData()
         {
-            List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUser();
-                      
+
+            List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCasesForUserByUserID();
+
             return list;
         }
 

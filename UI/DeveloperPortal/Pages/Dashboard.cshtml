@@ -1,419 +1,194 @@
 ﻿@page
 @model DeveloperPortal.Pages.DashboardModel
 
-<style>
-    table.dataTable.stripe > tbody > tr.odd > *, table.dataTable.display > tbody > tr.odd > * {
-        box-shadow: inset 0 0 0 0 rgba(0, 0, 0, 0);
-    }
 
-    /* Prevent layout shift when modal opens */
-    html {
-        overflow-y: scroll;
-    }
-
-    body.modal-open {
-        padding-right: 0 !important;
-    }
-
-    .modal-dialog {
-        max-width: 700px;
-    }
-
-    .modal-content {
-        color: #000; /* Ensure default text is black */
-    }
-
-    .text-end {
-        text-align: right !important;
-    }
-
-    .btn-add,
-    .btn-submit {
-        background-color: #002c77 !important;
-        color: white !important;
-        border-color: #002c77 !important;
-    }
-
-        .btn-add:hover,
-        .btn-add:focus,
-        .btn-add:active,
-        .btn-submit:hover,
-        .btn-submit:focus,
-        .btn-submit:active {
-            background-color: #002c77 !important;
-            color: white !important;
-            border-color: #002c77 !important;
-            box-shadow: none !important;
-        }
-
-    .btn-delete {
-        border: 1px solid #ff5e5e;
-        color: #ff5e5e;
-    }
-
-    .form-label.required::after {
-        content: " *";
-        color: red;
-    }
-</style>
-@* <div class="page-header-box padding-15">
-    <div class="welcome-box">
-        <h2 style="">Welcome to your Dashboard</h2>
-        <span class="text-color">You are logged in as ananthalvan.soundararajan@@lacity.org</span>
-    </div>
-</div> *@
 <div class="page-content">
-    <div class="row">
-        <div class="col-md-8">
-            <h3 class="title" style="color:#393939; margin-bottom: 0;">My Dashboard</h3>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-8">
+			<h3 class="title" style="color:#393939; margin-bottom: 0;">My Dashboard</h3>
+		</div>
+	</div>
 
-    <div class="row dashboard-header-row">
-        <div class="col-md-10 offset-md-1 button-container">
-            <button class="edit-project-button" onclick="DisplayModal()">Edit Project(s)</button>
-        </div>
-    </div>
+	<div class="row dashboard-header-row">
+		<div class="col-md-10 offset-md-1 button-container">
+			<button class="edit-project-button" onclick="Dashboard.DisplayModal()">Edit Project(s)</button>
+		</div>
+	</div>
 
-    <div class="row" >
-        <div class="col-md-10 offset-md-1">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header">
-                    My Projects
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblMyProjects" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>ACHP Number</th>
-                                <th>Project Name</th>
-                                <th>Project Address</th>
-                                <th>Project Type</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row" style="display:none">
-        <div class="col-md-4">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header text-bold">
-                    New Projects Submitted
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblNewProjects" class="display" style="width:100%">
-                        <thead style="display:none">
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header text-bold">
-                    Plan Review
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblPlanReview" class="display" style="width:100%">
-                        <thead style="display:none">
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header text-bold">
-                    Site Inspection
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblSiteInspection" class="display" style="width:100%">
-                        <thead style="display:none">
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header text-bold">
-                    NAC
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblNACInspection" class="display" style="width:100%">
-                        <thead style="display:none">
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="dashboard-summary-container content-box">
-                <span class="dashboard-summary-header text-bold">
-                    Completed Certification
-                </span>
-                <div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-                    <table id="tblCompletedCert" class="display" style="width:100%">
-                        <thead style="display:none">
-                            <tr>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-md-10 offset-md-1">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header">
+					My Projects
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblMyProjects" class="display" style="width:100%">
+						<thead>
+							<tr>
+								<th>ACHP Number</th>
+								<th>Project Name</th>
+								<th>Project Address</th>
+								<th>Project Type</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="display:none">
+		<div class="col-md-4">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header text-bold">
+					New Projects Submitted
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblNewProjects" class="display" style="width:100%">
+						<thead style="display:none">
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header text-bold">
+					Plan Review
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblPlanReview" class="display" style="width:100%">
+						<thead style="display:none">
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header text-bold">
+					Site Inspection
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblSiteInspection" class="display" style="width:100%">
+						<thead style="display:none">
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header text-bold">
+					NAC
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblNACInspection" class="display" style="width:100%">
+						<thead style="display:none">
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="dashboard-summary-container content-box">
+				<span class="dashboard-summary-header text-bold">
+					Completed Certification
+				</span>
+				<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
+					<table id="tblCompletedCert" class="display" style="width:100%">
+						<thead style="display:none">
+							<tr>
+								<th>Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <!--modal-->
-<div class="modal fade" id="ActionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #001D80;color: #fff;">
-                <h5 class="modal-title ActioModalTitle popup-title" id="myModalLabel" style="color:#fff">Edit Project(s)</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+<div class="modal fade" id="ActionModal" tabindex="-1" role="dialog"
+	 aria-labelledby="ActionModalLabel" aria-hidden="true"
+	 data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<!-- Centered modal -->
+		<div class="modal-content">
 
-            </div>
-            <div class="modal-body ActioModalBody">
-                <p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
 
-                <!-- Section Heading -->
-                <h5>Provide your AcHP Number(s)</h5>
-                <p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p>
-                <br />
-                <form id="projectForm" onsubmit="handleSubmit(event)">
 
-                    <!-- 👇 Centered AcHP Input and Project List -->
-                    <div class="d-flex justify-content-center">
-                        <div class="w-100" style="max-width: 500px;">
-                            <div class="mb-3 row">
-                                <label for="acHpInput" class="form-label fw-bold required">AcHP Number</label>
-                            
-                                <div class="input-group">
-                                    <input type="text" id="acHpInput" class="form-control border-end-0 rounded-end-0" placeholder="AcHP Number" required>
-                                    <button class="btn btn-add shadow-none border-start-0 rounded-start-0 px-4" type="button" onclick="addProject()">Add</button>
-                                </div>
+			<!-- Modal Header -->
+			<div class="modal-header  text-white" style=" background-color : #2C3E5C !important">
+				<h5 class="modal-title text-white" id="ActionModalLabel">Edit Project(s)</h5>
+				<!-- Disabled X close -->
+				<!-- <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button> -->
+			</div>
 
-                                <div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
-                                <div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
-                            </div>
+			<!-- Modal Body -->
+			<div class="modal-body">
+				<p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
+				<h5>Provide your AcHP Number(s)</h5>
+				<p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p>
 
-                            <span style="padding-top:5%;display:inline-block"></span>
-                           
-                            <span id="cm_loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" 
+				<form id="projectForm" onsubmit="Dashboard.handleSubmit(event)">
+					<div class="form-group">
+						<label for="acHpInput" class="font-weight-bold required">AcHP Number *</label>
+						<div class="input-group">
+							<input type="text" id="acHpInput" class="form-control" placeholder="AcHP Number" required>
+							<div class="input-group-append">
+								<button class="btn btn-primary" type="button" onclick="Dashboard.addProject()">Add</button>
+							</div>
+						</div>
+						<div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
+						<div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
+						<div id="validationMessage" class="text-danger mt-1" style="display: none;"></div>
+					</div>
 
-                            style="margin-left: auto;margin-right: auto;display: block;"></span>
-                             
-                            <div id="divProjects" class="mb-3">
-                            </div>
+					<!-- Project List -->
+					<div id="divProjects" class="mb-3"></div>
+				</form>
+			</div>
 
-                        </div>
-                    </div>
-                    <!-- 👆 End of Centered Section -->
+			<!-- Modal Footer -->
+			<div class="modal-footer d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary" form="projectForm">Submit</button>
+				<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
+			</div>
 
-                    <hr>
-
-                    <div class="text-end">
-                        <button type="submit" class="btn btn-submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
-@{
 
-}
+
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            PopulateMyProjectData();
-          document.getElementById('cm_loader').style.display = 'none'
-        });
-        function PopulateMyProjectData() {
-            $('#tblMyProjects').DataTable({
-                ajax: {
-                    url: APPURL+'Dashboard/GetMyProjectData',
-                    data: { },
-                    type: 'POST',
-                    "headers": {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    dataType: 'json',
-                    dataSrc: ''
-                },
-                sorting: true,
-                searching: true,
-                paging: true,
-                info: true,
-                header: true,
-                columns: [
-                    {
-                        data: 'acHPFileProjectNumber',
-                        render: function (data, type, row, meta) {
-                            // render event defines the markup of the cell text
-                            if (row.caseId) {
-                                if (row.caseId.match(/href="([^"]*)/)) {
-                                    var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.acHPFileProjectNumber + '</a>';
-                                    var href = row.caseId.match(/href="([^"]*)/)[1];
-                                    var queryString = href.split("?");
-                                    var url = "../projectdetail?" + queryString[1];
-                                    a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.acHPFileProjectNumber + '</a>';
-                                    return a;
-                                }
-                                else {
-                                    return row.caseId.replace('View Project', row.acHPFileProjectNumber);
-                                }
-                            }
-                            return "";
-                        }
-                    },
-                    { data: 'projectName' },
-                    { data: 'projectAddress', },
-                    { data: 'type' },
-                    { data: 'status' }
-                ]
-            });
-        }
+	<!-- Load Dashboard.js first -->
+	<script src="~/pagescripts/dashboard/dashboard.js"></script>
 
-        function PopulateData(tableName, dashboardCategory) {
-            $('#' + tableName).DataTable({
-                ajax: {
-                    url: '/Dashboard/GetProjectData',
-                    data: { name: dashboardCategory },
-                    type: 'POST',
-                    "headers": {
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    dataType: 'json',
-                    dataSrc: ''
-                },
-                sorting: false,
-                searching: false,
-                paging: false,
-                info: false,
-                header: false,
-                columns: [
-                    {
-                        data: 'projectName',
-                        render: function (data, type, row, meta) { // render event defines the markup of the cell text
-                            var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.projectName + '</a>';
-                            if (dashboardCategory == 'PlanReview') {
-                                var href = row.caseId.match(/href="([^"]*)/)[1];
-                                var queryString = href.split("?");
-                                var url = "../planReview/index?" + queryString[1];
-                                a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.projectName + '</a>';
+	<!-- Then safely call its methods -->
+	<script>
+		$(document).ready(function () {
+			Dashboard.init();
+			Dashboard.PopulateMyProjectData();
 
-                            }
-                            return a;
-
-                        }
-                    }
-                ]
-            });
-        }
-
-        function DisplayModal(){
-            $('#ActionModal').modal('show');
-            document.getElementById('acHpError').style.display = 'none';
-            document.getElementById('noData').style.display = 'none';
-            document.getElementById("acHpInput").value = '';
-            document.getElementById('divProjects').innerHTML = '';
-        }
-
-
-        function addProject() {
-            const input = document.getElementById("acHpInput");
-            const value = input.value.trim();
-              document.getElementById("noData").style.display = "none";
-            if (value === '') {
-          document.getElementById("acHpError").style.display = "block";
-          return;
-        } else {
-          document.getElementById("acHpError").style.display = "none";
-          setTimeout(AddClick, 300);
-          document.getElementById('cm_loader').style.display = 'inline-block'          
-        }
-        }
-        
-        function AddClick(){
-            var ctlIndex = GetControlIndex();
-            console.log('ProjCount: ' + ctlIndex);
-            const input = document.getElementById("acHpInput");
-            const achpNumber = input.value.trim();
-            console.log('achp#: ' + achpNumber);
-            var addr = GetACHPDetail(achpNumber);
-            $('#btnDel' + ctlIndex).on('click', function () {
-                var ctlId = $(this).attr('id');
-                var idx = ctlId.replace('btnDel', '');
-                var divId = 'div' + idx;
-                $('#' + divId).remove();
-            })
-
-          document.getElementById('cm_loader').style.display = 'none'
-
-            $('.btn.btn-primary').attr("disabled", false);
-           
-        }
-
-        function GetACHPDetail(achpNumber){
-            $.ajax({
-                url: "/Account/GetACHPDetails",
-                type: 'POST',
-                async: false,
-                dataType: 'json',
-                contentType: 'application/json',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                data: "achpNumber=" + achpNumber,
-                success: function (data) {
-                    var retJson = JSON.parse(data);
-                    var respCode = retJson.ResponseCode;
-                    var streetName = retJson.StreetName;
-                    var retAchp = retJson.AchpNumber;
-                    var response = retJson.Response;
-                    console.log('response:' + response);
-                    if (response != '[]') {
-                        document.getElementById("noData").style.display = "none";
-
-                        streetName = streetName.replace(/LOS ANGELES.*/g, ""); // remove city, state and zip
-
-                        var ctlIndex = GetControlIndex();
-                        var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-                        var divACHPWithAddr = '<div class="col-md-10 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
-                        var divDel = '<div class="col-md-2 text-right border-no-left row-padding"><button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
-                        $('#divProjects').append(divToAdd + divACHPWithAddr + divDel + "</div>")
-                    }
-                    else
-                    {
-                        document.getElementById("noData").style.display = "block";
-                    }
-
-                    return streetName;
-
-                },
-                error: function (xhr) { }
-            })
-        }
-
-
-
-
-    </script>
+			const loader = document.getElementById('cm_loader');
+			if (loader) {
+				loader.style.display = 'none';
+			}
+		});
+	</script>
 }
