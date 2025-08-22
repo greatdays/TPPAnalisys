@@ -197,5 +197,15 @@ namespace DeveloperPortal.Domain.PropertySnapshot
             public const string NewConstruction_Modular = "New Construction/Modular";
 
         }
+        public static class ContactTypes
+        {
+            public const string Owner = "Owner";
+            public const string Applicant = "Applicant";
+            public const string CityEmployee = "City of Los Angeles Employee";
+            public const string Advocate = "Housing Advocate";
+            public const string Client = "Client";
+            public const string PropertyManager = "Property Manager";
+        }
+
     }
 }

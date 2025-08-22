@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Models.Account;
+using DeveloperPortal.Models.IDM;
 
 namespace DeveloperPortal.Application.ProjectDetail.Interface
 {
@@ -12,5 +13,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
     {
 
         Task<List<VwPropertySearch>> GetACHPDetails(String FileNumber);
+        public Task<int> ContactIdentifierSave(ApplicantSignupModel signupModel, string userName, string source = "");
     }
 }
