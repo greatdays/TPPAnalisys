@@ -132,7 +132,7 @@
 
 			<!-- Modal Header -->
 			<div class="modal-header  text-white" style=" background-color : #2C3E5C !important">
-				<h5 class="modal-title" id="ActionModalLabel">Edit Project(s)</h5>
+				<h5 class="modal-title text-white" id="ActionModalLabel">Edit Project(s)</h5>
 				<!-- Disabled X close -->
 				<!-- <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -326,65 +326,62 @@
 				}
 			}
 
-			function AddClick() {
-
+			function AddClick() 
+			{
 				var ctlIndex = GetControlIndex();
 				console.log('ProjCount: ' + ctlIndex);
 				const input = document.getElementById("acHpInput");
 				const achpNumber = input.value.trim();
 
-				GetACHPDetail(achpNumber, function (streetName,retAchp,projectId, found)
-				{
-					debugger;
-					retAchp= retAchp;
+
+				GetACHPDetail(achpNumber, function (streetName, retAchp, projectId, found) {
 					var achpNumbers = new Set();
-					
-					var isDuplicate =false;
-						$('#divProjects input[name="projectIds[]"]').each(function () {
+					var isDuplicate = false;
+
+					$('#divProjects input[name="projectIds[]"]').each(function () {
 						if ($(this).val() === projectId) {
 							$('#divAdd').next('.text-danger-custom').remove();
-							$('#validationMessage').text("ACHP number alrady Added : " + retAchp).show();
+							$('#validationMessage').text("ACHP number already Added : " + retAchp).show();
 							isDuplicate = true;
 							return false; // break loop
 						}
 					});
 
-
-					if(isDuplicate)
-					{
+					if (isDuplicate) {
 						return;
-					}
-					else
-					{
+					} else {
 						$('#validationMessage').text("Duplicate Project Found: " + retAchp).hide();
 					}
 
-
-					if (!found) 
-					{
+					if (!found) {
 						$('#divAdd').next('.text-danger-custom').remove();
 						document.getElementById("noData").style.display = "block";
-						//$('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>No data found</span>");
-							$('#btnAdd').prop('disabled', false);
+						$('#btnAdd').prop('disabled', false);
 						return;
-					}
-					else
-					{
+					} else {
 						document.getElementById("noData").style.display = "none";
 					}
 
-				streetName = streetName.replace(/LOS ANGELES.*/g, ""); // Clean address
-				var ctlIndex = GetControlIndex();
-				var divToAdd = '<div class="row justify-content-md-center" id="div' + ctlIndex + '">';
-				var divACHPWithAddr = '<div class="col-md-8 border-no-right row-padding">' + retAchp + " - " + streetName + '</div>';
-				var hiddenProjectId = '<input type="hidden" name="projectIds[]" value="' + projectId + '"/>';
-				var divDel = '<div class="col-md-2 text-right border-no-left row-padding">' +
-				'<a role="button" class="k-button k-button-icontext k-grid-Delete" href="#"><span class="k-icon k-i-delete"></span></a>' +
-								'<button class="btn btn-outline-secondary btn-sm" type="button" style="border-radius:5px;" id="btnDel' + ctlIndex + '">Delete</button></div>';
+					streetName = streetName.replace(/LOS ANGELES.*/g, ""); // Clean address
+					var ctlIndex = GetControlIndex();
 
-				$('#divProjects').append(divToAdd + divACHPWithAddr + divDel + hiddenProjectId + "</div>");
+					// build full block as its own row
+					var html = `
+						<div class="row justify-content-md-center mb-2" id="div${ctlIndex}">
+							<div class="col-md-8 border-no-right row-padding">
+								${retAchp} - ${streetName}
+							</div>
+							<div class="col-md-2 text-right border-no-left row-padding">
+								<a role="button" class="k-button k-button-icontext k-grid-Delete btnDel">
+									<span class="k-icon k-i-delete"></span>
+								</a>
+							</div>
+							<input type="hidden" name="projectIds[]" value="${projectId}" />
+						</div>`;
+
+					$('#divProjects').append(html);
 					$('#btnAdd').prop('disabled', false);
-			});
+				});
 		}
 
 
@@ -426,6 +423,11 @@
 			$(document).on('click', 'button[id^="btnDel"]', function () {
 				$(this).closest('div.row').remove();
 			});
+
+					$(document).on('click', 'a.btnDel', function (e) {
+			//e.preventDefault(); // prevent page jump from href="#"
+			$(this).closest('div.row').remove();
+		});
 
 
 	</script>

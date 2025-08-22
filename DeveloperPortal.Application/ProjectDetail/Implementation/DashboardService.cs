@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Dashboard;
 using DeveloperPortal.Models.IDM;
 using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
 using Serilog;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
@@ -18,12 +16,14 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
         private readonly IApnpinRepository _apnpinRepository;
-
-
-        public DashboardService(IStoredProcedureExecutor storedProcedureExecutor, IApnpinRepository apnpinRepository)
+        public readonly IAccountRepository _accountRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public DashboardService(IStoredProcedureExecutor storedProcedureExecutor, IApnpinRepository apnpinRepository, IAccountRepository accountRepository, IHttpContextAccessor httpContextAccessor)
         {
             _storedProcedureExecutor = storedProcedureExecutor;
             _apnpinRepository = apnpinRepository;
+            _accountRepository = accountRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -113,46 +113,59 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
 
 
-        public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID(String UserID )
+        public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID()
         {
-            List<DashboardDataModel> resultList = new List<DashboardDataModel>();
-            var res = await GetAllConstructionCasesDataByUser(UserID);
-            var allCases = res;
 
-            if (allCases != null && allCases.Count > 0)
+            var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            if (!string.IsNullOrEmpty(userName))
             {
-                //Added this log for Serilog testing once testing done We will reomve this line
-                Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+                var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
+                List<DashboardDataModel> resultList = new List<DashboardDataModel>();
 
-                resultList = allCases.Select(x => new DashboardDataModel
+                if (contactIdentifierID != null)
                 {
-                    Type = x.Type,
-                    CaseId = x.CaseId,
-                    SiteCases = x.SiteCases,
-                    ComplianceMatrixLink = x.ComplianceMatrixLink,
-                    PropertyDetailsLink = x.PropertyDetailsLink,
-                    Status = x.Status,
-                    AssigneeID = x.AssigneeID,
-                    Summary = x.Summary,
-                    ProjectName = x.ProjectName,
-                    ProjectAddress = x.ProjectAddress,
-                    AcHPFileProjectNumber = x.AcHPFileProjectNumber,
-                    ProblemProject = x.ProblemProject
-                }).ToList();
+                    var res = await GetAllConstructionCasesDataByUser(contactIdentifierID.ContactIdentifierId);
+                    var allCases = res;
+
+                    if (allCases != null && allCases.Count > 0)
+                    {
+                        //Added this log for Serilog testing once testing done We will reomve this line
+                        Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
+
+                        resultList = allCases.Select(x => new DashboardDataModel
+                        {
+                            Type = x.Type,
+                            CaseId = x.CaseId,
+                            SiteCases = x.SiteCases,
+                            ComplianceMatrixLink = x.ComplianceMatrixLink,
+                            PropertyDetailsLink = x.PropertyDetailsLink,
+                            Status = x.Status,
+                            AssigneeID = x.AssigneeID,
+                            Summary = x.Summary,
+                            ProjectName = x.ProjectName,
+                            ProjectAddress = x.ProjectAddress,
+                            AcHPFileProjectNumber = x.AcHPFileProjectNumber,
+                            ProblemProject = x.ProblemProject
+                        }).ToList();
+
+                        return resultList;
+                    }
+                }
             }
-            return resultList;
+
+            return null;
         }
 
 
 
-        private async Task<List<AllConstructionData>> GetAllConstructionCasesDataByUser(String UserID)
+        private async Task<List<AllConstructionData>> GetAllConstructionCasesDataByUser(int UserID)
         {
             List<AllConstructionData> obj = new List<AllConstructionData>();
             try
             {
                                 var parameters = new[]
                 {
-                    new SqlParameter("UserId", "280378")
+                    new SqlParameter("UserId", UserID)
                 };
 
                 var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(

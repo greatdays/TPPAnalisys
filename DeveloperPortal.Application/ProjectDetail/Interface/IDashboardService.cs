@@ -19,7 +19,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
 
         Task<List<AllConstructionData>> GetAllConstructionCasesData();
 
-        Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID(String UserID);
+        Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID();
  
 
 

@@ -18,5 +18,7 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         Task<LutContactType> GetLutPropContactAssnTypes(string contactType);
 
         Task<bool> AddPropContactIfNotExistsAsync(AssnPropContact contact, string userName);
+
+        Task<ContactIdentifier> GetContactIdentifierByUserName(string userName);
     }
 }

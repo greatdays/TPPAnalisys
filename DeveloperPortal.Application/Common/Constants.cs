@@ -16,4 +16,13 @@ namespace DeveloperPortal.Application.Common
         public const string SP_uspGetDMSFolderDetails = "DMS.uspGetDMSFolderDetails";
 
     }
+
+
+    public static class ConstAssnPropContact
+    {
+        public const string Project = "Project";
+        public const string Status = "Pending Approval";
+        public const string Source = "AAHRDeveloperPortal";
+        public const string Role = "Developer";
+    }
 }

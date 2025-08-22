@@ -62,31 +62,54 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return lutContactType;
         }
 
+
+        public async Task<ContactIdentifier> GetContactIdentifierByUserName(string userName)
+        {
+            var contactIdentifier = await _context.ContactIdentifiers
+                                           .Where(x => x.IdmuserName == userName)
+                                           .FirstOrDefaultAsync();
+            return contactIdentifier;
+        }
+
+        
         public async Task<bool> AddPropContactIfNotExistsAsync(AssnPropContact contact, string userName)
         {
+            // Check if record already exists
             bool exists = await _context.AssnPropContacts
                 .AnyAsync(x => x.ProjectId == contact.ProjectId
                             && x.ContactIdentifierId == contact.ContactIdentifierId);
 
-            try
-            {
-                if (!exists)
-                {
-                    _context.AssnPropContacts.Add(contact);
-                    await _context.SaveChangesWithAuditAsync(userName);
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
+            if (exists)
+                return false; // Already exists
 
-                throw ex;
-            }    
-            
+            // Get first APN number (optimized query - only one row fetched)
+            var apnNumber = await _context.PropSnapshots
+                .Where(x => x.ProjectId == contact.ProjectId && x.Apn != null)
+                .Select(x => x.Apn.Apn1)
+                .FirstOrDefaultAsync();
 
-            return false; // Already exists
+            // Assign APN if available
+            contact.Apn = apnNumber;
+
+            // Insert new record
+            _context.AssnPropContacts.Add(contact);
+            await _context.SaveChangesWithAuditAsync(userName);
+
+            return true;
         }
 
+
+
+
+        public async Task<List<PropSnapshot>> GetPropSnapshotByProjectID(int? ProjectId)
+        {
+            var propSnapshots = await _context.PropSnapshots
+                                .Where(x => x.ProjectId == ProjectId)
+                                .Include(x => x.Apn)   // 👈 this loads the related APN navigation property
+                                .ToListAsync();
+
+            return propSnapshots;
+        }
 
     }
 }
