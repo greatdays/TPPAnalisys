@@ -121,7 +121,7 @@ namespace DeveloperPortal.ServiceClient
                 // request object.
                 AuthenticateRequest authenticateRequest = new AuthenticateRequest()
                 {
-                    JWTAccessCode = _config["ThisApplication:JwtAccessCode"],
+                    JWTAccessCode = _config["AppSettings:JwtAccessCode"],
                     JwtToken = jwtToken,
                     SourceApp = _config["IDMSettings:SourceApp"],
                     TargetApp = _config["IDMSettings:TargetApp"]

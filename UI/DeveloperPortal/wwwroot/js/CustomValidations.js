@@ -412,13 +412,12 @@ function GetControlIndex() {
 function SaveLocalData(currentStep) {
     var json = localStorage.getItem('ApplicantJson');
     var j = $.parseJSON(json)
-
     
     switch (currentStep) {
         case "step-0":
             var accountType = $('#AccountType option:selected').text();
             var step0Json = { 'accountType': accountType };
-            j["Applicant"][3]["Data"] = step0Json;
+            j["Applicant"][2]["Data"] = step0Json;
 
             break;
         case "step-1":
@@ -476,16 +475,16 @@ function SaveLocalData(currentStep) {
             localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
             j["Applicant"][1]["Data"] = step2Json;
             break;
-        case "step-3":
-            var jsonObj = [];
-            $('#divProjects > div').each(function (index) {
-                console.log('index: ' + index);
-                var proj = $('#div' + (index + 1) + '>:first-child').text();
-                jsonObj.push(proj);
-            })
-            localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
-            j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
-            break;
+        //case "step-3":
+        //    var jsonObj = [];
+        //    $('#divProjects > div').each(function (index) {
+        //        console.log('index: ' + index);
+        //        var proj = $('#div' + (index + 1) + '>:first-child').text();
+        //        jsonObj.push(proj);
+        //    })
+        //    localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
+        //    j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
+        //    break;
         default:
     }
     localStorage.setItem("ApplicantJson", JSON.stringify(j));
@@ -495,7 +494,7 @@ function SaveLocalData(currentStep) {
 function LoadSummaryPage() {
     var yourInfo = localStorage.getItem('YourInfo');
     var contactInfo = localStorage.getItem('ContactInfo');
-    var projList = localStorage.getItem('ProjectList');
+    //var projList = localStorage.getItem('ProjectList');
     var json = '';
 
     if (yourInfo != undefined) {
