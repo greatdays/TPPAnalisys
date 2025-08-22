@@ -106,6 +106,39 @@ namespace DeveloperPortal.Application.ProjectDetail
             return projectSummaryModel;
         }
 
+        public List<string> GetReviewNote(int caseId)
+        {
+            List<string> reviewNotes = new List<string>();
+            try
+            {
+                var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId },
+                };
+                using (var dataTable = _storedProcedureExecutor.ExecuteStoreProcedure(StoredProcedureNames.SP_uspRoGetReviewNoteForProject, sqlParameters))
+                {
+                    if (dataTable != null && dataTable.Rows.Count > 0)
+                    {
+                        reviewNotes = dataTable.AsEnumerable()
+                                .Select(row => row[0]?.ToString())
+                                .Where(val => !string.IsNullOrEmpty(val))
+                                .ToList();
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                // Log or handle database-related errors
+                throw new Exception("Database operation failed.", sqlEx);
+            }
+            catch (Exception ex)
+            {
+                // General exception handling
+                throw new Exception("An error occurred while fetching the case details.", ex);
+            }
+            return reviewNotes;
+        }
+
         public List<string> GetProjectAssessors(int projectId)
         {
             //List<string> result = null;
@@ -852,6 +885,8 @@ namespace DeveloperPortal.Application.ProjectDetail
                 }
             }
         }
+
+     
 
 
         #endregion

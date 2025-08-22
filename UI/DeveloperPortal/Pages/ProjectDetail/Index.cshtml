@@ -197,7 +197,7 @@
         border: 1px solid #2C3E5C !important;
     }
 
-    
+
 </style>
 
 @* Page Script *@
@@ -209,6 +209,29 @@
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 <div class="page-content">
+    <!-- Project Notification -->
+    @* Project Notification *@
+    @if (Model.ProjectSummary?.ReviewNote != null && Model.ProjectSummary.ReviewNote.Any())
+    {
+        <div class="project-notifications container mt-5">
+            <div class="bg-warning1 p-3 text-center rounded position-relative">
+                <span class="close-btn"></span>
+                <p>
+                    <b>You have new comments on @Model.ProjectSummary.ProjectName:</b>
+                    <br />
+                    @foreach (var note in Model.ProjectSummary.ReviewNote)
+                    {
+                        @note <br />
+                    }
+                    <a href="#">Click to respond.</a>
+                </p>
+            </div>
+        </div>
+    }
+
+    <!-- End Project Notification -->
+
+
     <div class="row">
         <div class="col-md-8">
             <h3 class="title" style="color:#393939; margin-bottom: 0;">  @Model.TabName</h3>

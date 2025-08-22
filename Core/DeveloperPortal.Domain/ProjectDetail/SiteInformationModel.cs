@@ -95,6 +95,8 @@
         public List<string> ProjectAssessors { get; set; }
 
         public string AssignedPolicyAnalyst { get; set; }
+        public List<string> ReviewNote { get; set; }
+
 
     }
 }

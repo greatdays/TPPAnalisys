@@ -4,10 +4,12 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Dashboard;
+using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
 using Serilog;
+using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
@@ -131,6 +133,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                         //Added this log for Serilog testing once testing done We will reomve this line
                         Log.Logger.Information("DashboardService:GetAllConstructionCasesForUser : AllCases Count is {AllCasesCount}", allCases.Count());
 
+                        string achpFileNumbers = string.Join(",", allCases.Select(m => m.AcHPFileProjectNumber));
+                        var reviewNotACHPFileNumbers = GetReviewNoteACHPFileNumberByUser(achpFileNumbers);
                         resultList = allCases.Select(x => new DashboardDataModel
                         {
                             Type = x.Type,
@@ -144,7 +148,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             ProjectName = x.ProjectName,
                             ProjectAddress = x.ProjectAddress,
                             AcHPFileProjectNumber = x.AcHPFileProjectNumber,
-                            ProblemProject = x.ProblemProject
+                            ProblemProject = x.ProblemProject,
+                            ReviewNoteAcHPFileProjectNumber = reviewNotACHPFileNumbers
                         }).ToList();
 
                         return resultList;
@@ -177,6 +182,36 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             {
                 Console.WriteLine(e);
                 return new List<AllConstructionData>();
+            }
+        }
+
+        private  string GetReviewNoteACHPFileNumberByUser(String ACHPFileNumbers)
+        {
+
+            try
+            {
+                var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@ACHPfileNumbers", Value = ACHPFileNumbers },
+                };
+                string fileGroups = string.Empty;
+
+                using (var dataTable = _storedProcedureExecutor.ExecuteStoreProcedure(StoredProcedureNames.SP_uspRoGetReviewNoteACHPFileNumber, sqlParameters))
+                {
+                    if (dataTable != null && dataTable.Rows.Count > 0)
+                    {
+                        fileGroups = string.Join(",",
+                            dataTable.AsEnumerable()
+                                     .Select(r => r["FileGroup"].ToString())
+                                     .Where(val => !string.IsNullOrWhiteSpace(val)));
+                    }
+                }
+                return fileGroups;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return String.Empty;
             }
         }
     }

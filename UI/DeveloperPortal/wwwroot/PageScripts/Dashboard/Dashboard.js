@@ -91,7 +91,24 @@ PopulateMyProjectData : function() {
 			{ data: 'projectAddress', },
 			{ data: 'type' },
 			{ data: 'status' }
-		]
+			
+		],
+		initComplete: function (settings, json) {
+			if (json && json.length > 0) {
+				var fileNumber = json[0].reviewNoteAcHPFileProjectNumber;
+
+				if (fileNumber && fileNumber.trim() !== "") {
+					$(".project-notifications p").html(
+						"You have new comments on the following project(s): <b>" + fileNumber.trim() + "</b>"
+					);
+					$(".project-notifications").show();
+				} else {
+					$(".project-notifications").hide();
+				}
+			} else {
+				$(".project-notifications").hide();
+			}
+		}
 	});
 },
 
