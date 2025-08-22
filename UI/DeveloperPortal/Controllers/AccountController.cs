@@ -25,6 +25,7 @@ using DeveloperPortal.Models.Account;
 using DeveloperPortal.Models.Common;
 using static DeveloperPortal.ServiceClient.ServiceClient;
 using ComCon.DataAccess.Models.Helpers;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 
 namespace DeveloperPortal.Controllers
 {
@@ -34,12 +35,15 @@ namespace DeveloperPortal.Controllers
     {
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
+        private IAccountService _accountService;
 
         // Here we are using Dependency Injection to inject the Configuration object
-        public AccountController(IConfiguration config, IHttpContextAccessor httpConfig)
+        public AccountController(IConfiguration config, 
+            IHttpContextAccessor httpConfig, IAccountService service)
         {
             _config = config;
             _contextAccessor = httpConfig;
+            _accountService = service;
         }
 
         [Route("account/login")]
@@ -56,7 +60,7 @@ namespace DeveloperPortal.Controllers
 
         #region Create Account
         [HttpPost("XDebugCreateAccount")]
-        public IActionResult XDebugCreateAccount([FromBody]JObject data)
+        public async Task<IActionResult> XDebugCreateAccount([FromBody]JObject data)
         {
             var signupModel = new ApplicantSignupModel(_config);
             string accountType = string.Empty;
@@ -106,21 +110,21 @@ namespace DeveloperPortal.Controllers
                                                       .Equals("Yes", StringComparison.OrdinalIgnoreCase);
                         break;
 
-                    case "ProjectList":
-                        signupModel.Projects = JArray.Parse(item["Data"].ToString())
-                                                     .Select(x => x.ToString())
-                                                     .ToList();
-                        break;
+                    //case "ProjectList":
+                    //    signupModel.Projects = JArray.Parse(item["Data"].ToString())
+                    //                                 .Select(x => x.ToString())
+                    //                                 .ToList();
+                    //    break;
 
                     default:
                         break;
                 }
             }
 
-            return CreateIDMAccount(signupModel, accountType);
+            return await CreateIDMAccount(signupModel, accountType);
         }
 
-        public ActionResult CreateIDMAccount(ApplicantSignupModel signupModel, string selectedRole)
+        public async Task<ActionResult> CreateIDMAccount(ApplicantSignupModel signupModel, string selectedRole)
         {
             JsonData<JsonStatus> data = new JsonData<JsonStatus>(new JsonStatus());
             string username = "";
@@ -182,7 +186,7 @@ namespace DeveloperPortal.Controllers
 
                 if (ModelState.IsValid && !string.IsNullOrEmpty(username))
                 {
-
+                    
                     if (CheckExistingUserName(username))
                     {
 
@@ -293,8 +297,8 @@ namespace DeveloperPortal.Controllers
                                 signupModel.IsApplicant = true;
 
                                 /*saving contact */
-                                signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
-
+                                //signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
+                              int contactId= await  _accountService.ContactIdentifierSave(signupModel, username, Constants.AppConstant.TPPSource);
 
                                 ///* Saving subscription data to DB */
                                 ///Ananth: Commented below piece of code

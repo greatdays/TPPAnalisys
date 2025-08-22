@@ -5,7 +5,7 @@
         },
 
         projectActions: function() {
-             var url = 'ProjectDetail/GetProjectActionsByCaseId';
+            var url = APPURL + 'ProjectDetail/GetProjectActionsByCaseId';
            $.ajax({
                url: url,
                data: {caseId: Id, projectId: ProjectId},
@@ -41,12 +41,13 @@
                 //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divPolicyContacts");
                 //     break;
-                // case "tabDocuments":
-                //     var url = '@Url.Action("GetFilesByIdNew", "DMS", new { area = "Document", caseId = "__id__" })';
-                //     url = url.replace("__id__", Id);
-                //     console.log(url);
-                //     LoadTabData(url, "divDocument", true);
-                //     break;
+                 case "tabDocuments":
+                    var caseId = Id; // Replace with your method to get case ID
+                    // Replace with your method
+                    console.log(Id);
+                                          // Load documents using the new DMS static method
+                    DMS.LoadDocuments(caseId);
+                    break;
                 // case "tabLogs":
                 //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divLogs");

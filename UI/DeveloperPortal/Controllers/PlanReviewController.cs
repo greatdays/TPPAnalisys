@@ -53,7 +53,7 @@ namespace DeveloperPortal.Controllers
             var filteTye = GetMimeTypeForFileExtension(file.FileName);
             var folderName = "Jignesh-Test-2";
 
-            var folderPath =AAHRServiceClient.UploadFiel(_BaseURL, _GoogleDriveId, folderName, file, filteTye);
+            var folderPath =AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, filteTye);
             return Json(folderPath);
         }
         public string GetMimeTypeForFileExtension(string filePath)

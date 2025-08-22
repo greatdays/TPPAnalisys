@@ -47,11 +47,11 @@
                     <span class="round-tab app-stepper-desc signUpBreadCircles">Contact Information</span>
                 </a>
             </li>
-            <li role="presentation" class="disabled wizard-item" aria-disabled="true">
+            @* <li role="presentation" class="disabled wizard-item" aria-disabled="true">
                 <a disabled="disabled" tabindex="-1" href="#step-3" type="button" role="tab" class="form_btn-circle app-circle" aria-selected="false">
                     <span class="roundcircle"><span class="fa"></span></span> <span class="round-tab app-stepper-desc signUpBreadCircles">Project Registration</span>
                 </a>
-            </li>
+            </li> *@
             <li role="presentation" class="disabled wizard-item" aria-disabled="true">
 
                 <a disabled="disabled" tabindex="-1" href="#step-4" type="button" role="tab" class="form_btn-circle app-circle" aria-selected="false">
@@ -82,12 +82,12 @@
                     <partial name="ContactMethods" model="contactModel"></partial>
                 }
             </div>
-            <div class="setup-content" id="step-3" role="tabpanel" style="display: none">
+            @* <div class="setup-content" id="step-3" role="tabpanel" style="display: none">
                 @{
                     var projRegistrationModel = new ProjectRegistrationModel(accountService);
                     <partial name="ProjectRegistration" model="projRegistrationModel"></partial>
                 }
-            </div>
+            </div> *@
             <div class="setup-content" id="step-4" role="tabpanel" style="display: none">
                 @{
                     //IConfiguration config = null;
@@ -110,7 +110,7 @@
 
 <script>
     $(document).ready(function () {
-        var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "ProjectList", "Data": ""}, {"step": "AccountType","Data": ""}]}';
+        var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "AccountType","Data": ""}]}';
         localStorage.setItem('ApplicantJson', applicantJson);
 
         var StepChanged = function f($target) {
@@ -381,7 +381,7 @@
                 isValid = true; 
                 $("#curformValid").val('true'); 
                 SaveLocalData(curStepBtn);
-                console.log('ProjectList after SaveLocaldata: ' + localStorage.getItem('ProjectList'));
+                // console.log('ProjectList after SaveLocaldata: ' + localStorage.getItem('ProjectList'));
             }
 
 

@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
+using DeveloperPortal.Application.Notification.Interface;
+using DeveloperPortal.Application.Notification.Implementation;
 
 namespace DeveloperPortal
 {
@@ -64,6 +66,8 @@ namespace DeveloperPortal
             services.AddScoped<IUnitImportService, UnitImportService>();
             services.AddScoped<IBuildingIntakeService, BuildingIntakeService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<ISendNotificationEmail, SendNotificationEmailService>();
+
             services.AddScoped<IProjectParticipantService, ProjectParticipantService>();
 
 

@@ -5,7 +5,7 @@ var BuildingInformation =
     {
         dtBuildingDataTable = $('#dtPrkingData').dataTable({
             ajax: {
-                url: 'ProjectDetail/GetBuildingInformation',
+                url: APPURL + 'ProjectDetail/GetBuildingInformation',
                 data: function (d) {
                     d.caseId = Id;
                     if (reloadParkingGrid==false)
@@ -66,7 +66,7 @@ var BuildingInformation =
         BuildingInformation.resetBulidingSummary();
     },
     editBuildingSummary: function (projectSiteId) {
-        var url = 'BuildingIntake/GetBuildingDetails'
+        var url = APPURL + 'BuildingIntake/GetBuildingDetails'
         var model = { projectSiteId: projectSiteId, caseId: Id };
         AjaxCommunication.CreateRequest(this.window, "GET", url, 'object', model,
             function (response) {
@@ -125,7 +125,7 @@ var BuildingInformation =
         $('.blockUI').attr("hidden", true);
         $('.btn.btn-primary').attr("disabled", true);
         $.ajax({
-            url: 'BuildingIntake/SaveBuildingSummary',//"@Url.Action("SaveBuildingSummary", new { controller = "BuildingIntake", area = "Construction" })",
+            url: APPURL + 'BuildingIntake/SaveBuildingSummary',//"@Url.Action("SaveBuildingSummary", new { controller = "BuildingIntake", area = "Construction" })",
             type: "POST",
             data: data,
             success: function (response) {
@@ -175,7 +175,7 @@ var BuildingInformation =
 
 function addBuildingInfo() {
     /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-    var url = "/BuildingIntake/AddBuilding"
+    var url = APPURL + "BuildingIntake/AddBuilding"
     var model = { SiteInformationData: SiteInformationData, caseId: Id };
     AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
         function (response) {
@@ -198,7 +198,7 @@ $("#frmSaveAddBuilding").submit(function (event) {
         //    },
         //    null, true, null, false);
         $.ajax({
-            url: "/BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+            url: APPURL + "BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
             type: "POST",
             data: $(this).serialize(),
             success: function (data) {
