@@ -1,4 +1,6 @@
-﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
 }
@@ -45,11 +47,7 @@
     <script src="//navbar.lacity.org/global_nav.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
-        var APPURL= '/';
-        if(window.location.host.indexOf("localhost")==-1)
-        {
-            APPURL= 'ConstTPP/';
-        }
+    var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
         //CurrentScroll();
         NewScroll();
 
