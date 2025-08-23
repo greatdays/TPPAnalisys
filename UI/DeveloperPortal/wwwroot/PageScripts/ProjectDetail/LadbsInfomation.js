@@ -58,7 +58,7 @@ var LadbsInformation=
                     for (var i = 0; i < pageItems.length; i++) {
                         var text = pageItems[i].text
                         if (text != '…') {
-                            if (parseInt(text) !== NaN || parseInt(text) !== 'undefined' || parseInt(text) !=='Previous' {
+                            if (parseInt(text) !== NaN || parseInt(text) !== 'undefined' || parseInt(text) !=='Previous') {
                                 pageItems[i].text=permitList[parseInt(text) - 1];
                             }
                         }
