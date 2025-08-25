@@ -31,8 +31,9 @@ handleSubmit : function (e) {
 
 	console.log("Submitting projects:", projects);
 	debugger;
+	var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	// Send to backend
-	$.post("/Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+	$.post(APPURL + "/Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
 		if (response.success) {
 			$('#ActionModal').modal('hide');
 			Dashboard.PopulateMyProjectData();
@@ -112,10 +113,13 @@ PopulateMyProjectData : function() {
 	});
 },
 
-PopulateData : function(tableName, dashboardCategory) {
+	PopulateData: function (tableName, dashboardCategory) {
+
+		var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+
 	$('#' + tableName).DataTable({
 		ajax: {
-			url: '/Dashboard/GetProjectData',
+			url: APPURL + '/Dashboard/GetProjectData',
 			data: { name: dashboardCategory },
 			type: 'POST',
 			"headers": {
@@ -233,9 +237,9 @@ AddClick : function() {
 GetACHPDetail : function(achpNumber, callback) {
 
 	var token = $('input[name="__RequestVerificationToken"]').val();
-
+	var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	$.ajax({
-		url: '/Dashboard?handler=GetACHPDetails',
+		url: APPURL + '/Dashboard?handler=GetACHPDetails',
 		type: 'POST',
 		contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 		headers: {
