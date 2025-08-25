@@ -44,28 +44,28 @@ var UnitMatrixInformation=
             read: {
                 /* url: '@Url.Action("GetUnitDetails", "ProjectDetail", new { area = "Construction" })',*/
                 
-                url: "/ProjectDetail/GetUnitDetails",
+                url: APPURL + "ProjectDetail/GetUnitDetails",
                 dataType: "json"
                 , method: "post"
                 , contentType: "application/json"
             },
             update: {
                 /*url: '@Url.Action("UpdateUnitDetails", "ProjectDetail", new { area = "Construction" })',*/
-                url: "/ProjectDetail/UpdateUnitDetails",
+                url: APPURL + "ProjectDetail/UpdateUnitDetails",
                 method: "post",
                 dataType: "json"
                 , contentType: "application/json"
             },
             destroy: {
                 /*url: '@Url.Action("DeleteUnitDetail", "ProjectDetail", new { area = "Construction" })',*/
-                url: "/ProjectDetail/DeleteUnitDetail",
+                url: APPURL + "ProjectDetail/DeleteUnitDetail",
                 method: "post",
                 dataType: "json"
                 , contentType: "application/json"
             },
             create: {
                 /*url: '@Url.Action("AddUnitDetail", "ProjectDetail", new { area = "Construction" })',*/
-                urlurl: "/ProjectDetail/AddUnitDetail",
+                url: APPURL +  "ProjectDetail/AddUnitDetail",
                 method: "post",
                 dataType: "json"
                 , contentType: "application/json"
@@ -214,7 +214,7 @@ var UnitMatrixInformation=
     },
     GetUnitModalData:function (){
         window.setTimeout(function () {
-           var url= "/ProjectDetail/GetUnitModalData"
+            var url = APPURL + "ProjectDetail/GetUnitModalData"
             /*var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { area = "Construction" })';*/
             AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
                 function (result) {
@@ -348,7 +348,7 @@ var UnitMatrixInformation=
     ImportInit: function()
     {
         var myDropzone = new Dropzone("div#divDropZone", {
-            url: 'ProjectDetail/ImportUnitInformation' ,
+            url: APPURL + 'ProjectDetail/ImportUnitInformation' ,
 			paramName: "file",
 			clickable: "#divDropZone",
 			filesizeBase: 1024,

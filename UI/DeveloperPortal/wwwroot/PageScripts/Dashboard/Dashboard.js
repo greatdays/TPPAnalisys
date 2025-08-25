@@ -31,7 +31,7 @@ handleSubmit : function (e) {
 
 	console.log("Submitting projects:", projects);
 	debugger;
-	var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+	//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	// Send to backend
 	$.post(APPURL + "/Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
 		if (response.success) {
@@ -115,7 +115,7 @@ PopulateMyProjectData : function() {
 
 	PopulateData: function (tableName, dashboardCategory) {
 
-		var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+		//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 
 	$('#' + tableName).DataTable({
 		ajax: {
@@ -237,7 +237,7 @@ AddClick : function() {
 GetACHPDetail : function(achpNumber, callback) {
 
 	var token = $('input[name="__RequestVerificationToken"]').val();
-	var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+	//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	$.ajax({
 		url: APPURL + '/Dashboard?handler=GetACHPDetails',
 		type: 'POST',

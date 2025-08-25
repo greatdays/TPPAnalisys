@@ -149,7 +149,7 @@ function AjaxCommunication() {
             return;
         }
         else if (request.status == 404) { // not found
-            window.location.replace("/Error/NotFound");
+            //window.location.replace("/Error/NotFound");
             return;
         }
         else { // internal server error
