@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using DeveloperPortal.Application.Common;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
@@ -55,7 +56,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     new SqlParameter() { ParameterName = "@caseID", Value = caseId },
                     new SqlParameter() { ParameterName = "@apn", Value = apn },
                 };
-                using (var dt = await _storedProcedureExecutor.ExecuteStoredProcedureWithDataTableAsync("[AAHR].[uspRoGetAllProjectParticipantsForTPP]", sqlParameters))
+                using (var dt = await _storedProcedureExecutor.ExecuteStoredProcedureWithDataTableAsync(StoredProcedureNames.SP_uspRoGetAllProjectParticipantsForTPP, sqlParameters))
                 {
                     if (dt != null && dt.Rows.Count > 0)
                     {

@@ -35,9 +35,7 @@ var ParticipantInformation=
                 data: null, title: "Actions" ,
                 orderable: false,searchable: false,
                 render: function (data, type, row) {
-                return '<button role="button" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit"  data-id="'+data.contactId+'"><i class="fas fa-pen editcontent"></i></button>'
-                +'<button role="button" class="approvebtn btn k-button k-button-icontext" title="Approve" data-id="'+data.contactId+'"><i class="fas fa-check"></i></button>'
-                +'<button role="button" class="rejectbtn btn k-button k-button-icontext"  title="Reject"data-id="'+data.contactId+'"><i class="fas fa-ban"></i></button>'
+                return '<button role="button" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit"  data-id="'+data.contactId+'"><i class="fas fa-pen editcontent"></i></button>&nbsp;'
                 +'<button role="button" class="deletebtn btn k-button k-button-icontext k-grid-Delete" title="Delete" data-id="'+data.contactId+'"><i class="fas fa-trash-alt deletecontent"></i></button>';
                 }
             }
@@ -47,7 +45,7 @@ var ParticipantInformation=
             data:result,
             "columns": columns,
             processing: true,
-            pageLength: 20,
+            pageLength: 10,
             "paging": true,
             "searching": true,
             "ordering": false
