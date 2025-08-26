@@ -77,7 +77,7 @@ PopulateMyProjectData : function() {
 							var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.acHPFileProjectNumber + '</a>';
 							var href = row.caseId.match(/href="([^"]*)/)[1];
 							var queryString = href.split("?");
-							var url = "../projectdetail?" + queryString[1];
+							var url = APPURL + "projectdetail?" + queryString[1];
 							a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.acHPFileProjectNumber + '</a>';
 							return a;
 						}
