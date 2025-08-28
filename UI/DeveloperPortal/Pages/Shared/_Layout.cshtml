@@ -222,10 +222,21 @@
     }, true);
 
     // Show on link clicks
-    document.addEventListener("click", function (e) {
+       document.addEventListener("click", function (e) {
         const link = e.target.closest("a");
-        if (link && link.href && !link.target && !link.href.startsWith("javascript:")) {
-            showLoadingOverlay();
+
+        if (link) {
+            const href = link.getAttribute("href") || "";
+            const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
+
+            if (
+                link.href &&
+                !link.target &&
+                !link.href.startsWith("javascript:") &&
+                !isSamePageAnchor
+            ) {
+                showLoadingOverlay();
+            }
         }
     });
 
