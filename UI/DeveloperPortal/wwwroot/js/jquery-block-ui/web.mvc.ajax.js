@@ -154,11 +154,11 @@ function AjaxCommunication() {
         }
         else { // internal server error
             if (obj == null) {
-                window.location.replace("/Error/AjaxException");
+                //window.location.replace("/Error/AjaxException");
                 return;
             }
             else {
-                window.location.replace("/Error/AjaxException?p=" + obj.message);
+                //window.location.replace("/Error/AjaxException?p=" + obj.message);
             }
             return;
         }
