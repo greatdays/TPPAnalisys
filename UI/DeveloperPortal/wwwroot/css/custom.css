@@ -1601,20 +1601,69 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     padding:18px 15px;
 }
 
+project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
 .project-notifications p {
-    color: #664d03;
+    color: #fff;
 }
 
     .project-notifications p a {
-        color: #664d03;
+        color: #fff;
         text-decoration: underline;
     }
 
         .project-notifications p a:hover {
-            color: #473601;
+            color: #fff;
             text-decoration: none;
         }
 
 .bg-warning1 {
-    background-color: #fff3cd !important;
+    background-color: #E38E49 !important;
 }
+
+/* UI Developer Bootstrap override classes  */
+.btn-primary {
+    color: #fff!important;
+    background-color: #113F67 !important;
+    border-color: #113F67 !important;
+}
+    .btn-primary.focus, .btn-primary:focus {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+        box-shadow: 0 0 0 .2rem rgba(38,143,255,.5) !important;
+    }
+    .btn-primary:hover {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+    }
+    .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+    }
+.btn-warning {
+    color: #fff !important;
+    background-color: #DDA853 !important;
+    border-color: #DDA853 !important;
+}
+
+    .btn-warning.focus, .btn-warning:focus {
+        color: #fff !important;
+        background-color: #c28a30 !important;
+        border-color: #c28a30 !important;
+        box-shadow: 0 0 0 .2rem rgba(38,143,255,.5);
+    }
+
+    .btn-warning:hover {
+        color: #fff !important;
+        background-color: #c28a30 !important;
+        border-color: #c28a30 !important;
+    }
+
+    .btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show > .btn-warning.dropdown-toggle {
+        color: #fff !important;
+        background-color: #c28a30 !important;
+        border-color: #c28a30 !important;
+    }
+/* UI Developer Bootstrap override classes  */

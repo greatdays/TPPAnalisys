@@ -70,13 +70,15 @@
     }
 
     .landing-banner h2 {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     .landing-banner > div {
-        width: 700px;
+        width: 100%;
+        max-width:700px;
         margin: 0 auto;
         position: relative;
+        text-align:center;
     }
 
     .landing-banner p {
@@ -345,6 +347,7 @@ body {
 
 .page-content {
     width: 100%;
+    min-height:55vh;
 }
 
 .title {

@@ -93,7 +93,8 @@
             $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
             $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
             $("#global_nav_la_4324422-rightwrap > a").each(function () {
-                $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
+                var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
+                $(this).append('<img class="navbar-new-window-icon" src="' + imgSrc + '" alt="Opens in new window">');
             });
         });
     </script>
