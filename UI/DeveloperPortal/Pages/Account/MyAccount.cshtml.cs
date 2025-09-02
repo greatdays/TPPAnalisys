@@ -7,21 +7,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DeveloperPortal.Pages.Account
 {
-    [IgnoreAntiforgeryToken]
     public class MyAccountModel : PageModel
     {
         private IConfiguration _config;
-        [BindProperty]
-        public ApplicantSignupModel Account { get; set; }
-
         public MyAccountModel(IConfiguration config)
         {
-            _config = config;   
+            _config = config;
         }
-        public async Task OnGetAsync(string accountType = "")
+
+        [BindProperty]
+        public MyAccountInput Account { get; set; }
+
+        public void OnGet()
         {
+
+            Account = new MyAccountInput();
             var roles = UserSession.GetUserSession(HttpContext).Roles;
-            string[] appRoleList = new string[] { UserRoles.Applicant, UserRoles.CityEmployee, UserRoles.HousingAdvocate, UserRoles.Owner };
+            string[] appRoleList = new string[] { UserRoles.CASp, UserRoles.CASp, UserRoles.CASp, UserRoles.CASp };
             var userRole = roles?.Where(x => appRoleList.Contains(x))?.FirstOrDefault();
 
             //SignupModel = new SignupModel { IsLocked = false };
@@ -32,44 +34,86 @@ namespace DeveloperPortal.Pages.Account
             SignupModel signupModel = new SignupModel();
 
 
-         
+
             //if (userRole == UserRoles.Applicant && userRole != null)
             //if (userRole != null)
             //{
+
+            applicantsignupModel =  UserServiceClient.GetMyAccountDetail_P2(UserSession.GetUserSession(HttpContext).UserName, _config).Result;
+            Account.FirstName = !string.IsNullOrEmpty(applicantsignupModel.FirstName) ? applicantsignupModel.FirstName : UserSession.GetUserSession(HttpContext).FirstName;
+            Account.MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName : UserSession.GetUserSession(HttpContext).MiddleName;
+            Account.LastName = !string.IsNullOrEmpty(applicantsignupModel.LastName) ? applicantsignupModel.LastName : UserSession.GetUserSession(HttpContext).LastName;
+            Account.EmailId = !string.IsNullOrEmpty(applicantsignupModel.EmailId) ? applicantsignupModel.EmailId : UserSession.GetUserSession(HttpContext).Email;
+            applicantsignupModel.CurrentFirstName = applicantsignupModel.FirstName;
+            applicantsignupModel.CurrentLastName = applicantsignupModel.LastName;
+            Account.LutPhoneTypeCdList = applicantsignupModel.LutPhoneTypeCdList;
+            Account.LutPreDirCdList = applicantsignupModel.LutPreDirCdList;
                 
-                applicantsignupModel = await UserServiceClient.GetMyAccountDetail_P2(UserSession.GetUserSession(HttpContext).UserName, _config);
-                applicantsignupModel.FirstName = !string.IsNullOrEmpty(applicantsignupModel.FirstName) ? applicantsignupModel.FirstName : UserSession.GetUserSession(HttpContext).FirstName;
-                applicantsignupModel.MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName : UserSession.GetUserSession(HttpContext).MiddleName;
-                applicantsignupModel.LastName = !string.IsNullOrEmpty(applicantsignupModel.LastName) ? applicantsignupModel.LastName : UserSession.GetUserSession(HttpContext).LastName;
-                applicantsignupModel.EmailId = !string.IsNullOrEmpty(applicantsignupModel.EmailId) ? applicantsignupModel.EmailId : UserSession.GetUserSession(HttpContext).Email;
-                applicantsignupModel.CurrentFirstName = applicantsignupModel.FirstName;
-                applicantsignupModel.CurrentLastName = applicantsignupModel.LastName;
+            Account.LutStreetTypeList = applicantsignupModel.LutStreetTypeList;
+            Account.LutStateCDList = applicantsignupModel.LutStateCDList;
 
-                Account = applicantsignupModel;
-            //}
+
+
+           
+           // Account = applicantsignupModel;
+
+
+            // Load existing account data here
+            //Account = new MyAccountInput
+            //{
+            //    FirstName = "BLANCA",
+            //    MiddleName = "ANDREA",
+            //    LastName = "RAMIREZ",
+            //    EmailId = "mayur@yopmail.com",
+            //    LutPhoneTypeCd = "H",
+            //    PhoneNumber = "(213) 247-0014",
+            //    Company = "TAX CREDIT",
+            //    Title = "RESIDENT MANAGER",
+            //    IsPostBox = false,
+            //    StreetNumber = "",
+            //    StreetName = "CARLTON WAY",
+            //    City = "LOS ANGELES",
+            //    LutStateCD = "CA",
+            //    ZipCode = "90028"
+            //};
         }
-        public IActionResult OnPostUpdate([FromBody] int num)
+
+        public IActionResult OnPostUpdate([FromForm] MyAccountInput input)
         {
-            return new JsonResult(new { success = true, received = num });
+
+            // Here you can save/update your database
+
+            return new JsonResult(new { success = true, received = input });
         }
-
-
-        //public IActionResult OnPostUpdate([FromBody] ApplicantSignupModel account)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    // Save/update logic
-        //    return new JsonResult(new { success = true, message = "Account updated!" });
-        //}
-        //public async Task<IActionResult> OnPostSaveAsync()
-        //{
-        //    return new JsonResult(new { success = true, message = "Got here!" });
-        //}
-
-
     }
 
+    public class MyAccountInput
+    {
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "First Name is required.")]
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string EmailId { get; set; }
+        public string LutPhoneTypeCd { get; set; }
+        public string PhoneNumber { get; set; }
+        public string PhoneExtension { get; set; }
+        public string Company { get; set; }
+        public string Title { get; set; }
+        public bool IsPostBox { get; set; }
+        public string StreetNumber { get; set; }
+        public string StreetName { get; set; }
+        public string City { get; set; }
+        public string LutStateCD { get; set; }
+        public string ZipCode { get; set; }
+        public string LutPreDirCd { get; set; }
+        public string LutStreetTypeCd { get; set; }
+        public string UnitNumber { get; set; }
 
-
+        public string PostBoxNum { get; set; }
+        public List<LutPhoneType> LutPhoneTypeCdList { get; set; } = new();
+        public List<LutPreDir> LutPreDirCdList { get; set; } = new();
+        public List<LutStreetType> LutStreetTypeList { get; set; } = new();
+        public List<LutState> LutStateCDList { get; set; } = new();
+    }
 }
