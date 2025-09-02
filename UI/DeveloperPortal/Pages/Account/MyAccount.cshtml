@@ -1,220 +1,222 @@
 ﻿@page
 @model DeveloperPortal.Pages.Account.MyAccountModel
-@{
-    ViewData["Title"] = "My Account";
-}
-
 
 <div class="container mt-4">
     <div class="card shadow-sm p-4" style="max-width: 900px; margin: auto;">
         <h4 class="mb-4 fw-bold">My Account</h4>
 
         <div class="alert alert-success d-none" id="successMsg"></div>
+        <button id="sendBtn" type="button" class="btn btn-primary">Send Number</button>
 
-        <form id="myAccountForm" method="post">
-            @Html.AntiForgeryToken()
+<div id="result"></div>
+
+       <form id="myAccountForm" >
+          
             <div class="row">
-                <!-- Profile picture and change password -->
-               @*  <div class="col-md-3 text-center mb-3">
-                    <img src="~/images/profile-placeholder.png" class="img-thumbnail mb-3" style="width: 150px; height: 150px;" />
-                    <button type="button" class="btn btn-outline-primary btn-sm">Change Password</button>
-                </div> *@
-
-                <!-- Form fields -->
                 <div class="col-md-12">
                     <div class="row g-3">
+
+                        <!-- Name Fields -->
                         <div class="col-md-4">
-                            <label>First Name *</label>
+                            <label for="FirstName">First Name *</label>
                             <input name="FirstName" class="form-control" value="@Model.Account.FirstName" />
                         </div>
                         <div class="col-md-4">
-                            <label>Middle Name</label>
+                            <label for="MiddleName">Middle Name</label>
                             <input name="MiddleName" class="form-control" value="@Model.Account.MiddleName" />
                         </div>
                         <div class="col-md-4">
-                            <label>Last Name *</label>
+                            <label for="LastName">Last Name *</label>
                             <input name="LastName" class="form-control" value="@Model.Account.LastName" />
                         </div>
 
+                        <!-- Email & Phone -->
                         <div class="col-md-6">
-                            <label>Email *</label>
-                            <input name="Email" class="form-control" value="@Model.Account.Email" />
+                            <label for="EmailId">Email *</label>
+                            <input name="EmailId" class="form-control" value="@Model.Account.EmailId" />
                         </div>
                         <div class="col-md-3">
-                            <label>Phone Type *</label>
-                            <select name="PhoneType" class="form-control">
-                                <option value="Mobile" selected="@(@Model.Account.PhoneType == "Mobile")">Mobile</option>
-                                <option value="Work" selected="@(@Model.Account.PhoneType == "Work")">Work</option>
-                                <option value="Home" selected="@(@Model.Account.PhoneType == "Home")">Home</option>
-                            </select>
+                            <label for="PhoneType">Phone Type *</label>
+                            @Html.DropDownListFor(model => model.Account.LutPhoneTypeCd, new SelectList(Model.Account.LutPhoneTypeCdList, "LutPhoneTypeCd", "Description"), new { @class = "form-control", @aria_required = "true" })
                         </div>
                         <div class="col-md-3">
-                            <label>Phone Number *</label>
+                            <label for="PhoneNumber">Phone Number *</label>
                             <input name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
                         </div>
-
                         <div class="col-md-2">
-                            <label>Extension</label>
-                            <input name="Extension" class="form-control" value="@Model.Account.Extension" />
+                            <label for="Extension">Extension</label>
+                            <input name="PhoneExtension" class="form-control" value="@Model.Account.PhoneExtension" />
                         </div>
 
+                        <!-- Company Info -->
                         <div class="col-md-6">
-                            <label>Company Name *</label>
-                            <input name="CompanyName" class="form-control" value="@Model.Account.CompanyName" />
+                            <label for="CompanyName">Company Name *</label>
+                            <input name="Company" class="form-control" value="@Model.Account.Company" />
                         </div>
                         <div class="col-md-6">
-                            <label>Title *</label>
+                            <label for="Title">Title *</label>
                             <input name="Title" class="form-control" value="@Model.Account.Title" />
                         </div>
 
-                        <div class="col-md-12">
-                            <label>Architectural License Number *</label>
-                            <input name="ArchitecturalLicenseNumber" class="form-control" value="@Model.Account.ArchitecturalLicenseNumber" />
+                        <!-- PO Box Toggle -->
+                        <div class="col-md-12 mt-3">
+                            <label class="fw-bold">P.O.Box? *</label><br />
+                            <label class="me-3">
+                                @* <input type="radio" name="Account.IsPostBox" value="false" id="POBoxNo"  /> No *@
+                                <input type="radio" name="IsPostBox" value="false" id="POBoxNo" 
+    @(Model.Account.IsPostBox == false ? "checked" : "") /> No
+                            </label>
+                            <label>
+                               @*  <input type="radio" name="Account.IsPostBox" value="true" id="POBoxYes" /> Yes *@
+                               <input type="radio" name="IsPostBox" value="true" id="POBoxYes" 
+    @(Model.Account.IsPostBox == true ? "checked" : "") /> Yes
+                            </label>
                         </div>
 
-                        <div class="col-md-12">
-                            <label>P.O. Box *</label><br />
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="HasPOBox" value="true" @(Model.Account.HasPOBox ? "checked" : "") />
-                                <label class="form-check-label">Yes</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="HasPOBox" value="false" @(!Model.Account.HasPOBox ? "checked" : "") />
-                                <label class="form-check-label">No</label>
+                        <!-- If POBox = No -->
+                        <div id="divPOBoxNo" class="col-md-12">
+                            <div class="row g-3 mt-1">
+                                <div class="col-md-6">
+                                    <label>Street Number *</label>
+                                    <input name="StreetNumber" class="form-control" value="@Model.Account.StreetNum" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Pre Direction *</label>
+                                    @Html.DropDownListFor(
+                                             model => model.Account.LutPreDirCd,
+                                             new SelectList(Model.Account.LutPreDirCdList, "LutPreDirCD", "LutPreDirCD", Model.Account.LutPreDirCd),
+                                             "-- Select Direction --",
+                                             new { @class = "form-control" }
+                                             )
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label>Street Name *</label>
+                                    <input name="StreetName" class="form-control" value="@Model.Account.StreetName" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Street Type *</label>
+                                    @Html.DropDownListFor(
+                                             model => model.Account.LutStreetTypeCD,
+                                             new SelectList(Model.Account.LutStreetTypeList, "LutStreetTypeCd", "LutStreetTypeCd"),
+                                             new { @class = "form-control" }
+                                             )
+
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Unit Number</label>
+                                    <input name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
+                                </div>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <label>Street Number *</label>
-                            <input name="StreetNumber" class="form-control" value="@Model.Account.StreetNumber" />
+                        <!-- If POBox = Yes -->
+                        <div id="divPOBoxYes" class="col-md-12 d-none mt-3">
+                            <label>P.O.Box Number *</label>
+                            <input name="POBoxNumber" class="form-control" value="@Model.Account.PostBoxNum" />
                         </div>
-                        <div class="col-md-3">
-                            <label>Street Direction</label>
-                            <input name="StreetDirection" class="form-control" value="@Model.Account.StreetDirection" />
-                        </div>
+
+                        <!-- Common fields -->
                         <div class="col-md-6">
-                            <label>Street Name *</label>
-                            <input name="StreetName" class="form-control" value="@Model.Account.StreetName" />
-                        </div>
-
-                        <div class="col-md-4">
-                            <label>Street Type *</label>
-                            <input name="StreetType" class="form-control" value="@Model.Account.StreetType" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Unit Number</label>
-                            <input name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
-                        </div>
-
-                        <div class="col-md-4">
                             <label>City *</label>
                             <input name="City" class="form-control" value="@Model.Account.City" />
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>State *</label>
-                            <input name="State" class="form-control" value="@Model.Account.State" />
+                            @Html.DropDownListFor(
+                                     model => model.Account.LutStateCD,
+                                     new SelectList(Model.Account.LutStateCDList, "LutStateCd", "Description", Model.Account.LutStateCD),
+                                     "-- Select State --",
+                                     new { @class = "form-control" }
+                                     )
+
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label>Zip Code *</label>
-                            <input name="ZipCode" class="form-control" value="@Model.Account.ZipCode" />
+                            <input name="ZipCode" class="form-control" value="@Model.Account.Zipcode" />
                         </div>
 
-                        <div class="col-12 text-end mt-3">
+                        <div class="col-12 text-end mt-4">
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
+
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
 @section Scripts {
+   @*  <script>
+    $(document).ready(function () {
+        $("#sendBtn").on("click", function () {
+            var postUrl = "/Account/MyAccount?handler=Update";
+
+            $.ajax({
+                url: postUrl,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(42), 
+                success: function (response) {
+                    console.log("✅ Success:", response);
+                    $("#result").text("Server responded: " + JSON.stringify(response));
+                },
+                error: function (xhr) {
+                    console.error("❌ Error:", xhr.responseText);
+                    $("#result").text("Error: " + xhr.responseText);
+                }
+            });
+        });
+    });
+</script> *@
+
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("myAccountForm");
-            const successMsg = document.getElementById("successMsg");
+        function togglePOBoxSection() {
+            const isPOBoxYes = document.getElementById("POBoxYes").checked;
+            document.getElementById("divPOBoxYes").classList.toggle("d-none", !isPOBoxYes);
+            document.getElementById("divPOBoxNo").classList.toggle("d-none", isPOBoxYes);
+        }
 
-            // Automatically remove success message after 2 seconds
-            function hideSuccessMessage() {
-                setTimeout(() => {
-                    successMsg.classList.add("d-none"); // Hide the success message after 2 seconds
-                }, 2000);
-            }
+        // Form Submit Handler
+        $('#myAccountForm').on('submit', function (e) {
+            e.preventDefault();  
+            console.log("Form submit intercepted...");
 
-       
- 
+            var formData = $(this).serializeArray().reduce((obj, item) => {
+                obj[item.name] = item.value;
+                return obj;
+            }, {});
 
-            const storageKey = "myAccountFormData";
+            // var postUrl = APPURL + "Account/UpdateAccount";  
+            // console.log("Posting to URL:", postUrl);
+            // console.log("Form Data:", formData);
 
-            // 🔄 Load from localStorage if available
-            const savedData = JSON.parse(localStorage.getItem(storageKey));
-            if (savedData) {
-                Object.entries(savedData).forEach(([key, value]) => {
-                    const input = form.querySelector(`[name="${key}"]`);
-                    if (input) {
-                        if (input.type === "radio") {
-                            const radioToCheck = form.querySelector(`[name="${key}"][value="${value}"]`);
-                            if (radioToCheck) radioToCheck.checked = true;
-                        } else {
-                            input.value = value;
-                        }
-                    }
-                });
-            }
+          var postUrl = "/Account/MyAccount?handler=Update";  
 
-            // 📝 Save changes to localStorage on input
-            form.addEventListener("input", () => {
-                const formData = new FormData(form);
-                const obj = {};
-                formData.forEach((value, key) => {
-                    obj[key] = value;
-                });
-                localStorage.setItem(storageKey, JSON.stringify(obj)); // Save the form data to localStorage
+            $.ajax({
+                url: postUrl,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    console.log("✅ Success:", response);
+                },
+                error: function (xhr) {
+                    console.error("❌ AJAX Error:", xhr.responseText);
+                }
             });
 
-            // 🚀 Submit and POST via AJAX
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
+        });
 
-                const formData = new FormData(form);
-                const obj = {};
-                formData.forEach((value, key) => {
-                    obj[key] = value === "true" ? true : value === "false" ? false : value;
-                });
+        // DOM Ready
+        document.addEventListener("DOMContentLoaded", function () {
+            togglePOBoxSection();
 
-                const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
-
-                fetch("/Account/MyAccount?handler=Update", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "RequestVerificationToken": token
-                    },
-                    body: JSON.stringify(obj)
-                })
-                .then(res => res.text())
-                .then(text => {
-                    try {
-                        const result = JSON.parse(text);
-                        if (result.success) {
-                            successMsg.classList.remove("d-none");
-                            successMsg.innerText = result.message;
-
-                            // ✅ Save the updated form data to localStorage after successful update
-                            localStorage.setItem(storageKey, JSON.stringify(obj)); // Save the updated data
-
-                            // Automatically hide the success message after 2 seconds
-                            hideSuccessMessage();
-                        }
-                    } catch (err) {
-                        console.error("Invalid response:", text);
-                    }
-                })
-                .catch(err => {
-                    console.error("Error:", err);
-                });
+            // ✅ Use correct name = "IsPostBox"
+            document.querySelectorAll('input[name="IsPostBox"]').forEach(el => {
+                el.addEventListener("change", togglePOBoxSection);
             });
         });
     </script>
 }
-

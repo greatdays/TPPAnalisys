@@ -1,81 +1,75 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using DeveloperPortal.Constants;
+using DeveloperPortal.Models.IDM;
+using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DeveloperPortal.Pages.Account
 {
+    [IgnoreAntiforgeryToken]
     public class MyAccountModel : PageModel
     {
-
+        private IConfiguration _config;
         [BindProperty]
-        public MyAccountViewModel Account { get; set; }
+        public ApplicantSignupModel Account { get; set; }
 
-        public void OnGet()
+        public MyAccountModel(IConfiguration config)
         {
-            // Load mock data
-            Account = new MyAccountViewModel
-            {
-                FirstName = "Mike",
-                MiddleName = "",
-                LastName = "Taylor",
-                Email = "sumer.singh@lacity.org",
-                PhoneType = "Mobile",
-                PhoneNumber = "(213)213-0289",
-                Extension = "2452",
-                CompanyName = "Company Name",
-                Title = "Title",
-                ArchitecturalLicenseNumber = "1234567899841285469",
-                HasPOBox = false,
-                StreetNumber = "123",
-                StreetDirection = "N",
-                StreetName = "Main St",
-                StreetType = "Avenue",
-                UnitNumber = "101",
-                City = "Los Angeles",
-                State = "CA",
-                ZipCode = "90001"
-            };
+            _config = config;   
         }
-        public JsonResult OnPostUpdate([FromBody] MyAccountViewModel data)
+        public async Task OnGetAsync(string accountType = "")
         {
-            // Simulate update success
-            return new JsonResult(new
-            {
-                success = true,
-                message = "Your account has been updated!",
-                data=data
-            });
+            var roles = UserSession.GetUserSession(HttpContext).Roles;
+            string[] appRoleList = new string[] { UserRoles.Applicant, UserRoles.CityEmployee, UserRoles.HousingAdvocate, UserRoles.Owner };
+            var userRole = roles?.Where(x => appRoleList.Contains(x))?.FirstOrDefault();
+
+            //SignupModel = new SignupModel { IsLocked = false };
+            //ApplicantSignupModel = new ApplicantSignupModel(_config);
+
+            bool isAccTypeSelected = false;
+            ApplicantSignupModel applicantsignupModel = new ApplicantSignupModel(_config);
+            SignupModel signupModel = new SignupModel();
+
+
+         
+            //if (userRole == UserRoles.Applicant && userRole != null)
+            //if (userRole != null)
+            //{
+                
+                applicantsignupModel = await UserServiceClient.GetMyAccountDetail_P2(UserSession.GetUserSession(HttpContext).UserName, _config);
+                applicantsignupModel.FirstName = !string.IsNullOrEmpty(applicantsignupModel.FirstName) ? applicantsignupModel.FirstName : UserSession.GetUserSession(HttpContext).FirstName;
+                applicantsignupModel.MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName : UserSession.GetUserSession(HttpContext).MiddleName;
+                applicantsignupModel.LastName = !string.IsNullOrEmpty(applicantsignupModel.LastName) ? applicantsignupModel.LastName : UserSession.GetUserSession(HttpContext).LastName;
+                applicantsignupModel.EmailId = !string.IsNullOrEmpty(applicantsignupModel.EmailId) ? applicantsignupModel.EmailId : UserSession.GetUserSession(HttpContext).Email;
+                applicantsignupModel.CurrentFirstName = applicantsignupModel.FirstName;
+                applicantsignupModel.CurrentLastName = applicantsignupModel.LastName;
+
+                Account = applicantsignupModel;
+            //}
         }
+        public IActionResult OnPostUpdate([FromBody] int num)
+        {
+            return new JsonResult(new { success = true, received = num });
+        }
+
+
+        //public IActionResult OnPostUpdate([FromBody] ApplicantSignupModel account)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    // Save/update logic
+        //    return new JsonResult(new { success = true, message = "Account updated!" });
+        //}
+        //public async Task<IActionResult> OnPostSaveAsync()
+        //{
+        //    return new JsonResult(new { success = true, message = "Got here!" });
+        //}
+
+
     }
-    public class MyAccountViewModel
-    {
-        [Required] public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        [Required] public string LastName { get; set; }
 
-        [Required, EmailAddress] public string Email { get; set; }
 
-        [Required] public string PhoneType { get; set; }
-        [Required] public string PhoneNumber { get; set; }
-        public string Extension { get; set; }
-
-        [Required] public string CompanyName { get; set; }
-        [Required] public string Title { get; set; }
-
-        [Required] public string ArchitecturalLicenseNumber { get; set; }
-
-        [Required] public bool HasPOBox { get; set; }
-
-        [Required] public string StreetNumber { get; set; }
-        public string StreetDirection { get; set; }
-        [Required] public string StreetName { get; set; }
-
-        [Required] public string StreetType { get; set; }
-        public string UnitNumber { get; set; }
-
-        [Required] public string City { get; set; }
-        [Required] public string State { get; set; }
-        [Required] public string ZipCode { get; set; }
-    }
 
 }

@@ -1,5 +1,6 @@
 ﻿using ComCon.DataAccess.Entity;
 using ComCon.DataAccess.ViewModel;
+using ComCon.PropertySnapshot.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -38,9 +39,17 @@ namespace DeveloperPortal.Models.IDM
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public bool SignupTermCondition { get; set; }
+        public string CurrentFirstName { get; set; }
+        public string CurrentLastName { get; set; }
         #endregion
 
         #region ContactInformation
+        public int ContactID { get; set; }
+        public string AdditionalEmail { get; set; }
+        public string Company { get; set; }
+        public int? HousingAdvocateAgencyId { get; set; }
+        public int OrganizationID { get; set; }
+        public int PropContactId { get; set; }
         public string PhoneNumber { get; set; }
         public string PhoneExtension { get; set; }
         public string PhoneType { get; set; }
@@ -56,6 +65,33 @@ namespace DeveloperPortal.Models.IDM
         public string State { get; set; }
         public string Zipcode { get; set; }
         #endregion
+
+        public int? ContactAddressID { get; set; }
+        public int? HouseNum { get; set; }
+        public string HouseFracNum { get; set; }
+        public string LutPreDirCd { get; set; }
+        public string LutStreetTypeCD { get; set; }
+        public string LutStateCD { get; set; }
+        public string PostDirCd { get; set; }
+        public string Unit { get; set; }
+        public int? BirthDay { get; set; }
+        public int? BirthMonth { get; set; }
+        public int? BirthYear { get; set; }
+
+        public bool IsLocked { get; set; }
+
+        public string EmployeeID { get; set; }
+
+        public string Department { get; set; }
+
+        public string Designation { get; set; }
+        public List<LutState> LutStateCDList { get; set; }
+        public List<LutPhoneType> LutPhoneTypeCdList { get; set; }
+    
+        public List<LutPreDir> LutPreDirCdList { get; set; }
+        public List<LutStreetType> LutStreetTypeList { get; set; }
+
+        public List<OrganizationContactModel> HousingAdvocateAgencyList { get; set; }
 
         public string IDMUserName { get; set; }
 

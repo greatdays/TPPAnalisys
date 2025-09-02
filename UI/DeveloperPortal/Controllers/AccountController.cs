@@ -399,6 +399,21 @@ namespace DeveloperPortal.Controllers
         }
 
         #endregion
+        [HttpPost]
+        [Route("Account/UpdateAccount")]
+        public IActionResult UpdateAccount([FromBody] ApplicantSignupModel signupModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // your update logic
+            return Json(new { success = true, message = "Account updated!" });
+        }
+
+
+
 
         [HttpPost]
         public ActionResult GetACHPDetails(string achpNumber)
