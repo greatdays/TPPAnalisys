@@ -21,6 +21,8 @@ public partial class VwProjectAttributeLog
 
     public string? PsSiteAddress { get; set; }
 
+    public string? PProjectName { get; set; }
+
     public int ProjectAttributeLogId { get; set; }
 
     public int? ProjectAttributeId { get; set; }

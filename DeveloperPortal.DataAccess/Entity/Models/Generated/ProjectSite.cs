@@ -114,6 +114,8 @@ public partial class ProjectSite
 
     public bool? ParentSite { get; set; }
 
+    public string? SiteStatusLabel { get; set; }
+
     public virtual ICollection<AssnProjectSiteReference> AssnProjectSiteReferences { get; set; } = new List<AssnProjectSiteReference>();
 
     public virtual ICollection<AssnTrainingRegistryProjectSite> AssnTrainingRegistryProjectSites { get; set; } = new List<AssnTrainingRegistryProjectSite>();

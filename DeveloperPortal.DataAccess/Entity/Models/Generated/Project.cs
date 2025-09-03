@@ -55,6 +55,10 @@ public partial class Project
 
     public DateTime? ModifiedOn { get; set; }
 
+    public string? ProjectStatusLabel { get; set; }
+
+    public bool IsDisplayProjectStatusLabel { get; set; }
+
     public virtual ICollection<AcHppropertyManagementPlan> AcHppropertyManagementPlans { get; set; } = new List<AcHppropertyManagementPlan>();
 
     public virtual LutProjSource? LutProjSourceCdNavigation { get; set; }
