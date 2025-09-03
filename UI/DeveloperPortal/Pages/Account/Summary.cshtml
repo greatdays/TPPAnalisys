@@ -1,5 +1,6 @@
-﻿@page
-@model DeveloperPortal.Pages.Account.SummaryModel
+﻿@model DeveloperPortal.Pages.Account.SummaryModel
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 <div class="form-partial-container" style="color: black;">
     <div class="app-form-heading">
@@ -116,9 +117,9 @@
 
         $('#btnSubmit').on('click', function(){
            var applicantJson = localStorage.getItem('ApplicantJson');
-
+           var _APPURL ='@Configuration["AppSettings:ApplicationURL"]';
              $.ajax({
-               url: "/Account/XDebugCreateAccount",
+              url: APPURL + "Account/XDebugCreateAccount",
                 type: 'POST',
                 contentType: 'application/json',
                data: applicantJson,
@@ -126,7 +127,7 @@
                     localStorage.setItem('ApplicantJson', '');
                     $('#successModal').fadeIn();
                     $('#goToDashboardBtn').on('click', function () {
-                        window.location.href = "/Dashboard";
+                       window.location.href = _APPURL + "Dashboard";
                     });
                 },
                error: function (xhr, status, error) {

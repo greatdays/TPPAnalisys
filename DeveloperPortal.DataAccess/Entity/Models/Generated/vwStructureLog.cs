@@ -51,7 +51,7 @@ public partial class VwStructureLog
 
     public bool IsDeleted { get; set; }
 
-    public string? StructureNo { get; set; }
+    public string StructureNo { get; set; } = null!;
 
     public string? Label { get; set; }
 
@@ -67,5 +67,5 @@ public partial class VwStructureLog
 
     public DateTime? ModifiedOn { get; set; }
 
-    public string? BuildingFileNumber { get; set; }
+    public string BuildingFileNumber { get; set; } = null!;
 }

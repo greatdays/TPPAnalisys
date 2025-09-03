@@ -9,7 +9,7 @@ public partial class VwUnitAttributeLog
 
     public int? PsProjectId { get; set; }
 
-    public string? ProjectName { get; set; }
+    public string ProjectName { get; set; } = null!;
 
     public string? PsFileNumber { get; set; }
 
@@ -18,6 +18,8 @@ public partial class VwUnitAttributeLog
     public string? PsPrimaryApn { get; set; }
 
     public string? PsSiteAddress { get; set; }
+
+    public string UnitNum { get; set; } = null!;
 
     public int ListingUnitLogId { get; set; }
 
@@ -198,4 +200,6 @@ public partial class VwUnitAttributeLog
     public string? NotAddedToRarmlogReason { get; set; }
 
     public int? IsTenantHasAssistanceAnimal { get; set; }
+
+    public bool? IsCompliant { get; set; }
 }

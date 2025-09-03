@@ -208,4 +208,8 @@ public partial class VwCoveredPropertyList1
     public int AffordableUnitCnt { get; set; }
 
     public string? HousingRegistryStatusDisplayName { get; set; }
+
+    public DateTime? ModifiedOn { get; set; }
+
+    public string? Attributes { get; set; }
 }

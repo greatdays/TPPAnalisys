@@ -51,6 +51,10 @@ public partial class AutransferWaitList
 
     public DateTime? ReasonDate { get; set; }
 
+    public int? LutReasonDeterminationNotProvidedSoonerId { get; set; }
+
+    public int? LutReasonTenantNotTransferredSoonerId { get; set; }
+
     public string? DeterminationExplanation { get; set; }
 
     public string? Comment { get; set; }
@@ -68,6 +72,10 @@ public partial class AutransferWaitList
     public virtual ProjectSite? CurrentUnitProjectSite { get; set; }
 
     public virtual PropSnapshot? CurrentUnitPropSnapShot { get; set; }
+
+    public virtual LutReasonDeterminationNotProvidedSooner? LutReasonDeterminationNotProvidedSooner { get; set; }
+
+    public virtual LutReasonTenantNotTransferredSooner? LutReasonTenantNotTransferredSooner { get; set; }
 
     public virtual LutTotalBathroom? LutTotalBathroom { get; set; }
 
