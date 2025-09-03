@@ -20,5 +20,7 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         Task<bool> AddPropContactIfNotExistsAsync(AssnPropContact contact, string userName);
 
         Task<ContactIdentifier> GetContactIdentifierByUserName(string userName);
+
+        Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID);
     }
 }

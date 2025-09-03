@@ -111,5 +111,29 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return propSnapshots;
         }
 
+        public async Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID)
+        {
+
+            var VwApplications = await _context.VwApplications 
+                                .Where(x => x.AppKey == "AAHRDeveloperPortal")
+                                // 👈 this loads the related APN navigation property
+                                .ToListAsync();
+
+            if (VwApplications.Any())
+            {
+                var VwAspNetRoles = await _context.VwAspNetRoles
+                                .Where(x => x.ApplicationId == VwApplications.FirstOrDefault().ApplicationId)
+                                // 👈 this loads the related APN navigation property
+                                .ToListAsync();
+
+                return VwAspNetRoles;
+            }
+            
+
+            return null;
+        }
+
+
+        
     }
 }

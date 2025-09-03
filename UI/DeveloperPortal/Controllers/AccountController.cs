@@ -26,6 +26,7 @@ using DeveloperPortal.Models.Common;
 using static DeveloperPortal.ServiceClient.ServiceClient;
 using ComCon.DataAccess.Models.Helpers;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 namespace DeveloperPortal.Controllers
 {
@@ -501,6 +502,13 @@ namespace DeveloperPortal.Controllers
             return tokenValue;
         }
 
+
+        public async Task<List<VwAspNetRole>>  getUSerRole()
+        {
+            var roleData =  await _accountService.GetUSerRole(null);
+            return roleData;
+        }
+
         [HttpGet("GetLookUpData")]
         public async Task<JsonResult> GetLookupData()
         {
@@ -509,8 +517,9 @@ namespace DeveloperPortal.Controllers
             List<PhoneType> phoneTypeList = new List<PhoneType>();
             List<Directions> directionsList = new List<Directions>();
             List<StreetType> StreetTypeList = new List<StreetType>();
+            List<userRoleType> UserRole = new List<userRoleType>();
 
-        string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
+            string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
             var response = string.Empty;
             string json = string.Empty;
 
@@ -609,6 +618,22 @@ namespace DeveloperPortal.Controllers
                     }
                     json = JsonConvert.SerializeObject(StreetTypeList, Formatting.Indented);
                     break;
+                case "UserRole":
+
+                    // JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
+                    var data = await getUSerRole();
+
+                    foreach (var item in data)
+                    {
+                        userRoleType userRoleType = new userRoleType();
+                        userRoleType.RoleID = item.RoleId;
+                        userRoleType.RoleName = item.Name;
+                        UserRole.Add(userRoleType);
+
+                    }
+                    
+                    json = JsonConvert.SerializeObject(UserRole, Formatting.Indented);
+                    break;
                 default:
                     break;
             }
@@ -631,6 +656,12 @@ namespace DeveloperPortal.Controllers
     {
         public string StreetTypeText { get; internal set; }
         public string StreetTypeValue { get; internal set; }
+    }
+
+    internal class userRoleType
+    {
+        public int RoleID { get; internal set; }
+        public string RoleName { get; internal set; }
     }
 
     internal class State

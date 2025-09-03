@@ -296,7 +296,16 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             return (savedProjects, notSavedProjects);
         }
-    
+
+
+        public async Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID)
+        {
+            var data = await _accountRepository.GetUSerRole(ApplicationID);
+            return data;
+
+        }
+
+
     }
 }
 
