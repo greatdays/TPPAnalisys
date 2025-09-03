@@ -25,7 +25,7 @@ namespace DeveloperPortal.ServiceClient
             _config = config;
         }
         [HttpPost]
-        public JsonResult SubmitUploadedDocument(IFormFile file,string folderName,string emailId,int caseId, string controlId)
+        public JsonResult SubmitUploadedDocument(IFormFile file,string folderName,string emailId,int caseId)
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();

@@ -82,26 +82,29 @@ namespace DeveloperPortal.Areas.Document.Controllers
             var category = Convert.ToString(HttpContext.Request.Form["Category"]);
             //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
+            var emailId = "ananthakrishnan.mohandas@lacity.org";
 
 
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
-            var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
+            //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
+            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, folderName, emailId, caseId);
+            
             var documentModel = new DocumentModel()
             {
                 Name = file.FileName,
-                Link = folderPath.ToString(),
+                Link = "",
                 Attributes = "",
                 FileSize = file.Length.ToString(),
                 CaseId = caseId,
                 FolderId = 0,
                 OtherDocumentType = category,
-                CreatedBy="jalcanter",
+                CreatedBy= "ananthakrishnan",
                 CreatedOn=DateTime.Now
                
             };
 
             var document = _documentService.SaveDocument(documentModel).Result;
-            return Json(folderPath);
+            return Json(uploadResponse);
         }
         // GET: api/<DashboardController>
         [HttpGet]
