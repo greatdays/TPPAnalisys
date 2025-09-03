@@ -7,7 +7,7 @@ public partial class VwUnitLog
 {
     public int? PsProjectId { get; set; }
 
-    public string? ProjectName { get; set; }
+    public string ProjectName { get; set; } = null!;
 
     public string? PsFileNumber { get; set; }
 
@@ -35,7 +35,7 @@ public partial class VwUnitLog
 
     public int? ProjectSiteId { get; set; }
 
-    public string? UnitNum { get; set; }
+    public string UnitNum { get; set; } = null!;
 
     public string? Status { get; set; }
 

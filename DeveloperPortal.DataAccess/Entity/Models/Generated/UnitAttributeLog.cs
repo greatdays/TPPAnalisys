@@ -184,4 +184,6 @@ public partial class UnitAttributeLog
     public string? NotAddedToRarmlogReason { get; set; }
 
     public int? IsTenantHasAssistanceAnimal { get; set; }
+
+    public bool? IsCompliant { get; set; }
 }
