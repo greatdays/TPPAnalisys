@@ -9,6 +9,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Caching;
@@ -548,11 +549,27 @@ namespace HCIDLA.ServiceClient.LaserFiche
 
         public static UploadResponse Upload(FileUploadInfo uploadInfo)
         {
-            using (DMSClient dms = new DMSClient())
+
+            string endpointUrl = "http://43dmsw2/DMSServiceDev_V5/DMS.svc";
+
+            // 2. Create the binding and endpoint address programmatically
+            var binding = new BasicHttpBinding(); // Use the correct binding type (e.g., WSHttpBinding)
+            var endpointAddress = new EndpointAddress(endpointUrl);
+
+            // 3. Instantiate the client using the new constructor
+            using (DMSClient dms = new DMSClient(binding, endpointAddress))
             {
-                
-                return dms.UploadFile(uploadInfo);                
+                return dms.UploadFile(uploadInfo);
+                // Now you can make calls to the WCF service
+                // ...
             }
+
+
+            //using (DMSClient dms = new DMSClient())
+            //{
+                
+            //    return dms.UploadFile(uploadInfo);                
+            //}
         }
 
         public static string GetXmlForLargeFile(FileUploadInfo info, int fileSize)

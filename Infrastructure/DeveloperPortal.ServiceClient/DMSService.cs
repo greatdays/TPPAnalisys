@@ -32,7 +32,7 @@ namespace DeveloperPortal.ServiceClient
             FileUploadInfo info = new FileUploadInfo
             {
                 ApplicationId = new Guid(string.IsNullOrWhiteSpace(_config["DMSConfig:DMSAppIdExternal"])?"": _config["DMSConfig:DMSAppIdExternal"]),
-                DocumentType = DocType.Generic,
+                DocumentType = DocType.AcHP,
                 MetaData = new Dictionary<FieldType, string[]>(),
                 SysData = new Dictionary<SysFieldType, string>
                 {
@@ -57,6 +57,9 @@ namespace DeveloperPortal.ServiceClient
             //    {"HIMSNumber", FieldType.HIMSNumber },
             //    {"AcHPNumber", FieldType.AcHPNumber }
             //};
+
+            info.MetaData.Add(FieldType.PrimaryKey, new string[] { "1234" });
+            info.MetaData.Add(FieldType.Category, new string[] { "12345" });
 
             //foreach (KeyValuePair<string, FieldType> maps in formValToFieldTypeMap)
             //{
