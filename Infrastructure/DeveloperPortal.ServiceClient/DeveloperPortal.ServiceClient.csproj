@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\HCIDLA.ServiceClient\HCIDLA.ServiceClient.csproj" />
   </ItemGroup>
 
 </Project>

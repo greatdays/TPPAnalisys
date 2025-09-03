@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="46e1a055-37e9-46ee-8bba-b578ff673bd9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://43dmsw/dmsservicedev_v4/dms.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DMS6.xsd" MetadataType="Schema" ID="56f3a8c5-c31e-4648-aa87-32253c9125d1" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd1" />
+    <MetadataFile FileName="DMS61.xsd" MetadataType="Schema" ID="9c38e7a7-9b99-43c7-b7fc-98b82d9aa82f" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd4" />
+    <MetadataFile FileName="DMS62.xsd" MetadataType="Schema" ID="7b9cf237-5c96-4feb-b9c8-dc753cd392d5" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd0" />
+    <MetadataFile FileName="DMS63.xsd" MetadataType="Schema" ID="30b9a893-404c-4220-9de1-c5fd5345819f" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd5" />
+    <MetadataFile FileName="DMS1.disco" MetadataType="Disco" ID="8d532b49-8069-4617-a857-053c9216ecad" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?disco" />
+    <MetadataFile FileName="DMS64.xsd" MetadataType="Schema" ID="0769426f-1af4-4789-8538-73019f19e8a5" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd3" />
+    <MetadataFile FileName="DMS65.xsd" MetadataType="Schema" ID="73ca4934-fba2-4c91-93c9-be08bffc4ffe" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd2" />
+    <MetadataFile FileName="DMS1.wsdl" MetadataType="Wsdl" ID="15412ec7-15e8-4f2e-9f33-d8ab7a3547a3" SourceId="1" SourceUrl="http://43dmsw/DMSServiceDEV_V4/DMS.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

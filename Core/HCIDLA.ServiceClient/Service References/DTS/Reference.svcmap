@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b917e499-fe8e-4a44-a6d4-b0c041875339" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DownTimeSchedulerBasicService44.xsd" MetadataType="Schema" ID="8ebae4a5-cdd0-4b37-9706-f63977937625" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DownTimeSchedulerBasicService45.xsd" MetadataType="Schema" ID="94648f7e-227f-483a-bcd8-53042dde532f" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DownTimeSchedulerBasicService46.xsd" MetadataType="Schema" ID="36eba90c-f551-427b-8747-df46191e1c7b" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DownTimeSchedulerBasicService47.xsd" MetadataType="Schema" ID="7a638be2-8709-46db-b500-6fc9b912df51" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DownTimeSchedulerBasicService11.wsdl" MetadataType="Wsdl" ID="a81c034f-f009-43e2-9481-ff32628e7cd5" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?wsdl" />
+    <MetadataFile FileName="DownTimeSchedulerBasicService11.disco" MetadataType="Disco" ID="cf106ec9-7907-435a-b041-a6977aeeb949" SourceId="1" SourceUrl="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
