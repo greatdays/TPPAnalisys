@@ -29,7 +29,7 @@ namespace DeveloperPortal.Pages.Account
             Account = new MyAccountInput();
             var roles = UserSession.GetUserSession(HttpContext).Roles;
 
-            string[] appRoleList = new string[] { UserRoles.NAC, UserRoles.GeneralContractor, UserRoles.Architect, UserRoles.PropertyDeveloper, UserRoles.CASp };
+            string[] appRoleList = new string[] { UserRoles.NAC, UserRoles.GeneralContractor, UserRoles.Architect, UserRoles.PropertyDeveloper, UserRoles.CASp,UserRoles.Guest };
             var userRole = roles?.Where(x => appRoleList.Contains(x))?.FirstOrDefault();
             bool isAccTypeSelected = false;
             
