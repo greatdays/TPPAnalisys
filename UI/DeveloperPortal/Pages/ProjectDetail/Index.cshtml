@@ -1,201 +1,201 @@
 ﻿@page
 @model DeveloperPortal.Pages.ProjectDetails.IndexModel
 @{
-    ViewData["Title"] = "Project Details";
+	ViewData["Title"] = "Project Details";
 }
 <style>
-    .table-responsive .row {
-        margin-bottom: 15px;
-    }
+	.table-responsive .row {
+		margin-bottom: 15px;
+	}
 
-    .datatbl {
-        width: 100% !important;
-    }
+	.datatbl {
+		width: 100% !important;
+	}
 
-    #tabSiteInformation .pagination {
-        display: list-item !important;
-        text-align: start;
-    }
+	#tabSiteInformation .pagination {
+		display: list-item !important;
+		text-align: start;
+	}
 
-    #tabSiteInformation .paginate_button a {
-        margin-left: -5px !important;
-    }
+	#tabSiteInformation .paginate_button a {
+		margin-left: -5px !important;
+	}
 
-    #tabSiteInformation .paginate_button:first-child a {
-        margin-left: -5px;
-    }
+	#tabSiteInformation .paginate_button:first-child a {
+		margin-left: -5px;
+	}
 
-    #unitKgrid .k-grid-add {
-        margin-right: 100px;
-    }
+	#unitKgrid .k-grid-add {
+		margin-right: 100px;
+	}
 
-    .k-grid-content tr:last-child {
-        border-bottom: solid 1px lightgray;
-    }
-
-
-    a.paginate_button {
-        float: left !important;
-    }
-
-    .paginate_button:first-child a {
-        margin-left: 0;
-        border-top-left-radius: .25rem;
-        border-bottom-left-radius: .25rem;
-    }
-
-    .paginate_button:last-child a {
-        border-top-right-radius: .25rem;
-        border-bottom-right-radius: .25rem;
-    }
-
-    .paginate_button.active a {
-        color: #fff !important;
-        background: #2C3E5C;
-    }
-
-    #dtPrkingData_paginate a.paginate_button {
-        position: relative;
-        padding: .5rem .75rem !important;
-        margin: 1px !important;
-        line-height: 1.25;
-        color: #fff !important;
-        background-color: #2C3E5C !important;
-        border: 1px solid #2C3E5C !important;
-
-    }
-    a#dtPrkingData_paginate {
-        color: #fff !important;
-    }
-
-    #dtPrkingData_paginate span {
-        float: left;
-        padding-right: 30px;
-    }
-
-    #dtPrkingData_paginate .paginate_button:hover {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
-
-    #dtPrkingData_paginate .paginate_button.current {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
-
-    #dtPrkingData_paginate a.paginate_button {
-        position: relative;
-        padding: .5rem .75rem !important;
-        margin: 1px !important;
-        ;
-        line-height: 1.25;
-        color: #fff !important;
-        background-color: #2C3E5C !important;
-        border: 1px solid #2C3E5C !important;
-    }
-
-    a#dtSiteData_paginate {
-        color: #fff !important;
-    }
-
-    #dtSiteData_paginate span {
-        float: left;
-        padding-right: 30px;
-    }
-
-    #dtSiteData_paginate .paginate_button:hover {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
-
-    #dtSiteData_paginate .paginate_button.current {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
-
-    #dtSiteData_paginate a.paginate_button {
-        position: relative;
-        padding: .5rem .75rem !important;
-        margin: 1px !important;
-        ;
-        line-height: 1.25;
-        color: #fff !important;
-        background-color: #2C3E5C !important;
-        border: 1px solid #2C3E5C !important;
-    }
+	.k-grid-content tr:last-child {
+		border-bottom: solid 1px lightgray;
+	}
 
 
-    a#dtPermitNumberData_paginate {
-        color: #fff !important;
-    }
+	a.paginate_button {
+		float: left !important;
+	}
 
-    #dtPermitNumberData_paginate span {
-        float: left;
-        padding-right: 30px;
-    }
+	.paginate_button:first-child a {
+		margin-left: 0;
+		border-top-left-radius: .25rem;
+		border-bottom-left-radius: .25rem;
+	}
 
-    #dtPermitNumberData_paginate .paginate_button:hover {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
+	.paginate_button:last-child a {
+		border-top-right-radius: .25rem;
+		border-bottom-right-radius: .25rem;
+	}
 
-    #dtPermitNumberData_paginate .paginate_button.current {
-        color: white !important;
-        border: 1px solid #111;
-        background-color: #111;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-        background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-        background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-        background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-        background: -o-linear-gradient(top, #585858 0%, #111 100%);
-        background: linear-gradient(to bottom, #585858 0%, #111 100%)
-    }
+	.paginate_button.active a {
+		color: #fff !important;
+		background: #2C3E5C;
+	}
 
-    #dtPermitNumberData_paginate a.paginate_button {
-        position: relative;
-        padding: .5rem .75rem !important;
-        margin: 1px !important;
-        ;
-        line-height: 1.25;
-        color: #fff !important;
-        background-color: #2C3E5C !important;
-        border: 1px solid #2C3E5C !important;
-    }
+	#dtPrkingData_paginate a.paginate_button {
+		position: relative;
+		padding: .5rem .75rem !important;
+		margin: 1px !important;
+		line-height: 1.25;
+		color: #fff !important;
+		background-color: #2C3E5C !important;
+		border: 1px solid #2C3E5C !important;
+	}
+
+	a#dtPrkingData_paginate {
+		color: #fff !important;
+	}
+
+	#dtPrkingData_paginate span {
+		float: left;
+		padding-right: 30px;
+	}
+
+	#dtPrkingData_paginate .paginate_button:hover {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtPrkingData_paginate .paginate_button.current {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtPrkingData_paginate a.paginate_button {
+		position: relative;
+		padding: .5rem .75rem !important;
+		margin: 1px !important;
+		;
+		line-height: 1.25;
+		color: #fff !important;
+		background-color: #2C3E5C !important;
+		border: 1px solid #2C3E5C !important;
+	}
+
+	a#dtSiteData_paginate {
+		color: #fff !important;
+	}
+
+	#dtSiteData_paginate span {
+		float: left;
+		padding-right: 30px;
+	}
+
+	#dtSiteData_paginate .paginate_button:hover {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtSiteData_paginate .paginate_button.current {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtSiteData_paginate a.paginate_button {
+		position: relative;
+		padding: .5rem .75rem !important;
+		margin: 1px !important;
+		;
+		line-height: 1.25;
+		color: #fff !important;
+		background-color: #2C3E5C !important;
+		border: 1px solid #2C3E5C !important;
+	}
+
+
+	a#dtPermitNumberData_paginate {
+		color: #fff !important;
+	}
+
+	#dtPermitNumberData_paginate span {
+		float: left;
+		padding-right: 30px;
+	}
+
+	#dtPermitNumberData_paginate .paginate_button:hover {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtPermitNumberData_paginate .paginate_button.current {
+		color: white !important;
+		border: 1px solid #111;
+		background-color: #111;
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
+		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
+		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
+		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
+		background: -o-linear-gradient(top, #585858 0%, #111 100%);
+		background: linear-gradient(to bottom, #585858 0%, #111 100%)
+	}
+
+	#dtPermitNumberData_paginate a.paginate_button {
+		position: relative;
+		padding: .5rem .75rem !important;
+		margin: 1px !important;
+		;
+		line-height: 1.25;
+		color: #fff !important;
+		background-color: #2C3E5C !important;
+		border: 1px solid #2C3E5C !important;
+	}
 
 
 </style>
@@ -259,96 +259,103 @@
         }
     </div><br />
 
-    <div style="padding-left: 010px; padding-right: 10px;">
-        <!-- Tab links -->
-        <div class="tab">
-            <button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
-            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
-            <button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
-            <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
-        </div>
+	<div style="padding-left: 010px; padding-right: 10px;">
+		<!-- Tab links -->
+		<div class="tab">
+			<button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
+			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
+			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
+			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
+			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
+		</div>
 
-        <!-- Tab content -->
-         <div id="tabProjectInformation" class="tabcontent" style="display: block ">
-            @{
-                Html.RenderPartial("_ProjectInformation");
-            }
-        </div>
-        <div id="tabSiteInformation" class="tabcontent">
-            <table id="dtSiteData"></table>
-        </div>
-        <div id="tabImportantDates" class="tabcontent">
-            <div id="divImportantDates"></div>
-        </div>
-        <div id="tabProjectParticipants" class="tabcontent">
-            <div id="divProjectParticipants"></div>
-        </div>
-        <div id="tabPolicyContacts" class="tabcontent">
-            <div id="divPolicyContacts"></div>
-        </div>
-        <div id="tabDocuments" class="tabcontent">
-            <div id="divDocument"></div>
-        </div>
-        <div id="tabLogs" class="tabcontent">
-            <div id="divLogs"></div>
-        </div>
-    </div>
+		<!-- Tab content -->
+		<div id="tabProjectInformation" class="tabcontent" style="display: block ">
+			@{
+				Html.RenderPartial("_ProjectInformation");
+			}
+		</div>
+		<div id="partialContainer" class="tabcontent">
+			@{
+				Html.RenderPartial(@"~/Pages/FloorPlanType/_FloorPlanType.cshtml", Model.FloorPlanTypes);
+			}
+		</div>
+		<div id="tabSiteInformation" class="tabcontent">
+			<table id="dtSiteData"></table>
+		</div>
+		<div id="tabImportantDates" class="tabcontent">
+			<div id="divImportantDates"></div>
+		</div>
+		<div id="tabProjectParticipants" class="tabcontent">
+			<div id="divProjectParticipants"></div>
+		</div>
+		<div id="tabPolicyContacts" class="tabcontent">
+			<div id="divPolicyContacts"></div>
+		</div>
+		<div id="tabDocuments" class="tabcontent">
+			<div id="divDocument"></div>
+		</div>
+		<div id="tabLogs" class="tabcontent">
+			<div id="divLogs"></div>
+		</div>
+	</div>
 </div>
 @{
-    Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
+	Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
 }
 <div id="Help">
-@{
-    Html.RenderPartial("_Help", Model.ProjectSummary);
-}
-</div> 
+	@{
+		Html.RenderPartial("_Help", Model.ProjectSummary);
+	}
+</div>
 
- <!--START Printing Deatils Popup -->
+<!--START Printing Deatils Popup -->
 <div class="modal" id="printDetailsPopup" data-backdrop="static" aria-labelledby="LinkPropertyPopupTitle" aria-modal="true" role="dialog" tabindex="-1" aria-hidden="true" style="overflow: hidden;">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:660px">
-            <div class="modal-header">
-                <div class="modal-title" id="EditAccountTitle">Print Case Details</div>
-            </div>
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" style="width:660px">
+			<div class="modal-header">
+				<div class="modal-title" id="EditAccountTitle">Print Case Details</div>
+			</div>
 
-            <div class="row">
-                <div id="checkboxContainerPart1" class="col-md-5" style="margin-left:20px">  </div>
-                <div id="checkboxContainerPart2" class="col-md-5" style="margin-left:20px"> </div>
-            </div>
+			<div class="row">
+				<div id="checkboxContainerPart1" class="col-md-5" style="margin-left:20px">  </div>
+				<div id="checkboxContainerPart2" class="col-md-5" style="margin-left:20px"> </div>
+			</div>
 
-            <div class="modal-footer multi-button">
-                <button id="cancelButton" class="modal-button left-button">Cancel</button>
-                <button id="printButton" class="modal-button right-button">Print Details</button>
+			<div class="modal-footer multi-button">
+				<button id="cancelButton" class="modal-button left-button">Cancel</button>
+				<button id="printButton" class="modal-button right-button">Print Details</button>
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
-    var baseUrl = window.location.origin;
-    var Id = @Model.Id;
-    var ProjectId = @Model.ProjectId;
-    var isEditAccess = true;
-    var reloadUntiGrid = false;
-    var documentControlViewModelId = 7313;
-    var logsControlViewModelId = 1006;
-    var ContactControlViewModelId = 1028;
-    // var PolicyContactControlViewModelId = 12505;
-    var popupCaseId = 0;
-    var popuprefProjectSiteID = 0;
-    var popupTitle = "";
-    var oldPageSize = 0;
-    var selectedEvents = [];
-    var reloadParkingGrid = false;
-    var accessType="FULLACCESS";
-    var SiteInformationData = [];
-    var IsLoadSiteInformationTab = false;
-    $.fn.dataTableExt.pager.numbers_length = 50;
-    
-    //Load on init
-    UnitMatrixInformation.LoadUnitMatrix();
-    BuildingInformation.load();
-    SiteInformation.LoadSiteInformation()
+	var baseUrl = window.location.origin;
+	var Id = @Model.Id;
+	var ProjectId = @Model.ProjectId;
+	var isEditAccess = true;
+	var reloadUntiGrid = false;
+	var documentControlViewModelId = 7313;
+	var logsControlViewModelId = 1006;
+	var ContactControlViewModelId = 1028;
+	// var PolicyContactControlViewModelId = 12505;
+	var popupCaseId = 0;
+	var popuprefProjectSiteID = 0;
+	var popupTitle = "";
+	var oldPageSize = 0;
+	var selectedEvents = [];
+	var reloadParkingGrid = false;
+	var accessType="FULLACCESS";
+	var SiteInformationData = [];
+	var IsLoadSiteInformationTab = false;
+	$.fn.dataTableExt.pager.numbers_length = 50;
+
+	//Load on init
+	UnitMatrixInformation.LoadUnitMatrix();
+	BuildingInformation.load();
+	SiteInformation.LoadSiteInformation()
+
 </script>

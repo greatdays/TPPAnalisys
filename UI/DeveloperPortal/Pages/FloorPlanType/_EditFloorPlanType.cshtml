@@ -1,0 +1,103 @@
+﻿@model DeveloperPortal.Domain.ProjectDetail.FloorPlanTypeModel
+<script src="@Url.Content("~/PageScripts/FloorPlanType/FloorPlanType.js")"></script>
+ <form id="editFloorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="_EditFloorPlanType">
+	 <div class="row">
+	<div class="col-md-6 mb-3">
+		<input type="hidden" name="FloorPlanTypeID" value="@Model.FloorPlanTypeID" />
+		<label class="wraping_label" for="floorplan_edit">Floor Plan Type <span class="text-danger">*</span></label>
+		<input class="form-control" type="text" id="floorplan_edit" name="Name" value="@Model.Name" autocomplete="off" />
+		<div class="invalid-feedback"></div>
+		<span class="text-danger" id="lblError_fp_floorplan_edit"></span>
+	</div>
+	<div class="col-md-6 mb-3">
+		<label class="wraping_label" for="squarefeet_edit">Square Footage <span class="text-danger">*</span></label>
+		<input class="form-control" type="number" name="SquareFeet" min="0" id="squarefeet_edit" onkeydown="javascript: return event.keyCode == 69 ? false : true" value="@Model.SquareFeet" maxlength="5" />
+		<div class="invalid-feedback"></div>
+		<span class="text-danger" id="lblError_fp_squarefeet_edit"></span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 mb-3">
+		<label class="wraping_label" for="bedroom_edit">Number of Bedroom <span class="text-danger">*</span></label>
+		<select class="form-control" id="bedroom_edit" name="LutTotalBedroomID">
+			<option>Select</option>
+			 @foreach (var bedroom in Model.LutTotalBedrooms)
+                {
+                    var isSelected = bedroom.Value == Model.LutTotalBedroomID.ToString() ? "selected" : "";
+    @:<option value="@bedroom.Value" @isSelected>@bedroom.Text</option>
+                }
+		</select>
+		<div class="invalid-feedback"></div>
+		<span class="text-danger" id="lblError_fp_bedroom_edit"></span>
+	</div>
+
+</div>
+<div class="row">
+	<div class="col-md-6 mb-3 ">
+		<label class="wraping_label" for="bathroom_edit">Number of Bathroom <span class="text-danger">*</span></label>
+		<select class="form-control" id="bathroom_edit" onchange="FloorPlanType.onSelectBathroomCount_Edit();" name="LutTotalBathroomID" autocomplete="off">
+			<option>Select</option>
+			 @foreach (var bathroom in Model.LutTotalBathrooms)
+                {
+                     var isSelected = bathroom.Value == Model.LutTotalBathroomID.ToString() ? "selected" : "";
+        @:<option value="@bathroom.Value" @isSelected>@bathroom.Text</option>
+                } 
+		</select>
+		<div class="invalid-feedback"></div>
+		<span class="text-danger" id="lblError_fp_bathroom_edit"></span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12" id="bathroomTypeDiv_edit">
+		<h6>Bathroom Type  <span class="text-danger">*</span></h6>
+		<table class="table table-bordered text-center table-fixed">
+			<thead>
+				<tr>
+					<th>Sr. no.</th>
+					<th>Type</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < Model.FloorPlanBathroomType.Count; i++)
+{
+	var isFull = Model.FloorPlanBathroomType.ElementAt(i).LutBathroomTypeID == 3;
+    var selectedValue = Model.FloorPlanBathroomType[i].LutBathroomTypeID.ToString();
+    <tr>
+        <td>@(i + 1)</td>
+        <td>
+            <select class="form-control" name="bathroomTypes" id="bTypes_@(i)_edit" onchange="FloorPlanType.toggleBathroomOptionEdit(this);" required>
+                <option value="0">-- Select Bathroom Type --</option>
+                @foreach (var type in Model.LutBathroomType)
+                {
+                    var isSelected = type.Value == selectedValue ? "selected" : "";
+                    @:<option value="@type.Value" @isSelected>@type.Text</option>
+                }
+            </select>
+        </td>
+		<td>
+                               <select class="form-control" name="bathroomOption" style="@( !isFull ? "display:none;" : "" )" id="bTypes_@(i)_edit_option" @(isFull ? "required" : "")>
+    <option value="0">-- Select Bathroom Option --</option>
+    @{
+        var selectedOptionValue = Model.FloorPlanBathroomType.ElementAt(i).LutBathroomTypeOptionID.ToString();
+    }
+    @foreach (var type in Model.LutFloorBathrommOptions)
+    {
+        var isSelected = type.Value == selectedOptionValue ? "selected" : "";
+        @:<option value="@type.Value" @isSelected>@type.Text</option>
+    }
+</select>
+                            </td>
+    </tr>
+}
+			</tbody>
+		</table>
+	</div>
+</div>
+</form>
+
+<script>
+	var FloorPlanType = FloorPlanType || {};
+	FloorPlanType.LutBathroomType = @Html.Raw(Json.Serialize(Model.LutBathroomType));
+	FloorPlanType.LutFloorBathrommOptions = @Html.Raw(Json.Serialize(Model.LutFloorBathrommOptions));
+</script>
