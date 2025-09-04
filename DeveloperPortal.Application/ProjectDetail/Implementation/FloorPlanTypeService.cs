@@ -271,14 +271,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 LutTotalBedroomID = floorPlan.LutTotalBedroomId,
                 SquareFeet = floorPlan.SquareFeet,
                 ProjectID = floorPlan.ProjectId,
-                //MOD06242025 - Issue #5 - code fix - start
                 ProjectSiteID = floorPlan.ProjectSiteId ?? 0,
-                //MOD06242025 - Issue #5 - code fix - end
                 PropsnapShotID = floorPlan.PropsnapShotId,
-                //MOD06242025 - Issue #5 - code fix - start
-                //StructureID = (int)floorPlan.StructureID,
                 StructureID = floorPlan.StructureId ?? 0,
-                //MOD06242025 - Issue #5 - code fix - end
                 FloorPlanTypeID = floorPlan.FloorPlanTypeId
             }
             ;
