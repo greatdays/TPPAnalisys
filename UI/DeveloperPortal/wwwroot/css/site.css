@@ -97,8 +97,8 @@
     flex-direction: column;
     margin: auto;
     width: 600px;
-/*    height: 575px;*/
-    padding: 3em 4em;
+    /*    height: 575px;*/
+    padding: 3em 4em 2em;
     color: black;
     background-color: white;
     border-radius: 8px;
@@ -10314,10 +10314,10 @@ h2.usename.Contact-Infon-name {
     display: none;
 }
 
-.SupportedBrowserButton {
+/*.SupportedBrowserButton {*/
     /*font-size: 15px;*/
     /*color: #fff;*/
-    color: white;
+    /*color: white;
     outline: none;
     padding: 6px 30px;
     border: 0;
@@ -10329,9 +10329,9 @@ h2.usename.Contact-Infon-name {
     margin-left: auto;
     min-width: 190.5px;
     letter-spacing: .5px;
-    margin-bottom: 20px;
+    margin-bottom: 20px;*/
     /*font-weight: 400;*/
-}
+/*}*/
 
 div#divdropdownmenu a:last-child {
     border-radius: 0px 0px 5px 5px;

@@ -41,7 +41,7 @@
                             <input name="Email" class="form-control" value="@Model.Account.Email" />
                         </div>
                         <div class="col-md-3">
-                            <label>Phone Type *</label>
+                            <label class="control-label required-label">Phone Type</label>
                             <select name="PhoneType" class="form-control">
                                 <option value="Mobile" selected="@(@Model.Account.PhoneType == "Mobile")">Mobile</option>
                                 <option value="Work" selected="@(@Model.Account.PhoneType == "Work")">Work</option>
@@ -49,7 +49,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label>Phone Number *</label>
+                            <label class="control-label required-label">Phone Number </label>
                             <input name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
                         </div>
 

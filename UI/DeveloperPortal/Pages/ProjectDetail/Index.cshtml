@@ -209,6 +209,7 @@
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 <div class="page-content">
+    <div class="container-fluid">
     <!-- Project Notification -->
     @* Project Notification *@
     @if (Model.ProjectSummary?.ReviewNote != null && Model.ProjectSummary.ReviewNote.Any())
@@ -230,7 +231,7 @@
     }
 
     <!-- End Project Notification -->
-
+    </div>
 
     <div class="row">
         <div class="col-md-8">
@@ -240,12 +241,12 @@
             <div class="page-title left-data">
                 <ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
                     <li id="help">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#003399 !important">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#113F67 !important">
                             <img src="~/Images/help.png" height="20" width="20">
                         </a>
                     </li>
                     <li id="PrintAll">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#003399 !important; margin-left:10px;">
+                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#113F67 !important; margin-left:10px;">
                             <img src="~/Images/printer.svg">
                         </a>
                     </li>
@@ -295,6 +296,7 @@
         </div>
     </div>
 </div>
+
 @{
     Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
 }
