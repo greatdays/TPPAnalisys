@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO.Compression;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,7 +27,7 @@ namespace DeveloperPortal.ServiceClient
             _config = config;
         }
         [HttpPost]
-        public JsonResult SubmitUploadedDocument(IFormFile file,string folderName,string emailId,int caseId)
+        public JsonResult SubmitUploadedDocument(IFormFile file,string emailId,int caseId,string category)
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();
@@ -41,7 +43,8 @@ namespace DeveloperPortal.ServiceClient
                 FileName= file.FileName,
                 
             };
-
+            info.MetaData.Add(FieldType.PrimaryKey, new string[] { new Guid() .ToString()});
+            info.MetaData.Add(FieldType.Category, new string[] { file.FileName });
             //Dictionary<string, FieldType> formValToFieldTypeMap = new Dictionary<string, FieldType>()
             //{
             //    {"AchpProjectId", FieldType.AchpProjectId },
@@ -58,8 +61,8 @@ namespace DeveloperPortal.ServiceClient
             //    {"AcHPNumber", FieldType.AcHPNumber }
             //};
 
-            info.MetaData.Add(FieldType.PrimaryKey, new string[] { "1234" });
-            info.MetaData.Add(FieldType.Category, new string[] { "12345" });
+            // info.MetaData.Add(FieldType.PrimaryKey, new string[] { "1234" });
+            //info.MetaData.Add(FieldType.Category, new string[] { "12345" });
 
             //foreach (KeyValuePair<string, FieldType> maps in formValToFieldTypeMap)
             //{
@@ -120,6 +123,49 @@ namespace DeveloperPortal.ServiceClient
             return new JsonResult(response);
 
         }
+
+        public DMSDocument GetDocument(Guid uniqueId, bool useFakeDMS = false)
+        {
+            DMSDocument document = new DMSDocument();
+            if (useFakeDMS)
+            {
+                document.DocumentName = "3DI_Logo.png";
+                // string file = Path.Combine(System.Web.HttpRuntime.AppDomainAppPath, document.DocumentName);
+                string file = "";
+                 var fileContent = File.ReadAllBytes(file);
+                document.DocumentByte = fileContent;
+                document.DocumentGuid = uniqueId;
+            }
+            else
+            {
+                string endpointUrl = "http://43dmsw2/DMSServiceDev_V5/DMS.svc";
+
+                // 2. Create the binding and endpoint address programmatically
+                var binding = new BasicHttpBinding(); // Use the correct binding type (e.g., WSHttpBinding)
+                var endpointAddress = new EndpointAddress(endpointUrl);
+                binding.MaxReceivedMessageSize = int.MaxValue;
+                binding.MaxBufferSize = int.MaxValue;
+                using (DMSClient dms = new DMSClient(binding, endpointAddress))
+                {
+                    ContentRetrievalResponse response = dms.GetContentByUnid(uniqueId);
+                    if (response != null)
+                    {
+                        document.DocumentName = response.FileName;
+                        document.DocumentByte = response.FileStream;
+                        if (IsGzipCompressed(response.FileStream))
+                        {
+                            document.DocumentByte = CompressDecompressBytes(response.FileStream, CompressionMode.Decompress);
+                        }
+                        else
+                        {
+                            document.DocumentByte = new byte[response.FileStream.Length];
+                            response.FileStream.CopyTo(document.DocumentByte, 0);
+                        }
+                    }
+                }
+            }
+            return document;
+        }
         string GetFormDataValue(string values)
         {
             return values ?? string.Empty;
@@ -170,6 +216,36 @@ namespace DeveloperPortal.ServiceClient
                 }
             });
         }
+
+        private bool IsGzipCompressed(byte[] data)
+        {
+            // Gzip files start with 0x1F8B
+            return data.Length >= 2 && data[0] == 0x1F && data[1] == 0x8B;
+        }
+        protected byte[] CompressDecompressBytes(byte[] data, CompressionMode compressionMode, CompressionLevel compressionLevel = CompressionLevel.Optimal)
+        {
+            using (var outputStream = new MemoryStream())
+            {
+                if (compressionMode == CompressionMode.Compress)
+                {
+                    using (var gzipStream = new GZipStream(outputStream, compressionLevel))
+                    {
+                        gzipStream.Write(data, 0, data.Length);
+                    }
+                }
+                else if (compressionMode == CompressionMode.Decompress)
+                {
+                    using (var inputStream = new MemoryStream(data))
+                    using (var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress))
+                    {
+                        gzipStream.CopyTo(outputStream);
+                    }
+                }
+
+                return outputStream.ToArray();
+            }
+        }
+
 
 
     }

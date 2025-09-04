@@ -14,6 +14,10 @@ using System.Net.Http.Headers;
 using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.Domain.Notification;
 using DeveloperPortal.Domain.Resources;
+using System.Threading.Tasks;
+using HCIDLA.ServiceClient.DMS;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Mime;
 
 
 namespace DeveloperPortal.Areas.Document.Controllers
@@ -27,8 +31,10 @@ namespace DeveloperPortal.Areas.Document.Controllers
         private ISendNotificationEmail sendNotificationEmail;
         private string _BaseURL = "", _GoogleDriveId = "",_AAHP_Google_UName="",AAHP_Google_Pwd="";
         private bool _IsCreatedGoogleDriveFolder = false;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService, IConfiguration config, ISendNotificationEmail _sendNotificationEmail)
+        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService, 
+            IConfiguration config, ISendNotificationEmail _sendNotificationEmail, IWebHostEnvironment webHostEnvironment)
         {
             this._config = config;
             this._documentService= documentService;
@@ -39,6 +45,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
             this.sendNotificationEmail= _sendNotificationEmail;
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
             this.AAHP_Google_Pwd = _config["LAHD:password"].ToString();
+            this._webHostEnvironment = webHostEnvironment;
 
         }
 
@@ -73,33 +80,51 @@ namespace DeveloperPortal.Areas.Document.Controllers
         }
         [HttpPost]
         [Route("UploadFile")]
-        public JsonResult UploadFile()
+        public async Task<JsonResult> UploadFile()
         {
             IFormFile file = HttpContext.Request.Form.Files[0];
             var fileType = GetMimeTypeForFileExtension(file.FileName);
             var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
             var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
             var category = Convert.ToString(HttpContext.Request.Form["Category"]);
+            var comment = Convert.ToString(HttpContext.Request.Form["Description"]);
             //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
             var emailId = "ananthakrishnan.mohandas@lacity.org";
 
+            var folderId = await _documentService.GetRecentFolderId();
 
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
             //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, folderName, emailId, caseId);
-            
+            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, category);
+
+            var response = uploadResponse.Value as UploadResponse;
+
+            if (response == null || (response.ErrorMessages != null && response.ErrorMessages.Length > 0))
+            {
+                return new JsonResult(new
+                {
+                    Success = false,
+                    Message = "Failed to upload document.\n" +
+                              (response?.ErrorMessages != null
+                                  ? string.Join("; ", response.ErrorMessages)
+                                  : "Unknown error")
+                });
+            }
+
             var documentModel = new DocumentModel()
             {
                 Name = file.FileName,
-                Link = "",
+                Link = response.UniqueId.ToString(),
                 Attributes = "",
                 FileSize = file.Length.ToString(),
                 CaseId = caseId,
-                FolderId = 0,
+                FolderId = folderId,
+                Comment= comment,
                 OtherDocumentType = category,
                 CreatedBy= "ananthakrishnan",
-                CreatedOn=DateTime.Now
+                CreatedOn=DateTime.Now,
+                IsDeleted= false
                
             };
 
@@ -178,7 +203,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
             return PartialView("~/Areas/Document/Views/DMS/DMSViewNew.cshtml", model);
         }*/
 
-        [HttpGet]
+       /* [HttpGet]
         [Route("DownloadDocument")]
         public async Task<IActionResult> DownloadDocument(string fileID)
         {
@@ -195,7 +220,63 @@ namespace DeveloperPortal.Areas.Document.Controllers
             //return Content($"Stream Length: {stream.Length}, FileName: {fileName}, ContentType: {contentType}");
 
             return File(stream, contentType, fileName);
-        }
+        }*/
+        [HttpGet]
+        [Route("DownloadDocument")]
+        public async Task<IActionResult> DownloadDocument(string fileName, string filePath)
+        {
+            try
+            {
+                if (Guid.TryParse(filePath, out Guid guid))
+                {
+                    // Get configuration value using IConfiguration
+                    //bool useFakeDMS = _config.GetValue<bool>("UseFakeDMS");
+                    bool useFakeDMS = false;
 
+                    var doc = new HCIDLA.ServiceClient.LaserFiche.Document();
+                    var objDmsDocument = new DMSService(_config).GetDocument(guid, false);//await doc.GetDocumentAsync(guid, useFakeDMS);
+
+                    if (objDmsDocument?.DocumentByte != null && objDmsDocument.DocumentByte.Length > 0)
+                    {
+                        return File(
+                            objDmsDocument.DocumentByte,
+                            MediaTypeNames.Application.Octet,
+                            objDmsDocument.DocumentName);
+                    }
+                    else
+                    {
+                        return NotFound("Document not found or is empty.");
+                    }
+                }
+                else
+                {
+                    // Use IWebHostEnvironment instead of HttpContext.Server.MapPath
+                    string webRootPath = _webHostEnvironment.WebRootPath ?? _webHostEnvironment.ContentRootPath;
+                    string fileAt = Path.Combine(webRootPath, filePath.TrimStart('/', '\\'));
+
+                    // Validate file path to prevent directory traversal attacks
+                    string fullPath = Path.GetFullPath(fileAt);
+                    if (!fullPath.StartsWith(webRootPath))
+                    {
+                        return BadRequest("Invalid file path.");
+                    }
+
+                    if (!System.IO.File.Exists(fullPath))
+                    {
+                        return NotFound("File not found.");
+                    }
+
+                    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fullPath);
+                    return File(fileBytes, MediaTypeNames.Application.Octet, fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+               // _logger.LogError(ex, "Error downloading document with fileName: {FileName}, filePath: {FilePath}", fileName, filePath);
+                return StatusCode(500, "An error occurred while downloading the document.");
+            }
+        }
     }
+
 }
+
