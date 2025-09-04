@@ -69,7 +69,7 @@ namespace DeveloperPortal.ServiceClient
         {
             string propertyBaseUrl = config["AreaMgmtAPIURL:PropertyApiURL"].TrimEnd('/') + "/";
             ApplicantSignupModel signupModel = new ApplicantSignupModel(config);
-            userName = "yopmail.com";
+            //userName = "yopmail.com";
             ContactRenderModel model = new ContactRenderModel();
 
             /*get client data from PCMS*/

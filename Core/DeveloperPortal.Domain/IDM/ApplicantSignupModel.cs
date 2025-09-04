@@ -94,6 +94,7 @@ namespace DeveloperPortal.Models.IDM
         public List<OrganizationContactModel> HousingAdvocateAgencyList { get; set; }
 
         public string IDMUserName { get; set; }
+        public int? IDMUserID { get; set; }
 
         public Dictionary<string, string> NotificationData = new Dictionary<string, string>();
 
@@ -104,6 +105,8 @@ namespace DeveloperPortal.Models.IDM
         public string AccountReason { get; set; }
 
         public bool IsApplicant { get; set; }
+        public bool IsAccountTypeSelected { get; set; }
+
 
         /*
         public List<LutPreDir> LutPreDirCdList { get; set; }

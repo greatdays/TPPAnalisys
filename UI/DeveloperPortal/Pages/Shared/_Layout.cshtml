@@ -200,6 +200,22 @@
 </body>
 
 <script>
+        $(document).ready(function () {
+        $('.setup-content').each(function () {
+            let step = $(this);
+            let nextBtn = step.find('.nextBtn');
+            // nextBtn.prop('disabled', true);
+
+            step.on('change keyup', '[data-required="true"]', function () {
+                if (validateStep(step)) {
+                    nextBtn.prop('disabled', false).removeClass('disabled-btn');
+                } else {
+                    nextBtn.prop('disabled', true).addClass('disabled-btn');
+                }
+            });
+        });
+    });
+
           //my Account
       // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
       //     console.log("Clikced");

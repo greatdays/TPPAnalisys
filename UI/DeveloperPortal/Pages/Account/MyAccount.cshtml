@@ -12,27 +12,27 @@
 
             <div class="row g-3">
 
-                <div class="col-md-4">
+                <div class="form-group col-md-4">
                     <label>First Name *</label>
                     <input name="FirstName" class="form-control" value="@Model.Account.FirstName" />
                 </div>
 
-                <div class="col-md-4">
+                <div class="form-group col-md-4">
                     <label>Middle Name</label>
                     <input name="MiddleName" class="form-control" value="@Model.Account.MiddleName" />
                 </div>
 
-                <div class="col-md-4">
+                <div class="form-group col-md-4">
                     <label>Last Name *</label>
                     <input name="LastName" class="form-control" value="@Model.Account.LastName" />
                 </div>
 
-                <div class="col-md-6">
+                <div class=" form-group col-md-6">
                     <label>Email *</label>
                     <input name="EmailId" class="form-control" value="@Model.Account.EmailId" />
                 </div>
 
-                <div class="col-md-3">
+                <div class="form-group col-md-3">
                     <label>Phone Type *</label>
                     <select name="LutPhoneTypeCd" class="form-control">
                         @foreach (var type in Model.Account.LutPhoneTypeCdList)
@@ -42,15 +42,15 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <div class="form-group col-md-3">
                     <label>Phone Number *</label>
                     <input name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
                 </div>
-                <div class="col-md-2">
+                <div class="form-group col-md-2">
                     <label for="Extension">Extension</label>
                     <input name="PhoneExtension" class="form-control" value="@Model.Account.PhoneExtension" />
                 </div>
-                <div class="col-md-6">
+                <div class="form-group col-md-6">
                     <label>Company *</label>
                     <input name="Company" class="form-control" value="@Model.Account.Company" />
                 </div>
@@ -60,23 +60,23 @@
                     <input name="Title" class="form-control" value="@Model.Account.Title" />
                 </div>
 
-                <div class="col-md-12 mt-3">
+                <div class="form-group col-md-12 mt-3">
                     <label>P.O.Box?</label><br />
-                    <label><input type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
-                    <label><input type="radio" name="IsPostBox" value="true" @(Model.Account.IsPostBox ? "checked" : "") /> Yes</label>
+                    <label><input  id="POBoxNo"type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
+                    <label><input id="POBoxYes" type="radio" name="IsPostBox" value="true" @(Model.Account.IsPostBox ? "checked" : "") /> Yes</label>
                 </div>
 
                 <!-- If POBox = No -->
-                <div id="divPOBoxNo" class="col-md-12">
+                <div id="divPOBoxNo" class="form-group col-md-12">
                     <div class="row g-3 mt-1">
                         <div class="col-md-6">
                             <label>Street Number *</label>
                             <input name="StreetNumber" class="form-control" value="@Model.Account.StreetName" />
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label>Pre Direction *</label>
-                            <select name="LutPhoneTypeCd" class="form-control">
+                            <select name="LutPreDirCd" class="form-control">
                                 @foreach (var type in Model.Account.LutPreDirCdList)
                                 {
                                     @Html.Raw($"<option value='{type.LutPreDirCD}' {(type.LutPreDirCD == Model.Account.LutPreDirCd ? "selected" : "")}>{type.LutPreDirCD}</option>")
@@ -84,42 +84,21 @@
                             </select>
                         </div>
 
-                        @* <div class="col-md-6">
-                            <label>Pre Direction *</label>
-                            @Html.DropDownListFor(
-                                     model => model.Account.LutPreDirCd,
-                                     new SelectList(Model.Account.LutPreDirCdList, "LutPreDirCD", "LutPreDirCD", Model.Account.LutPreDirCd),
-                                     "-- Select Direction --",
-                                     new { @class = "form-control" }
-                                     )
-                        </div> *@
-
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label>Street Name *</label>
                             <input name="StreetName" class="form-control" value="@Model.Account.StreetName" />
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label>Street Type *</label>
-                            <select name="LutPhoneTypeCd" class="form-control">
+                            <select name="LutStreetTypeCd" class="form-control">
                                 @foreach (var type in Model.Account.LutStreetTypeList)
                                 {
                                     @Html.Raw($"<option value='{type.LutStreetTypeCd}' {(type.LutStreetTypeCd == Model.Account.LutStreetTypeCd ? "selected" : "")}>{type.LutStreetTypeCd}</option>")
                                 }
                             </select>
                         </div>
-
-
-                        @* <div class="col-md-6">
-                            <label>Street Type *</label>
-                            @Html.DropDownListFor(
-                                     model => model.Account.LutStreetTypeCD,
-                                     new SelectList(Model.Account.LutStreetTypeList, "LutStreetTypeCd", "LutStreetTypeCd"),
-                                     new { @class = "form-control" }
-                                     )
-
-                        </div> *@
-                        <div class="col-md-6">
+                        <div class="form-group col-md-6">
                             <label>Unit Number</label>
                             <input name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
                         </div>
@@ -127,36 +106,31 @@
                 </div>
 
                 <!-- If POBox = Yes -->
-                <div id="divPOBoxYes" class="col-md-12 d-none mt-3">
+                <div id="divPOBoxYes" class="form-group col-md-12 d-none mt-3">
                     <label>P.O.Box Number *</label>
                     <input name="POBoxNumber" class="form-control" value="@Model.Account.PostBoxNum" />
                 </div>
 
                 <!-- Common fields -->
-                <div class="col-md-6">
+                <div class="form-group col-md-6">
                     <label>City *</label>
                     <input name="City" class="form-control" value="@Model.Account.City" />
                 </div>
-                <div class="col-md-3">
+                <div class="form-group col-md-3">
                     <label>State *</label>
-                   @*  @Html.DropDownListFor(
-                             model => model.Account.LutStateCD,
-                             new SelectList(Model.Account.LutStateCDList, "LutStateCd", "Description", Model.Account.LutStateCD),
-                             "-- Select State --",
-                             new { @class = "form-control" }
-                             )
- *@
+                  <select name="LutStateCD" class="form-control">
+                        @foreach (var type in Model.Account.LutStateCDList)
+                        {
+                            @Html.Raw($"<option value='{type.LutStateCd}' {(type.LutStateCd == Model.Account.LutStateCD ? "selected" : "")}>{type.Description}</option>")
+                        }
+                    </select>
                 </div>
-                <div class="col-md-3">
+                <div class="form-group col-md-3">
                     <label>Zip Code *</label>
-                    <input name="ZipCode" class="form-control" value="@Model.Account.ZipCode" />
+                    <input name="ZipCode" class="form-control" value="@Model.Account.Zipcode" />
                 </div>
 
-               
-
-            
-
-                <div class="col-12 text-end mt-4">
+                <div class="form-group col-12 text-end mt-4">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
 
@@ -167,7 +141,14 @@
 
 @section Scripts {
     <script>
+          function togglePOBoxSection() {
+            const isPOBoxYes = document.getElementById("POBoxYes").checked;
+            document.getElementById("divPOBoxYes").classList.toggle("d-none", !isPOBoxYes);
+            document.getElementById("divPOBoxNo").classList.toggle("d-none", isPOBoxYes);
+        }
         $(document).ready(function () {
+             // Bind change event to radio buttons
+        $('input[name="IsPostBox"]').on('change', togglePOBoxSection);
             $('#myAccountForm').on('submit', function (e) {
                 e.preventDefault();
 

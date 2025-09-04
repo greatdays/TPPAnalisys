@@ -180,8 +180,47 @@ function IsTermsAndConditionsAccepted(ctlDivId, ctlId) {
     }
 }
 
+
+//stopping from moving forward from one partial view to another without filling the details
+
+
+function validateStep(stepContainer) {
+    console.log("called ", stepContainer);
+    let isValid = true;
+
+    $(stepContainer).find('[data-required="true"]').each(function () {
+        let field = $(this);
+
+        if (field.is(':radio')) {
+            let group = field.attr('name');
+            if ($('input[name="' + group + '"]:checked').length === 0) {
+                isValid = false;
+            }
+        }
+        else if (field.is(':checkbox')) {
+            if (!field.is(':checked')) {
+                isValid = false;
+            }
+        }
+        else {
+            if (!field.val()) {
+                isValid = false;
+            }
+        }
+    });
+
+    return isValid;
+}
+
+
+
+//ends here
+
+
+
 /* Contact Methods form validation */
 function InitializeContactMethods() {
+    console.log("contact method intialize");
     SetMaxLength('Extension', 5);
     SetMaxLength('UnitNumber', 20);
     SetMaxLength('City', 20);
