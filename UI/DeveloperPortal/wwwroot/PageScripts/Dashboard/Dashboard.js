@@ -141,7 +141,7 @@ PopulateMyProjectData : function() {
 					if (dashboardCategory == 'PlanReview') {
 						var href = row.caseId.match(/href="([^"]*)/)[1];
 						var queryString = href.split("?");
-						var url = "../planReview/index?" + queryString[1];
+						var url = APPURL + "planReview/index?" + queryString[1];
 						a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.projectName + '</a>';
 
 					}

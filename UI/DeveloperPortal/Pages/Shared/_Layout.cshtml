@@ -25,7 +25,7 @@
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
     <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
 
-    
+
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -47,54 +47,54 @@
     <script src="//navbar.lacity.org/global_nav.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
-    var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
+        var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
         //CurrentScroll();
         NewScroll();
 
         function CurrentScroll(){
-            document.addEventListener('scroll', function (e) {
-                var developerPortalNavBar = document.getElementById('developerPortalNavBar');
-                lastKnownScrollPosition = window.scrollY;
-                if (lastKnownScrollPosition > 98) {
-                    developerPortalNavBar.style.top = "0px";
-                } else {
-                    developerPortalNavBar.style.top = "55px";
-                }
-            });
+        document.addEventListener('scroll', function (e) {
+        var developerPortalNavBar = document.getElementById('developerPortalNavBar');
+        lastKnownScrollPosition = window.scrollY;
+        if (lastKnownScrollPosition > 98) {
+        developerPortalNavBar.style.top = "0px";
+        } else {
+        developerPortalNavBar.style.top = "55px";
+        }
+        });
         }
 
         function NewScroll(){
-            $(window).scroll(function(){
-                var navBar = $('#developerPortalNavBar');
-                var lastKnownScrollPosition = $(window).scrollTop();
+        $(window).scroll(function(){
+        var navBar = $('#developerPortalNavBar');
+        var lastKnownScrollPosition = $(window).scrollTop();
 
-                if (lastKnownScrollPosition > 98) {
-                    $(navBar).css('top', "0px");
-                } else {
-                    var scrollPos = 101 - lastKnownScrollPosition;
-                    $(navBar).css('top', scrollPos + "px");
-                }
-            });
+        if (lastKnownScrollPosition > 98) {
+        $(navBar).css('top', "0px");
+        } else {
+        var scrollPos = 101 - lastKnownScrollPosition;
+        $(navBar).css('top', scrollPos + "px");
         }
-             function showMessage(title,message, type)
+        });
+        }
+        function showMessage(title,message, type)
         {
-            $("#cMatrixMessageTitle").html(title);
-            $("#cMatrixMessageBody").html(message);
-            $("#complienceMatrixMessage").modal('show');
+        $("#cMatrixMessageTitle").html(title);
+        $("#cMatrixMessageBody").html(message);
+        $("#complienceMatrixMessage").modal('show');
         }
     </script>
     @* ADA *@
     <script>
         // correct lacity global navbar
         $(document).ready(function () {
-            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-            $("#global_nav_la_4324422-rightwrap > a").each(function () {
-                $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
-            });
+        $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+        $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+        $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+        $("#global_nav_la_4324422-rightwrap > a").each(function () {
+        $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
+        });
         });
     </script>
 
@@ -116,88 +116,91 @@
             </div>
         </div>
         <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
-            <div id="leftMenu collapse navbar-collapse">
-                <ul class="navbar-nav botNav-left-hide">
-                    <li class="nav-item navItem-decor">
-                        <a class="nav-link nav-link-basic" href='~/dashboard'>
-                            Dashboard
-                        </a>
-                    </li>
+            @if (usr.UserID != 0)
+            {
+                <div id="leftMenu collapse navbar-collapse">
+                    <ul class="navbar-nav botNav-left-hide">
                         <li class="nav-item navItem-decor">
-                        <a class="nav-link nav-link-basic" href='~/PlanReview'>
-                            PlanReview
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                            <a class="nav-link nav-link-basic" href='~/dashboard'>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item navItem-decor">
+                            <a class="nav-link nav-link-basic" href='~/PlanReview'>
+                                PlanReview
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
             <div id="rightMenu">
-                <div class="SignInContatiner">
-                    <partial name="_LoginPartial" />
-                    @if (usr.UserID == 0)
-                    {
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                            <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                            <li>
-                                @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
-                            </li>
-                        </ul>
-                    }
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class=" body-content">
-        <main role="main" class="pb-3 pt-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container" style="max-width: 100%; padding: 0px;">
-            <partial name="_StandardAppFooter" />
-        </div>
-    </footer>
-
-
-    <!-- Modal Popup Start-->
-    <div class="modal" id="ActioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header comcom-header">
-                    <h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
-
-                    <button type="button" class="close " data-bs-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
-
-                </div>
-                <div class="modal-body comcom-body" style="padding:0">
-                    <div class="ActioModalBody">
+                    <div class="SignInContatiner">
+                        <partial name="_LoginPartial" />
+                        @if (usr.UserID == 0)
+                        {
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                              @*   <li>
+                                    @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
+                                </li> *@
+                            </ul>
+                        }
                     </div>
-                    <!-- Render Action Partial -->
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="complienceMatrixMessage" tabindex="-1" role="dialog" aria-labelledby="cMatrixMessageTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered imp-date-dialog" style="width: 450px">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="cMatrixMessageTitle"></h5>
-                </div>
-                <div class="modal-body" id="cMatrixMessageBody">
-                </div>
-                <div class="modal-footer singal-button">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" title="Ok">Ok</button>
                 </div>
             </div>
+        </header>
+        <div class=" body-content">
+            <main role="main" class="pb-3 pt-3">
+                        @RenderBody()
+            </main>
         </div>
-    </div>
-    <!-- Modal PopUp End -->
-    @Html.Partial("_LoadingOverlay")
-</body>
+
+        <footer class="border-top footer text-muted">
+            <div class="container" style="max-width: 100%; padding: 0px;">
+                <partial name="_StandardAppFooter" />
+            </div>
+        </footer>
+
+
+        <!-- Modal Popup Start-->
+        <div class="modal" id="ActioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header comcom-header">
+                        <h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
+
+                        <button type="button" class="close " data-bs-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
+
+                    </div>
+                    <div class="modal-body comcom-body" style="padding:0">
+                        <div class="ActioModalBody">
+                        </div>
+                        <!-- Render Action Partial -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="complienceMatrixMessage" tabindex="-1" role="dialog" aria-labelledby="cMatrixMessageTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered imp-date-dialog" style="width: 450px">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cMatrixMessageTitle"></h5>
+                    </div>
+                    <div class="modal-body" id="cMatrixMessageBody">
+                    </div>
+                    <div class="modal-footer singal-button">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" title="Ok">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal PopUp End -->
+                @Html.Partial("_LoadingOverlay")
+    </body>
 
 <script>
         $(document).ready(function () {
@@ -225,42 +228,42 @@
        document.getElementById("loadingOverlay").style.display = "block";
     }
 
-    function hideLoadingOverlay() {
-        document.getElementById("loadingOverlay").style.display = "none";
-    }
-
-    // Show on form submission
-    document.addEventListener("submit", function (e) {
-        const form = e.target;
-        if (form.tagName === "FORM") {
-            showLoadingOverlay();
+        function hideLoadingOverlay() {
+            document.getElementById("loadingOverlay").style.display = "none";
         }
-    }, true);
 
-    // Show on link clicks
-       document.addEventListener("click", function (e) {
-        const link = e.target.closest("a");
-
-        if (link) {
-            const href = link.getAttribute("href") || "";
-            const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
-
-            if (
-                link.href &&
-                !link.target &&
-                !link.href.startsWith("javascript:") &&
-                !isSamePageAnchor
-            ) {
+        // Show on form submission
+        document.addEventListener("submit", function (e) {
+            const form = e.target;
+            if (form.tagName === "FORM") {
                 showLoadingOverlay();
             }
-        }
-    });
+        }, true);
 
-    // Optional: Show for all AJAX calls (jQuery)
-    $(document).ajaxStart(function () {
-        showLoadingOverlay();
-    }).ajaxStop(function () {
-        hideLoadingOverlay();
-    });
-</script>
-</html>
+        // Show on link clicks
+           document.addEventListener("click", function (e) {
+            const link = e.target.closest("a");
+
+            if (link) {
+                const href = link.getAttribute("href") || "";
+                const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
+
+                if (
+                    link.href &&
+                    !link.target &&
+                    !link.href.startsWith("javascript:") &&
+                    !isSamePageAnchor
+                ) {
+                    showLoadingOverlay();
+                }
+            }
+        });
+
+        // Optional: Show for all AJAX calls (jQuery)
+        $(document).ajaxStart(function () {
+            showLoadingOverlay();
+        }).ajaxStop(function () {
+            hideLoadingOverlay();
+        });
+    </script>
+    </html>

@@ -248,7 +248,7 @@ function InitializeContactMethods() {
     //fetch data to initialize PhoneType
     /*http://43svc/AAHRDev.Api/api/user/lookuplist"*/
     $.ajax({
-        url: APPURL + "/Account/GetLookupData?lookup=State", 
+        url: APPURL + "Account/GetLookupData?lookup=State", 
         type: 'GET',
         async: false,
         dataType: 'json',
@@ -274,7 +274,7 @@ function InitializeContactMethods() {
     });
     //console.log('about to call phonetype');
     $.ajax({
-        url: APPURL + "/Account/GetLookupData?lookup=PhoneType",
+        url: APPURL + "Account/GetLookupData?lookup=PhoneType",
         type: 'GET',
         async: false,
         dataType: 'json',
@@ -300,7 +300,7 @@ function InitializeContactMethods() {
     });
     //console.log('about to call directions');
     $.ajax({
-        url: APPURL + "/Account/GetLookupData?lookup=Direction",
+        url: APPURL + "Account/GetLookupData?lookup=Direction",
         type: 'GET',
         async: false,
         dataType: 'json',
@@ -327,7 +327,7 @@ function InitializeContactMethods() {
 
     //StreetType
     $.ajax({
-        url: APPURL + "/Account/GetLookupData?lookup=StreetType",
+        url: APPURL + "Account/GetLookupData?lookup=StreetType",
         type: 'GET',
         async: false,
         dataType: 'json',

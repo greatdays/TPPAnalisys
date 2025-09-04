@@ -295,7 +295,7 @@ namespace DeveloperPortal.Controllers
             string applicationURL = _config["AppSettings:ApplicationURL"].ToString();
 
             // return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={applicationURL}");
-            return Redirect("/");
+            return Redirect(applicationURL);
         }
 
         #region Authenticate Windows User
