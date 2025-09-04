@@ -69,6 +69,8 @@ public partial class FairHousing
 
     public virtual ICollection<AssnFhacfiledDate> AssnFhacfiledDates { get; set; } = new List<AssnFhacfiledDate>();
 
+    public virtual ICollection<FhpropertyAssociatedAccount> FhpropertyAssociatedAccounts { get; set; } = new List<FhpropertyAssociatedAccount>();
+
     public virtual LutSignatureTitle? LutSignatureTitle { get; set; }
 
     public virtual PropSnapshot ProjectSitePropSnapShot { get; set; } = null!;
