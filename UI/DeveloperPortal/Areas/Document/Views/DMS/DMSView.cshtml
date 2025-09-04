@@ -63,11 +63,8 @@
                         <td>
                             @if (!string.IsNullOrWhiteSpace(file.Link))
                             {
-                                @*  <a href="@Url.Action("DownloadDocument", "DMS", new { fileID = driveFileId })"
-        class="btn btn-sm btn-primary" title="Download @file.Name">
-            <i class="fas fa-download"></i> Download
-        </a> *@
-                                <a href="@Url.Action("DownloadDocument", "DMS", new { area = "Document", filePath = driveFileId })"
+                                <a href="javascript:void(0)"
+                                   onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { area = "Document", fileName = file.Name, filePath = driveFileId })', '@file.Name')"
                                    class="btn btn-sm btn-primary" title="Download @file.Name">
                                     <i class="fas fa-download"></i> Download
                                 </a>
@@ -155,42 +152,38 @@
         });
     });
 
-    // function showLoadingOverlay() {
-    //     const overlay = document.getElementById("modalLoadingOverlay");
-    //     if (overlay) {
-    //         overlay.style.display = "block";
-    //     }
-    // }
+       function downloadFileWithProgress(url, fileName) {
+           LoadingOverlay.show();
 
-    // function hideLoadingOverlay() {
-    //     const overlay = document.getElementById("modalLoadingOverlay");
-    //     if (overlay) {
-    //         overlay.style.display = "none";
-    //     }
-    // }
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Download failed: ${response.status}`);
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create and trigger download
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
 
-    // function downloadFile(downloadUrl, fileName) {
-    //     showLoadingOverlay();
+                // Cleanup
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(downloadUrl);
 
-    //     // Create hidden iframe for download
-    //     const iframe = document.createElement('iframe');
-    //     iframe.style.display = 'none';
-    //     iframe.src = downloadUrl;
-    //     document.body.appendChild(iframe);
-
-    //     // Hide loading overlay after a short delay
-    //     // (downloads typically start immediately)
-    //     setTimeout(() => {
-    //         hideLoadingOverlay();
-    //         // Clean up iframe
-    //         document.body.removeChild(iframe);
-    //     }, 2000); // Adjust timing as needed
-
-    //     // Optional: Show success message
-    //     setTimeout(() => {
-    //         showSuccess(`Download started: ${fileName}`);
-    //     }, 500);
-    // }
+                // Hide loading overlay
+                LoadingOverlay.hide();
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                LoadingOverlay.hide();
+                alert('Download failed');
+            });
+    }
 </script>
 
 <style>

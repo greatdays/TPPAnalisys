@@ -320,6 +320,7 @@ class DMSManager {
     performUpload(formData, url) {
         this.hideError();
         this.disableUploadButton();
+        LoadingOverlay.show();
 
         $.ajax({
             url: url,
@@ -347,8 +348,10 @@ class DMSManager {
                 if (this.addFileModal) {
                     if (typeof this.addFileModal.hide === 'function') {
                         this.addFileModal.hide();
+                        LoadingOverlay.hide();
                     } else {
                         this.addFileModal.modal('hide');
+                        LoadingOverlay.hide();
                     }
                 }
             }, 1000);
