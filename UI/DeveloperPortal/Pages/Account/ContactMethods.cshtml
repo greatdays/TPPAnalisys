@@ -28,7 +28,7 @@
                     }, null, new { @class = "form-control" })
                 </div>
                 <div class="col-md-4">
-                    @Html.TextBox("PhoneNumber", "", new { @class = "form-control" })
+                    @Html.TextBox("PhoneNumber", "", new { @class = "form-control", data_required = "true" })
                 </div>
                 <div class="col-md-4">
                     @Html.TextBox("Extension", "", new { @class = "form-control" })
@@ -64,7 +64,7 @@
                         @Html.Label("", "*", new {@class = "asterisk"})
                     </div>
                     <div class="col-md-12">
-                        @Html.TextBox("StreetNumber","", new { @class = "form-control"})
+                        @Html.TextBox("StreetNumber", "", new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -74,7 +74,7 @@
                     <div class="col-md-12">
                         @Html.DropDownList("StreetDirection", new List<SelectListItem>{
                         new SelectListItem(text:"Select a Direction", value:"0")
-                        },null, new {@class="form-control"})
+                        }, null, new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -83,7 +83,7 @@
                         @Html.Label("", "*", new {@class = "asterisk"})
                     </div>
                     <div class="col-md-12">
-                        @Html.TextBox("StreetName","", new { @class = "form-control"})
+                        @Html.TextBox("StreetName", "", new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -93,7 +93,7 @@
                     <div class="col-md-12">
                         @Html.DropDownList("StreetType", new List<SelectListItem>{
                         new SelectListItem(text:"Select a Street Type", value:"0")
-                        },null, new {@class="form-control"})
+                        }, null, new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
@@ -101,7 +101,7 @@
                         @Html.Label("", "Unit Number", new { @class = "app-input-descr control-label required-label font-weight-bold" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextBox("UnitNumber","", new { @class = "form-control"})
+                        @Html.TextBox("UnitNumber", "", new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
 
@@ -112,7 +112,7 @@
                     @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12 padding-zero">
-                    @Html.TextBox("POBoxNumber","", new { @class = "form-control"})
+                    @Html.TextBox("POBoxNumber", "", new { @class = "form-control" })
                 </div>
             </div>
             <div class="row align-items-baseline">
@@ -121,7 +121,7 @@
                     @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("City","", new { @class = "form-control"})
+                    @Html.TextBox("City", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
@@ -131,7 +131,7 @@
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownList("State", new List<SelectListItem>{
-                    new SelectListItem(text:"Select a State", value:"0")},null, new {@class="form-control"})
+                    new SelectListItem(text:"Select a State", value:"0")}, null, new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
@@ -140,11 +140,9 @@
                     @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("ZipCode","", new { @class = "form-control"})
+                    @Html.TextBox("ZipCode", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
-
-            
         </div>
     </fieldset>
 
@@ -154,7 +152,7 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button class="main-btn nextBtn float-right">Next</button>
+            <button class="main-btn nextBtn float-right" disabled>Next</button>
         </div>
     </div>
 </div>
