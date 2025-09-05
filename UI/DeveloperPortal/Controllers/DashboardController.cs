@@ -45,7 +45,7 @@ namespace DeveloperPortal.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View("Dashboard"); // this loads Views/Dashboard/Dashboard.cshtml
+            return View("My Dashboard"); // this loads Views/Dashboard/Dashboard.cshtml
         }
 
         // GET: api/<DashboardController>

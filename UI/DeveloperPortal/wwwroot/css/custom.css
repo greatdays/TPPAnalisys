@@ -20,7 +20,7 @@ html {
 body {
     margin-bottom: 60px;
 }
-
+/*
 .edit-project-button {
     float: right;
     margin-bottom: 8px;
@@ -28,7 +28,7 @@ body {
     color: #fff;
     padding: 5px;
     border-radius: 5px;
-}
+}*/
 
 /* application styles */
 .dashboard-summary-container {
@@ -213,9 +213,9 @@ a.nav-link.nav-link-basic:hover {
     }
 
 #rightMenu {
-    width: 100%;
     align-items: center;
     justify-content: end;
+    margin-left:auto;
 }
 
 .nav-link {
@@ -763,20 +763,20 @@ a.nav-link.nav-link-basic:hover {
     font-size: 14px;
 }
 
-    ._hcidla-service-portal-footer * {
+/*    ._hcidla-service-portal-footer * {
         padding: 0;
         margin: 0;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-    }
+    }*/
 
     ._hcidla-service-portal-footer ._footer-logo {
         padding: 10px 35px 5px;
     }
 
         ._hcidla-service-portal-footer ._footer-logo img._img-responsive {
-            width: 100px;
+            width: 135px;
         }
 
     ._hcidla-service-portal-footer ._address-contact-subscribe {
@@ -845,7 +845,7 @@ a.nav-link.nav-link-basic:hover {
                         text-decoration: underline;
                     }
 
-        ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button {
+/*        ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button {
             font-size: 15px;
             color: #fff;
             outline: none;
@@ -869,12 +869,12 @@ a.nav-link.nav-link-basic:hover {
             ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button:focus {
                 background: #006381;
                 outline: auto 5px -webkit-focus-ring-color;
-            }
+            }*/
 
-            ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button img._subscribe-icon {
+/*            ._hcidla-service-portal-footer ._address-contact-subscribe ._subscribe-button img._subscribe-icon {
                 width: 27px;
                 margin-right: 15px;
-            }
+            }*/
 
     ._hcidla-service-portal-footer ._Leadership-SocialMedia {
         display: flex;
@@ -1159,22 +1159,22 @@ a.nav-link.nav-link-basic:hover {
 /* Style the buttons that are used to open the tab content */
 .siteInformationPage .tab button {
     padding: 14px 14px;
-    color: #003399;
+    color: #113F67;
     min-width: 50px;
 }
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-    background-color: #003399;
+    background-color: #113F67;
     color: white;
-    border: solid 1px #003399;
+    border: solid 1px #113F67;
 }
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: #003399;
+    background-color: #113F67;
     color: white;
-    border: solid 1px #003399;
+    border: solid 1px #113F67;
 }
 
 /* Style the tab content */
@@ -1601,20 +1601,149 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     padding:18px 15px;
 }
 
+project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
 .project-notifications p {
-    color: #664d03;
+    color: #fff;
+    font-size:18px;
+    margin-bottom:0px;
 }
 
     .project-notifications p a {
-        color: #664d03;
+        color: #fff;
         text-decoration: underline;
     }
 
         .project-notifications p a:hover {
-            color: #473601;
+            color: #fff;
             text-decoration: none;
         }
 
 .bg-warning1 {
-    background-color: #fff3cd !important;
+    background-color: #CA6E24 !important;
 }
+
+/* UI Developer Bootstrap override classes  */
+/* Buttons */
+.btn-primary {
+    color: #fff !important;
+    background-color: #113F67 !important;
+    border-color: #113F67 !important;
+}
+
+    .btn-primary:hover {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+    }
+
+    .btn-primary.focus, .btn-primary:focus {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+        box-shadow: 0 0 0 .2rem rgba(38,143,255,.5);
+    }
+
+    .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show > .btn-primary.dropdown-toggle {
+        color: #fff !important;
+        background-color: #34699A !important;
+        border-color: #34699A !important;
+    }
+
+.btn-warning {
+    color: #fff !important;
+    background-color: #CA6E24 !important;
+    border-color: #CA6E24 !important;
+}
+
+    .btn-warning:hover {
+        color: #fff !important;
+        background-color: #B3672A !important;
+        border-color: #B3672A !important;
+    }
+
+    .btn-warning.focus, .btn-warning:focus {
+        color: #fff !important;
+        background-color: #B3672A !important;
+        border-color: #B3672A !important;
+        box-shadow: 0 0 0 .2rem rgba(38,143,255,.5);
+    }
+
+    .btn-warning:not(:disabled):not(.disabled).active, .btn-warning:not(:disabled):not(.disabled):active, .show > .btn-warning.dropdown-toggle {
+        color: #fff !important;
+        background-color: #B3672A !important;
+        border-color: #B3672A !important;
+    }
+
+.btn-info {
+    color: #fff !important;
+    background-color: #4771A6 !important;
+    border-color: #4771A6 !important;
+}
+
+    .btn-info:hover {
+        color: #fff !important;
+        background-color: #3E6393 !important;
+        border-color: #3E6393 !important;
+    }
+
+    .btn-info.focus, .btn-info:focus {
+        color: #fff !important;
+        background-color: #3E6393 !important;
+        border-color: #3E6393 !important;
+        box-shadow: 0 0 0 .2rem rgba(38,143,255,.5);
+    }
+
+    .btn-info:not(:disabled):not(.disabled).active, .btn-info:not(:disabled):not(.disabled):active, .show > .btn-info.dropdown-toggle {
+        color: #fff !important;
+        background-color: #3E6393 !important;
+        border-color: #3E6393 !important;
+    }
+    .btn-lg{
+        font-size:16px;
+        padding:12px 15px;
+    }
+    .btn{
+        border-radius:6px;
+    }
+    .btn-pill {
+        border-radius:10em;
+    }
+/* End Buttons */
+/* Alerts */
+.alert-primary {
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+/* End Alerts */
+
+/* LAHD Large Container */
+.container-lahd {
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+/* End LAHD Large Container */
+
+/* Text Colors */
+.text-primary {
+    color: #113F67 !important;
+}
+/* End Text Colors */
+
+/* Backgrounds colors */
+.bg-primary {
+    background-color: #113F67 !important;
+}
+/* End Backgrounds colors */
+
+/* Font Size */
+.font-14 {
+    font-size: 14px;
+}
+.font-15{ 
+    font-size:15px;
+}
+/* End Font Size */
+
+/* UI Developer Bootstrap override classes  */
