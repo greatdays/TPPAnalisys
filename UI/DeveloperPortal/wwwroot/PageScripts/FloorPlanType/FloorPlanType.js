@@ -25,7 +25,7 @@ var FloorPlanType = {
             modal.find('#edit_floorPlan').html('<p>Loading...</p>');
             modal.modal('show');
 
-            $.get('/FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
+            $.get(APPURL + '/FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
                 modal.find('#edit_floorPlan').html(data);
 
             });
@@ -40,7 +40,7 @@ var FloorPlanType = {
         const projectId = $('#hiddenProjectID').val();
 
         $.ajax({
-            url: '/FloorPlanType/GetFloorPlanTypes',
+            url: APPURL + '/FloorPlanType/GetFloorPlanTypes',
             type: 'GET',
             data: { projectId: projectId },
             success: function (data) {
@@ -133,7 +133,7 @@ var FloorPlanType = {
 
             console.log(formData);
             $.ajax({
-                url: '/FloorPlanType/_EditFloorPlanType',
+                url: APPURL + '/FloorPlanType/_EditFloorPlanType',
                 type: 'POST',
                 data: formData,
                 contentType: "application/x-www-form-urlencoded",
@@ -219,7 +219,7 @@ var FloorPlanType = {
 
             $.ajax({
                 type: 'POST',
-                url: '/FloorPlanType/AddFloorPlanType',
+                url: APPURL + '/FloorPlanType/AddFloorPlanType',
                 data: formData,
                 success: function (response) {
                     if (response.success) {
@@ -382,7 +382,7 @@ var FloorPlanType = {
 
         if (confirm(`Are you sure you want to delete "${name}"?`)) {
             $.ajax({
-                url: '/FloorPlanType/DeleteFloorPlan',
+                url: APPURL + '/FloorPlanType/DeleteFloorPlan',
                 type: 'POST',
                 data: { floorPlanTypeId: id },
                 success: function () {
