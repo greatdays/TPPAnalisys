@@ -15,7 +15,7 @@
             @Html.AntiForgeryToken()
             <div class="row">
                 <!-- Profile picture and change password -->
-               @*  <div class="col-md-3 text-center mb-3">
+                @*  <div class="col-md-3 text-center mb-3">
                     <img src="~/images/profile-placeholder.png" class="img-thumbnail mb-3" style="width: 150px; height: 150px;" />
                     <button type="button" class="btn btn-outline-primary btn-sm">Change Password</button>
                 </div> *@
@@ -41,7 +41,7 @@
                             <input name="Email" class="form-control" value="@Model.Account.Email" />
                         </div>
                         <div class="col-md-3">
-                            <label class="control-label required-label">Phone Type</label>
+                            <label>Phone Type *</label>
                             <select name="PhoneType" class="form-control">
                                 <option value="Mobile" selected="@(@Model.Account.PhoneType == "Mobile")">Mobile</option>
                                 <option value="Work" selected="@(@Model.Account.PhoneType == "Work")">Work</option>
@@ -49,7 +49,7 @@
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="control-label required-label">Phone Number </label>
+                            <label>Phone Number *</label>
                             <input name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
                         </div>
 
@@ -141,8 +141,8 @@
                 }, 2000);
             }
 
-       
- 
+
+
 
             const storageKey = "myAccountFormData";
 
