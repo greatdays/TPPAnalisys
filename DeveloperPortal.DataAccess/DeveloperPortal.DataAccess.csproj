@@ -696,6 +696,7 @@
     <Compile Include="Entity\Models\IDM\ApplicationDetail.cs" />
     <Compile Include="Entity\Models\IDM\AuthenticateResponse.cs" />
     <Compile Include="Entity\Models\IDM\AuthResponse.cs" />
+    <Compile Include="Entity\Models\IDM\IDMAuthenticate.cs" />
     <Compile Include="Entity\Models\IDM\UserSession.cs" />
     <Compile Include="Entity\Models\IDM\UserSystemDetail.cs" />
     <Compile Include="Entity\Models\StoredProcedureModels\ProjectParticipantsModel.cs" />

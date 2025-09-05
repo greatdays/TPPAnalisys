@@ -16,4 +16,10 @@ namespace DeveloperPortal.Models.IDM
         public const string WebRegister = "Web Register";
         public const string AppSourceWebLink = "Web Link";
     }
+    public enum ContactMethods
+    {
+        None = 1,
+        USMail = 2,
+        Phone = 3
+    }
 }

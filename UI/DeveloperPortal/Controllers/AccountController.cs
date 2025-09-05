@@ -26,6 +26,7 @@ using DeveloperPortal.Models.Common;
 using static DeveloperPortal.ServiceClient.ServiceClient;
 using ComCon.DataAccess.Models.Helpers;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 namespace DeveloperPortal.Controllers
 {
@@ -246,7 +247,7 @@ namespace DeveloperPortal.Controllers
                             AppKey = GetConfigValue("AppSettings:AppKey"),
                             AppName = GetConfigValue("AppSettings:AppKey"),
                             Roles = roles
-                        }); ;
+                        }); 
 
                         // Call IDM and create an account
                         idmuser = applicationUser.ApplicantSignUp(idmuser);
@@ -399,6 +400,21 @@ namespace DeveloperPortal.Controllers
         }
 
         #endregion
+        //[HttpPost]
+  
+        //public IActionResult UpdateAccount()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    // your update logic
+        //    return Json(new { success = true, message = "Account updated!" });
+        //}
+
+
+
 
         [HttpPost]
         public ActionResult GetACHPDetails(string achpNumber)
@@ -501,6 +517,11 @@ namespace DeveloperPortal.Controllers
             return tokenValue;
         }
 
+        public async Task<List<VwAspNetRole>> getUSerRole()
+        {
+            var roleData = await _accountService.GetUSerRole(null);
+            return roleData;
+        }
         [HttpGet("GetLookUpData")]
         public async Task<JsonResult> GetLookupData()
         {
@@ -509,8 +530,9 @@ namespace DeveloperPortal.Controllers
             List<PhoneType> phoneTypeList = new List<PhoneType>();
             List<Directions> directionsList = new List<Directions>();
             List<StreetType> StreetTypeList = new List<StreetType>();
+            List<userRoleType> UserRole = new List<userRoleType>();
 
-        string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
+            string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
             var response = string.Empty;
             string json = string.Empty;
 
@@ -609,6 +631,19 @@ namespace DeveloperPortal.Controllers
                     }
                     json = JsonConvert.SerializeObject(StreetTypeList, Formatting.Indented);
                     break;
+                case "UserRole":
+                    // JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
+                    var data = await getUSerRole();
+                    foreach (var item in data)
+                    {
+                        userRoleType userRoleType = new userRoleType();
+                        userRoleType.RoleID = item.RoleId;
+                        userRoleType.RoleName = item.Name;
+                        UserRole.Add(userRoleType);
+                    }
+
+                    json = JsonConvert.SerializeObject(UserRole, Formatting.Indented);
+                    break;
                 default:
                     break;
             }
@@ -625,6 +660,11 @@ namespace DeveloperPortal.Controllers
             Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
             return result;
         }
+    }
+    internal class userRoleType
+    {
+        public int RoleID { get; internal set; }
+        public string RoleName { get; internal set; }
     }
 
     internal class StreetType

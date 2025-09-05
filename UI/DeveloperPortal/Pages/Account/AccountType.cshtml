@@ -2,7 +2,7 @@
 @model DeveloperPortal.Pages.Account.AccountTypeModel
 
 <div class="form-partial-container">
-    <h3 class="signup-step-header">Select your account type</h3>
+    <h3 class="signup-step-header">Select your account type <span aria-hidden="true" class="asterisk">*</span></h3>
     <div class="text-danger-custom">
         All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
     </div>
@@ -14,20 +14,8 @@
             @Html.Label("AccountType_0", "Select an Account Type")
         </div>
 
-        @foreach (var item in new List<SelectListItem>
-        {
-        new SelectListItem { Text = "Property Developer", Value = "1" },
-        new SelectListItem { Text = "Architect", Value = "2" },
-        new SelectListItem { Text = "CASp", Value = "3" },
-        new SelectListItem { Text = "General Contractor", Value = "4" },
-        new SelectListItem { Text = "NAC", Value = "5" }
-        })
-        {
-            <div class="form-check">
-                @Html.RadioButton("AccountType", item.Value, false, new { @class = "form-check-input", id = "AccountType_" + item.Value })
-                @Html.Label("AccountType_" + item.Value, item.Text, new { @class = "form-check-label" })
-            </div>
-        }
+        <div id="userRoleContainer">
+        </div>
     </div>
 
     <div class="row" style="padding-bottom:5%">
@@ -35,12 +23,55 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button class="main-btn nextBtn float-right" id="nextButton">Next</button>
+            <button class="main-btn nextBtn float-right" id="nextButton" disabled>Next</button>
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function () {
+         $.ajax({
+        url: "/Account/GetLookupData?lookup=UserRole",
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        contentType: 'application/json',
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: "",
+        success: function(data) {
+            // First, check if 'data' is already a JSON object.
+            // If it's a string, manually parse it.
+            var rolesArray = (typeof data === 'string') ? JSON.parse(data) : data;
+            // Ensure you have a container element with the ID 'userRoleContainer' in your HTML.
+            var container = $('#userRoleContainer');
+
+            // Clear any previous content.
+            container.empty();
+            // Loop through the array using $.each for a robust iteration.
+            $.each(rolesArray, function(index, item) {
+                // Access the correct properties from your JSON: RoleID and RoleName.
+                var roleId = item.RoleID;
+                var roleName = item.RoleName;
+                // Build the HTML for the radio button and label.
+                var radioHtml = '<div class="form-check">' +
+                                '  <input type="radio" class="form-check-input" data-required="true"  name="AccountType" id="AccountType_' + roleId + '" value="' + roleId + '">' +
+                                '  <label class="form-check-label" for="AccountType_' + roleId + '">' + roleName + '</label>' +
+                                '</div>';
+
+                // Append the new HTML to the container.
+                container.append(radioHtml);
+            });
+
+         
+        },
+        error: function(xhr) {
+            console.error("An error occurred during the AJAX request.");
+        }
+    });
+
+
+
         $('#AccountType').on('change', function(){
             var ctlId = 'AccountType';
             var ctl = '#' + ctlId;
