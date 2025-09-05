@@ -10,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
 using Serilog;
 using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
@@ -88,6 +89,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             return resultList;
         }
+          //for getting the userIdentifer id by username 
+          public async Task<ContactIdentifier> GetUserContactIdentifierData()
+          {
+            var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
+            return contactIdentifierID;
+          }
 
 
         /// <summary>

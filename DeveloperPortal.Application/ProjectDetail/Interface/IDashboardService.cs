@@ -21,5 +21,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
 
         Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID();
 
+        Task<ContactIdentifier> GetUserContactIdentifierData();
+
+
+
     }
 }
