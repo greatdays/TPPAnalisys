@@ -183,13 +183,17 @@ function IsTermsAndConditionsAccepted(ctlDivId, ctlId) {
 
 //stopping from moving forward from one partial view to another without filling the details
 
-
 function validateStep(stepContainer) {
     console.log("called ", stepContainer);
     let isValid = true;
 
     $(stepContainer).find('[data-required="true"]').each(function () {
         let field = $(this);
+
+        // Skip validation if hidden
+        if (!field.is(':visible')) {
+            return;
+        }
 
         if (field.is(':radio')) {
             let group = field.attr('name');
@@ -202,8 +206,13 @@ function validateStep(stepContainer) {
                 isValid = false;
             }
         }
+        else if (field.is('select')) {
+            if (!field.val() || field.val() === "0") {
+                isValid = false;
+            }
+        }
         else {
-            if (!field.val()) {
+            if (!field.val().trim()) {
                 isValid = false;
             }
         }
@@ -211,6 +220,40 @@ function validateStep(stepContainer) {
 
     return isValid;
 }
+
+//function validateStep(stepContainer) {
+//    console.log("called ", stepContainer);
+//    let isValid = true;
+
+//    $(stepContainer).find('[data-required="true"]:visible').each(function () {
+//        let field = $(this);
+
+//        if (field.is(':radio')) {
+//            let group = field.attr('name');
+//            if ($('input[name="' + group + '"]:checked').length === 0) {
+//                isValid = false;
+//            }
+//        }
+//        else if (field.is(':checkbox')) {
+//            if (!field.is(':checked')) {
+//                isValid = false;
+//            }
+//        }
+//        else if (field.is('select')) {
+//            // placeholder values like "" or "0" are invalid
+//            if (!field.val() || field.val() === "0") {
+//                isValid = false;
+//            }
+//        }
+//        else {
+//            if (!field.val() || field.val().trim() === "") {
+//                isValid = false;
+//            }
+//        }
+//    });
+
+//    return isValid;
+//}
 
 
 
@@ -386,21 +429,55 @@ function ValidatePhoneType(ctlId) {
             $(ctl).next('.text-danger').remove();
     }
 }
-
 function OnPOBoxChanged() {
     var selectedVal = $('#POBox:checked').val();
     var delay = 600;
-    switch (selectedVal) {
-        case 'Yes':
-            $('#divPOBoxYes').show(delay);
-            $('#divPOBoxNo').hide(delay);
-            break;
-        case 'No':
-            $('#divPOBoxYes').hide(delay);
-            $('#divPOBoxNo').show(delay);
-            break;
+    var poBoxField = $('#POBoxNumber');
+
+    if (selectedVal === 'Yes') {
+        $('#divPOBoxYes').show(delay);
+        $('#divPOBoxNo').hide(delay);
+        poBoxField.attr('data-required', 'true');  // required
+    } else {
+        $('#divPOBoxYes').hide(delay);
+        $('#divPOBoxNo').show(delay);
+        poBoxField.removeAttr('data-required');    // not required when hidden
+        poBoxField.val(''); // clear value to avoid stale data
+    }
+
+    // 🔄 Re-run validation to update button
+    var currentStep = $('#divPOBoxYes').closest('.setup-content');
+    var nextBtn = currentStep.find('.nextBtn');
+
+    if (validateStep(currentStep)) {
+        nextBtn.prop('disabled', false).removeClass('disabled-btn');
+    } else {
+        nextBtn.prop('disabled', true).addClass('disabled-btn');
     }
 }
+
+//function OnPOBoxChanged() {
+//    var selectedVal = $('#POBox:checked').val();
+//    var delay = 600;
+//    switch (selectedVal) {
+//        case 'Yes':
+//            $('#divPOBoxYes').show(delay);
+//            $('#divPOBoxNo').hide(delay);
+//            break;
+//        case 'No':
+//            $('#divPOBoxYes').hide(delay);
+//            $('#divPOBoxNo').show(delay);
+//            break;
+//    }
+//    var currentStep = $('#divPOBoxYes').closest('.setup-content');
+//    var nextBtn = currentStep.find('.nextBtn');
+
+//    if (validateStep(currentStep)) {
+//        nextBtn.prop('disabled', false).removeClass('disabled-btn');
+//    } else {
+//        nextBtn.prop('disabled', true).addClass('disabled-btn');
+//    }
+//}
 
 function CheckIfPOBoxFieldsAreEmpty() {
     var selectedVal = $('#POBox:checked').val();

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Constants;
 using DeveloperPortal.DataAccess.Entity.Models.IDM;
 using DeveloperPortal.Models.IDM;
@@ -12,9 +14,11 @@ namespace DeveloperPortal.Pages.Account
     {
         private IConfiguration _config;
         private ApplicantSignupModel applicantsignupModel;
-        public MyAccountModel(IConfiguration config)
+        private IAccountService _accountService;
+        public MyAccountModel(IConfiguration config, IAccountService service)
         {
             _config = config;
+            _accountService= service;
             applicantsignupModel = new ApplicantSignupModel(_config);       
         }
 
@@ -35,7 +39,7 @@ namespace DeveloperPortal.Pages.Account
             
             if (userRole != null) { 
  
-                    applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2(/*sessionUser.UserName*/ "opm.localhost@yopmail.com", _config).Result;
+                    applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2(sessionUser.UserName , _config).Result;
                     Account.FirstName = !string.IsNullOrEmpty(applicantsignupModel.FirstName) ? applicantsignupModel.FirstName : sessionUser.FirstName;
                     Account.MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName : UserSession.GetUserSession(HttpContext).MiddleName;
                     Account.LastName = !string.IsNullOrEmpty(applicantsignupModel.LastName) ? applicantsignupModel.LastName : sessionUser.LastName;
@@ -116,8 +120,9 @@ namespace DeveloperPortal.Pages.Account
             idmuser = authenticate.UpdateIDMUserProfile(idmuser);
            
              /*Update User account details*/
-            int ContactID = applicantsignupModel.SaveContactInformation(applicantsignupModel, UserSession.GetUserSession(HttpContext).UserName, DeveloperPortal.Constants.AppConstant.WebRegister);
-           
+            //int ContactID = applicantsignupModel.SaveContactInformation(applicantsignupModel, UserSession.GetUserSession(HttpContext).UserName, DeveloperPortal.Constants.AppConstant.WebRegister);
+            int contactId =  _accountService.ContactIdentifierSave(applicantsignupModel, UserSession.GetUserSession(HttpContext).UserName, Constants.AppConstant.TPPSource).Result;
+
 
             return new JsonResult(new { success = true, received = signupModel });
         }
