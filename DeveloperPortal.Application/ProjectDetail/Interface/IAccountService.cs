@@ -18,5 +18,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
 
         Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContactAsync(List<string> projects, HttpContext httpContext);
         public Task<int> ContactIdentifierSave(ApplicantSignupModel signupModel, string userName, string source = "");
+        Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ComCon.DataAccess.Models.Helpers;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Application.Security;
 using DeveloperPortal.DataAccess;
 using DeveloperPortal.DataAccess.Entity.EntityModels;
@@ -24,15 +25,18 @@ namespace DeveloperPortal.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IAngelenoAuthentication _angelenoAuthentication;
         private readonly ISignInServices _signInService;
+        private readonly IDashboardService _dashboardService;
+
         private readonly JwtGenerator _jwtGenerator;
         private readonly TPPDbContext _db;
 
         // Here we are using Dependency Injection to inject the Configuration object
-        public LoginController(IConfiguration config, ILogger<AccountController> logger, 
+        public LoginController(IConfiguration config, ILogger<AccountController> logger, IDashboardService dashboardService,
             IAngelenoAuthentication angelenoAuthentication, ISignInServices signInService, JwtGenerator jwtGenerator)
         {
             _logger = logger;
             _config = config;
+           _dashboardService = dashboardService;
             _angelenoAuthentication = angelenoAuthentication;
             _signInService = signInService;
             _jwtGenerator = jwtGenerator;
@@ -68,7 +72,7 @@ namespace DeveloperPortal.Controllers
             await _signInService.SignInAsync(authResponse, HttpContext, model.RememberMe);
             return Ok(new { success = true, redirectUrl = "/dashboard" });
         }
-
+    
 
         /// <summary>
         /// Login based on AppSetting 'AuthenticationMode'
@@ -270,7 +274,18 @@ namespace DeveloperPortal.Controllers
                         var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                         UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, null, applicationName));
-                        return RedirectToPage("/Dashboard");
+                        var data = _dashboardService.GetUserContactIdentifierData();
+
+                        if (data != null)
+                        {
+                            return RedirectToPage("/Dashboard");
+                        }
+                        else
+                        {
+                            return RedirectToPage("/Account/MyAccount");
+
+                        }
+                        //return RedirectToPage("/Dashboard");
                     }
                 }
             }

@@ -17,6 +17,14 @@ namespace DeveloperPortal.Models.Common
         public ErrorResult ErrorResult { get; set; }
         public object Response { get; set; }
     }
+    public class BaseResponse1<T>
+    {
+        public HttpStatusCode ResponseCode { get; set; }
+        public string ResponseDescription { get; set; }
+        public ErrorResult ErrorResult { get; set; }
+        public T Response { get; set; }
+    }
+
 
     /// <summary>
     /// web api error result.

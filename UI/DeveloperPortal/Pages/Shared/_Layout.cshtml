@@ -14,13 +14,14 @@
     <title>@ViewData["Title"] - DeveloperPortal</title>
     <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+   
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
     <link href="~/content/font-awesome.css" rel="stylesheet" />
 
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
     <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
@@ -87,16 +88,18 @@
     <script>
         // correct lacity global navbar
         $(document).ready(function () {
-        $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-        $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-        $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-        $("#global_nav_la_4324422-rightwrap > a").each(function () {
-        $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
-        });
+            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+            $("#global_nav_la_4324422-rightwrap > a").each(function () {
+                var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
+                $(this).append('<img class="navbar-new-window-icon" src="' + imgSrc + '" alt="Opens in new window">');
+            });
         });
     </script>
+
 
 </head>
 <body>
@@ -122,7 +125,7 @@
                     <ul class="navbar-nav botNav-left-hide">
                         <li class="nav-item navItem-decor">
                             <a class="nav-link nav-link-basic" href='~/dashboard'>
-                                Dashboard
+                                My Dashboard
                             </a>
                         </li>
                         <li class="nav-item navItem-decor">
@@ -139,10 +142,10 @@
                         @if (usr.UserID == 0)
                         {
                             <ul class="nav navbar-nav navbar-right">
-                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-                                <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                            <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-warning" })</li>
+                            <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-info" })</li>
                               @*   <li>
-                                    @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
+                                    @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount", @class = "btn btn-info" })
                                 </li> *@
                             </ul>
                         }
@@ -202,12 +205,28 @@
                 @Html.Partial("_LoadingOverlay")
     </body>
 
-    <script>
-              //my Account
-          // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
-          //     console.log("Clikced");
-          //    window.location.href = 'Account/MyAccount';
-          // });
+<script>
+        $(document).ready(function () {
+        $('.setup-content').each(function () {
+            let step = $(this);
+            let nextBtn = step.find('.nextBtn');
+            // nextBtn.prop('disabled', true);
+
+            step.on('change keyup', '[data-required="true"]', function () {
+                if (validateStep(step)) {
+                    nextBtn.prop('disabled', false).removeClass('disabled-btn');
+                } else {
+                    nextBtn.prop('disabled', true).addClass('disabled-btn');
+                }
+            });
+        });
+    });
+
+          //my Account
+      // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
+      //     console.log("Clikced");
+      //    window.location.href = 'Account/MyAccount';
+      //
            window.LoadingOverlay = {
         show: function() {
             const overlay = document.getElementById("loadingOverlay");

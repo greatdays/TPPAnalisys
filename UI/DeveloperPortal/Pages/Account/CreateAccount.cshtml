@@ -14,10 +14,10 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Your Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
+                   
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("FirstName","", new { @class = "form-control"})
+                    @Html.TextBox("FirstName", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
@@ -25,16 +25,15 @@
                     @Html.Label("", "Middle Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("MiddleName","", new { @class = "form-control"})
+                    @Html.TextBox("MiddleName", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Last Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("LastName","", new { @class = "form-control"})
+                    @Html.TextBox("LastName", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
         </div>
@@ -48,19 +47,17 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Company Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("CompanyName","", new { @class = "form-control"})
+                    @Html.TextBox("CompanyName", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Title", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("Title","", new { @class = "form-control"})
+                    @Html.TextBox("Title", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
         </div>
@@ -74,19 +71,18 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Email", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
                 </div>
                 <div class="col-md-12">
-                    @Html.TextBox("Email","", new { @class = "form-control"})
+                    @Html.TextBox("Email", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Password", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
+                  
                 </div>
                 <div class="col-md-12">
-                    @Html.Password("Password","", new { @class = "form-control"})
+                    @Html.Password("Password", "", new { @class = "form-control", data_required = "true" })
                     <p id="password-requirements" class="informationtext m-0">
                         Password must be between 6 and 20 characters.
                     </p>
@@ -95,10 +91,10 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Confirm Password", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    @Html.Label("", "*", new {@class = "asterisk"})
+                  
                 </div>
                 <div class="col-md-12">
-                    @Html.Password("ConfirmPassword","", new { @class = "form-control"})                    
+                    @Html.Password("ConfirmPassword", "", new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
 
@@ -110,9 +106,18 @@
             </div>
 
             <div id="divTermsAndConditions" class="app-input-descr app-sub-input-descr">
-                <label for="termsandconditions">
-                    <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions">
+               @*  <label for="termsandconditions">
+                    <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions" data-required ="true">
                     I agree to the <a href="#" style="text-decoration:underline">Terms and Conditions</a> @Html.Label("", "*", new {@class = "asterisk"})
+                    <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
+                </label> *@
+                <label for="termsandconditions">
+                    <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions" data-required="true">
+                    I agree to the
+                    <a asp-page="/Account/TermsAndConditions" target="_blank" style="text-decoration:underline">
+                        Terms and Conditions
+                    </a>
+                    @Html.Label("", "*", new { @class = "asterisk" })
                     <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
                 </label>
             </div>
@@ -125,7 +130,7 @@
         </div>
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button class="main-btn nextBtn float-right">Next</button>
+            <button class="main-btn nextBtn float-right" disabled>Next</button>
         </div>
     </div>
 </div>
