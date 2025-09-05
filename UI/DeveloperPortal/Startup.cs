@@ -66,6 +66,7 @@ namespace DeveloperPortal
             services.AddScoped<IUnitImportService, UnitImportService>();
             services.AddScoped<IBuildingIntakeService, BuildingIntakeService>();
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IFloorPlanTypeService, FloorPlanTypeService>();
             services.AddScoped<ISendNotificationEmail, SendNotificationEmailService>();
 
 
@@ -140,7 +141,7 @@ namespace DeveloperPortal
                 endpoints.MapRazorPages(); // Correctly map Razor Pages
             });
 
-           
+
             // app.MapRazorPages();
 
             //app.MapControllerRoute(name: "default",

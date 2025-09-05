@@ -3,12 +3,14 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis;
 
 namespace DeveloperPortal.Pages.ProjectDetails
 {
     public class IndexModel : PageModel
     {
-
+        public int ProjectSiteID { get; set; }
+        public int ProjectDetailId { get; set; }
         [FromQuery(Name = "Id")]
         public string Id { get; set; }
         [FromQuery(Name = "projectId")]
@@ -20,18 +22,20 @@ namespace DeveloperPortal.Pages.ProjectDetails
 
         private IConfiguration _config;
         private IProjectDetailService _projectDetailService;
+        private readonly IFloorPlanTypeService _floorPlanService;
 
-
-        public IndexModel(IConfiguration configuration, IProjectDetailService projectDetailService)
+        public IndexModel(IConfiguration configuration, IProjectDetailService projectDetailService, IFloorPlanTypeService floorPlanService)
         {
             _config = configuration;
             _projectDetailService = projectDetailService;
+            _floorPlanService = floorPlanService;
         }
 
-
-        public void OnGet()
+        public FloorPlanTypeModel FloorPlanTypes { get; set; }
+        public async Task OnGet()
         {
             ProjectSummary = new ProjectSummaryModel();
+            FloorPlanTypes = new FloorPlanTypeModel();
             if (!string.IsNullOrWhiteSpace(Id))
             {
                 ProjectSummary = _projectDetailService.GetProjectSummary(Convert.ToInt32(Id));
@@ -43,7 +47,7 @@ namespace DeveloperPortal.Pages.ProjectDetails
                 SiteData = new SiteDataModel();
                 SiteData.ProjectSiteID = ProjectSummary.ProjectSiteId;
                 SiteData.ProjectId = ProjectSummary.ProjectId;
-                
+                FloorPlanTypes = await _floorPlanService.GetFloorPlanTypes(SiteData.ProjectSiteID, SiteData.ProjectId);
                 //ProjectSummary.ProjectDetailModel  = ProjectDetailServiceClient.GetProjectDetailByCaseId(Id); ;
                 //if (null != projectSummary.ProjectDetailModel)
                 //{
