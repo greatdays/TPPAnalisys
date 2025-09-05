@@ -1,20 +1,11 @@
-﻿using DeveloperPortal.Domain.Common;
-using DeveloperPortal.Domain.DMS;
-using DeveloperPortal.Domain.Helper;
-using DeveloperPortal.Models.IDM;
+﻿using DeveloperPortal.Domain.Helper;
 using HCIDLA.ServiceClient.DMS;
 using HCIDLA.ServiceClient.LaserFiche;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO.Compression;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeveloperPortal.ServiceClient
 {
@@ -43,8 +34,9 @@ namespace DeveloperPortal.ServiceClient
                 FileName= file.FileName,
                 
             };
-            info.MetaData.Add(FieldType.PrimaryKey, new string[] { new Guid() .ToString()});
-            info.MetaData.Add(FieldType.Category, new string[] { file.FileName });
+            info.MetaData.Add(FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString()});
+            info.MetaData.Add(FieldType.Category, new string[] { "Project"});
+            info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
             //Dictionary<string, FieldType> formValToFieldTypeMap = new Dictionary<string, FieldType>()
             //{
             //    {"AchpProjectId", FieldType.AchpProjectId },
