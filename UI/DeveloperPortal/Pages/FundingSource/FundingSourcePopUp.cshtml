@@ -1,0 +1,102 @@
+﻿@using DeveloperPortal.Domain.FundingSource
+@model FundingSourceViewModel
+
+<form id="editFundingSourceForm" method="post" enctype="multipart/form-data">
+    <div class="modal-header">
+        <h5 class="modal-title" id="AddFileModalLabel">Edit Funding Source</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <input type="hidden" asp-for="FundingSourceId" />
+
+        <div class="form-group mb-3">
+            <label asp-for="FundingSource" class="form-label"></label>
+            <input asp-for="FundingSource" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="FileName" class="form-label"></label>
+            <input asp-for="FileName" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="Notes" class="form-label"></label>
+            <textarea asp-for="Notes" class="form-control"></textarea>
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="MU_Unit" class="form-label"></label>
+            <input asp-for="MU_Unit" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label asp-for="HV_Unit" class="form-label"></label>
+            <input asp-for="HV_Unit" class="form-control" />
+        </div>
+
+        
+
+        <div class="form-group mb-3">
+            <label for="fileuploader">Upload File</label>
+            <input type="file" id="fileuploader" name="File" class="form-control" asp-for="File"
+                   accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
+            <div class="form-text">
+                Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF
+            </div>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="Description" asp-for="Description"
+                      rows="3" placeholder="Optional description for the document"></textarea>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button id="saveChangesBtn" type="submit" class="btn btn-primary">Save changes</button>
+    </div>
+</form>
+
+<script>
+    $('#editFundingSourceForm').submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this); // Use FormData for file uploads
+
+        $.ajax({
+            url: '@Url.Action("Update", "FundingSource")',
+            type: 'POST',
+            data: formData,
+            processData: false,  // required for file uploads
+            contentType: false,  // required for file uploads
+            success: function(response) {
+                if (response.success) {
+                    $('#editFundingSourceModal').modal('hide');
+                    loadFundingInformation();
+                } else {
+                    alert('Error saving changes.');
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
+
+     // Pass modal-specific configuration to JavaScript
+    window.dmsModalConfig = {
+        modalId: 'addFileModal',
+        formId: 'uploadForm',
+        fileInputId: 'fileuploader',
+        categoryId: 'category',
+       // statusId: 'status',
+        descriptionId: 'description',
+        uploadButtonId: 'uploadFile',
+        cancelButtonId: 'cancelUpload',
+        maxFileSize: 10485760, // 10MB in bytes
+        allowedExtensions: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif']
+    };
+</script>

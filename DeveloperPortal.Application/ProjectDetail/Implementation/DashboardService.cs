@@ -125,15 +125,15 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID()
         {
 
-            var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            var userName = "283394"; // UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
             if (!string.IsNullOrEmpty(userName))
             {
-                var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
+                var contactIdentifierID = 283394; // await _accountRepository.GetContactIdentifierByUserName(userName);
                 List<DashboardDataModel> resultList = new List<DashboardDataModel>();
 
                 if (contactIdentifierID != null)
                 {
-                    var res = await GetAllConstructionCasesDataByUser(contactIdentifierID.ContactIdentifierId);
+                    var res = await GetAllConstructionCasesDataByUser(283394);
                     var allCases = res;
 
                     if (allCases != null && allCases.Count > 0)

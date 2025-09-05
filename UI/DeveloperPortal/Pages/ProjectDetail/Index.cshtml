@@ -208,6 +208,7 @@
 <script src="~/PageScripts/ProjectDetail/LadbsInfomation.js"></script>
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
+<script src="~/pagescripts/projectdetail/fundingsource.js"></script>
 <div class="page-content">
     <div class="container-fluid">
     <!-- Project Notification -->
@@ -267,6 +268,7 @@
 			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
 			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
 			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
+			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
 			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
 		</div>
 
@@ -296,6 +298,9 @@
 		<div id="tabDocuments" class="tabcontent">
 			<div id="divDocument"></div>
 		</div>
+		<div id="tabFundingSource" class="tabcontent">
+    <div id="divFundingSource"></div>
+</div>
 		<div id="tabLogs" class="tabcontent">
 			<div id="divLogs"></div>
 		</div>
