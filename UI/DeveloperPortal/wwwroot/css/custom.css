@@ -506,10 +506,6 @@ a.nav-link.nav-link-basic:hover {
     text-align: right;
 }
 
-.form-group {
-    padding: 5px 0px
-}
-
 .dropzone {
     border: 2px dashed #dedede;
     border-radius: 5px;

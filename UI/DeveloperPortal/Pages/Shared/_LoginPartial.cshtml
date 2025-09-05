@@ -16,7 +16,7 @@
             &nbsp;<a class="Accountbtn" aria-label="My Account" href="@Url.Action("LogOff", "Login")">Logout</a>
     </li>  
     <li class="nav-item">
-            @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
+            @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount", @class = "btn btn-info" })
     </li>
    @* <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Login/LogOff" asp-route-returnUrl="@Url.Action("LogOff", "Login")">
