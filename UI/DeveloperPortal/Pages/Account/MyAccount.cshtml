@@ -62,7 +62,7 @@
 
                 <div class="form-group col-md-12 mt-3">
                     <label>P.O.Box?</label><br />
-                    <label><input  id="POBoxNo"type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
+                    <label><input id="POBoxNo" type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
                     <label><input id="POBoxYes" type="radio" name="IsPostBox" value="true" @(Model.Account.IsPostBox ? "checked" : "") /> Yes</label>
                 </div>
 
@@ -118,7 +118,7 @@
                 </div>
                 <div class="form-group col-md-3">
                     <label>State *</label>
-                  <select name="LutStateCD" class="form-control">
+                    <select name="LutStateCD" class="form-control">
                         @foreach (var type in Model.Account.LutStateCDList)
                         {
                             @Html.Raw($"<option value='{type.LutStateCd}' {(type.LutStateCd == Model.Account.LutStateCD ? "selected" : "")}>{type.Description}</option>")
