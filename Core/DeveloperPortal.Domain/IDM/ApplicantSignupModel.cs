@@ -1,4 +1,6 @@
-﻿using ComCon.DataAccess.Entity;
+﻿using AAHR.Models.Resource;
+using ComCon.DataAccess.Attributes;
+using ComCon.DataAccess.Entity;
 using ComCon.DataAccess.ViewModel;
 using ComCon.PropertySnapshot.Entity;
 using Microsoft.AspNetCore.Http;
@@ -106,8 +108,28 @@ namespace DeveloperPortal.Models.IDM
 
         public bool IsApplicant { get; set; }
         public bool IsAccountTypeSelected { get; set; }
+        public int AlternateContactMethodcd { get; set; }
+        public string AlternateContact_Email { get; set; }
+   
+        public string AlternateContact_PhoneType { get; set; }
 
+    
+        public string AdditionalPhoneNumberQuestion { get; set; }
 
+        public string AlternateContact_PhoneNotification { get; set; }
+
+        public string AdditionalPhoneNotificationOptions { get; set; }
+        public string PhoneNotificationOptions { get; set; }
+
+        public string AlternateContactQuestion { get; set; }
+        public string PhoneNumberQuestion { get; set; }
+        public string AddressQuestion { get; set; }
+        public string AdditionalEmailQuestion { get; set; }
+        public string LutAddPhoneTypeCd { get; set; }
+        public string AdditionalPhoneNumber { get; set; }
+        public bool AlternateContact_Method_MailingAddress { get; set; }
+        public bool AlternateContact_Method_Email { get; set; }
+        public bool AlternateContact_Method_Phone { get; set; }
         /*
         public List<LutPreDir> LutPreDirCdList { get; set; }
         public List<LutStreetType> LutStreetTypeList { get; set; }
@@ -266,46 +288,46 @@ namespace DeveloperPortal.Models.IDM
                 contact.Email = signupModel.EmailId;
                 contact.Title = (signupModel.Title != null ? signupModel.Title.Trim() : "");
                 contact.Company = (signupModel.CompanyName != null ? signupModel.CompanyName : "");//Company
-                //contact.OrganizationId = signupModel.OrganizationID;
-                //contact.AdditionalEmail = signupModel.AdditionalEmail;
+                contact.OrganizationId = signupModel.OrganizationID;
+                contact.AdditionalEmail = signupModel.AdditionalEmail;
                 contact.Source = source;
                 //commented for 3PP - properties for which data is not collected
-                /*contact.BirthDay = signupModel.BirthDay;
+                contact.BirthDay = signupModel.BirthDay;
                 contact.BirthMonth = signupModel.BirthMonth;
                 contact.BirthYear = signupModel.BirthYear;
 
                 //Self declaration question
-                contact.IsVeteran = signupModel.IsVeteran;
-                contact.IsCurrentlyHomeless = signupModel.IsCurrentlyHomeless;
-                contact.IsWorriedAboutBecomingHomeless = signupModel.IsWorriedAboutBecomingHomeless;
-                contact.IsInUnsafeHousing = signupModel.IsInUnsafeHousing;
-                contact.NoneOfHouseholdApply = signupModel.NoneOfHouseholdApply;
-                contact.SocialSecurityNumber = signupModel.SocialSecurityNumber;
-                contact.DateOfBirth = signupModel.DateOfBirth;
-                contact.HMISNumber = signupModel.HMISNumber;
-                //Alternate contact questions
-                contact.AlternateContactQuestion = signupModel.AlternateContactQuestion;
-                contact.AlternateContact_FirstName = signupModel.AlternateContact_FirstName;
-                contact.AlternateContact_MiddleName = signupModel.AlternateContact_MiddleName;
-                contact.AlternateContact_LastName = signupModel.AlternateContact_LastName;
-                contact.AlternateContact_Method_Email = signupModel.AlternateContact_Method_Email;
-                contact.AlternateContact_Method_MailingAddress = signupModel.AlternateContact_Method_MailingAddress;
-                contact.AlternateContact_Method_Phone = signupModel.AlternateContact_Method_Phone;
-                contact.AlternateContact_Email = signupModel.AlternateContact_Email;
-                contact.AlternateContact_PhoneType = signupModel.AlternateContact_PhoneType;
-                contact.AlternateContact_PhoneNumber = signupModel.AlternateContact_PhoneNumber;
-                contact.AlternateContact_PhoneNotification = signupModel.AlternateContact_PhoneNotification;
-                contact.AlternateContact_StreetAddress = signupModel.AlternateContact_StreetAddress;
-                contact.AlternateContact_HouseNum = signupModel.AlternateContact_HouseNum;
-                contact.AlternateContact_HouseFracNum = signupModel.AlternateContact_HouseFracNum;
-                contact.AlternateContact_LutPreDirCd = signupModel.AlternateContact_LutPreDirCd;
-                contact.AlternateContact_StreetName = signupModel.AlternateContact_StreetName;
-                contact.AlternateContact_LutStreetTypeCD = signupModel.AlternateContact_LutStreetTypeCD;
-                contact.AlternateContact_ApartmentUnit = signupModel.AlternateContact_ApartmentUnit;
-                contact.AlternateContact_State = signupModel.AlternateContact_State;
-                contact.AlternateContact_Zipcode = signupModel.AlternateContact_Zipcode;
-                contact.AlternateContact_CityName = signupModel.AlternateContact_CityName;
-                contact.AlternateContact_Unit = signupModel.AlternateContact_Unit;*/
+                //contact.IsVeteran = signupModel.IsVeteran;
+                //contact.IsCurrentlyHomeless = signupModel.IsCurrentlyHomeless;
+                //contact.IsWorriedAboutBecomingHomeless = signupModel.IsWorriedAboutBecomingHomeless;
+                //contact.IsInUnsafeHousing = signupModel.IsInUnsafeHousing;
+                //contact.NoneOfHouseholdApply = signupModel.NoneOfHouseholdApply;
+                //contact.SocialSecurityNumber = signupModel.SocialSecurityNumber;
+                //contact.DateOfBirth = signupModel.DateOfBirth;
+                //contact.HMISNumber = signupModel.HMISNumber;
+                ////Alternate contact questions
+                //contact.AlternateContactQuestion = signupModel.AlternateContactQuestion;
+                //contact.AlternateContact_FirstName = signupModel.AlternateContact_FirstName;
+                //contact.AlternateContact_MiddleName = signupModel.AlternateContact_MiddleName;
+                //contact.AlternateContact_LastName = signupModel.AlternateContact_LastName;
+                //contact.AlternateContact_Method_Email = signupModel.AlternateContact_Method_Email;
+                //contact.AlternateContact_Method_MailingAddress = signupModel.AlternateContact_Method_MailingAddress;
+                //contact.AlternateContact_Method_Phone = signupModel.AlternateContact_Method_Phone;
+                //contact.AlternateContact_Email = signupModel.AlternateContact_Email;
+                //contact.AlternateContact_PhoneType = signupModel.AlternateContact_PhoneType;
+                //contact.AlternateContact_PhoneNumber = signupModel.AlternateContact_PhoneNumber;
+                //contact.AlternateContact_PhoneNotification = signupModel.AlternateContact_PhoneNotification;
+                //contact.AlternateContact_StreetAddress = signupModel.AlternateContact_StreetAddress;
+                //contact.AlternateContact_HouseNum = signupModel.AlternateContact_HouseNum;
+                //contact.AlternateContact_HouseFracNum = signupModel.AlternateContact_HouseFracNum;
+                //contact.AlternateContact_LutPreDirCd = signupModel.AlternateContact_LutPreDirCd;
+                //contact.AlternateContact_StreetName = signupModel.AlternateContact_StreetName;
+                //contact.AlternateContact_LutStreetTypeCD = signupModel.AlternateContact_LutStreetTypeCD;
+                //contact.AlternateContact_ApartmentUnit = signupModel.AlternateContact_ApartmentUnit;
+                //contact.AlternateContact_State = signupModel.AlternateContact_State;
+                //contact.AlternateContact_Zipcode = signupModel.AlternateContact_Zipcode;
+                //contact.AlternateContact_CityName = signupModel.AlternateContact_CityName;
+                //contact.AlternateContact_Unit = signupModel.AlternateContact_Unit;
 
 
                 //Original Phone Type
@@ -336,20 +358,20 @@ namespace DeveloperPortal.Models.IDM
                 /*Contact Address details*/
                 //contact.ContactAddressId = signupModel.ContactAddressID;
                 //if (!(string.IsNullOrEmpty(signupModel.AddressQuestion)) && signupModel.AddressQuestion.ToString() == "no")
-                /*{
-                    signupModel.StreetNum = null;
-                    signupModel.HouseFracNum = "";
-                    signupModel.LutPreDirCd = "";
-                    signupModel.StreetName = "";
-                    signupModel.LutStreetTypeCD = "";
-                    signupModel.PostDirCd = "";
-                    signupModel.City = "";
-                    signupModel.LutStateCD = "";
-                    signupModel.Zip = "";
-                    signupModel.Unit = "";
-                }*/
+                //{
+                //    signupModel.StreetNum = null;
+                //    signupModel.HouseFracNum = "";
+                //    signupModel.LutPreDirCd = "";
+                //    signupModel.StreetName = "";
+                //    signupModel.LutStreetTypeCD = "";
+                //    signupModel.PostDirCd = "";
+                //    signupModel.City = "";
+                //    signupModel.LutStateCD = "";
+                //    signupModel.Zip = "";
+                //    signupModel.Unit = "";
+                //}
                 contact.HouseNum = Convert.ToString(signupModel.StreetNum); //HouseNum
-                //contact.HouseFracNum = signupModel.HouseFracNum;
+                contact.HouseFracNum = signupModel.HouseFracNum;
                 contact.PreDirection = signupModel.StreetDir;// LutPreDirCd;
                 contact.StreetName = signupModel.IsPostBox ? signupModel.PostBoxNum : signupModel.StreetName;
                 contact.StreetTypeCd = signupModel.StreetType;// LutStreetTypeCD;
@@ -358,20 +380,20 @@ namespace DeveloperPortal.Models.IDM
                 contact.State = signupModel.State;// LutStateCD;
                 contact.Zip = signupModel.Zipcode; //zip
                 contact.Unit = signupModel.UnitNumber;//Unit
-                //contact.IsMarkedForMailing = signupModel.AlternateContactMethodcd == (int)ContactMethods.USMail ? true : false;
-                //contact.PropContactId = signupModel.PropContactId;
+                contact.IsMarkedForMailing = signupModel.AlternateContactMethodcd == (int)ContactMethods.USMail ? true : false;
+                contact.PropContactId = signupModel.PropContactId;
 
                 //contact.Type = ContactTypes.Applicant; //TODO: find the type
 
                 //Commented below for 3PP
-                /*if (signupModel.AddressQuestion == "yes")
-                {
-                    contact.IsContactAddress = true;
-                }
-                else
-                {
-                    contact.IsContactAddress = false;
-                }
+                //if (signupModel.AddressQuestion == "yes")
+                //{
+                //    contact.IsContactAddress = true;
+                //}
+                //else
+                //{
+                //    contact.IsContactAddress = false;
+                //}
 
 
                 // Attributes JSON. Atrribute is used for both Contact and ContactIdentifire
@@ -463,7 +485,7 @@ namespace DeveloperPortal.Models.IDM
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 //if (signupModel.IsClient != true)
-                {
+               // {
                     //Check if user already exist in PCMS
                     HttpResponseMessage httpResponseMessage = client.GetAsync(string.Format("Contact/GetContactByUserName?userName={0}", contact.IDMUserName)).Result;
                     if (httpResponseMessage.IsSuccessStatusCode)
@@ -481,7 +503,7 @@ namespace DeveloperPortal.Models.IDM
 
                     contact.ContactId = contactID;
 
-                }
+                //}
                 /*else
                 {
                    // contact.ContactId = signupModel.ContactID;
