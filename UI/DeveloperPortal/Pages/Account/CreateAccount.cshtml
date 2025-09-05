@@ -106,9 +106,18 @@
             </div>
 
             <div id="divTermsAndConditions" class="app-input-descr app-sub-input-descr">
-                <label for="termsandconditions">
+               @*  <label for="termsandconditions">
                     <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions" data-required ="true">
                     I agree to the <a href="#" style="text-decoration:underline">Terms and Conditions</a> @Html.Label("", "*", new {@class = "asterisk"})
+                    <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
+                </label> *@
+                <label for="termsandconditions">
+                    <input type="checkbox" value="" class="app-big-checkbox" id="termsandconditions" data-required="true">
+                    I agree to the
+                    <a asp-page="/Account/TermsAndConditions" target="_blank" style="text-decoration:underline">
+                        Terms and Conditions
+                    </a>
+                    @Html.Label("", "*", new { @class = "asterisk" })
                     <span class="fa fa-external-link" style="font-family: 'Font Awesome 5 Free';"></span>
                 </label>
             </div>
