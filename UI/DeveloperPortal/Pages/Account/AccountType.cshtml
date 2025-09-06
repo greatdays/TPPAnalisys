@@ -29,7 +29,7 @@
 </div>
 <script>
     $(document).ready(function () {
-         var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
+
          $.ajax({
         url: APPURL + "Account/GetLookupData?lookup=UserRole",
         type: 'GET',
