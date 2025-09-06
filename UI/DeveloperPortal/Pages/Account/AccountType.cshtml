@@ -1,7 +1,5 @@
 ﻿@page
 @model DeveloperPortal.Pages.Account.AccountTypeModel
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
 
 <div class="form-partial-container">
     <h3 class="signup-step-header">Select your account type <span aria-hidden="true" class="asterisk">*</span></h3>
@@ -31,7 +29,6 @@
 </div>
 <script>
     $(document).ready(function () {
-        debugger;
          var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
          $.ajax({
         url: APPURL + "Account/GetLookupData?lookup=UserRole",
