@@ -18,10 +18,12 @@ namespace DeveloperPortal.ServiceClient
             _config = config;
         }
         [HttpPost]
-        public JsonResult SubmitUploadedDocument(IFormFile file,string emailId,int caseId,string category)
+        public JsonResult SubmitUploadedDocument(IFormFile file,string emailId,int caseId,string Category,string subCategory)
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();
+            int? fileThreshold = null;
+            var isBackground = true;
             FileUploadInfo info = new FileUploadInfo
             {
                 ApplicationId = new Guid(string.IsNullOrWhiteSpace(_config["DMSConfig:DMSAppIdExternal"])?"": _config["DMSConfig:DMSAppIdExternal"]),
@@ -35,64 +37,15 @@ namespace DeveloperPortal.ServiceClient
                 
             };
             info.MetaData.Add(FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString()});
-            info.MetaData.Add(FieldType.Category, new string[] { "Project"});
-            info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
-            //Dictionary<string, FieldType> formValToFieldTypeMap = new Dictionary<string, FieldType>()
-            //{
-            //    {"AchpProjectId", FieldType.AchpProjectId },
-            //    {"AchpPropertyId", FieldType.AchpPropertyId },
-            //    //{"APN", FieldType.APN },
-            //    {"CaseId", FieldType.CaseId },
-            //    {"PrimaryKey", FieldType.PrimaryKey },
-            //    {"Category", FieldType.Category },
-            //    {"SubCategory", FieldType.SubCategory },
-            //    {"Description", FieldType.Description },
-            //    {"Audience", FieldType.Audience },
-            //    {"Status", FieldType.Status },
-            //    {"HIMSNumber", FieldType.HIMSNumber },
-            //    {"AcHPNumber", FieldType.AcHPNumber }
-            //};
-
-            // info.MetaData.Add(FieldType.PrimaryKey, new string[] { "1234" });
-            //info.MetaData.Add(FieldType.Category, new string[] { "12345" });
-
-            //foreach (KeyValuePair<string, FieldType> maps in formValToFieldTypeMap)
-            //{
-            //    string val = GetFormDataValue(data[maps.Key]);
-            //    if (!String.IsNullOrEmpty(val))
-            //    {
-            //        info.MetaData.Add(maps.Value, new string[] { val });
-            //    }
-            //}
-
-            //string apnVal = GetFormDataValue(data["APN"]);
-            //if (!string.IsNullOrWhiteSpace(apnVal))
-            //    info.MetaData.Add(FieldType.APN, apnVal.Split(','));
-
-            //string recDate = GetDateOrNull(data["ReceivedDate"]);
-            //if (!String.IsNullOrEmpty(recDate))
-            //{
-            //    info.MetaData.Add(FieldType.ReceivedDate, new string[] { recDate });
-            //}
-
-            //FileActivityWorkLogModel fileActivityModel = new FileActivityWorkLogModel();
-            //fileActivityModel.Action = FileAction.Add;
-            //if (info.MetaData.Keys.Contains(FieldType.AchpPropertyId))
-            //{
-            //    fileActivityModel.ProjectSiteID = info.MetaData.Where(m => m.Key == FieldType.AchpPropertyId).Select(m => m.Value.FirstOrDefault()).FirstOrDefault().ToString();
-            //}
-            //fileActivityModel.Category = info.MetaData.Where(m => m.Key == FieldType.Category).Select(m => m.Value.FirstOrDefault()).FirstOrDefault().ToString();
-            //fileActivityModel.SubCategory = info.MetaData.Where(m => m.Key == FieldType.SubCategory).Select(m => m.Value.FirstOrDefault()).FirstOrDefault().ToString();
-            //fileActivityModel.SystemDescription = GetFormDataValue(data["Description"]); //info.MetaData.Where(m => m.Key == FieldType.Description).Select(m => m.Value.FirstOrDefault()).FirstOrDefault().ToString();
-            //fileActivityModel.Comments = GetFormDataValue(data["Comments"]);
-            //fileActivityModel.CreatedBy = UserSession.GetUserSession().UserName.ToString();
-
-            int? fileThreshold = null;
+            info.MetaData.Add(FieldType.Category, new string[] { Category });
+            info.MetaData.Add(FieldType.SubCategory, new string[] { subCategory });
+          
+           
             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))
             {
                 fileThreshold = parsedThreshold;
             }
-            var isBackground = true;
+           
             if (file != null) // file is IFormFile
             {
                 using var memoryStream = new MemoryStream();

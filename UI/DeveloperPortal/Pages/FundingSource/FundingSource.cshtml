@@ -1,5 +1,9 @@
 ﻿@using DeveloperPortal.Domain.FundingSource
-@model IEnumerable<FundingSourceViewModel>
+@model FundingSourcePageViewModel
+
+<!-- Hidden fields -->
+@Html.HiddenFor(m => m.CaseId)
+@Html.HiddenFor(m => m.ControlViewModelId)
 
 <table class="table table-striped" id="fundingSourceGrid">
     <thead>
@@ -13,9 +17,9 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model != null)
+        @if (Model?.FundingSources != null)
         {
-            @foreach (var item in Model)
+            @foreach (var item in Model.FundingSources)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.FundingSource)</td>

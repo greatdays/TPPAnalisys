@@ -95,8 +95,11 @@ namespace DeveloperPortal.Areas.Document.Controllers
             var folderId = await _documentService.GetRecentFolderId();
 
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
+            string fileCategory = "Project", fileSubCategory = "Document";
+
+
             //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, category);
+            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
 
             var response = uploadResponse.Value as UploadResponse;
 

@@ -8,6 +8,12 @@ using Microsoft.AspNetCore.Http;
 
 namespace DeveloperPortal.Domain.FundingSource
 {
+    public class FundingSourcePageViewModel
+    {
+        public int CaseId { get; set; }
+        public int ControlViewModelId { get; set; }
+        public IEnumerable<FundingSourceViewModel> FundingSources { get; set; }
+    }
     public class FundingSourceViewModel
     {
 
@@ -35,7 +41,7 @@ namespace DeveloperPortal.Domain.FundingSource
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
 
-
+        public int CaseId { get; set; }
        
 
         public IFormFile? File { get; set; } // For file upload

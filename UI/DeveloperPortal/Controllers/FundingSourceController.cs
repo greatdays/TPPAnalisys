@@ -22,6 +22,13 @@ using Microsoft.EntityFrameworkCore;
 using DeveloperPortal.Domain.FundingSource;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using DeveloperPortal.ServiceClient;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using ComCon.DataAccess.ViewModel;
+using HCIDLA.ServiceClient.DMS;
+using static NuGet.Packaging.PackagingConstants;
+using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Application.DMS.Interface;
 
 namespace DeveloperPortal.Controllers
 {
@@ -34,9 +41,11 @@ namespace DeveloperPortal.Controllers
     {
 
         private IConfiguration _config;
-        public FundingSourceController(IConfiguration configuration)
+        private readonly IDocumentService _documentService;
+        public FundingSourceController(IConfiguration configuration, IDocumentService documentService)
         {
             _config = configuration;
+            _documentService = documentService;
         }
 
 
@@ -78,7 +87,18 @@ namespace DeveloperPortal.Controllers
         // GET: /Document/FundingSource
         public ActionResult FundingSource(int caseId, int controlViewModelId)
         {
-            return PartialView("~/Pages/FundingSource/FundingSource.cshtml", fundingSourceData);
+
+            var model = new FundingSourcePageViewModel
+            {
+                CaseId = caseId,
+                ControlViewModelId = controlViewModelId,
+                FundingSources = fundingSourceData
+            };
+            fundingSourceData[0].CaseId = caseId;
+            fundingSourceData[1].CaseId = caseId;
+            fundingSourceData[2].CaseId = caseId;
+            
+            return PartialView("~/Pages/FundingSource/FundingSource.cshtml", model);
 
             // D:\Trinus\DEV\Third Party Portal\UI\DeveloperPortal\Pages\FundingSource\FundingSource.cshtml
         }
@@ -128,11 +148,14 @@ namespace DeveloperPortal.Controllers
         [ValidateAntiForgeryToken] // Recommended for form submissions
         public async Task<IActionResult> Update([FromForm] FundingSourceViewModel viewModel)
         {
+            string fileCategory = "Project", fileSubCategory = "FundingSource";
             if (!ModelState.IsValid)
             {
                 return PartialView("~/Pages/FundingSource/FundingSourcePopUp.cshtml", viewModel);
             }
-
+            IFormFile file = HttpContext.Request.Form.Files[0];
+            var caseId= Convert.ToInt32(HttpContext.Request.Form["CaseId"]);
+            var emailId = "testQ@yopmail.com";
             // Your logic to find and update the funding source
             var fundingSourceToUpdate = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == viewModel.FundingSourceId);
             if (fundingSourceToUpdate != null)
@@ -154,6 +177,39 @@ namespace DeveloperPortal.Controllers
                     //     await viewModel.File.CopyToAsync(stream);
                     // }
                     // Update the FileName property
+                    var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
+                   
+                    var response = uploadResponse.Value as UploadResponse;
+
+                    if (response == null || (response.ErrorMessages != null && response.ErrorMessages.Length > 0))
+                    {
+                        return new JsonResult(new
+                        {
+                            Success = false,
+                            Message = "Failed to upload document.\n" +
+                                      (response?.ErrorMessages != null
+                                          ? string.Join("; ", response.ErrorMessages)
+                                          : "Unknown error")
+                        });
+                    }
+
+                    var documentModel = new DocumentModel()
+                    {
+                        Name = file.FileName,
+                        Link = response.UniqueId.ToString(),
+                        Attributes = "",
+                        FileSize = file.Length.ToString(),
+                        CaseId = caseId,
+                        //FolderId = 0,
+                        Comment = fundingSourceToUpdate.Description,
+                        OtherDocumentType = null,
+                        CreatedBy = "testQ",
+                        CreatedOn = DateTime.Now,
+                        IsDeleted = false
+
+                    };
+
+                    var document = _documentService.SaveDocument(documentModel).Result;
                     fundingSourceToUpdate.FileName = viewModel.File.FileName;
                 }
 
