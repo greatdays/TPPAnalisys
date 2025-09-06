@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configurationSnapshot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:schemas-microsoft-com:xml-wcfconfigurationsnapshot">
+  <behaviors />
+  <bindings>
+    <binding digest="System.ServiceModel.Configuration.BasicHttpBindingElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089:&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data name=&quot;BasicHttpBinding_Ivscan&quot; /&gt;" bindingType="basicHttpBinding" name="BasicHttpBinding_Ivscan" />
+    <binding digest="System.ServiceModel.Configuration.BasicHttpBindingElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089:&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data name=&quot;BasicHttpsBinding_Ivscan&quot;&gt;&lt;security mode=&quot;Transport&quot; /&gt;&lt;/Data&gt;" bindingType="basicHttpBinding" name="BasicHttpsBinding_Ivscan" />
+  </bindings>
+  <endpoints>
+    <endpoint normalizedDigest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;http://43devweb3/VscanWcf/Vscan.svc&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;BasicHttpBinding_Ivscan&quot; contract=&quot;VScan.Ivscan&quot; name=&quot;BasicHttpBinding_Ivscan&quot; /&gt;" digest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;http://43devweb3/VscanWcf/Vscan.svc&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;BasicHttpBinding_Ivscan&quot; contract=&quot;VScan.Ivscan&quot; name=&quot;BasicHttpBinding_Ivscan&quot; /&gt;" contractName="VScan.Ivscan" name="BasicHttpBinding_Ivscan" />
+    <endpoint normalizedDigest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;https://43devweb3/VscanWcf/Vscan.svc&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;BasicHttpsBinding_Ivscan&quot; contract=&quot;VScan.Ivscan&quot; name=&quot;BasicHttpsBinding_Ivscan&quot; /&gt;" digest="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&lt;Data address=&quot;https://43devweb3/VscanWcf/Vscan.svc&quot; binding=&quot;basicHttpBinding&quot; bindingConfiguration=&quot;BasicHttpsBinding_Ivscan&quot; contract=&quot;VScan.Ivscan&quot; name=&quot;BasicHttpsBinding_Ivscan&quot; /&gt;" contractName="VScan.Ivscan" name="BasicHttpsBinding_Ivscan" />
+  </endpoints>
+</configurationSnapshot>

@@ -141,6 +141,18 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
             return true;
         }
+        public async Task<int> GetRecentFolderId()
+        {
+           
+                var folderId = await _context.Folders
+                    .Where(f => (bool)!f.IsDeleted) // optional filter
+                    .OrderByDescending(f => f.CreatedOn)
+                    .Select(f => f.FolderId)
+                    .FirstOrDefaultAsync();
+
+                return folderId;
+           
+        }
 
 
 

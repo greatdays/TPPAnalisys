@@ -60,4 +60,25 @@ namespace DeveloperPortal.Domain.DMS
         /// </summary>
         public DateTime? ModifiedOn { get; set; }
     }
+    public static class FileStatus
+    {
+        public const string Approved = "Approved";
+        public const string Rejected = "Corrections Requested";
+        public const string Deleted = "Deleted";
+        public const string Submitted = "Submitted";
+        public const string StaffUploaded = "Staff Uploaded";
+        public const string Expired = "Expired";
+
+        public const string Added = "Added";
+        public const string Updated = "Updated";
+    }
+
+    public static class FileAction
+    {
+        public const string Approve = "File Approved";
+        public const string Reject = "File Corrections Requested";
+        public const string Delete = "File Deleted";
+        public const string Update = "File Updated";
+        public const string Add = "File Added";
+    }
 }

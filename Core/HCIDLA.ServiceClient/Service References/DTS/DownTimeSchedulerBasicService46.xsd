@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/DownTimeScheduler.DataAccess.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DownTimeScheduler.DataAccess.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="Schedule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AdvanceNoticeDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ApplicationList" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DayReminder" type="xs:int" />
+      <xs:element minOccurs="0" name="Deleted" type="xs:boolean" />
+      <xs:element minOccurs="0" name="DeletedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeletedDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DowntimeDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="IsDowntimeSet" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsReminderSent" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsUptimeSet" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ModifiedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModifiedDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ReminderEmailList" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ScheduleId" type="ser:guid" />
+      <xs:element minOccurs="0" name="ShutdownMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UptimeDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WarningMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isShutdown" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Schedule" nillable="true" type="tns:Schedule" />
+</xs:schema>
