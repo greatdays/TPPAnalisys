@@ -20,7 +20,7 @@ namespace DeveloperPortal.Domain.FundingSource
         public int FundingSourceId { get; set; }
 
         [Display(Name = "Funding Source")]
-        public required string FundingSource { get; set; } // This is likely from a related table
+        public string? FundingSource { get; set; } // This is likely from a related table
 
         [Display(Name = "File Name")]
         public string FileName { get; set; } // This comes from the Document table

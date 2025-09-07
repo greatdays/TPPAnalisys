@@ -1,92 +1,59 @@
-﻿//using ComCon.DataAccess.Models.Helpers;
-//using ComCon.DataAccess.ViewModel;
-using DeveloperPortal.Models.Common;
-using DeveloperPortal.DataAccess;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Collections.Specialized;
-//using ComCon.DataAccess.ViewModel;
-using DeveloperPortal.DataAccess.Entity.Models.Helper.ComCon;
-using DeveloperPortal.DataAccess.Entity.ViewModels.ComCon;
-using DeveloperPortal.Models.Helper;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.Application.PropertySnapshot;
-using DeveloperPortal.Domain.PropertySnapshot;
-using DeveloperPortal.Constants;
-using DeveloperPortal.Application.ServiceClient;
-using DeveloperPortal.Application;
-using DeveloperPortal.Areas.Document.Models;
-using DeveloperPortal.Domain.ProjectDetail;
-using DeveloperPortal.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using DeveloperPortal.Domain.FundingSource;
-using Microsoft.CodeAnalysis;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using DeveloperPortal.ServiceClient;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
-using ComCon.DataAccess.ViewModel;
-using HCIDLA.ServiceClient.DMS;
-using static NuGet.Packaging.PackagingConstants;
-using DeveloperPortal.Domain.DMS;
+using System.ComponentModel.DataAnnotations;
 using DeveloperPortal.Application.DMS.Interface;
+using DeveloperPortal.ServiceClient;
+using HCIDLA.ServiceClient.DMS;
+using DeveloperPortal.Domain.DMS;
 
-namespace DeveloperPortal.Controllers
+[Authorize]
+public class FundingSourceController : Controller
 {
+    private readonly IConfiguration _config;
+    private readonly IDocumentService _documentService;
+    private static readonly object _lock = new object();
 
-
-
-
-
-    public class FundingSourceController : Controller
-    {
-
-        private IConfiguration _config;
-        private readonly IDocumentService _documentService;
-        public FundingSourceController(IConfiguration configuration, IDocumentService documentService)
-        {
-            _config = configuration;
-            _documentService = documentService;
-        }
-
-
-
-        private static List<FundingSourceViewModel> fundingSourceData = new List<FundingSourceViewModel>
+    // Mock data - replace with actual data source
+    private static List<FundingSourceViewModel> fundingSourceData = new List<FundingSourceViewModel>
     {
         new FundingSourceViewModel
         {
             FundingSourceId = 1,
-            FundingSource = "TCAC",
-            FileName = "tcac.xlsx",
-            Notes = "Scoring sheet",
-            MU_Unit = 10,
-            HV_Unit = 4,
-            DocumentID = 101
+            FundingSource = "Government Grant",
+            Notes = "Federal funding",
+            MU_Unit = 50,
+            HV_Unit = 30,
+            Description = "Primary funding source",
+            FileName = "grant_document.pdf"
         },
         new FundingSourceViewModel
         {
             FundingSourceId = 2,
-            FundingSource = "LALDA",
-            FileName = "lalda2.pdf",
-            Notes = "Architecture recruitment",
-            MU_Unit = 15,
-            HV_Unit = 10,
-            DocumentID = 102
-        },
-        new FundingSourceViewModel
-        {
-            FundingSourceId = 3,
-            FundingSource = "TCAC",
-            FileName = "tcacfile.xlsx",
-            Notes = "Second Scoring sheet",
-            MU_Unit = 10,
-            HV_Unit = 4,
-            DocumentID = 103
+            FundingSource = "Private Investment",
+            Notes = "Angel investor",
+            MU_Unit = 25,
+            HV_Unit = 45,
+            Description = "Secondary funding",
+            FileName = ""
         }
     };
 
-        // GET: /Document/FundingSource
-        public ActionResult FundingSource(int caseId, int controlViewModelId)
+    public FundingSourceController(IConfiguration configuration, IDocumentService documentService)
+    {
+        _config = configuration;
+        _documentService = documentService;
+    }
+
+    // GET: /FundingSource/GetFundingSourcesById
+    public IActionResult GetFundingSourcesById(int caseId, int controlViewModelId = 0)
+    {
+        lock (_lock)
         {
+            foreach (var fs in fundingSourceData)
+            {
+                fs.CaseId = caseId;
+            }
 
             var model = new FundingSourcePageViewModel
             {
@@ -94,254 +61,302 @@ namespace DeveloperPortal.Controllers
                 ControlViewModelId = controlViewModelId,
                 FundingSources = fundingSourceData
             };
-            fundingSourceData[0].CaseId = caseId;
-            fundingSourceData[1].CaseId = caseId;
-            fundingSourceData[2].CaseId = caseId;
-            
+
             return PartialView("~/Pages/FundingSource/FundingSource.cshtml", model);
-
-            // D:\Trinus\DEV\Third Party Portal\UI\DeveloperPortal\Pages\FundingSource\FundingSource.cshtml
         }
+    }
 
-        // GET: /Document/FundingSource/Edit/5
-        public ActionResult Edit(int id)
+    // GET: /FundingSource/GetById - For AJAX calls from JavaScript
+    [HttpGet]
+    public IActionResult GetById(int id)
+    {
+        lock (_lock)
         {
-            var fundingSource = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == 1);
-            //FundingSourceViewModel fundingSource = new();
-            //fundingSource.FundingSourceId = 1;
-            //fundingSource.FundingSource = "TCAC";
-            // fundingSource.FileName = "tcac.xlsx";
-            // fundingSource.Notes = "Scoring sheet";
-            // fundingSource.MU_Unit = 10;
-            // fundingSource.HV_Unit = 4;
-            //fundingSource.DocumentID = 101;
+            var fundingSource = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
             if (fundingSource == null)
             {
-                return HttpNotFound();
+                return Json(new { success = false, message = "Funding source not found." });
             }
-            return PartialView("~/Pages/FundingSource/FundingSourcePopUp.cshtml", fundingSource);
+
+            return Json(fundingSource);
         }
+    }
 
-        private ActionResult HttpNotFound()
+    // GET: /FundingSource/Edit/5 - For modal view
+    public IActionResult Edit(int id)
+    {
+        var fundingSource = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
+        if (fundingSource == null)
         {
-            throw new NotImplementedException();
+            return NotFound();
         }
+        return PartialView("~/Pages/FundingSource/_EditFundingSourcePopup.cshtml", fundingSource);
+    }
 
-        // POST: /Document/FundingSource/Update
-        //[HttpPost]
-        //public JsonResult Update(FundingSourceViewModel model)
-        //{
-        //    var fundingSourceToUpdate = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == model.FundingSourceId);
-        //    if (fundingSourceToUpdate != null)
-        //    {
-        //        fundingSourceToUpdate.Notes = model.Notes;
-        //        fundingSourceToUpdate.MU_Unit = model.MU_Unit;
-        //        fundingSourceToUpdate.HV_Unit = model.HV_Unit;
-        //        // You can add logic for file replacement here
-        //        return Json(new { success = true });
-        //    }
-        //    return Json(new { success = false });
-        //}
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken] // Recommended for form submissions
-        public async Task<IActionResult> Update([FromForm] FundingSourceViewModel viewModel)
+    // POST: /FundingSource/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create([FromForm] FundingSourceViewModel viewModel)
+    {
+        try
         {
-            string fileCategory = "Project", fileSubCategory = "FundingSource";
             if (!ModelState.IsValid)
             {
-                return PartialView("~/Pages/FundingSource/FundingSourcePopUp.cshtml", viewModel);
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { Field = x.Key, Errors = x.Value.Errors.Select(e => e.ErrorMessage) })
+                    .ToList();
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Please correct the validation errors.",
+                    errors = errors
+                });
             }
-            IFormFile file = HttpContext.Request.Form.Files[0];
-            var caseId= Convert.ToInt32(HttpContext.Request.Form["CaseId"]);
-            var emailId = "testQ@yopmail.com";
-            // Your logic to find and update the funding source
-            var fundingSourceToUpdate = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == viewModel.FundingSourceId);
-            if (fundingSourceToUpdate != null)
+
+            var caseId = Convert.ToInt32(HttpContext.Request.Form["CaseId"]);
+            var emailId = GetCurrentUserEmail(); // Helper method to get current user email
+            var fileCategory = "Project";
+            var fileSubCategory = "FundingSource";
+
+           
+                // Generate new ID
+                viewModel.FundingSourceId = fundingSourceData.Any()
+                    ? fundingSourceData.Max(fs => fs.FundingSourceId) + 1
+                    : 1;
+
+                viewModel.CaseId = caseId;
+
+                // Handle file upload if present
+                if (viewModel.File != null && viewModel.File.Length > 0)
+                {
+                    var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, caseId, fileCategory, fileSubCategory, viewModel.Description);
+
+                    if (!fileUploadResult.Success)
+                    {
+                        return Json(new { success = false, message = fileUploadResult.ErrorMessage });
+                    }
+
+                    viewModel.FileName = viewModel.File.FileName;
+                    viewModel.DocumentID = fileUploadResult.DocumentId;
+                }
+
+                fundingSourceData.Add(viewModel);
+           
+
+            return Json(new { success = true, message = "Funding source created successfully." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+        }
+    }
+
+    // POST: /FundingSource/Update
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Update([FromForm] FundingSourceViewModel viewModel)
+    {
+        try
+        {
+            if (!ModelState.IsValid)
             {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { Field = x.Key, Errors = x.Value.Errors.Select(e => e.ErrorMessage) })
+                    .ToList();
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Please correct the validation errors.",
+                    errors = errors
+                });
+            }
+
+            var caseId = Convert.ToInt32(HttpContext.Request.Form["CaseId"]);
+            var emailId = GetCurrentUserEmail();
+            var fileCategory = "Project";
+            var fileSubCategory = "FundingSource";
+
+          
+                var fundingSourceToUpdate = fundingSourceData
+                    .FirstOrDefault(fs => fs.FundingSourceId == viewModel.FundingSourceId);
+
+                if (fundingSourceToUpdate == null)
+                {
+                    return Json(new { success = false, message = "Funding source not found." });
+                }
+
+                // Update basic fields
+                fundingSourceToUpdate.FundingSource = viewModel.FundingSource;
                 fundingSourceToUpdate.Notes = viewModel.Notes;
                 fundingSourceToUpdate.MU_Unit = viewModel.MU_Unit;
                 fundingSourceToUpdate.HV_Unit = viewModel.HV_Unit;
                 fundingSourceToUpdate.Description = viewModel.Description;
-             
 
-                // Handle the file upload
-                if (viewModel.File != null)
+                // Handle file removal
+                var removeFile = HttpContext.Request.Form["RemoveFile"].ToString().ToLower() == "true";
+                if (removeFile)
                 {
-                    // Save the file to your desired location (e.g., file system or cloud storage)
-                    // Example:
-                    // var filePath = Path.Combine("your-upload-path", viewModel.File.FileName);
-                    // using (var stream = new FileStream(filePath, FileMode.Create))
-                    // {
-                    //     await viewModel.File.CopyToAsync(stream);
-                    // }
-                    // Update the FileName property
-                    var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
-                   
-                    var response = uploadResponse.Value as UploadResponse;
-
-                    if (response == null || (response.ErrorMessages != null && response.ErrorMessages.Length > 0))
-                    {
-                        return new JsonResult(new
-                        {
-                            Success = false,
-                            Message = "Failed to upload document.\n" +
-                                      (response?.ErrorMessages != null
-                                          ? string.Join("; ", response.ErrorMessages)
-                                          : "Unknown error")
-                        });
-                    }
-
-                    var documentModel = new DocumentModel()
-                    {
-                        Name = file.FileName,
-                        Link = response.UniqueId.ToString(),
-                        Attributes = "",
-                        FileSize = file.Length.ToString(),
-                        CaseId = caseId,
-                        //FolderId = 0,
-                        Comment = fundingSourceToUpdate.Description,
-                        OtherDocumentType = null,
-                        CreatedBy = "testQ",
-                        CreatedOn = DateTime.Now,
-                        IsDeleted = false
-
-                    };
-
-                    var document = _documentService.SaveDocument(documentModel).Result;
-                    fundingSourceToUpdate.FileName = viewModel.File.FileName;
+                    // TODO: Delete the actual file from storage if needed
+                    fundingSourceToUpdate.FileName = "";
+                    fundingSourceToUpdate.DocumentID = null;
                 }
 
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
+                // Handle new file upload
+                if (viewModel.File != null && viewModel.File.Length > 0)
+                {
+                    var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, caseId, fileCategory, fileSubCategory, viewModel.Description);
+
+                    if (!fileUploadResult.Success)
+                    {
+                        return Json(new { success = false, message = fileUploadResult.ErrorMessage });
+                    }
+
+                    fundingSourceToUpdate.FileName = viewModel.File.FileName;
+                    fundingSourceToUpdate.DocumentID = fileUploadResult.DocumentId;
+                }
+           
+
+            return Json(new { success = true, message = "Funding source updated successfully." });
         }
-
-
-
-        // POST: /Document/FundingSource/Delete/5
-        [HttpPost]
-        public JsonResult Delete(int id)
+        catch (Exception ex)
         {
-            var fundingSourceToRemove = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
-            if (fundingSourceToRemove != null)
-            {
-                fundingSourceData.Remove(fundingSourceToRemove);
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
+            return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
         }
-
-        // This method would handle the 'Add' functionality (e.g., from the "Upload Funding Source" button)
-        // POST: /Document/FundingSource/Create
-        [HttpPost]
-        public JsonResult Create(FundingSourceViewModel newFundingSource)
-        {
-            if (ModelState.IsValid)
-            {
-                // Assign a new unique ID
-                newFundingSource.FundingSourceId = fundingSourceData.Any() ? fundingSourceData.Max(fs => fs.FundingSourceId) + 1 : 1;
-                fundingSourceData.Add(newFundingSource);
-                return Json(new { success = true });
-            }
-            return Json(new { success = false });
-        }
-
-        //[HttpGet]
-        ////[Route("Document/DMS/GetFilesById")]
-        //public async Task<IActionResult> GetFilesById(int caseId, int controlViewModelId)
-        //{
-        //    var fundingSources = _context.FundingSource
-        //         .Select(fs => new FundingSourceViewModel
-        //         {
-        //             FundingSourceId = fs.FundingSourceId,
-        //             Notes = fs.Notes,
-        //             MU_Unit = fs.MU_Unit,
-        //             HV_Unit = fs.HV_Unit,
-        //             // Assuming you have a way to get FundingSource and FileName, e.g., by joining with a Document table
-        //             FundingSource = "Your Source", // Placeholder
-        //             FileName = "Your File Name" // Placeholder
-        //         }).ToList();
-
-
-        //    return PartialView("~/Areas/Document/Views/FundingSource/FundingSource.cshtml", fundingSources);
-
-        //    return View("~/Areas/Document/Views/DMS/DMSView.cshtml", null);
-        //}
-
-
-        //// In your FundingSourceController.cs
-
-        //public ActionResult FundingSource(int caseId, int controlViewModelId)
-        //{
-        //    // Fetch data from the database and pass it to the view
-        //    var fundingSources = _context.FundingSource
-        //        .Select(fs => new FundingSourceViewModel
-        //        {
-        //            FundingSourceId = fs.FundingSourceId,
-        //            Notes = fs.Notes,
-        //            MU_Unit = fs.MU_Unit,
-        //            HV_Unit = fs.HV_Unit,
-        //            // Assuming you have a way to get FundingSource and FileName, e.g., by joining with a Document table
-        //            FundingSource = "Your Source", // Placeholder
-        //            FileName = "Your File Name" // Placeholder
-        //        }).ToList();
-
-        //    return PartialView("~/Areas/Document/Views/FundingSource/FundingSource.cshtml", fundingSources);
-        //}
-
-        //// Action to handle the Edit popup
-        //public ActionResult Edit(int id)
-        //{
-        //    var fundingSource = _context.FundingSource.Find(id);
-
-        //    var viewModel = new FundingSourceViewModel
-        //    {
-        //        FundingSourceId = fundingSource.FundingSourceId,
-        //        Notes = fundingSource.Notes,
-        //        MU_Unit = fundingSource.MU_Unit,
-        //        HV_Unit = fundingSource.HV_Unit,
-        //        DocumentId = fundingSource.DocumentID
-        //    };
-        //    return PartialView("EditFundingSource", viewModel);
-        //}
-
-        //// Action to handle the form submission for updates
-        //[HttpPost]
-        //public JsonResult Update(FundingSourceViewModel model)
-        //{
-        //    var fundingSource = _context.FundingSource.Find(model.FundingSourceId);
-        //    if (fundingSource != null)
-        //    {
-        //        fundingSource.Notes = model.Notes;
-        //        fundingSource.MU_Unit = model.MU_Unit;
-        //        fundingSource.HV_Unit = model.HV_Unit;
-        //        fundingSource.ModifiedDate = DateTime.Now;
-        //        fundingSource.ModifiedBy = User.Identity.Name;
-
-        //        _context.SaveChanges();
-        //        return Json(new { success = true });
-        //    }
-        //    return Json(new { success = false });
-        //}
-
-        //// Action to handle the delete operation
-        //[HttpPost]
-        //public JsonResult Delete(int id)
-        //{
-        //    var fundingSource = _context.FundingSource.Find(id);
-        //    if (fundingSource != null)
-        //    {
-        //        _context.FundingSource.Remove(fundingSource);
-        //        _context.SaveChanges();
-        //        return Json(new { success = true });
-        //    }
-        //    return Json(new { success = false });
-        //}
-
-
     }
 
-}
+    // POST: /FundingSource/Delete
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Delete(int id)
+    {
+        try
+        {
+            lock (_lock)
+            {
+                var fundingSourceToRemove = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
+                if (fundingSourceToRemove != null)
+                {
+                    // TODO: Delete associated documents if needed
+                    fundingSourceData.Remove(fundingSourceToRemove);
+                    return Json(new { success = true, message = "Funding source deleted successfully." });
+                }
+                return Json(new { success = false, message = "Funding source not found." });
+            }
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+        }
+    }
 
+    #region Private Helper Methods
+
+    /// <summary>
+    /// Handle file upload and document creation
+    /// </summary>
+    private async Task<FileUploadResult> HandleFileUpload(IFormFile file, string emailId, int caseId, string fileCategory, string fileSubCategory, string description)
+    {
+        try
+        {
+            // Validate file size (10MB limit)
+            if (file.Length > 10485760) // 10MB in bytes
+            {
+                return new FileUploadResult { Success = false, ErrorMessage = "File size must be less than 10MB." };
+            }
+
+            // Validate file type
+            var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                return new FileUploadResult { Success = false, ErrorMessage = "File type not supported." };
+            }
+
+            // Upload to DMS
+            var uploadResponse = new DMSService(_config)
+                .SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
+
+            var response = uploadResponse.Value as UploadResponse;
+
+            if (response == null || (response.ErrorMessages?.Length > 0))
+            {
+                return new FileUploadResult
+                {
+                    Success = false,
+                    ErrorMessage = "Failed to upload document.\n" +
+                                  (response?.ErrorMessages != null
+                                      ? string.Join("; ", response.ErrorMessages)
+                                      : "Unknown error")
+                };
+            }
+
+            // Save document metadata
+            var documentModel = new DocumentModel
+            {
+                Name = file.FileName,
+                Link = response.UniqueId.ToString(),
+                Attributes = "",
+                FileSize = file.Length.ToString(),
+                CaseId = caseId,
+                Comment = description ?? "",
+                OtherDocumentType = null,
+                CreatedBy = GetCurrentUserName(), // Helper method
+                CreatedOn = DateTime.Now,
+                IsDeleted = false
+            };
+
+            await _documentService.SaveDocument(documentModel);
+
+            return new FileUploadResult
+            {
+                Success = true,
+                DocumentId = 0
+            };
+        }
+        catch (Exception ex)
+        {
+            return new FileUploadResult { Success = false, ErrorMessage = $"File upload failed: {ex.Message}" };
+        }
+    }
+
+    /// <summary>
+    /// Get current user's email
+    /// </summary>
+    private string GetCurrentUserEmail()
+    {
+        // TODO: Replace with actual user email retrieval logic
+        // Example: return User.FindFirst(ClaimTypes.Email)?.Value ?? "unknown@email.com";
+        return "testQ@yopmail.com";
+    }
+
+    /// <summary>
+    /// Get current user's name
+    /// </summary>
+    private string GetCurrentUserName()
+    {
+        // TODO: Replace with actual user name retrieval logic
+        // Example: return User.FindFirst(ClaimTypes.Name)?.Value ?? "Unknown User";
+        return "testQ";
+    }
+
+    #endregion
+
+    #region Helper Classes
+
+    /// <summary>
+    /// Result class for file upload operations
+    /// </summary>
+    public class FileUploadResult
+    {
+        public bool Success { get; set; }
+        public string ErrorMessage { get; set; }
+        public int? DocumentId { get; set; }
+    }
+
+    #endregion
+}
