@@ -39,6 +39,8 @@ public partial class QuarterlyReport
 
     public virtual ICollection<QrgrievanceLog> QrgrievanceLogs { get; set; } = new List<QrgrievanceLog>();
 
+    public virtual ICollection<QrnewStaffContactInfo> QrnewStaffContactInfos { get; set; } = new List<QrnewStaffContactInfo>();
+
     public virtual ICollection<QroccupancyUnit> QroccupancyUnits { get; set; } = new List<QroccupancyUnit>();
 
     public virtual ICollection<QrprojectSiteFutureWaitList> QrprojectSiteFutureWaitLists { get; set; } = new List<QrprojectSiteFutureWaitList>();

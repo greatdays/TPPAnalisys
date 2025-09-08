@@ -223,12 +223,14 @@
     <Compile Include="Entity\Models\Generated\LutAccessibilityComplianceStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutAccessibleUnitFeature.cs" />
     <Compile Include="Entity\Models\Generated\LutAccountTypeCategory.cs" />
+    <Compile Include="Entity\Models\Generated\LutAffirmativeMarketingOutreach.cs" />
     <Compile Include="Entity\Models\Generated\LutAHUPScore.cs" />
     <Compile Include="Entity\Models\Generated\LutAltContactType.cs" />
     <Compile Include="Entity\Models\Generated\LutAMI.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicableAccessibilityStandard.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationDeclineReason.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationType.cs" />
+    <Compile Include="Entity\Models\Generated\LutAssociatedRole.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchType.cs" />
     <Compile Include="Entity\Models\Generated\LutBathroomType.cs" />
@@ -242,6 +244,7 @@
     <Compile Include="Entity\Models\Generated\LutCaseReferralType.cs" />
     <Compile Include="Entity\Models\Generated\LutCertificateType.cs" />
     <Compile Include="Entity\Models\Generated\LutCESType.cs" />
+    <Compile Include="Entity\Models\Generated\LutChangeRole.cs" />
     <Compile Include="Entity\Models\Generated\LutCloseReason.cs" />
     <Compile Include="Entity\Models\Generated\LutComplianceStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutConstructionType.cs" />
@@ -377,6 +380,7 @@
     <Compile Include="Entity\Models\Generated\NeighborhoodCouncil.cs" />
     <Compile Include="Entity\Models\Generated\NewsDisplayConfig.cs" />
     <Compile Include="Entity\Models\Generated\NewsNewsDetail.cs" />
+    <Compile Include="Entity\Models\Generated\NewStaffContactInfo.cs" />
     <Compile Include="Entity\Models\Generated\News_DisplayConfig.cs" />
     <Compile Include="Entity\Models\Generated\News_NewsDetail.cs" />
     <Compile Include="Entity\Models\Generated\NonCoveredProjectSite.cs" />
@@ -447,10 +451,12 @@
     <Compile Include="Entity\Models\Generated\QREffectiveCommunication.cs" />
     <Compile Include="Entity\Models\Generated\QRFairHousing.cs" />
     <Compile Include="Entity\Models\Generated\QRGrievanceLog.cs" />
+    <Compile Include="Entity\Models\Generated\QrnewStaffContactInfo.cs" />
     <Compile Include="Entity\Models\Generated\QROccupancyUnit.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteFutureWaitList.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteNoChangeReport.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteUpcomingUnitVacancy.cs" />
+    <Compile Include="Entity\Models\Generated\QrpropertyAssociatedAccount.cs" />
     <Compile Include="Entity\Models\Generated\QRReasonableAccommodation.cs" />
     <Compile Include="Entity\Models\Generated\QRUpcomingUnitVacancy.cs" />
     <Compile Include="Entity\Models\Generated\QRUtilizationSurvey.cs" />
@@ -645,6 +651,7 @@
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummary.cs" />
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummary1.cs" />
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummaryAll.cs" />
+    <Compile Include="Entity\Models\Generated\VwPropertyContact.cs" />
     <Compile Include="Entity\Models\Generated\VwPropertyContactdetail.cs" />
     <Compile Include="Entity\Models\Generated\vwPropertySearch.cs" />
     <Compile Include="Entity\Models\Generated\vwSRSummary.cs" />

@@ -7,19 +7,19 @@ public partial class FundingSource
 {
     public int FundingSourceId { get; set; }
 
-    public string? Notes { get; set; }
-
     public int? MuUnit { get; set; }
 
     public int? HvUnit { get; set; }
 
     public int? DocumentId { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     public string? CreatedBy { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
 
     public string? ModifiedBy { get; set; }
+
+    public virtual Document? Document { get; set; }
 }

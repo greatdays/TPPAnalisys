@@ -58,4 +58,6 @@ public partial class Document
     public virtual ICollection<AssnFolderDocument> AssnFolderDocuments { get; set; } = new List<AssnFolderDocument>();
 
     public virtual DocumentTemplate? DocumentTemplate { get; set; }
+
+    public virtual ICollection<FundingSource> FundingSources { get; set; } = new List<FundingSource>();
 }
