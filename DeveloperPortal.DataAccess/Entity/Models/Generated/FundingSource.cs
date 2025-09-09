@@ -7,11 +7,15 @@ public partial class FundingSource
 {
     public int FundingSourceId { get; set; }
 
+    public string? FundingSourceName { get; set; }
+
     public int? MuUnit { get; set; }
 
     public int? HvUnit { get; set; }
 
     public int? DocumentId { get; set; }
+
+    public bool? IsDeleted { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

@@ -24,10 +24,7 @@
                         <div class="invalid-feedback">Please enter a funding source.</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="FileName" class="form-label"></label>
-                        <input asp-for="FileName" class="form-control" />
-                    </div>
+                   
 
                     <div class="mb-3">
                         <label asp-for="Notes" class="form-label"></label>
@@ -49,18 +46,14 @@
                     <div class="mb-3">
                         <label for="addFileUploader" class="form-label">Upload File</label>
                         <input type="file" id="addFileUploader" name="File" class="form-control"
-                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
+                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" required  />
                         <div class="form-text">
                             Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF (Max 10MB)
                         </div>
                         <div class="invalid-feedback" id="addFileError">Please select a valid file.</div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="addDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="addDescription" name="Description" rows="3"
-                                  placeholder="Optional description for the document"></textarea>
-                    </div>
+                 
                 </div>
 
                 <div class="modal-footer">

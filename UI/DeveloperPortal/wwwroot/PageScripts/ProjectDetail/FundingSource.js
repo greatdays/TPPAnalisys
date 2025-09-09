@@ -123,17 +123,17 @@ window.FundingSourceManager = class FundingSourceManager {
 
     /** Populate Edit Form Fields */
     populateEditForm(data) {
-        debugger;
-        // Corrected to use camelCase property names
-        $('#editFundingSourceId').val(data.fundingSourceId || '');
+
+        $('#editFundingSourceId').val(data.fundingSourceId || 0);
         $('#editCaseId').val(data.caseId || '');
-        $('#editDocumentID').val(data.documentID || '');
-        $('#editFundingSourceName').val(data.fundingSource || '');
-        $('#editFileName').val(data.fileName || '');
-        $('#editNotes').val(data.notes || '');
-        $('#editMU_Unit').val(data.mu_Unit || '');
-        $('#editHV_Unit').val(data.hv_Unit || '');
-        $('#editDescription').val(data.description || '');
+        $('#editDocumentID').val(data.documentID || 0);
+        $('#editFundingSourceName').val(data.fundingSource);
+        $('#editFileName').val(data.fileName);
+        $('#editMU_Unit').val(data.mU_Unit);
+        $('#editHV_Unit').val(data.hV_Unit);
+        $('#editNotes').val(data.notes);
+
+        
 
         if (data.fileName && data.fileName.trim() !== '') {
             $('#currentFileName').text(data.fileName);
@@ -316,18 +316,54 @@ window.FundingSourceManager = class FundingSourceManager {
         const caseId = $('#CaseId').val() || $('#editCaseId').val();
         if (!caseId) return;
 
-        $.get('/FundingSource/GetFundingSourcesById', { caseId })
-            .done((html) => {
-                $('#divFundingSource').html(html);
-                setTimeout(() => {
-                    if (window.fundingSourceManager) {
-                        window.fundingSourceManager = null;
-                    }
-                    window.fundingSourceManager = new window.FundingSourceManager();
-                }, 100);
+        // Fetch the raw data as JSON, not HTML
+        $.get('/FundingSource/GetFundingSourcesByCaseIdJson', { caseId })
+            .done((data) => {
+                // Re-render the table with the new data
+                this.updateTableData(data);
+                this.showMessage('Table reloaded successfully.', 'success');
             })
             .fail(() => this.showMessage('Failed to reload funding sources', 'error'));
     }
+
+    updateTableData(data) {
+        // Destroy the old DataTable instance to avoid conflicts
+        if ($.fn.DataTable.isDataTable(this.$table)) {
+            this.$table.DataTable().destroy();
+        }
+
+        // Clear the existing table body
+        this.$table.find('tbody').empty();
+
+        // Rebuild the table rows with the new data
+        let html = '';
+        data.forEach(fs => {
+            html += `
+            <tr data-id="${fs.fundingSourceId}">
+                <td>${fs.fundingSource}</td>
+                <td>${fs.fileName}</td>
+                <td>${fs.notes}</td>
+                <td>${fs.mU_Unit}</td>
+                <td>${fs.hV_Unit}</td>
+                <td>${new Date(fs.createdDate).toLocaleDateString()}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning btn-edit" data-id="${fs.fundingSourceId}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger btn-delete" data-id="${fs.fundingSourceId}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        });
+        this.$table.find('tbody').html(html);
+
+        // Re-initialize DataTable on the new content
+        this.initDataTable();
+    }
+
+
 
     /** Reset Form */
     resetForm($form) {
@@ -388,7 +424,7 @@ window.FundingSource = class FundingSource {
 
     static RefreshFundingSources() {
         if (window.fundingSourceManager) {
-            window.fundingSourceManager.reloadTable();
+           // window.fundingSourceManager.reloadTable();
         }
     }
 }
@@ -402,7 +438,7 @@ window.populateEditModal = function (fundingSource) {
 
 // Auto-init
 $(document).ready(() => {
-    if ($('#fundingSourceTable').length > 0) {
+    if (!window.fundingSourceManager && $('#fundingSourceTable').length > 0) {
         window.fundingSourceManager = new window.FundingSourceManager();
     }
 });

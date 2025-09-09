@@ -1,33 +1,76 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using DeveloperPortal.Application.Common;
-using DeveloperPortal.Application.ProjectDetail.Interface;
-using DeveloperPortal.DataAccess.Entity.Data;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
+﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
-using DeveloperPortal.Models.Common;
-using DeveloperPortal.Models.IDM;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Domain.FundingSource;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using static DeveloperPortal.Domain.PropertySnapshot.Constants;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
     public class FundingSourceService : IFundingSourceService
     {
-        public readonly IAccountRepository _accountRepository;
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
         private IConfiguration _config;
+        private readonly IFundingSourceRepository _fundingSourceRepository;
 
-
-        public FundingSourceService(IAccountRepository accountRepository, IConfiguration config)
+        public FundingSourceService(IStoredProcedureExecutor storedProcedureExecutor, IConfiguration config, IFundingSourceRepository fundingSourceRepository)
         {
-            _accountRepository = accountRepository;
+            _storedProcedureExecutor = storedProcedureExecutor;
             _config = config;
+            _fundingSourceRepository = fundingSourceRepository;
         }
+
+
+       
+
         
-    
+        public async Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId)
+        {
+            List<FundingSourceViewModel> lstFundingSourceViewModel = new List<FundingSourceViewModel>();
+            try
+            {
+                lstFundingSourceViewModel = _fundingSourceRepository.GetFundingSource(caseId).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            return lstFundingSourceViewModel;
+        }
+
+
+        public async Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId)
+        {
+            FundingSourceViewModel lstFundingSourceViewModel = new FundingSourceViewModel();
+            try
+            {
+                lstFundingSourceViewModel = _fundingSourceRepository.GetFundingSourceById(funDingSourceId).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            return lstFundingSourceViewModel;
+        }
+
+
+
+        public async Task<DocumentModel> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel)
+        {
+
+            bool isSuccess = await _fundingSourceRepository.SaveDocumentForFundingSource(documentModel, viewModel);
+            if (isSuccess)
+            {
+                return documentModel;
+            }
+            else
+            {
+                return new DocumentModel();
+            }
+
+        }
     }
 }
 

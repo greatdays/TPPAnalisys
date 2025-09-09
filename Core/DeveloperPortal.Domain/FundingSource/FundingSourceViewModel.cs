@@ -10,7 +10,7 @@ namespace DeveloperPortal.Domain.FundingSource
 {
     public class FundingSourcePageViewModel
     {
-        public int CaseId { get; set; }
+        public string CaseId { get; set; }
         public int ControlViewModelId { get; set; }
         public IEnumerable<FundingSourceViewModel> FundingSources { get; set; }
     }
@@ -36,18 +36,20 @@ namespace DeveloperPortal.Domain.FundingSource
         public int? DocumentID { get; set; }
 
         // Additional properties for auditing, if needed
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string ModifiedBy { get; set; }
 
-        public int CaseId { get; set; }
+        public string? CaseId { get; set; }
        
 
         public IFormFile? File { get; set; } // For file upload
 
         public string? Description { get; set; }
 
+        public string? Link { get; set; }
+        public string? FileSize { get; set; }
 
     }
 }

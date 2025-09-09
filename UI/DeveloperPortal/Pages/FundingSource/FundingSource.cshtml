@@ -14,7 +14,7 @@
 
         <input type="hidden" id="CaseId" value="@Model.CaseId" />
 
-        <div id="divFundingSource">
+        <div id="divFundingSourceGrid">
             <table id="fundingSourceTable" class="table table-striped table-bordered align-middle w-100">
                 <thead class="table-light">
                     <tr>
@@ -38,7 +38,7 @@
                                 <td>@fs.Notes</td>
                                 <td>@fs.MU_Unit</td>
                                 <td>@fs.HV_Unit</td>
-                                <td>@fs.CreatedDate.ToString("MM/dd/yyyy")</td>
+                                <td>@fs.CreatedDate?.ToString("MM/dd/yyyy")</td>
                                 <td>
                                     <button class="btn btn-sm btn-warning btn-edit" data-id="@fs.FundingSourceId">
                                         <i class="fas fa-edit"></i>
