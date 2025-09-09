@@ -30,21 +30,6 @@
                         </div>
                     </div>
 
-                   @*  <div class="form-group mb-3">
-                        <label for="status">Status*</label>
-                        <select class="form-control" id="status" name="Status" required>
-                            <option value="">-- Select Status --</option>
-                            <option value="Status 1">Status 1</option>
-                            <option value="Status 2">Status 2</option>
-                            <option value="Status 3">Status 3</option>
-                            <option value="Status 4">Status 4</option>
-                            <option value="Status 5">Status 5</option>
-                        </select>
-                        <div class="invalid-feedback" id="statusError">
-                            Please select a status.
-                        </div>
-                    </div> *@
-
                     <div class="form-group mb-3">
                         <label for="fileuploader">Upload File*</label>
                         <input type="file" id="fileuploader" name="File" class="form-control"
@@ -70,9 +55,7 @@
                     </button>
                     <button id="uploadFile" type="button" class="btn btn-primary">
                         <span id="uploadButtonText">Upload</span>
-                        @* <div class="spinner-border spinner-border-sm ms-2" id="uploadSpinner" style="display: none;" role="status">
-                            <span class="visually-hidden">Uploading...</span>
-                        </div> *@
+
                     </button>
                 </div>
             </form>
@@ -82,6 +65,7 @@
 
 <!-- Modal Configuration Script -->
 <script>
+     
     // Pass modal-specific configuration to JavaScript
     window.dmsModalConfig = {
         modalId: 'addFileModal',
@@ -92,7 +76,7 @@
         descriptionId: 'description',
         uploadButtonId: 'uploadFile',
         cancelButtonId: 'cancelUpload',
-        maxFileSize: 10485760, // 10MB in bytes
+        maxFileSize: 20971520, // 10MB in bytes
         allowedExtensions: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif']
     };
 </script>

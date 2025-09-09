@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DownTimeSchedulerBasicService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DownTimeScheduler.WcfIISHostBasicService" />
+      <xsd:import schemaLocation="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DownTimeScheduler.DataAccess.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDownTimeScheduler_GetApplicationDowntimeSchedule_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationDowntimeSchedule" />
+  </wsdl:message>
+  <wsdl:message name="IDownTimeScheduler_GetApplicationDowntimeSchedule_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationDowntimeScheduleResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDownTimeScheduler_GetApplicationDowntimeScheduleByApplicationName_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationDowntimeScheduleByApplicationName" />
+  </wsdl:message>
+  <wsdl:message name="IDownTimeScheduler_GetApplicationDowntimeScheduleByApplicationName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetApplicationDowntimeScheduleByApplicationNameResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IDownTimeScheduler">
+    <wsdl:operation name="GetApplicationDowntimeSchedule">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeSchedule" message="tns:IDownTimeScheduler_GetApplicationDowntimeSchedule_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeScheduleResponse" message="tns:IDownTimeScheduler_GetApplicationDowntimeSchedule_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationDowntimeScheduleByApplicationName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeScheduleByApplicationName" message="tns:IDownTimeScheduler_GetApplicationDowntimeScheduleByApplicationName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeScheduleByApplicationNameResponse" message="tns:IDownTimeScheduler_GetApplicationDowntimeScheduleByApplicationName_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IDownTimeScheduler" type="tns:IDownTimeScheduler">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetApplicationDowntimeSchedule">
+      <soap:operation soapAction="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeSchedule" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetApplicationDowntimeScheduleByApplicationName">
+      <soap:operation soapAction="http://tempuri.org/IDownTimeScheduler/GetApplicationDowntimeScheduleByApplicationName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DownTimeSchedulerBasicService">
+    <wsdl:port name="BasicHttpBinding_IDownTimeScheduler" binding="tns:BasicHttpBinding_IDownTimeScheduler">
+      <soap:address location="http://10.43.20.154/dtservicebasic/DownTimeSchedulerBasicService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

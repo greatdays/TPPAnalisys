@@ -112,5 +112,9 @@ namespace DeveloperPortal.Application.DMS.Implementation
             return folderList;
 
         }
+        public async Task<int> GetRecentFolderId()
+        {
+            return await _documentRepository.GetRecentFolderId();
+        }
     }
 }

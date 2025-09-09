@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AssnDocument">
+          <Key>
+            <PropertyRef Name="AssnDocumentID" />
+          </Key>
+          <Property Name="AssnDocumentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentID" Type="int" Nullable="false" />
+          <Property Name="ReferenceID" Type="nvarchar" MaxLength="64" />
+          <Property Name="ReferenceType" Type="nvarchar" MaxLength="20" />
+          <Property Name="AssociationType" Type="nvarchar" MaxLength="20" />
+          <Property Name="AssociatedFrom" Type="date" />
+          <Property Name="AssociatedTo" Type="date" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Link" Type="varchar(max)" Nullable="false" />
+          <Property Name="FileSize" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="OtherDocumentType" Type="nvarchar" MaxLength="200" />
+          <Property Name="ExpDate" Type="datetime" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
+          <Property Name="Attributes" Type="nvarchar(max)" />
+          <Property Name="DocumentTemplateID" Type="int" />
+          <Property Name="DocumentNum" Type="varchar" MaxLength="50" />
+          <Property Name="DocumentEntity" Type="nvarchar(max)" />
+          <Property Name="IsCurrent" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="ServiceTrackingID" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocumentTemplate">
+          <Key>
+            <PropertyRef Name="DocumentTemplateID" />
+          </Key>
+          <Property Name="DocumentTemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LutTemplateID" Type="int" />
+          <Property Name="TMSName" Type="varchar" MaxLength="100" />
+          <Property Name="Description" Type="varchar" MaxLength="250" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="EffectiveDate" Type="datetime" />
+          <Property Name="ExpireDate" Type="datetime" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="LutDocumentAttribute">
+          <Key>
+            <PropertyRef Name="LutDocumentAttributeId" />
+          </Key>
+          <Property Name="LutDocumentAttributeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AttributeName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AttributeValue" Type="ntext" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LutTemplate">
+          <Key>
+            <PropertyRef Name="LutTemplateID" />
+          </Key>
+          <Property Name="LutTemplateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentType" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TemplateName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="IsObsolete" Type="bit" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="100" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="RowID" Type="uniqueidentifier" />
+          <Property Name="SampleData" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_AssnDocument_Document">
+          <End Role="Document" Type="Self.Document" Multiplicity="1" />
+          <End Role="AssnDocument" Type="Self.AssnDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="DocumentID" />
+            </Principal>
+            <Dependent Role="AssnDocument">
+              <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_DocumentTemplate">
+          <End Role="DocumentTemplate" Type="Self.DocumentTemplate" Multiplicity="0..1" />
+          <End Role="Document" Type="Self.Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentTemplate">
+              <PropertyRef Name="DocumentTemplateID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentTemplate_LutTemplate">
+          <End Role="LutTemplate" Type="Self.LutTemplate" Multiplicity="0..1" />
+          <End Role="DocumentTemplate" Type="Self.DocumentTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LutTemplate">
+              <PropertyRef Name="LutTemplateID" />
+            </Principal>
+            <Dependent Role="DocumentTemplate">
+              <PropertyRef Name="LutTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DMSModelStoreContainer">
+          <EntitySet Name="AssnDocument" EntityType="Self.AssnDocument" Schema="DMS" store:Type="Tables" />
+          <EntitySet Name="Document" EntityType="Self.Document" Schema="DMS" store:Type="Tables" />
+          <EntitySet Name="DocumentTemplate" EntityType="Self.DocumentTemplate" Schema="DMS" store:Type="Tables" />
+          <EntitySet Name="LutDocumentAttribute" EntityType="Self.LutDocumentAttribute" Schema="DMS" store:Type="Tables" />
+          <EntitySet Name="LutTemplate" EntityType="Self.LutTemplate" Schema="DMS" store:Type="Tables" />
+          <AssociationSet Name="FK_AssnDocument_Document" Association="Self.FK_AssnDocument_Document">
+            <End Role="Document" EntitySet="Document" />
+            <End Role="AssnDocument" EntitySet="AssnDocument" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DocumentTemplate" Association="Self.FK_Document_DocumentTemplate">
+            <End Role="DocumentTemplate" EntitySet="DocumentTemplate" />
+            <End Role="Document" EntitySet="Document" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentTemplate_LutTemplate" Association="Self.FK_DocumentTemplate_LutTemplate">
+            <End Role="LutTemplate" EntitySet="LutTemplate" />
+            <End Role="DocumentTemplate" EntitySet="DocumentTemplate" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AssnDocument">
+          <Key>
+            <PropertyRef Name="AssnDocumentID" />
+          </Key>
+          <Property Name="AssnDocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentID" Type="Int32" Nullable="false" />
+          <Property Name="ReferenceID" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ReferenceType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AssociationType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="AssociatedFrom" Type="DateTime" Precision="0" />
+          <Property Name="AssociatedTo" Type="DateTime" Precision="0" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Document" Relationship="DMSModel.FK_AssnDocument_Document" FromRole="AssnDocument" ToRole="Document" />
+        </EntityType>
+        <EntityType Name="DocumentTemplate">
+          <Key>
+            <PropertyRef Name="DocumentTemplateID" />
+          </Key>
+          <Property Name="DocumentTemplateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LutTemplateID" Type="Int32" />
+          <Property Name="TMSName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Documents" Relationship="DMSModel.FK_Document_DocumentTemplate" FromRole="DocumentTemplate" ToRole="Document" />
+          <NavigationProperty Name="LutTemplate" Relationship="DMSModel.FK_DocumentTemplate_LutTemplate" FromRole="DocumentTemplate" ToRole="LutTemplate" />
+        </EntityType>
+        <EntityContainer Name="DMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AssnDocuments" EntityType="Self.AssnDocument" />
+          <EntitySet Name="DocumentTemplates" EntityType="Self.DocumentTemplate" />
+          <EntitySet Name="LutDocumentAttributes" EntityType="DMSModel.LutDocumentAttribute" />
+          <EntitySet Name="Documents" EntityType="DMSModel.Document" />
+          <EntitySet Name="LutTemplates" EntityType="DMSModel.LutTemplate" />
+          <AssociationSet Name="FK_AssnDocument_Document" Association="DMSModel.FK_AssnDocument_Document">
+            <End Role="Document" EntitySet="Documents" />
+            <End Role="AssnDocument" EntitySet="AssnDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_DocumentTemplate" Association="DMSModel.FK_Document_DocumentTemplate">
+            <End Role="DocumentTemplate" EntitySet="DocumentTemplates" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentTemplate_LutTemplate" Association="DMSModel.FK_DocumentTemplate_LutTemplate">
+            <End Role="LutTemplate" EntitySet="LutTemplates" />
+            <End Role="DocumentTemplate" EntitySet="DocumentTemplates" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="LutDocumentAttribute">
+          <Key>
+            <PropertyRef Name="LutDocumentAttributeId" />
+          </Key>
+          <Property Name="LutDocumentAttributeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AttributeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AttributeValue" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Link" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FileSize" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OtherDocumentType" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ExpDate" Type="DateTime" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Attributes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentTemplateID" Type="Int32" />
+          <Property Name="DocumentNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DocumentEntity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsCurrent" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="ServiceTrackingID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AssnDocuments" Relationship="DMSModel.FK_AssnDocument_Document" FromRole="Document" ToRole="AssnDocument" />
+          <NavigationProperty Name="DocumentTemplate" Relationship="DMSModel.FK_Document_DocumentTemplate" FromRole="Document" ToRole="DocumentTemplate" />
+        </EntityType>
+        <EntityType Name="LutTemplate">
+          <Key>
+            <PropertyRef Name="LutTemplateID" />
+          </Key>
+          <Property Name="LutTemplateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentType" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TemplateName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsObsolete" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="RowID" Type="Guid" />
+          <Property Name="SampleData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DocumentTemplates" Relationship="DMSModel.FK_DocumentTemplate_LutTemplate" FromRole="LutTemplate" ToRole="DocumentTemplate" />
+        </EntityType>
+        <Association Name="FK_AssnDocument_Document">
+          <End Type="DMSModel.Document" Role="Document" Multiplicity="1" />
+          <End Type="DMSModel.AssnDocument" Role="AssnDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="DocumentID" />
+            </Principal>
+            <Dependent Role="AssnDocument">
+              <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_DocumentTemplate">
+          <End Type="DMSModel.DocumentTemplate" Role="DocumentTemplate" Multiplicity="0..1" />
+          <End Type="DMSModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentTemplate">
+              <PropertyRef Name="DocumentTemplateID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="DocumentTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentTemplate_LutTemplate">
+          <End Type="DMSModel.LutTemplate" Role="LutTemplate" Multiplicity="0..1" />
+          <End Type="DMSModel.DocumentTemplate" Role="DocumentTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LutTemplate">
+              <PropertyRef Name="LutTemplateID" />
+            </Principal>
+            <Dependent Role="DocumentTemplate">
+              <PropertyRef Name="LutTemplateID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DMSModelStoreContainer" CdmEntityContainer="DMSEntities">
+          <EntitySetMapping Name="AssnDocuments">
+            <EntityTypeMapping TypeName="DMSModel.AssnDocument">
+              <MappingFragment StoreEntitySet="AssnDocument">
+                <ScalarProperty Name="AssnDocumentID" ColumnName="AssnDocumentID" />
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
+                <ScalarProperty Name="ReferenceID" ColumnName="ReferenceID" />
+                <ScalarProperty Name="ReferenceType" ColumnName="ReferenceType" />
+                <ScalarProperty Name="AssociationType" ColumnName="AssociationType" />
+                <ScalarProperty Name="AssociatedFrom" ColumnName="AssociatedFrom" />
+                <ScalarProperty Name="AssociatedTo" ColumnName="AssociatedTo" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentTemplates">
+            <EntityTypeMapping TypeName="DMSModel.DocumentTemplate">
+              <MappingFragment StoreEntitySet="DocumentTemplate">
+                <ScalarProperty Name="DocumentTemplateID" ColumnName="DocumentTemplateID" />
+                <ScalarProperty Name="LutTemplateID" ColumnName="LutTemplateID" />
+                <ScalarProperty Name="TMSName" ColumnName="TMSName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LutDocumentAttributes">
+            <EntityTypeMapping TypeName="DMSModel.LutDocumentAttribute">
+              <MappingFragment StoreEntitySet="LutDocumentAttribute">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AttributeValue" ColumnName="AttributeValue" />
+                <ScalarProperty Name="AttributeName" ColumnName="AttributeName" />
+                <ScalarProperty Name="LutDocumentAttributeId" ColumnName="LutDocumentAttributeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="DMSModel.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ServiceTrackingID" ColumnName="ServiceTrackingID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="DocumentEntity" ColumnName="DocumentEntity" />
+                <ScalarProperty Name="DocumentNum" ColumnName="DocumentNum" />
+                <ScalarProperty Name="DocumentTemplateID" ColumnName="DocumentTemplateID" />
+                <ScalarProperty Name="Attributes" ColumnName="Attributes" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ExpDate" ColumnName="ExpDate" />
+                <ScalarProperty Name="OtherDocumentType" ColumnName="OtherDocumentType" />
+                <ScalarProperty Name="FileSize" ColumnName="FileSize" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LutTemplates">
+            <EntityTypeMapping TypeName="DMSModel.LutTemplate">
+              <MappingFragment StoreEntitySet="LutTemplate">
+                <ScalarProperty Name="SampleData" ColumnName="SampleData" />
+                <ScalarProperty Name="RowID" ColumnName="RowID" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsObsolete" ColumnName="IsObsolete" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="LutTemplateID" ColumnName="LutTemplateID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

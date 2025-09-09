@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DMS" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" />
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF.DMSSvc" />
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDMS_GetVersionCount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersionCount" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetVersionCount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetVersionCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetVersionCount_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q1:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchForm_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchForm" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchForm_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFormResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchForm_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q2:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_UploadFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFile" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_UploadFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_UploadFile_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q3:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetContentByUnid_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetContentByUnid" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetContentByUnid_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetContentByUnidResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetContentByUnid_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q4:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_ReplaceData_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReplaceData" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_ReplaceData_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReplaceDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_ReplaceData_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q5:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_DeleteFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFile" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_DeleteFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_DeleteFile_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q6:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchFormReport_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFormReport" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchFormReport_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFormReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SearchFormReport_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q7:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetXMLForLargeFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLForLargeFile" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetXMLForLargeFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLForLargeFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_GetXMLForLargeFile_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q8:DMSFault" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SubmitLargeFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitLargeFile" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SubmitLargeFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitLargeFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDMS_SubmitLargeFile_DMSFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" name="detail" element="q9:DMSFault" />
+  </wsdl:message>
+  <wsdl:portType name="IDMS">
+    <wsdl:operation name="GetVersionCount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/GetVersionCount" message="tns:IDMS_GetVersionCount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/GetVersionCountResponse" message="tns:IDMS_GetVersionCount_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/GetVersionCountDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_GetVersionCount_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchForm">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/SearchForm" message="tns:IDMS_SearchForm_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/SearchFormResponse" message="tns:IDMS_SearchForm_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/SearchFormDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_SearchForm_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/UploadFile" message="tns:IDMS_UploadFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/UploadFileResponse" message="tns:IDMS_UploadFile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/UploadFileDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_UploadFile_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetContentByUnid">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/GetContentByUnid" message="tns:IDMS_GetContentByUnid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/GetContentByUnidResponse" message="tns:IDMS_GetContentByUnid_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/GetContentByUnidDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_GetContentByUnid_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceData">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/ReplaceData" message="tns:IDMS_ReplaceData_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/ReplaceDataResponse" message="tns:IDMS_ReplaceData_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/ReplaceDataDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_ReplaceData_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/DeleteFile" message="tns:IDMS_DeleteFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/DeleteFileResponse" message="tns:IDMS_DeleteFile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/DeleteFileDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_DeleteFile_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchFormReport">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/SearchFormReport" message="tns:IDMS_SearchFormReport_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/SearchFormReportResponse" message="tns:IDMS_SearchFormReport_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/SearchFormReportDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_SearchFormReport_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLForLargeFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/GetXMLForLargeFile" message="tns:IDMS_GetXMLForLargeFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/GetXMLForLargeFileResponse" message="tns:IDMS_GetXMLForLargeFile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/GetXMLForLargeFileDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_GetXMLForLargeFile_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitLargeFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDMS/SubmitLargeFile" message="tns:IDMS_SubmitLargeFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDMS/SubmitLargeFileResponse" message="tns:IDMS_SubmitLargeFile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IDMS/SubmitLargeFileDMSFaultFault" name="DMSFaultFault" message="tns:IDMS_SubmitLargeFile_DMSFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IDMS" type="tns:IDMS">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetVersionCount">
+      <soap:operation soapAction="http://tempuri.org/IDMS/GetVersionCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchForm">
+      <soap:operation soapAction="http://tempuri.org/IDMS/SearchForm" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UploadFile">
+      <soap:operation soapAction="http://tempuri.org/IDMS/UploadFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetContentByUnid">
+      <soap:operation soapAction="http://tempuri.org/IDMS/GetContentByUnid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReplaceData">
+      <soap:operation soapAction="http://tempuri.org/IDMS/ReplaceData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteFile">
+      <soap:operation soapAction="http://tempuri.org/IDMS/DeleteFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchFormReport">
+      <soap:operation soapAction="http://tempuri.org/IDMS/SearchFormReport" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLForLargeFile">
+      <soap:operation soapAction="http://tempuri.org/IDMS/GetXMLForLargeFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitLargeFile">
+      <soap:operation soapAction="http://tempuri.org/IDMS/SubmitLargeFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="DMSFaultFault">
+        <soap:fault use="literal" name="DMSFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DMS">
+    <wsdl:port name="BasicHttpBinding_IDMS" binding="tns:BasicHttpBinding_IDMS">
+      <soap:address location="http://43dmsw/DMSServiceDEV_V4/DMS.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
