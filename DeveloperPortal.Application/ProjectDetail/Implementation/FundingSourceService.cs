@@ -21,9 +21,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
 
 
-       
 
-        
+
+
         public async Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId)
         {
             List<FundingSourceViewModel> lstFundingSourceViewModel = new List<FundingSourceViewModel>();
@@ -70,6 +70,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 return new DocumentModel();
             }
 
+        }
+
+
+        public async Task<bool> DeleteFundingSource(int id)
+        {
+
+            return await _fundingSourceRepository.DeleteFundingSource(id);
         }
     }
 }

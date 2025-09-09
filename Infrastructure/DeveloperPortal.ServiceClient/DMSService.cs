@@ -40,12 +40,10 @@ namespace DeveloperPortal.ServiceClient
             info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
            
 
-            int? fileThreshold = null;
             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))
             {
                 fileThreshold = parsedThreshold;
             }
-            var isBackground = true;
 
             if (file != null && file.Count==1) // file is IFormFile
             {

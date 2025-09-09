@@ -1,49 +1,31 @@
-﻿using DeveloperPortal.Application.DMS.Interface;
+﻿using System.Net.Mime;
+using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize]
+//[Authorize]
 public class FundingSourceController : Controller
 {
     private readonly IConfiguration _config;
     private readonly IDocumentService _documentService;
     private readonly IFundingSourceService _fundingSourceService;
     private static readonly object _lock = new object();
-
+    private readonly IWebHostEnvironment _webHostEnvironment;
     // Mock data - replace with actual data source
-    private static List<FundingSourceViewModel> fundingSourceData = new List<FundingSourceViewModel>
-    {
-        new FundingSourceViewModel
-        {
-            FundingSourceId = 1,
-            FundingSource = "Government Grant",
-            Notes = "Federal funding",
-            MU_Unit = 50,
-            HV_Unit = 30,
-            Description = "Primary funding source",
-            FileName = "grant_document.pdf"
-        },
-        new FundingSourceViewModel
-        {
-            FundingSourceId = 2,
-            FundingSource = "Private Investment",
-            Notes = "Angel investor",
-            MU_Unit = 25,
-            HV_Unit = 45,
-            Description = "Secondary funding",
-            FileName = ""
-        }
-    };
 
-    public FundingSourceController(IConfiguration configuration, IDocumentService documentService, IFundingSourceService fundingSourceService)
+
+    public FundingSourceController(IConfiguration configuration, IDocumentService documentService, IFundingSourceService fundingSourceService
+        , IWebHostEnvironment webHostEnvironment)
     {
         _config = configuration;
         _documentService = documentService;
         _fundingSourceService = fundingSourceService;
+        this._webHostEnvironment = webHostEnvironment;
     }
 
     // GET: /FundingSource/GetFundingSourcesById
@@ -84,15 +66,15 @@ public class FundingSourceController : Controller
     }
 
     // GET: /FundingSource/Edit/5 - For modal view
-    public IActionResult Edit(int id)
-    {
-        var fundingSource = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
-        if (fundingSource == null)
-        {
-            return NotFound();
-        }
-        return PartialView("~/Pages/FundingSource/_EditFundingSourcePopup.cshtml", fundingSource);
-    }
+    //public IActionResult Edit(int id)
+    //{
+    //    var fundingSource = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
+    //    if (fundingSource == null)
+    //    {
+    //        return NotFound();
+    //    }
+    //    return PartialView("~/Pages/FundingSource/_EditFundingSourcePopup.cshtml", fundingSource);
+    //}
 
     // POST: /FundingSource/Create
     [HttpPost]
@@ -123,14 +105,14 @@ public class FundingSourceController : Controller
 
 
             // Generate new ID
-            viewModel.FundingSourceId = fundingSourceData.Any()
-                ? fundingSourceData.Max(fs => fs.FundingSourceId) + 1
-                : 1;
+            //viewModel.FundingSourceId = fundingSourceData.Any()
+            //    ? fundingSourceData.Max(fs => fs.FundingSourceId) + 1
+            //    : 1;
 
             viewModel.CaseId = caseId;
 
             // Handle file upload if present
-            if (viewModel.File != null && viewModel.File.Length > 0)
+            if (viewModel.File != null && viewModel.File.Count == 1)
             {
                 //FundingSourcePageViewModel pg = viewModel?.FundingSource?.FirstOrDefault();
                 var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, Convert.ToInt32(caseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
@@ -140,11 +122,11 @@ public class FundingSourceController : Controller
                     return Json(new { success = false, message = fileUploadResult.ErrorMessage });
                 }
 
-                viewModel.FileName = viewModel.File.FileName;
+                viewModel.FileName = viewModel.File[0].FileName;
                 viewModel.DocumentID = fileUploadResult.DocumentId;
             }
 
-            fundingSourceData.Add(viewModel);
+            //fundingSourceData.Add(viewModel);
 
 
             return Json(new { success = true, message = "Funding source created successfully." });
@@ -208,7 +190,7 @@ public class FundingSourceController : Controller
 
 
             // Handle new file upload
-            if (viewModel.File != null && viewModel.File.Length > 0)
+            if (viewModel.File != null && viewModel.File[0].Length > 0)
             {
                 var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, Convert.ToInt32(caseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
 
@@ -246,48 +228,45 @@ public class FundingSourceController : Controller
     }
 
     // POST: /FundingSource/Delete
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public IActionResult Delete(int id)
+    [HttpGet]
+    public bool Delete(int id)
     {
         try
         {
             lock (_lock)
             {
-                var fundingSourceToRemove = fundingSourceData.FirstOrDefault(fs => fs.FundingSourceId == id);
-                if (fundingSourceToRemove != null)
-                {
-                    // TODO: Delete associated documents if needed
-                    fundingSourceData.Remove(fundingSourceToRemove);
-                    return Json(new { success = true, message = "Funding source deleted successfully." });
-                }
-                return Json(new { success = false, message = "Funding source not found." });
+
+               return _fundingSourceService.DeleteFundingSource(id).Result;
+               
             }
         }
         catch (Exception ex)
         {
-            return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            return false;
         }
     }
+
+
+     
 
     #region Private Helper Methods
 
     /// <summary>
     /// Handle file upload and document creation
     /// </summary>
-    private async Task<FileUploadResult> HandleFileUpload(IFormFile file, string emailId, int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
+    private async Task<FileUploadResult> HandleFileUpload(IFormFileCollection file, string emailId, int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
     {
         try
         {
             // Validate file size (10MB limit)
-            if (file.Length > 10485760) // 10MB in bytes
+            if (file[0].Length > 10485760) // 10MB in bytes
             {
                 return new FileUploadResult { Success = false, ErrorMessage = "File size must be less than 10MB." };
             }
 
             // Validate file type
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
-            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            var fileExtension = Path.GetExtension(file[0].FileName).ToLowerInvariant();
 
             if (!allowedExtensions.Contains(fileExtension))
             {
@@ -296,7 +275,7 @@ public class FundingSourceController : Controller
 
             // Upload to DMS
             var uploadResponse = new DMSService(_config)
-                .SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
+                .SubmitUploadedDocument(file,  caseId, fileCategory, viewModel.CreatedBy);
 
             var response = uploadResponse.Value as UploadResponse;
 
@@ -316,10 +295,10 @@ public class FundingSourceController : Controller
             var documentModel = new DocumentModel
             {
 
-                Name = file.FileName,
+                Name = file[0].FileName,
                 Link = response.UniqueId.ToString(),
                 Attributes = "",
-                FileSize = file.Length.ToString(),
+                FileSize = file[0].Length.ToString(),
                 CaseId = caseId,
                 Comment = viewModel.Notes ?? "",
                 OtherDocumentType = "FundingSource",

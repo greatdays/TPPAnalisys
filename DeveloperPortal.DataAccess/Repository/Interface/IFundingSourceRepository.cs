@@ -23,5 +23,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
         Task<bool> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel);
 
+        Task<bool> DeleteFundingSource(int id);
+
     }
 }

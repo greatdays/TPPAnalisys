@@ -33,25 +33,23 @@
 
 					<div class="mb-3">
 						<label asp-for="MU_Unit" class="form-label">MU (%)</label>
-						<input asp-for="MU_Unit" class="form-control" id="editMU_Unit" type="number" min="0" max="100" step="0.01" />
+						<input asp-for="MU_Unit" class="form-control" id="editMU_Unit" type="number"  />
 						<div class="form-text">Enter percentage (0-100)</div>
-						<div class="invalid-feedback">MU (%) must be between 0 and 100</div>
 					</div>
 
 					<div class="mb-3">
 						<label asp-for="HV_Unit" class="form-label">HV (%)</label>
-						<input asp-for="HV_Unit" class="form-control" id="editHV_Unit" type="number" min="0" max="100" step="0.01" />
+						<input asp-for="HV_Unit" class="form-control" id="editHV_Unit" type="number"  />
 						<div class="form-text">Enter percentage (0-100)</div>
-						<div class="invalid-feedback">HV (%) must be between 0 and 100</div>
 					</div>
 
-					<div class="mb-3" id="currentFileInfo" style="display: none;">
+					<div class="mb-3" id="currentFileInfo" style="display:none;">
 						<label class="form-label">Current File:</label>
 						<div class="d-flex align-items-center">
 							<span id="currentFileName" class="text-muted me-2"></span>
-							<button type="button" class="btn btn-sm btn-outline-danger" id="removeCurrentFile">
+							@* <button type="button" class="btn btn-sm btn-outline-danger" id="removeCurrentFile">
 								<i class="fas fa-trash-alt me-1"></i>Remove
-							</button>
+							</button> *@
 						</div>
 					</div>
 

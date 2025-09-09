@@ -14,6 +14,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId);
         Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId);
         Task<DocumentModel> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel);
-
+        Task<bool> DeleteFundingSource(int id);
     }
 }

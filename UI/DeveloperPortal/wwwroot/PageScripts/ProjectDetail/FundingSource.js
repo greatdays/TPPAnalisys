@@ -70,19 +70,20 @@ window.FundingSourceManager = class FundingSourceManager {
         // Delete Funding Source
         $(document).on('click', '.btn-delete', (e) => {
             e.preventDefault();
+            debugger;
             this.deleteFundingSource($(e.currentTarget).data('id'));
         });
 
-        // Save (Add)
+
         this.$formAdd.on('submit', (e) => {
             e.preventDefault();
-            this.saveFundingSource(this.$formAdd, '/FundingSource/Create', this.$modalAdd);
+            this.saveFundingSource(this.$formAdd, APPURL + 'FundingSource/Create', this.$modalAdd);
         });
 
         // Save (Edit)
         this.$formEdit.on('submit', (e) => {
             e.preventDefault();
-            this.saveFundingSource(this.$formEdit, '/FundingSource/Update', this.$modalEdit);
+            this.saveFundingSource(this.$formEdit, APPURL + 'FundingSource/Update', this.$modalEdit);
         });
 
         // Remove current file (Edit)
@@ -108,7 +109,7 @@ window.FundingSourceManager = class FundingSourceManager {
 
     /** Show Edit Modal */
     showEditModal(id) {
-        $.get('/FundingSource/GetById', { id })
+        $.get(APPURL + 'FundingSource/GetById', { id })
             .done((data) => {
                 if (!data) {
                     this.showMessage('No funding source found', 'error');
@@ -206,19 +207,31 @@ window.FundingSourceManager = class FundingSourceManager {
 
     /** Delete Funding Source */
     deleteFundingSource(id) {
-        if (!confirm('Are you sure you want to delete this funding source?')) return;
+        //if (!confirm('Are you sure you want to delete this funding source?')) return;
 
-        $.post('/FundingSource/Delete', { id })
-            .done(() => {
-                this.reloadTable();
-                this.showMessage('Funding source deleted successfully!', 'success');
-
-                if (typeof loadFundingInformation === 'function') {
-                    loadFundingInformation();
+        var url = APPURL + 'FundingSource/Delete';
+        var model = { id: id };
+        AjaxCommunication.CreateRequest(this.window, "GET", url, "", model,
+            function (result) {
+                if (result) {
+                    // Show success message
+                    window.fundingSourceManager.showMessage(result.message || 'Funding source deleted successfully!', 'warning');
+                    //this.showFormError($form, errorMessage);
+                    //alert(result.message || "Funding source deleted successfully!");
+                    if (window.fundingSourceManager) {
+                        window.fundingSourceManager.reloadTable();
+                    }
+                } else {
+                    alert(result.message || "Failed to delete funding source");
                 }
-            })
-            .fail(() => this.showMessage('Failed to delete funding source', 'error'));
+            }, null, true, null, false);
+
+       
     }
+
+
+
+       
 
     /** Validate Form Fields */
     validateForm($form) {
@@ -317,7 +330,7 @@ window.FundingSourceManager = class FundingSourceManager {
         if (!caseId) return;
 
         // Fetch the raw data as JSON, not HTML
-        $.get('/FundingSource/GetFundingSourcesByCaseIdJson', { caseId })
+        $.get(APPURL + 'FundingSource/GetFundingSourcesByCaseIdJson', { caseId })
             .done((data) => {
                 // Re-render the table with the new data
                 this.updateTableData(data);
@@ -353,6 +366,15 @@ window.FundingSourceManager = class FundingSourceManager {
                     <button class="btn btn-sm btn-danger btn-delete" data-id="${fs.fundingSourceId}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
+
+                    
+                   <a href="javascript:void(0)"
+                       onclick="downloadFileWithProgress('${APPURL}DownloadDocument?fileName=${encodeURIComponent(fs.fileName)}&filePath=${encodeURIComponent(fs.link)}', '${fs.fileName}')"
+                       class="btn btn-outline-secondary btn-sm" 
+                       title="Download ${fs.fileName}">
+                        <i class="fas fa-download"></i> 
+                    </a>
+
                 </td>
             </tr>
         `;
@@ -432,7 +454,7 @@ window.FundingSource = class FundingSource {
 // Global functions for backward compatibility
 window.populateEditModal = function (fundingSource) {
     if (window.fundingSourceManager) {
-        window.fundingSourceManager.populateEditForm(fundingSource);
+       // window.fundingSourceManager.populateEditForm(fundingSource);
     }
 };
 

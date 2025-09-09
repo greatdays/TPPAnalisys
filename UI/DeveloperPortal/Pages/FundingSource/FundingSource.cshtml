@@ -39,13 +39,22 @@
                                 <td>@fs.MU_Unit</td>
                                 <td>@fs.HV_Unit</td>
                                 <td>@fs.CreatedDate?.ToString("MM/dd/yyyy")</td>
-                                <td>
+                                <td style="width:15%">
                                     <button class="btn btn-sm btn-warning btn-edit" data-id="@fs.FundingSourceId">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-sm btn-danger btn-delete" data-id="@fs.FundingSourceId">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
+
+                                    <a href="javascript:void(0)"
+                                       onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { area = "Document", fileName = fs.FileName, filePath = fs.Link })', '@fs.FileName')"
+                                       class="btn btn-outline-secondary btn-sm" title="Download @fs.FileName">
+                                        <i class="fas fa-download"></i> 
+                                    </a>
+                                   @*  <button class="btn btn-sm btn-download" data-id="@fs.Link">
+                                        <i class="fas fa fa-download"></i> Download
+                                    </button> *@
                                 </td>
                             </tr>
                         }
@@ -62,3 +71,43 @@
 @section Scripts {
     <script src="~/PageScripts/ProjectDetail/FundingSource.js"></script>
 }
+
+
+<!-- Configuration Script -->
+<script>
+    // Configure DMS with server-side values
+    
+
+       function downloadFileWithProgress(url, fileName) {
+           LoadingOverlay.show();
+
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Download failed: ${response.status}`);
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create and trigger download
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+
+                // Cleanup
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(downloadUrl);
+
+                // Hide loading overlay
+                LoadingOverlay.hide();
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                LoadingOverlay.hide();
+                alert('Download failed');
+            });
+    }
+</script>

@@ -2,6 +2,7 @@
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
+using DeveloperPortal.Models.IDM;
 using Microsoft.EntityFrameworkCore;
 using static DeveloperPortal.DataAccess.Entity.ViewModels.CommentModel;
 
@@ -199,6 +200,32 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 return await _context.FundingSources.FirstOrDefaultAsync(fs => fs.DocumentId == document.DocumentId);
             }
 
+        }
+
+
+        public async Task<bool> DeleteFundingSource(int id)
+        {
+
+            var fundingSource = _context.FundingSources.FirstOrDefault(fs => fs.FundingSourceId == id);
+
+            if (fundingSource != null)
+            {
+                fundingSource.IsDeleted = true;
+
+                fundingSource.ModifiedDate = DateTime.Now; // optional, if you have a DeletedDate column
+
+                _context.FundingSources.Update(fundingSource);
+                _context.SaveChanges();
+
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+            // Mark as deleted
+           
         }
 
     }
