@@ -22,6 +22,8 @@ namespace DeveloperPortal.ServiceClient
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();
+            int? fileThreshold = null;
+            var isBackground = true;
             FileUploadInfo info = new FileUploadInfo
             {
                 ApplicationId = new Guid(string.IsNullOrWhiteSpace(_config["DMSConfig:DMSAppIdExternal"])?"": _config["DMSConfig:DMSAppIdExternal"]),
@@ -38,12 +40,10 @@ namespace DeveloperPortal.ServiceClient
             info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
            
 
-            int? fileThreshold = null;
             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))
             {
                 fileThreshold = parsedThreshold;
             }
-            var isBackground = true;
 
             if (file != null && file.Count==1) // file is IFormFile
             {

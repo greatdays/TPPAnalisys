@@ -1,0 +1,83 @@
+﻿@using DeveloperPortal.Domain.FundingSource
+@model FundingSourceViewModel
+
+<div class="modal fade" id="editFundingSourceModal" tabindex="-1" aria-labelledby="EditFundingSourceModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form id="editFundingSourceForm" method="post" enctype="multipart/form-data">
+				<div class="modal-header">
+					<h5 class="modal-title" id="EditFundingSourceModalLabel">Edit Funding Source</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<div class="alert alert-danger" id="editFundingError" style="display: none;">
+						<span id="editFundingErrorMessage"></span>
+					</div>
+
+					<input type="hidden" asp-for="FundingSourceId" id="editFundingSourceId" />
+					<input type="hidden" asp-for="CaseId" id="editCaseId" />
+					<input type="hidden" asp-for="DocumentID" id="editDocumentID" />
+					@Html.AntiForgeryToken()
+
+					<div class="mb-3">
+						<label asp-for="FundingSource" class="form-label">Funding Source Name *</label>
+						<input asp-for="FundingSource" class="form-control" id="editFundingSourceName" required />
+						<div class="invalid-feedback">Please enter a funding source.</div>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Notes" class="form-label">Notes</label>
+						<textarea asp-for="Notes" class="form-control" id="editNotes" rows="3"></textarea>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="MU_Unit" class="form-label">MU (%)</label>
+						<input asp-for="MU_Unit" class="form-control" id="editMU_Unit" type="number"  />
+						<div class="form-text">Enter percentage (0-100)</div>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="HV_Unit" class="form-label">HV (%)</label>
+						<input asp-for="HV_Unit" class="form-control" id="editHV_Unit" type="number"  />
+						<div class="form-text">Enter percentage (0-100)</div>
+					</div>
+
+					<div class="mb-3" id="currentFileInfo" style="display:none;">
+						<label class="form-label">Current File:</label>
+						<div class="d-flex align-items-center">
+							<span id="currentFileName" class="text-muted me-2"></span>
+							@* <button type="button" class="btn btn-sm btn-outline-danger" id="removeCurrentFile">
+								<i class="fas fa-trash-alt me-1"></i>Remove
+							</button> *@
+						</div>
+					</div>
+
+					<div class="mb-3">
+						<label for="editFileUploader" class="form-label">Upload New File</label>
+						<input type="file" id="editFileUploader" name="File" class="form-control"
+							   accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
+						<div class="form-text">
+							Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF (Max 10MB)
+						</div>
+						<div class="invalid-feedback" id="editFileError">Please select a valid file.</div>
+					</div>
+
+					<input type="hidden" asp-for="FileName" id="editFileName" />
+
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+					<button id="updateFundingSourceBtn" type="submit" class="btn btn-primary">
+						<span id="updateButtonText">Save Changes</span>
+						@*  <div class="spinner-border spinner-border-sm ms-2" id="updateSpinner" style="display: none;" role="status">
+                            <span class="visually-hidden">Updating...</span>
+                        </div> *@
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

@@ -51,6 +51,16 @@ public partial class QrfairHousing
 
     public bool? IsAnyChangeInRole { get; set; }
 
+    public bool? IsAnyChangeInFiveReqRoles { get; set; }
+
+    public bool? IsOpmrequiredNewPropMgmtStaffToCreateAahraccount { get; set; }
+
+    public DateOnly? AccountNlinkPropertyDate { get; set; }
+
+    public bool? IsOpmrequiredNewPropMgmtStaffToAttendAnnualFh { get; set; }
+
+    public DateOnly? TrainingAttendedDate { get; set; }
+
     public bool? IsAwareOfAnyFhac { get; set; }
 
     public string? CourtName { get; set; }

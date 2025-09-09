@@ -89,13 +89,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             return resultList;
         }
-          //for getting the userIdentifer id by username 
-          public async Task<ContactIdentifier> GetUserContactIdentifierData()
-          {
+        //for getting the userIdentifer id by username 
+        public async Task<ContactIdentifier> GetUserContactIdentifierData()
+        {
             var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
             var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
             return contactIdentifierID;
-          }
+        }
 
 
         /// <summary>
@@ -193,7 +193,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
         }
 
-        private  string GetReviewNoteACHPFileNumberByUser(String ACHPFileNumbers)
+        private string GetReviewNoteACHPFileNumberByUser(String ACHPFileNumbers)
         {
 
             try

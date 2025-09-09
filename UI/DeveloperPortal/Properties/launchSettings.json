@@ -2,40 +2,40 @@
     "ConnectionStrings": {
         "AAHR": "Data Source=43devdb10;Encrypt=False;Trust Server Certificate=true;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True"
     },
-   
-  "profiles": {
-    "http": {
-        "commandName": "Project",
-        "launchBrowser": true,
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Development"
+
+    "profiles": {
+        "http": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "dotnetRunMessages": true,
+            "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
         },
-        "dotnetRunMessages": true,
-        "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
-    },
-    "https": {
-        "commandName": "Project",
-        "launchBrowser": true,
-        "environmentVariables": {
-            "ASPNETCORE_ENVIRONMENT": "Local"
+        "https": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Local"
+            },
+            "dotnetRunMessages": true,
+            "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
         },
-        "dotnetRunMessages": true,
-        "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
+        "IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Local"
+            }
+        }
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Local"
-      }
+    "iisSettings": {
+        "windowsAuthentication": false,
+        "anonymousAuthentication": true,
+        "iisExpress": {
+            "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP",
+            "sslPort": 0
+        }
     }
-  },
-  "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-        "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP",
-        "sslPort": 0
-    }
-  }
 }

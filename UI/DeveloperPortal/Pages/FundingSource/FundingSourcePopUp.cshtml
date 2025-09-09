@@ -1,0 +1,70 @@
+﻿@using DeveloperPortal.Domain.FundingSource
+@model FundingSourceViewModel
+
+<div class="modal fade" id="addFundingSourceModal" tabindex="-1" aria-labelledby="addFundingSourceLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFundingSourceLabel">Add Funding Source</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="addFundingSourceForm" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="alert alert-danger" id="addFundingError" style="display: none;">
+                        <span id="addFundingErrorMessage"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="CaseId" />
+
+                    <div class="mb-3">
+                        <label asp-for="FundingSource" class="form-label"></label>
+                        <input asp-for="FundingSource" class="form-control" required />
+                        <div class="invalid-feedback">Please enter a funding source.</div>
+                    </div>
+
+                   
+
+                    <div class="mb-3">
+                        <label asp-for="Notes" class="form-label"></label>
+                        <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MU_Unit" class="form-label"></label>
+                        <input asp-for="MU_Unit" class="form-control" type="number" type="number" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="HV_Unit" class="form-label"></label>
+                        <input asp-for="HV_Unit" class="form-control" type="number" type="number" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="addFileUploader" class="form-label">Upload File</label>
+                        <input type="file" id="addFileUploader" name="File" class="form-control"
+                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" required  />
+                        <div class="form-text">
+                            Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF (Max 10MB)
+                        </div>
+                        <div class="invalid-feedback" id="addFileError">Please select a valid file.</div>
+                    </div>
+
+                 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="saveFundingSourceBtn" type="submit" class="btn btn-primary">
+                        <span id="saveButtonText">Add Funding Source</span>
+                        @* <div class="spinner-border spinner-border-sm ms-2" id="saveSpinner" style="display: none;" role="status">
+                            <span class="visually-hidden">Saving...</span>
+                        </div> *@
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

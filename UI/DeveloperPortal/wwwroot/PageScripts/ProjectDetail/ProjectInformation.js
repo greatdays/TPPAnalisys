@@ -20,7 +20,8 @@
                }
            });
         },
-        openTab: function (evt, tabName) {
+    openTab: function (evt, tabName) {
+ 
             // Get all elements with class="tabcontent" and hide them
             $(".tabcontent").css("display", "none");
             // Get all elements with class="tablinks" and remove the class "active"
@@ -53,6 +54,15 @@
                     console.log(Id);
                                           // Load documents using the new DMS static method
                     DMS.LoadDocuments(caseId);
+                    break;
+
+                case "tabFundingSource":
+                    if (window.FundingSource) {
+                        FundingSource.LoadFundingSources(Id);
+                    } else {
+                        console.error("FundingSource class not loaded yet");
+                    }
+                    break;
                     break;
                 // case "tabLogs":
                 //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;

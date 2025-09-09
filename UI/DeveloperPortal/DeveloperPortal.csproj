@@ -36,7 +36,9 @@
 
   <ItemGroup>
     <Folder Include="Areas\Document\Data\" />
+    <Folder Include="Areas\Funding Source\" />
     <Folder Include="logs\" />
+    <Folder Include="Pages\NewFolder\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\js\jquery-mask-plugin\" />
   </ItemGroup>
