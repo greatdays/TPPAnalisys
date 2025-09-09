@@ -2,10 +2,13 @@
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
+using DeveloperPortal.ServiceClient;
+using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
-[Authorize]
+
 public class FundingSourceController : Controller
 {
     private readonly IConfiguration _config;
@@ -129,7 +132,7 @@ public class FundingSourceController : Controller
             viewModel.CaseId = caseId;
 
             // Handle file upload if present
-            if (viewModel.File != null && viewModel.File.Length > 0)
+            if (viewModel.File != null && viewModel.File[0].Length > 0)
             {
                 //FundingSourcePageViewModel pg = viewModel?.FundingSource?.FirstOrDefault();
                 var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, Convert.ToInt32(caseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
@@ -139,7 +142,7 @@ public class FundingSourceController : Controller
                     return Json(new { success = false, message = fileUploadResult.ErrorMessage });
                 }
 
-                viewModel.FileName = viewModel.File.FileName;
+                viewModel.FileName = viewModel.File[0].FileName;
                 viewModel.DocumentID = fileUploadResult.DocumentId;
             }
 
@@ -207,8 +210,11 @@ public class FundingSourceController : Controller
 
 
             // Handle new file upload
-            if (viewModel.File != null && viewModel.File.Length > 0)
+            if (viewModel.File != null && viewModel.File[0].Length > 0)
             {
+                IFormFileCollection files = new FormFileCollection();
+                
+
                 var fileUploadResult = await HandleFileUpload(viewModel.File, emailId, Convert.ToInt32(caseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
 
                 if (!fileUploadResult.Success)
@@ -274,19 +280,19 @@ public class FundingSourceController : Controller
     /// <summary>
     /// Handle file upload and document creation
     /// </summary>
-    private async Task<FileUploadResult> HandleFileUpload(IFormFile file, string emailId, int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
+    private async Task<FileUploadResult> HandleFileUpload(IFormFileCollection file, string emailId, int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
     {
         try
         {
             // Validate file size (10MB limit)
-            if (file.Length > 10485760) // 10MB in bytes
+            if (file.Count() ==1) // 10MB in bytes
             {
                 return new FileUploadResult { Success = false, ErrorMessage = "File size must be less than 10MB." };
             }
 
             // Validate file type
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
-            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            var fileExtension = Path.GetExtension(file[0].FileName).ToLowerInvariant();
 
             if (!allowedExtensions.Contains(fileExtension))
             {
@@ -295,7 +301,7 @@ public class FundingSourceController : Controller
 
             // Upload to DMS
             var uploadResponse = new DMSService(_config)
-                .SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
+                .SubmitUploadedDocument(file,  caseId, fileCategory, viewModel.CreatedBy);
 
             var response = uploadResponse.Value as UploadResponse;
 
@@ -315,10 +321,10 @@ public class FundingSourceController : Controller
             var documentModel = new DocumentModel
             {
 
-                Name = file.FileName,
+                Name = file[0].FileName,
                 Link = response.UniqueId.ToString(),
                 Attributes = "",
-                FileSize = file.Length.ToString(),
+                FileSize = file[0].Length.ToString(),
                 CaseId = caseId,
                 Comment = viewModel.Notes ?? "",
                 OtherDocumentType = "FundingSource",

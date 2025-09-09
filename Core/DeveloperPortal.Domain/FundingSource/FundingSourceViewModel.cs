@@ -44,7 +44,7 @@ namespace DeveloperPortal.Domain.FundingSource
         public string? CaseId { get; set; }
 
 
-        public IFormFile? File { get; set; } // For file upload
+        public IFormFileCollection? File { get; set; } // For file upload
 
         public string? Description { get; set; }
 
