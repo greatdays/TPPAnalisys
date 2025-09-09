@@ -29,8 +29,9 @@
 </div>
 <script>
     $(document).ready(function () {
+
          $.ajax({
-        url: "/Account/GetLookupData?lookup=UserRole",
+        url: APPURL + "Account/GetLookupData?lookup=UserRole",
         type: 'GET',
         async: false,
         dataType: 'json',
