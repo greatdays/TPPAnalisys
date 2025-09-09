@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
     <ProjectReference Include="..\DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj" />
-    <ProjectReference Include="..\Infrastructure\DeveloperPortal.ServiceClient\DeveloperPortal.ServiceClient.csproj" />
   </ItemGroup>
 
 </Project>
