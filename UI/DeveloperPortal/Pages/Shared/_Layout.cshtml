@@ -226,20 +226,39 @@
       // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
       //     console.log("Clikced");
       //    window.location.href = 'Account/MyAccount';
-      // });
-    function showLoadingOverlay() {
-       document.getElementById("loadingOverlay").style.display = "block";
-    }
+      //
+           window.LoadingOverlay = {
+        show: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "block";
+            } else {
+                console.warn("Loading overlay element not found");
+            }
+        },
 
-        function hideLoadingOverlay() {
-            document.getElementById("loadingOverlay").style.display = "none";
+        hide: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "none";
+            }
+        },
+
+        toggle: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = overlay.style.display === "none" ? "block" : "none";
+            }
         }
+    };
+
+    // Usage: LoadingOverlay.show(), LoadingOverlay.hide()
 
         // Show on form submission
         document.addEventListener("submit", function (e) {
             const form = e.target;
             if (form.tagName === "FORM") {
-                showLoadingOverlay();
+                 LoadingOverlay.show();
             }
         }, true);
 
@@ -257,16 +276,16 @@
                     !link.href.startsWith("javascript:") &&
                     !isSamePageAnchor
                 ) {
-                    showLoadingOverlay();
+                   LoadingOverlay.show();
                 }
             }
         });
 
         // Optional: Show for all AJAX calls (jQuery)
         $(document).ajaxStart(function () {
-            showLoadingOverlay();
+            LoadingOverlay.show();
         }).ajaxStop(function () {
-            hideLoadingOverlay();
+            LoadingOverlay.hide();
         });
     </script>
     </html>

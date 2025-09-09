@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF.DMSSvc" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF.DMSSvc" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" />
+  <xs:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://43dmsw/DMSServiceDEV_V4/DMS.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="GetVersionResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" base="q1:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Versions" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetVersionResponse" nillable="true" type="tns:GetVersionResponse" />
+  <xs:complexType name="SearchParameters">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SearchParametersBase">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="MetaData" nillable="true" type="q2:ArrayOfKeyValueOfFieldTypestringKnJpaDin" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchParameters" nillable="true" type="tns:SearchParameters" />
+  <xs:complexType name="SearchParametersBase">
+    <xs:sequence>
+      <xs:element name="ApplicationId" type="ser:guid" />
+      <xs:element name="DocumentType" type="tns:DocType" />
+      <xs:element minOccurs="0" name="SystemFields" nillable="true" type="tns:ArrayOfSysFieldType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchParametersBase" nillable="true" type="tns:SearchParametersBase" />
+  <xs:simpleType name="DocType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unknown" />
+      <xs:enumeration value="AcHP" />
+      <xs:enumeration value="ATS_CaseDocuments" />
+      <xs:enumeration value="BimsCorrespondence" />
+      <xs:enumeration value="BimsEarlyExemption" />
+      <xs:enumeration value="CCRIS" />
+      <xs:enumeration value="CCRIS_THP" />
+      <xs:enumeration value="ExemptionClaimForm" />
+      <xs:enumeration value="FIMS" />
+      <xs:enumeration value="Generic" />
+      <xs:enumeration value="HIMS" />
+      <xs:enumeration value="LandUse" />
+      <xs:enumeration value="RSOCertificate" />
+      <xs:enumeration value="Payments" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DocType" nillable="true" type="tns:DocType" />
+  <xs:complexType name="ArrayOfSysFieldType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SysFieldType" type="tns:SysFieldType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSysFieldType" nillable="true" type="tns:ArrayOfSysFieldType" />
+  <xs:simpleType name="SysFieldType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FileName" />
+      <xs:enumeration value="FileExtension" />
+      <xs:enumeration value="FileSize" />
+      <xs:enumeration value="MimeType" />
+      <xs:enumeration value="InternalURL" />
+      <xs:enumeration value="ModifiedBy" />
+      <xs:enumeration value="CreatedBy" />
+      <xs:enumeration value="LastAccessed" />
+      <xs:enumeration value="CreatedOn" />
+      <xs:enumeration value="ModifiedOn" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SysFieldType" nillable="true" type="tns:SysFieldType" />
+  <xs:simpleType name="FieldType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AcHPNumber" />
+      <xs:enumeration value="AchpProjectId" />
+      <xs:enumeration value="AchpPropertyId" />
+      <xs:enumeration value="AmtPd" />
+      <xs:enumeration value="APN" />
+      <xs:enumeration value="ApplicationType" />
+      <xs:enumeration value="ATSId" />
+      <xs:enumeration value="ATSDocumentType" />
+      <xs:enumeration value="ATSFileName" />
+      <xs:enumeration value="AttachmentType" />
+      <xs:enumeration value="Audience" />
+      <xs:enumeration value="Building" />
+      <xs:enumeration value="CaseId" />
+      <xs:enumeration value="Category" />
+      <xs:enumeration value="CkOrCCNum" />
+      <xs:enumeration value="DefaultImage" />
+      <xs:enumeration value="Description" />
+      <xs:enumeration value="FileName" />
+      <xs:enumeration value="FimsId" />
+      <xs:enumeration value="GenericText" />
+      <xs:enumeration value="HIMSModule" />
+      <xs:enumeration value="HIMSNumber" />
+      <xs:enumeration value="HIMSProjUniqueID" />
+      <xs:enumeration value="HIMSProjectUniqueID" />
+      <xs:enumeration value="HIMSUploadBy" />
+      <xs:enumeration value="HIMSUploadDate" />
+      <xs:enumeration value="LandUseId" />
+      <xs:enumeration value="LevelOrFloor" />
+      <xs:enumeration value="PrimaryKey" />
+      <xs:enumeration value="ProcessedDate" />
+      <xs:enumeration value="ReceivedDate" />
+      <xs:enumeration value="ReferenceNum" />
+      <xs:enumeration value="RequestId" />
+      <xs:enumeration value="ServiceYear" />
+      <xs:enumeration value="SiteAddress" />
+      <xs:enumeration value="StatementNum" />
+      <xs:enumeration value="Status" />
+      <xs:enumeration value="SubCategory" />
+      <xs:enumeration value="SystemDescription" />
+      <xs:enumeration value="Units" />
+      <xs:enumeration value="ViewOrder" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FieldType" nillable="true" type="tns:FieldType" />
+  <xs:complexType name="FileUploadInfo">
+    <xs:sequence>
+      <xs:element name="ApplicationId" type="ser:guid" />
+      <xs:element name="DocumentType" type="tns:DocType" />
+      <xs:element name="FileName" nillable="true" type="xs:string" />
+      <xs:element name="FileStream" nillable="true" type="xs:base64Binary" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="MetaData" nillable="true" type="q3:ArrayOfKeyValueOfFieldTypeArrayOfstring4xnDmmOs" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SysData" nillable="true" type="q4:ArrayOfKeyValueOfSysFieldTypestringKnJpaDin" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FileUploadInfo" nillable="true" type="tns:FileUploadInfo" />
+  <xs:complexType name="UploadResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/HCIDLA.DMS.WCF" base="q5:ResponseBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="URL" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UniqueId" type="ser:guid" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UploadResponse" nillable="true" type="tns:UploadResponse" />
+  <xs:complexType name="ReplaceDataInfo">
+    <xs:sequence>
+      <xs:element name="ApplicationId" type="ser:guid" />
+      <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="MetaData" nillable="true" type="q6:ArrayOfKeyValueOfFieldTypeArrayOfstring4xnDmmOs" />
+      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SysData" nillable="true" type="q7:ArrayOfKeyValueOfSysFieldTypestringKnJpaDin" />
+      <xs:element name="UniqueId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ReplaceDataInfo" nillable="true" type="tns:ReplaceDataInfo" />
+  <xs:complexType name="ReportParameters">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:SearchParametersBase">
+        <xs:sequence>
+          <xs:element name="End" type="xs:dateTime" />
+          <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" name="FieldFilters" nillable="true" type="q8:ArrayOfKeyValueOfFieldTypeArrayOfstring4xnDmmOs" />
+          <xs:element name="Start" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ReportParameters" nillable="true" type="tns:ReportParameters" />
+</xs:schema>

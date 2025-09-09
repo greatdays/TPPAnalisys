@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="4cba75d6-eb08-4198-98d6-acb18b9739e7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://43devweb3/VscanWcf/Vscan.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Vscan.xsd" MetadataType="Schema" ID="781b7a8d-5bba-4a32-b3da-8afb195f07ec" SourceId="1" SourceUrl="http://43devweb3/VscanWcf/Vscan.svc?xsd=xsd2" />
+    <MetadataFile FileName="Vscan.wsdl" MetadataType="Wsdl" ID="adb1717f-94b1-4c94-bcd7-3b9b8e3569e2" SourceId="1" SourceUrl="http://43devweb3/VscanWcf/Vscan.svc?wsdl" />
+    <MetadataFile FileName="Vscan.disco" MetadataType="Disco" ID="3c62a81a-f9fd-43aa-8d42-df2545b11804" SourceId="1" SourceUrl="http://43devweb3/VscanWcf/Vscan.svc?disco" />
+    <MetadataFile FileName="Vscan1.xsd" MetadataType="Schema" ID="0fc5256d-0be2-4e24-9e7f-3c115573c357" SourceId="1" SourceUrl="http://43devweb3/VscanWcf/Vscan.svc?xsd=xsd0" />
+    <MetadataFile FileName="Vscan2.xsd" MetadataType="Schema" ID="1ec14d8a-04fe-4364-88e6-4412ebb4b7ba" SourceId="1" SourceUrl="http://43devweb3/VscanWcf/Vscan.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

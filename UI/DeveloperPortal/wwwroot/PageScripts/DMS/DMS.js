@@ -15,7 +15,8 @@ class DMSManager {
      * Initialize the DMS functionality
      */
     init() {
-        $(document).ready(() => {
+        //$(document).ready(() => {
+        $(() => {
             this.initializeDataTable();
             this.bindEvents();
             this.initializeModal();
@@ -27,8 +28,14 @@ class DMSManager {
      */
     initializeDataTable() {
         // Destroy existing DataTable if it exists
-        if ($.fn.DataTable.isDataTable('#dmsDataTable')) {
+        if ($.fn.DataTable && $.fn.DataTable.isDataTable('#dmsDataTable')) {
             $('#dmsDataTable').DataTable().destroy();
+        }
+
+        // Only initialize if the table exists
+        if ($('#dmsDataTable').length === 0) {
+            console.warn('DMS DataTable element not found');
+            return;
         }
 
         this.dataTable = $('#dmsDataTable').DataTable({
@@ -37,6 +44,7 @@ class DMSManager {
             info: true,
             searching: true,
             scrollX: true,
+            responsive: true,
             language: {
                 emptyTable: "No documents available"
             },
@@ -47,12 +55,11 @@ class DMSManager {
                     type: 'date'
                 },
                 {
-                    targets: -1, // Actions column (last column, safer than hardcoding 5)
+                    targets: -1, // Actions column (last column)
                     orderable: false,
                     searchable: false
                 }
             ],
-          
             columns: [
                 { data: 'UploadedDate', defaultContent: '' },
                 { data: 'Name', defaultContent: '' },
@@ -60,11 +67,12 @@ class DMSManager {
                 { data: 'UploadedBy', defaultContent: '' },
                 { data: 'Roles', defaultContent: '' },
                 { data: 'actions', defaultContent: '-' } // fallback for empty actions
-            ]
-
+            ],
+            error: function (xhr, error, code) {
+                console.error('DataTable error:', error);
+            }
         });
     }
-
 
     /**
      * Initialize modal-specific functionality
@@ -72,8 +80,13 @@ class DMSManager {
     initializeModal() {
         // Initialize Bootstrap modal instance
         const modalElement = document.getElementById(this.modalConfig.modalId);
-        if (modalElement) {
+        if (modalElement && typeof bootstrap !== 'undefined') {
             this.addFileModal = new bootstrap.Modal(modalElement);
+        } else if (modalElement) {
+            // Fallback for older Bootstrap versions
+            this.addFileModal = $(modalElement);
+        } else {
+            console.warn('Modal element not found:', this.modalConfig.modalId);
         }
     }
 
@@ -82,20 +95,39 @@ class DMSManager {
      */
     bindEvents() {
         // Show modal on Add File button click
-        $('#btn-add-file').on('click', () => this.showAddFileModal());
+        $('#btn-add-file').off('click').on('click', (e) => {
+            e.preventDefault();
+            this.showAddFileModal();
+        });
 
         // Handle file upload
-        $(`#${this.modalConfig.uploadButtonId}`).on('click', () => this.handleFileUpload());
+        $(`#${this.modalConfig.uploadButtonId}`).off('click').on('click', (e) => {
+            e.preventDefault();
+            this.handleFileUpload();
+        });
 
         // Handle modal events
-        $(`#${this.modalConfig.modalId}`).on('hidden.bs.modal', () => this.onModalHidden());
-        $(`#${this.modalConfig.modalId}`).on('show.bs.modal', () => this.onModalShow());
+        if (this.modalConfig.modalId) {
+            $(`#${this.modalConfig.modalId}`)
+                .off('hidden.bs.modal')
+                .on('hidden.bs.modal', () => this.onModalHidden())
+                .off('show.bs.modal')
+                .on('show.bs.modal', () => this.onModalShow());
+        }
 
         // File input validation
-        $(`#${this.modalConfig.fileInputId}`).on('change', (e) => this.validateFile(e));
+        if (this.modalConfig.fileInputId) {
+            $(`#${this.modalConfig.fileInputId}`)
+                .off('change')
+                .on('change', (e) => this.validateFile(e));
+        }
 
         // Form validation on input change
-        $(`#${this.modalConfig.categoryId}, #${this.modalConfig.statusId}`).on('change', (e) => this.validateField(e.target));
+        if (this.modalConfig.categoryId || this.modalConfig.statusId) {
+            $(`#${this.modalConfig.categoryId}, #${this.modalConfig.statusId}`)
+                .off('change')
+                .on('change', (e) => this.validateField(e.target));
+        }
     }
 
     /**
@@ -103,7 +135,14 @@ class DMSManager {
      */
     showAddFileModal() {
         if (this.addFileModal) {
-            this.addFileModal.show();
+            if (typeof this.addFileModal.show === 'function') {
+                this.addFileModal.show();
+            } else {
+                // Fallback for jQuery modal
+                this.addFileModal.modal('show');
+            }
+        } else {
+            console.warn('Modal not initialized');
         }
     }
 
@@ -121,7 +160,6 @@ class DMSManager {
     onModalHidden() {
         this.resetUploadForm();
         this.hideError();
-        //this.hideUploadSpinner();
     }
 
     /**
@@ -129,9 +167,11 @@ class DMSManager {
      * @param {HTMLElement} field - The form field to validate
      */
     validateField(field) {
+        if (!field) return false;
+
         const $field = $(field);
         const value = $field.val();
-        const isValid = value && value.trim() !== '';
+        const isValid = value && value.toString().trim() !== '';
 
         if (isValid) {
             $field.removeClass('is-invalid').addClass('is-valid');
@@ -182,12 +222,22 @@ class DMSManager {
      * @returns {boolean} - Whether the form is valid
      */
     validateForm() {
-        const categoryValid = this.validateField(document.getElementById(this.modalConfig.categoryId));
+        let isValid = true;
 
-        const fileInput = document.getElementById(this.modalConfig.fileInputId);
-        const fileValid = fileInput.files.length > 0 && this.validateFile({ target: fileInput });
+        // Validate category if required
+        if (this.modalConfig.categoryId) {
+            const categoryValid = this.validateField(document.getElementById(this.modalConfig.categoryId));
+            isValid = isValid && categoryValid;
+        }
 
-        return categoryValid && fileValid;
+        // Validate file
+        if (this.modalConfig.fileInputId) {
+            const fileInput = document.getElementById(this.modalConfig.fileInputId);
+            const fileValid = fileInput && fileInput.files.length > 0 && this.validateFile({ target: fileInput });
+            isValid = isValid && fileValid;
+        }
+
+        return isValid;
     }
 
     /**
@@ -199,7 +249,13 @@ class DMSManager {
             return;
         }
 
-        const files = $(`#${this.modalConfig.fileInputId}`).get(0).files;
+        const fileInputId = this.modalConfig.fileInputId;
+        if (!fileInputId) {
+            this.showError('File input not configured');
+            return;
+        }
+
+        const files = $(`#${fileInputId}`).get(0).files;
 
         if (files.length === 0) {
             this.showError("Please select a file to upload.");
@@ -208,8 +264,6 @@ class DMSManager {
 
         const formData = this.buildFormData(files[0]);
         const uploadUrl = this.getUploadUrl();
-
-        console.log(uploadUrl);
 
         this.performUpload(formData, uploadUrl);
     }
@@ -225,18 +279,27 @@ class DMSManager {
         // The controller expects the file as the first form file
         formData.append("", file); // Empty name as controller accesses Files[0]
 
-        // Add form fields as expected by the existing controller
-        formData.append("ProjectId", $('#ProjectId').val());
-        formData.append("FolderName", $('#FolderName').val());
-        formData.append("FolderId", $('#FolderId').val());
+        // Add form fields with null checks
+        const projectId = $('#ProjectId').val();
+        const folderName = $('#FolderName').val();
+        const folderId = $('#FolderId').val();
+
+        if (projectId) formData.append("ProjectId", projectId);
+        if (folderName) formData.append("FolderName", folderName);
+        if (folderId) formData.append("FolderId", folderId);
 
         // Add additional fields for potential future use
-        formData.append("Category", $(`#${this.modalConfig.categoryId}`).val());
+        if (this.modalConfig.categoryId) {
+            const category = $(`#${this.modalConfig.categoryId}`).val();
+            if (category) formData.append("Category", category);
+        }
 
         // Add description if provided
-        const description = $(`#${this.modalConfig.descriptionId}`).val();
-        if (description && description.trim() !== '') {
-            formData.append("Description", description.trim());
+        if (this.modalConfig.descriptionId) {
+            const description = $(`#${this.modalConfig.descriptionId}`).val();
+            if (description && description.trim() !== '') {
+                formData.append("Description", description.trim());
+            }
         }
 
         return formData;
@@ -256,16 +319,17 @@ class DMSManager {
      * @param {string} url - Upload URL
      */
     performUpload(formData, url) {
-       // this.showUploadSpinner();
         this.hideError();
         this.disableUploadButton();
-        console.log("url" + url)
+        LoadingOverlay.show();
+
         $.ajax({
             url: url,
             data: formData,
             processData: false,
             contentType: false,
             type: "POST",
+            timeout: 300000, // 5 minutes timeout
             success: (data) => this.handleUploadSuccess(data),
             error: (xhr, status, error) => this.handleUploadError(xhr, status, error),
             complete: () => this.enableUploadButton()
@@ -277,21 +341,33 @@ class DMSManager {
      * @param {Object} data - Response data (folder path from controller)
      */
     handleUploadSuccess(data) {
-        //this.hideUploadSpinner();
-
-        // The controller returns the folder path as JSON
         if (data) {
             this.showSuccess('File uploaded successfully!');
 
             // Close modal after a brief delay to show success message
             setTimeout(() => {
-                this.addFileModal.hide();
+                if (this.addFileModal) {
+                    if (typeof this.addFileModal.hide === 'function') {
+                        this.addFileModal.hide();
+                        LoadingOverlay.hide();
+                    } else {
+                        this.addFileModal.modal('hide');
+                        LoadingOverlay.hide();
+                    }
+                }
             }, 1000);
 
             // Wait for modal to close, then reload Documents tab
-            $(`#${this.modalConfig.modalId}`).one('hidden.bs.modal', () => {
-                this.reloadDocumentsTab();
-            });
+            if (this.modalConfig.modalId) {
+                $(`#${this.modalConfig.modalId}`).one('hidden.bs.modal', () => {
+                    this.reloadDocumentsTab();
+                });
+            } else {
+                // Fallback if no modal ID
+                setTimeout(() => {
+                    this.reloadDocumentsTab();
+                }, 1500);
+            }
         } else {
             this.showError('Upload completed but no response received');
         }
@@ -304,23 +380,37 @@ class DMSManager {
      * @param {string} error - Error message
      */
     handleUploadError(xhr, status, error) {
-        //this.hideUploadSpinner();
         let errorMessage = "Upload failed. Please try again.";
 
-        // Handle different types of error responses
-        if (xhr.responseJSON) {
-            if (typeof xhr.responseJSON === 'string') {
-                errorMessage = xhr.responseJSON;
-            } else if (xhr.responseJSON.message) {
-                errorMessage = xhr.responseJSON.message;
+        try {
+            // Handle different types of error responses
+            if (xhr.responseJSON) {
+                if (typeof xhr.responseJSON === 'string') {
+                    errorMessage = xhr.responseJSON;
+                } else if (xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseJSON.error) {
+                    errorMessage = xhr.responseJSON.error;
+                }
+            } else if (xhr.responseText) {
+                try {
+                    const responseObj = JSON.parse(xhr.responseText);
+                    errorMessage = responseObj.message || responseObj.error || xhr.responseText;
+                } catch (parseError) {
+                    errorMessage = xhr.responseText;
+                }
             }
-        } else if (xhr.responseText) {
-            try {
-                const responseObj = JSON.parse(xhr.responseText);
-                errorMessage = responseObj.message || responseObj.error || xhr.responseText;
-            } catch (e) {
-                errorMessage = xhr.responseText;
+
+            // Handle specific HTTP status codes
+            if (xhr.status === 413) {
+                errorMessage = "File is too large. Please select a smaller file.";
+            } else if (xhr.status === 415) {
+                errorMessage = "Unsupported file type. Please select a supported file format.";
+            } else if (xhr.status === 0 && status === 'timeout') {
+                errorMessage = "Upload timed out. Please try again with a smaller file.";
             }
+        } catch (e) {
+            console.error('Error parsing upload error response:', e);
         }
 
         this.showError(errorMessage);
@@ -331,8 +421,17 @@ class DMSManager {
      * @param {string} message - Error message to display
      */
     showError(message) {
-        $('#uploadError').show();
-        $('#uploadErrorMessage').text(message);
+        const errorElement = $('#uploadError');
+        const messageElement = $('#uploadErrorMessage');
+
+        if (errorElement.length && messageElement.length) {
+            errorElement.show();
+            messageElement.text(message);
+        } else {
+            console.error('Upload Error:', message);
+            // Fallback alert if error elements don't exist
+            alert('Upload Error: ' + message);
+        }
     }
 
     /**
@@ -344,42 +443,55 @@ class DMSManager {
     }
 
     /**
-     * Show success message (can be enhanced with a success alert)
+     * Show success message
      * @param {string} message - Success message
      */
     showSuccess(message) {
-        // You can implement a success notification here
-        console.log('Upload successful:', message);
+        const successElement = $('#uploadSuccess');
+        const messageElement = $('#uploadSuccessMessage');
+
+        if (successElement.length && messageElement.length) {
+            successElement.show();
+            messageElement.text(message);
+            // Auto-hide after 3 seconds
+            setTimeout(() => {
+                successElement.hide();
+            }, 3000);
+        } else {
+            console.log('Upload successful:', message);
+        }
     }
-
-    /**
-     * Show upload spinner and update button text
-     */
-    //showUploadSpinner() {
-    //    $('#uploadSpinner').show();
-    //    $('#uploadButtonText').text('Uploading...');
-    //}
-
-    ///**
-    // * Hide upload spinner and reset button text
-    // */
-    //hideUploadSpinner() {
-    //    $('#uploadSpinner').hide();
-    //    $('#uploadButtonText').text('Upload');
-    //}
 
     /**
      * Disable upload button during upload
      */
     disableUploadButton() {
-        $(`#${this.modalConfig.uploadButtonId}`).prop('disabled', true);
+        if (this.modalConfig.uploadButtonId) {
+            const $button = $(`#${this.modalConfig.uploadButtonId}`);
+            $button.prop('disabled', true);
+
+            // Store original text if not already stored
+            if (!$button.data('original-text')) {
+                $button.data('original-text', $button.text());
+            }
+            $button.text('Uploading...');
+        }
     }
 
     /**
      * Enable upload button
      */
     enableUploadButton() {
-        $(`#${this.modalConfig.uploadButtonId}`).prop('disabled', false);
+        if (this.modalConfig.uploadButtonId) {
+            const $button = $(`#${this.modalConfig.uploadButtonId}`);
+            $button.prop('disabled', false);
+
+            // Restore original text
+            const originalText = $button.data('original-text');
+            if (originalText) {
+                $button.text(originalText);
+            }
+        }
     }
 
     /**
@@ -389,57 +501,71 @@ class DMSManager {
         const caseId = $('#ProjectId').val();
         const controlViewModelId = $('#FolderId').val();
 
-       // this.showLoader();
+        if (!caseId) {
+            console.error('ProjectId not found for reload');
+            return;
+        }
 
         $.ajax({
-            url: 'Document/DMS/GetFilesById', // Match your existing route
+            url: 'Document/DMS/GetFilesById',
             type: 'GET',
             data: {
-                caseId: parseInt(caseId), // Convert to int as expected by controller
-                controlViewModelId: parseInt(controlViewModelId) // Convert to int as expected by controller
+                caseId: parseInt(caseId) || 0,
+                controlViewModelId: parseInt(controlViewModelId) || 0
             },
             success: (html) => {
                 $('#divDocument').html(html);
-               // this.hideLoader();
+
                 // Reinitialize DataTable after content reload
                 setTimeout(() => {
                     this.initializeDataTable();
-                }, 100); // Small delay to ensure DOM is updated
+                }, 100);
             },
             error: (xhr) => {
-                this.hideLoader();
                 console.error('Reload error:', xhr);
-                alert("Failed to reload documents tab. Please refresh the page.");
+                const errorMsg = "Failed to reload documents tab. Please refresh the page.";
+
+                if ($('#divDocument').length) {
+                    $('#divDocument').html(`
+                        <div class="alert alert-danger" role="alert">
+                            ${errorMsg}
+                            <button class="btn btn-outline-danger btn-sm ms-2" onclick="location.reload()">
+                                Refresh Page
+                            </button>
+                        </div>
+                    `);
+                } else {
+                    alert(errorMsg);
+                }
             }
         });
     }
 
     /**
-     * Show loading overlay
-     */
-    //showLoader() {
-    //    $('#loadingOverlay').show();
-    //}
-
-    /**
-     * Hide loading overlay
-     */
-   /* hideLoader() {
-        $('#loadingOverlay').hide();
-    }*/
-
-    /**
      * Reset the upload form
      */
     resetUploadForm() {
-        const form = document.getElementById(this.modalConfig.formId);
-        if (form) {
-            form.reset();
+        if (this.modalConfig.formId) {
+            const form = document.getElementById(this.modalConfig.formId);
+            if (form) {
+                form.reset();
+            }
         }
 
         // Reset validation classes
-        $(`#${this.modalConfig.categoryId}, #${this.modalConfig.statusId}, #${this.modalConfig.fileInputId}`)
-            .removeClass('is-valid is-invalid');
+        const elementsToReset = [
+            this.modalConfig.categoryId,
+            this.modalConfig.statusId,
+            this.modalConfig.fileInputId,
+            this.modalConfig.descriptionId
+        ].filter(Boolean);
+
+        elementsToReset.forEach(id => {
+            $(`#${id}`).removeClass('is-valid is-invalid');
+        });
+
+        // Hide success message
+        $('#uploadSuccess').hide();
     }
 
     /**
@@ -450,7 +576,7 @@ class DMSManager {
     formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
@@ -459,8 +585,10 @@ class DMSManager {
      * Refresh the data table
      */
     refreshDataTable() {
-        if (this.dataTable) {
+        if (this.dataTable && typeof this.dataTable.ajax !== 'undefined') {
             this.dataTable.ajax.reload();
+        } else if (this.dataTable) {
+            this.dataTable.draw();
         }
     }
 
@@ -468,33 +596,55 @@ class DMSManager {
      * Destroy and cleanup
      */
     destroy() {
-        if (this.dataTable) {
-            this.dataTable.destroy();
-        }
+        try {
+            // Destroy DataTable
+            if (this.dataTable && $.fn.DataTable.isDataTable('#dmsDataTable')) {
+                this.dataTable.destroy();
+                this.dataTable = null;
+            }
 
-        // Unbind events
-        $('#btn-add-file').off('click');
-        $(`#${this.modalConfig.uploadButtonId}`).off('click');
-        $(`#${this.modalConfig.modalId}`).off('hidden.bs.modal show.bs.modal');
-        $(`#${this.modalConfig.fileInputId}`).off('change');
-        $(`#${this.modalConfig.categoryId}, #${this.modalConfig.statusId}`).off('change');
+            // Unbind events
+            $('#btn-add-file').off('click');
+
+            if (this.modalConfig.uploadButtonId) {
+                $(`#${this.modalConfig.uploadButtonId}`).off('click');
+            }
+
+            if (this.modalConfig.modalId) {
+                $(`#${this.modalConfig.modalId}`).off('hidden.bs.modal show.bs.modal');
+            }
+
+            if (this.modalConfig.fileInputId) {
+                $(`#${this.modalConfig.fileInputId}`).off('change');
+            }
+
+            if (this.modalConfig.categoryId || this.modalConfig.statusId) {
+                $(`#${this.modalConfig.categoryId}, #${this.modalConfig.statusId}`).off('change');
+            }
+
+            // Clean up modal reference
+            this.addFileModal = null;
+        } catch (error) {
+            console.error('Error during DMS cleanup:', error);
+        }
     }
 }
 
 /**
  * Static DMS Class for external tab loading functionality
- * This provides a simple interface similar to SiteInformation.LoadSiteInformation()
  */
- class DMS {
+class DMS {
     /**
      * Load DMS documents view - Main entry point for tab switching
      * @param {number} caseId - Project/Case ID
      * @param {number} controlViewModelId - Control View Model ID (optional)
      * @param {string} targetDiv - Target div ID to load content into (default: 'divDocument')
      */
-     static LoadDocuments(caseId, controlViewModelId = 0, targetDiv = 'divDocument') {
-        // Show loading overlay
-       // DMS.ShowLoader();
+    static LoadDocuments(caseId, controlViewModelId = 0, targetDiv = 'divDocument') {
+        if (!caseId) {
+            console.error('CaseId is required for LoadDocuments');
+            return;
+        }
 
         const url = 'Document/DMS/GetFilesById';
 
@@ -502,12 +652,11 @@ class DMSManager {
             url: url,
             type: 'GET',
             data: {
-                caseId: parseInt(caseId),
-                controlViewModelId: parseInt(controlViewModelId)
+                caseId: parseInt(caseId) || 0,
+                controlViewModelId: parseInt(controlViewModelId) || 0
             },
             success: function (html) {
                 $(`#${targetDiv}`).html(html);
-                //DMS.HideLoader();
 
                 // Initialize DMS Manager after content is loaded
                 setTimeout(() => {
@@ -518,7 +667,6 @@ class DMSManager {
                 }, 100);
             },
             error: function (xhr, status, error) {
-                //DMS.HideLoader();
                 console.error('DMS Load Error:', error);
 
                 // Show error message in the target div
@@ -547,38 +695,13 @@ class DMSManager {
     }
 
     /**
-     * Show global loader
-     */
-   /* static ShowLoader() {
-        let loader = $('#dmsGlobalLoader');
-        if (loader.length === 0) {
-            // Create loader if it doesn't exist
-            $('body').append(`
-                <div id="dmsGlobalLoader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:1055; text-align:center; padding-top:20%;">
-                    <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
-                        <span class="visually-hidden">Loading documents...</span>
-                    </div>
-                    <div style="margin-top: 10px; font-weight: bold;">Loading documents...</div>
-                </div>
-            `);
-            loader = $('#dmsGlobalLoader');
-        }
-        loader.show();
-    }*/
-
-    /**
-     * Hide global loader
-     */
-   /* static HideLoader() {
-        $('#dmsGlobalLoader').hide();
-    }*/
-
-    /**
      * Refresh current documents view
      */
     static RefreshDocuments() {
         if (window.dmsManager) {
             window.dmsManager.reloadDocumentsTab();
+        } else {
+            console.warn('DMS Manager not initialized');
         }
     }
 
@@ -595,11 +718,11 @@ class DMSManager {
      * @returns {boolean} Whether DMS is loaded
      */
     static IsLoaded() {
-        return window.dmsManager !== null && $('#dmsDataTable').length > 0;
+        return !!(window.dmsManager && $('#dmsDataTable').length > 0);
     }
 }
 
-// Global configuration object (to be populated from server-side)
+// Global configuration objects
 window.dmsConfig = window.dmsConfig || {};
 window.dmsModalConfig = window.dmsModalConfig || {};
 
@@ -610,6 +733,10 @@ window.DMS = DMS;
 $(document).ready(function () {
     // Only initialize if we're on a page that has the DMS table
     if ($('#dmsDataTable').length > 0) {
+        // Clean up any existing instance first
+        if (window.dmsManager) {
+            window.dmsManager.destroy();
+        }
         window.dmsManager = new DMSManager();
     }
 });
