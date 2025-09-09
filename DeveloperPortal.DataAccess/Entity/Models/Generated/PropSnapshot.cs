@@ -81,6 +81,8 @@ public partial class PropSnapshot
 
     public virtual Location? Location { get; set; }
 
+    public virtual ICollection<NewStaffContactInfo> NewStaffContactInfos { get; set; } = new List<NewStaffContactInfo>();
+
     public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 
     public virtual ICollection<PmpunitAttributeSnap> PmpunitAttributeSnaps { get; set; } = new List<PmpunitAttributeSnap>();
