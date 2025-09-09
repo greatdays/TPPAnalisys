@@ -43,6 +43,7 @@ var FloorPlanType = {
             url: APPURL + 'FloorPlanType/GetFloorPlanTypes',
             type: 'GET',
             data: { projectId: projectId },
+            cache: false,
             success: function (data) {
                 console.log("Floor Plan Data:", data);
                 const table = $('#floorPlanTable');
