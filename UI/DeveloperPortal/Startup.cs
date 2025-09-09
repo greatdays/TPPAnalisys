@@ -68,7 +68,7 @@ namespace DeveloperPortal
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IFloorPlanTypeService, FloorPlanTypeService>();
             services.AddScoped<ISendNotificationEmail, SendNotificationEmailService>();
-
+            services.AddScoped<IFundingSourceService, FundingSourceService>();
 
 
             services.AddSingleton<JwtGenerator>();

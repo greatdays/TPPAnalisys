@@ -223,12 +223,14 @@
     <Compile Include="Entity\Models\Generated\LutAccessibilityComplianceStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutAccessibleUnitFeature.cs" />
     <Compile Include="Entity\Models\Generated\LutAccountTypeCategory.cs" />
+    <Compile Include="Entity\Models\Generated\LutAffirmativeMarketingOutreach.cs" />
     <Compile Include="Entity\Models\Generated\LutAHUPScore.cs" />
     <Compile Include="Entity\Models\Generated\LutAltContactType.cs" />
     <Compile Include="Entity\Models\Generated\LutAMI.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicableAccessibilityStandard.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationDeclineReason.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationType.cs" />
+    <Compile Include="Entity\Models\Generated\LutAssociatedRole.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchType.cs" />
     <Compile Include="Entity\Models\Generated\LutBathroomType.cs" />
