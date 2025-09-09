@@ -512,7 +512,7 @@ namespace DeveloperPortal.Controllers
                         select ((JProperty)x).Value.ToString();
             string tokenValue = query.FirstOrDefault();
 
-            tokenValue = (tokenValue.IsNullOrEmpty()) ? string.Empty : tokenValue;
+            tokenValue = (tokenValue==null||tokenValue=="") ? string.Empty : tokenValue;
 
             return tokenValue;
         }

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Mime;
+using ComCon.DataAccess.Models.IDM;
 
 
 namespace DeveloperPortal.Areas.Document.Controllers
@@ -82,15 +83,17 @@ namespace DeveloperPortal.Areas.Document.Controllers
         [Route("UploadFile")]
         public async Task<JsonResult> UploadFile()
         {
-            IFormFile file = HttpContext.Request.Form.Files[0];
-            var fileType = GetMimeTypeForFileExtension(file.FileName);
+            IFormFileCollection file = HttpContext.Request.Form.Files;
+            var fileType = GetMimeTypeForFileExtension(file[0].FileName);
             var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
             var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
             var category = Convert.ToString(HttpContext.Request.Form["Category"]);
             var comment = Convert.ToString(HttpContext.Request.Form["Description"]);
+            // var createdBy= UserSession.GetUserSession().UserName.ToString();
+            var createdBy = "amohandas";
             //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
-            var emailId = "ananthakrishnan.mohandas@lacity.org";
+           // var emailId = "ananthakrishnan.mohandas@lacity.org";
 
             var folderId = await _documentService.GetRecentFolderId();
 
@@ -99,7 +102,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
 
 
             //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, emailId, caseId, fileCategory, fileSubCategory);
+            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, caseId, category, createdBy);
 
             var response = uploadResponse.Value as UploadResponse;
 
@@ -114,24 +117,43 @@ namespace DeveloperPortal.Areas.Document.Controllers
                                   : "Unknown error")
                 });
             }
-
-            var documentModel = new DocumentModel()
+            else
             {
-                Name = file.FileName,
-                Link = response.UniqueId.ToString(),
-                Attributes = "",
-                FileSize = file.Length.ToString(),
-                CaseId = caseId,
-                FolderId = folderId,
-                Comment= comment,
-                OtherDocumentType = category,
-                CreatedBy= "ananthakrishnan",
-                CreatedOn=DateTime.Now,
-                IsDeleted= false
-               
-            };
+                var documentModel = new DocumentModel()
+                {
+                    Name = file[0].FileName,
+                    Link = response.UniqueId.ToString(),
+                    Attributes = "",
+                    FileSize = file[0].Length.ToString(),
+                    CaseId = caseId,
+                    Comment= comment,
+                    OtherDocumentType = category,
+                    CreatedBy= createdBy,
+                    CreatedOn=DateTime.Now,
+                    IsDeleted= false
 
-            var document = _documentService.SaveDocument(documentModel).Result;
+                };
+
+                var document = _documentService.SaveDocument(documentModel).Result;
+            }
+
+            /* var documentModel = new DocumentModel()
+             {
+                 Name = file.FileName,
+                 Link = response.UniqueId.ToString(),
+                 Attributes = "",
+                 FileSize = file.Length.ToString(),
+                 CaseId = caseId,
+                 FolderId = folderId,
+                 Comment= comment,
+                 OtherDocumentType = category,
+                 CreatedBy= "ananthakrishnan",
+                 CreatedOn=DateTime.Now,
+                 IsDeleted= false
+
+             };
+
+             var document = _documentService.SaveDocument(documentModel).Result;*/
             return Json(uploadResponse);
         }
         // GET: api/<DashboardController>

@@ -15,7 +15,8 @@ class DMSManager {
      * Initialize the DMS functionality
      */
     init() {
-        $(document).ready(() => {
+        //$(document).ready(() => {
+        $(() => {
             this.initializeDataTable();
             this.bindEvents();
             this.initializeModal();

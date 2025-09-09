@@ -18,7 +18,7 @@ namespace DeveloperPortal.ServiceClient
             _config = config;
         }
         [HttpPost]
-        public JsonResult SubmitUploadedDocument(IFormFile file,string emailId,int caseId,string Category,string subCategory)
+        public JsonResult SubmitUploadedDocument(IFormFileCollection file,int caseId,string category,string createdBy)
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();
@@ -31,28 +31,30 @@ namespace DeveloperPortal.ServiceClient
                 MetaData = new Dictionary<FieldType, string[]>(),
                 SysData = new Dictionary<SysFieldType, string>
                 {
-                    { SysFieldType.CreatedBy, emailId }
+                    { SysFieldType.CreatedBy, createdBy }
                 },
-                FileName= file.FileName,
                 
             };
             info.MetaData.Add(FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString()});
-            info.MetaData.Add(FieldType.Category, new string[] { Category });
-            info.MetaData.Add(FieldType.SubCategory, new string[] { subCategory });
-          
+            info.MetaData.Add(FieldType.Category, new string[] { "Project"});
+            info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
            
+
+            int? fileThreshold = null;
             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))
             {
                 fileThreshold = parsedThreshold;
             }
-           
-            if (file != null) // file is IFormFile
+            var isBackground = true;
+
+            if (file != null && file.Count==1) // file is IFormFile
             {
+                var f = file[0];
                 using var memoryStream = new MemoryStream();
-                file.CopyTo(memoryStream); 
+                f.CopyTo(memoryStream); 
                 byte[] byteArray = memoryStream.ToArray();
 
-                info.FileName = file.FileName;
+                info.FileName = f.FileName;
                 info.FileStream = byteArray;
 
                 if (byteArray.Length <= fileThreshold)
@@ -136,13 +138,13 @@ namespace DeveloperPortal.ServiceClient
             }
             return null;
         }
-        private void ProcessFiles(IFormFile files, FileUploadInfo info)
+        private void ProcessFiles(IFormFileCollection files, FileUploadInfo info)
         {
             string errorMsg = null;
 
-            Parallel.For(0, files.Length, i =>
+            Parallel.For(0, files.Count, i =>
             {
-                var f = files;
+                var f = files[i];
 
                 if (info.FileStream == null || !info.FileStream.Any())
                 {

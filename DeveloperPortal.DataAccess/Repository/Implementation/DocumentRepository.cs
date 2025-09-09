@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DeveloperPortal.DataAccess.Common;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Models.PlanReview;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 using static DeveloperPortal.DataAccess.Entity.ViewModels.CommentModel;
+
 
 namespace DeveloperPortal.DataAccess.Repository.Implementation
 {
     public class DocumentRepository : IDocumentRepository
     {
         private readonly AAHREntities _context;
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
 
-        public DocumentRepository(AAHREntities context)
+        public DocumentRepository(AAHREntities context, IStoredProcedureExecutor storedProcedureExecutor)
         {
             _context = context;
+            _storedProcedureExecutor = storedProcedureExecutor;
         }
+
         public async Task<bool> SaveDocument(DocumentModel documentModel)
         {
             if (documentModel.DocumentId > 0)
@@ -34,7 +41,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     document.OtherDocumentType = documentModel.OtherDocumentType;
                     document.Comment = documentModel.Comment;
                     document.Attributes = documentModel.Attributes;
-                    document.CreatedBy = documentModel.CreatedBy; 
+                    document.CreatedBy = documentModel.CreatedBy;
                     document.CreatedOn = DateTime.Now;
                     document.ModifiedBy = documentModel.CreatedBy;
                     document.ModifiedOn = DateTime.Now;
@@ -68,28 +75,60 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                             ModifiedBy =  documentModel.CreatedBy,
                             ModifiedOn =  DateTime.Now
                         }
-                    },
-                    AssnFolderDocuments =
-                    {
-                        new AssnFolderDocument
-                        {
-                            FolderId = documentModel.FolderId,
-                            CreatedBy =  documentModel.CreatedBy,
-                            CreatedOn =  DateTime.Now,
-                            ModifiedBy =  documentModel.CreatedBy,
-                            ModifiedOn =  DateTime.Now
-                        }
                     }
+                    //},
+                    //AssnFolderDocuments =
+                    //{
+                    //    new AssnFolderDocument
+                    //    {
+                    //        FolderId = documentModel?.FolderId,
+                    //        CreatedBy =  documentModel.CreatedBy,
+                    //        CreatedOn =  DateTime.Now,
+                    //        ModifiedBy =  documentModel.CreatedBy,
+                    //        ModifiedOn =  DateTime.Now
+                    //    }
+                    //}
                 };
                 _context.Documents.Add(document);
                 await _context.SaveChangesAsync();
-                documentModel.FolderId = document.DocumentId;
-                if (documentModel.FolderId > 0)
+                if (document.DocumentId > 0)
+                {
+                    UpdateDocumentFolderDetail(new FolderModel() { ProjectId = documentModel.CaseId, Link = documentModel.Link }, "Case", documentModel.CreatedBy);
                     return true;
-                else 
+                }
+                else
+                {
                     return false;
+                }
+                   
             }
             return true;
+        }
+        private FolderModel UpdateDocumentFolderDetail(FolderModel folderModel, string refenceType, string username)
+        {
+
+            if (folderModel == null)
+            {
+                return folderModel;
+            }
+            var sqlParameters = new List<SqlParameter>
+            {
+                new SqlParameter() { ParameterName = "@RefenceId", Value = folderModel.ProjectId },
+                new SqlParameter() { ParameterName = "@RefenceType", Value = refenceType},
+                new SqlParameter() { ParameterName = "@FolderId", Value =  folderModel.FolderId },
+                new SqlParameter() { ParameterName = "@Link", Value =  folderModel.Link },
+                new SqlParameter() { ParameterName = "@Username", Value = username }
+            };
+            using (var dataTableUnits = _storedProcedureExecutor.ExecuteStoreProcedure("DMS.uspUpdateDocumentFolderDetailForACHP", sqlParameters))
+            {
+                var planReviewDocumentList = dataTableUnits.ConvertDataTable<FolderModel>();
+                if (planReviewDocumentList != null && planReviewDocumentList.Count > 0)
+                {
+                    folderModel = planReviewDocumentList[0];
+                }
+            }
+
+            return folderModel;
         }
         public async Task<bool> SaveFolder(FolderModel folderModel,string userName)
         {
