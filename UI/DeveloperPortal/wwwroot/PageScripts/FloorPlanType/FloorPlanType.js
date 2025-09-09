@@ -25,7 +25,7 @@ var FloorPlanType = {
             modal.find('#edit_floorPlan').html('<p>Loading...</p>');
             modal.modal('show');
 
-            $.get('/FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
+            $.get(APPURL + 'FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
                 modal.find('#edit_floorPlan').html(data);
 
             });
@@ -40,38 +40,62 @@ var FloorPlanType = {
         const projectId = $('#hiddenProjectID').val();
 
         $.ajax({
-            url: '/FloorPlanType/GetFloorPlanTypes',
+            url: APPURL + 'FloorPlanType/GetFloorPlanTypes',
             type: 'GET',
             data: { projectId: projectId },
+            cache: false,
             success: function (data) {
-                const tbody = $('#floorPlanTableBody');
-                tbody.empty();
+                console.log("Floor Plan Data:", data);
+                const table = $('#floorPlanTable');
 
-                if (!data || data.length === 0) {
-                    tbody.append('<tr><td colspan="7" class="text-center">No floor plans found.</td></tr>');
-                    return;
+                // Destroy previous instance if exists
+                if ($.fn.DataTable.isDataTable('#floorPlanTable')) {
+                    table.DataTable().clear().destroy();
                 }
 
-                $.each(data, function (i, fPlan) {
-                    const row = `
-                        <tr>
-                            <td>${fPlan.name}</td>
-                            <td>${fPlan.squareFeet}</td>
-                            <td>${fPlan.bathroomTypes}</td>
-                            <td>${fPlan.bathroomOption}</td>
-                            <td>${fPlan.groupBathroomTypes}</td>
-                            <td>${fPlan.groupBathroomOption}</td>
-                            <td>
-                                <button class="btn btn-sm btn-action constructionbtn edit-floorplan" data-id="${fPlan.floorPlanTypeID}" data-used="${fPlan.isUsed}" data-name="${fPlan.name}">
-                                    <span class="fa fa-pencil primary-font-color"></span>
-                                </button>
-                                <button class="btn btn-sm btn-action constructionbtn delete-floorplan" data-id="${fPlan.floorPlanTypeID}" data-name="${fPlan.name}" data-used="${fPlan.isUsed}"   onclick="FloorPlanType.deleteFloorPlan(${fPlan.floorPlanTypeID}, '${fPlan.name}', '${fPlan.isUsed}')">
-                                    <span class="fa fa-trash primary-font-color"></span>
-                                </button>
-                            </td>
-                        </tr>`;
-                    tbody.append(row);
+
+                // ✅ Define columns using mapping
+                const floorPlanColumns = [
+                    { data: 'name', title: "Floor Plan Type" },
+                    { data: 'squareFeet', title: "Square Feet" },
+                    { data: 'bathroomTypes', title: "Number of Bedroom" },
+                    { data: 'bathroomOption', title: "Number of Bathroom" },
+                    { data: 'groupBathroomTypes', title: "Bathroom Type" },
+                    { data: 'groupBathroomOption', title: "Bathroom Option" },
+                    {
+                        data: null,
+                        title: "Action",
+                        orderable: false,
+                        render: function (data, type, row) {
+                            return `
+                            <button class="btn btn-sm btn-action constructionbtn edit-floorplan"
+                                data-id="${row.floorPlanTypeID}" data-used="${row.isUsed}" data-name="${row.name}">
+                                <span class="fa fa-pencil primary-font-color"></span>
+                            </button>
+                            <button class="btn btn-sm btn-action constructionbtn delete-floorplan"
+                                data-id="${row.floorPlanTypeID}" data-name="${row.name}" data-used="${row.isUsed}"
+                                onclick="FloorPlanType.deleteFloorPlan(${row.floorPlanTypeID}, '${row.name}', '${row.isUsed}')">
+                                <span class="fa fa-trash primary-font-color"></span>
+                            </button>
+                        `;
+                        }
+                    }
+                ];
+
+                // ✅ Initialize DataTable
+                table.DataTable({
+                    data: data || [],
+                    columns: floorPlanColumns,
+                    paging: true,
+                    searching: true,
+                    ordering: true,
+                    pageLength: 10,
+                    lengthChange: false,
+                    language: {
+                        emptyTable: "No floor plans found."
+                    }
                 });
+
             },
             error: function (err) {
                 console.error('Error loading floor plans:', err);
@@ -133,7 +157,7 @@ var FloorPlanType = {
 
             console.log(formData);
             $.ajax({
-                url: '/FloorPlanType/_EditFloorPlanType',
+                url: APPURL + 'FloorPlanType/_EditFloorPlanType',
                 type: 'POST',
                 data: formData,
                 contentType: "application/x-www-form-urlencoded",
@@ -145,7 +169,6 @@ var FloorPlanType = {
                         modalInstance.hide(); // close the modal
                     }
                     FloorPlanType.loadFloorPlans();
-                    //location.href = window.location.href;
                 },
                 error: function () {
                     $('#editFloorPlanMessage').html('<div class="alert alert-danger">An unexpected error occurred.</div>');
@@ -219,23 +242,20 @@ var FloorPlanType = {
 
             $.ajax({
                 type: 'POST',
-                url: '/FloorPlanType/AddFloorPlanType',
+                url: APPURL + 'FloorPlanType/AddFloorPlanType',
                 data: formData,
                 success: function (response) {
                     if (response.success) {
                         alert(response.message);
-
-                        // Close the modal
-                        localStorage.setItem('floorplanActiveTab', 'partialContainer');
-                        location.reload();
-                        //// Clear form and reset dynamic sections
+                        var modalEl = document.getElementById('addFloorPlanType');
+                        var modalInstance = bootstrap.Modal.getInstance(modalEl); // get existing instance
+                        if (modalInstance) {
+                            modalInstance.hide(); // close the modal
+                        }
                         $('#floorPlanForm')[0].reset();
-                        $('.text-danger').html('');
                         $('#bathroomTypeDiv').empty();
-
-                        // Reload the floor plan table
+                        $('.text-danger').html('');
                         FloorPlanType.loadFloorPlans();
-
                     } else {
                         alert('Something went wrong.');
                     }
@@ -382,7 +402,7 @@ var FloorPlanType = {
 
         if (confirm(`Are you sure you want to delete "${name}"?`)) {
             $.ajax({
-                url: '/FloorPlanType/DeleteFloorPlan',
+                url: APPURL + 'FloorPlanType/DeleteFloorPlan',
                 type: 'POST',
                 data: { floorPlanTypeId: id },
                 success: function () {
