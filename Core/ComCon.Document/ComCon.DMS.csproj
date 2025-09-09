@@ -102,6 +102,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HCIDLA.ServiceClient\HCIDLA.ServiceClient.csproj">
+      <Project>{241ba2ef-8f4d-457c-a8d9-6a81d4fd8af6}</Project>
+      <Name>HCIDLA.ServiceClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>

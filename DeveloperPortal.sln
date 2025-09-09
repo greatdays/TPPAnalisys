@@ -26,6 +26,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveloperPortal.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComCon.DMS", "Core\ComCon.Document\ComCon.DMS.csproj", "{62592E6C-72C2-42CF-A31F-DBD9B9612E5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HCIDLA.ServiceClient", "Core\HCIDLA.ServiceClient\HCIDLA.ServiceClient.csproj", "{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{62592E6C-72C2-42CF-A31F-DBD9B9612E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62592E6C-72C2-42CF-A31F-DBD9B9612E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62592E6C-72C2-42CF-A31F-DBD9B9612E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +73,7 @@ Global
 		{B24BF4AB-7A39-4B80-919E-3F2343BCE919} = {F0AC9BCF-4B98-4DCE-B848-8AB688CCBDD9}
 		{F52D5FB3-01B0-4E21-928E-32EC5F99CE21} = {7D30A531-CC26-468F-947D-664CAD05ED51}
 		{62592E6C-72C2-42CF-A31F-DBD9B9612E5F} = {A01021F7-7CC5-469E-9419-3F35FAEFCB69}
+		{241BA2EF-8F4D-457C-A8D9-6A81D4FD8AF6} = {A01021F7-7CC5-469E-9419-3F35FAEFCB69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D3E1D37-F315-4587-A3EC-B7F1A6829533}
