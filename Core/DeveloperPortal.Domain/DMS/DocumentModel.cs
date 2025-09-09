@@ -9,12 +9,12 @@ namespace DeveloperPortal.Domain.DMS
     public class DocumentModel
     {
         public int DocumentId { get; set; }
-        public int FolderId { get; set; }
+        public int? FolderId { get; set; }
         public int CaseId { get; set; }
 
         public string Name { get; set; } = null!;
 
-        public string FolderName { get; set; } = null!;
+        public string? FolderName { get; set; } = null!;
 
         public string Link { get; set; } = null!;
 
