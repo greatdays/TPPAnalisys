@@ -287,11 +287,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     LutBathroomTypeOptionID = bType.LutBathroomTypeOptionId,
                 });
             }
-            floorPlanType.LutTotalBedrooms = (await _floorPlanTypeRepository.GetLutTotalBedrooms())
+            floorPlanType.LutTotalBedrooms = (await GetLutTotalBedrooms())
                                 .Select(ut => new LutTotalBedrooms
                                 {
-                                    Value = ut.LutTotalBedroomsId.ToString(),
-                                    Text = ut.Description
+                                    Value = ut.Value.ToString(),
+                                    Text = ut.Text
                                 })
                                 .ToList();
             floorPlanType.LutTotalBathrooms = (await _floorPlanTypeRepository.GetLutTotalBathrooms()).Select(ut => new LutTotalBathrooms
