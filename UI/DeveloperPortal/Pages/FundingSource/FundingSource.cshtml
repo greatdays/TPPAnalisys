@@ -18,13 +18,13 @@
             <table id="fundingSourceTable" class="table table-striped table-bordered align-middle w-100">
                 <thead class="table-light">
                     <tr>
-                        <th>Funding Source</th>
-                        <th>File Name</th>
-                        <th>Notes</th>
-                        <th>MU (%)</th>
-                        <th>HV (%)</th>
-                        <th>Created Date</th>
-                        <th style="width:120px;">Actions</th>
+                        <th style="width:10%;">Funding Source</th>
+                        <th style="width:20%;">File Name</th>
+                        <th style="width:20%;">Notes</th>
+                        <th style="width:20%;">MU (%)</th>
+                        <th style="width:10%;">HV (%)</th>
+                        <th style="width:10%;">Created Date</th>
+                        <th style="width:10%;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td>@fs.FundingSource</td>
                                 <td>@fs.FileName</td>
-                                <td>@fs.Notes</td>
+                                <td style="word-wrap: break-word;">@fs.Notes</td>
                                 <td>@fs.MU_Unit</td>
                                 <td>@fs.HV_Unit</td>
                                 <td>@fs.CreatedDate?.ToString("MM/dd/yyyy")</td>
