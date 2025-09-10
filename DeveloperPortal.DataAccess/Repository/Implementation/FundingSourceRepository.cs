@@ -41,7 +41,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                                             Notes = d.Comment,
                                             DocumentID = d.DocumentId,
                                             Link = d.Link,
-                                            CreatedDate = fs.CreatedDate,
+                                            CreatedDate = fs.CreatedOn,
                                             FileSize = d.FileSize,
                                             CreatedBy = fs.CreatedBy
                                         })
@@ -69,7 +69,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                                             MU_Unit = fs.MuUnit,
                                             HV_Unit = fs.HvUnit,
                                             CaseId = ad.ReferenceId,
-                                            CreatedDate = fs.CreatedDate,
+                                            CreatedDate = fs.CreatedOn,
                                             Notes = d.Comment,
                                             DocumentID = d.DocumentId,
                                             Link = d.Link,
@@ -112,9 +112,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                                 fundingSource.FundingSourceName = viewModel.FundingSource;
                                 fundingSource.DocumentId = document.DocumentId;
                                 fundingSource.CreatedBy = documentModel.CreatedBy;
-                                fundingSource.CreatedDate = DateTime.Now;
+                                fundingSource.CreatedOn = DateTime.Now;
                                 fundingSource.ModifiedBy = documentModel.CreatedBy;
-                                fundingSource.ModifiedDate = DateTime.Now;
+                                fundingSource.ModifiedOn = DateTime.Now;
                                 fundingSource.IsDeleted = false;
 
                         }
@@ -163,9 +163,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                             FundingSourceName = viewModel.FundingSource,
                             DocumentId = document.DocumentId,
                             CreatedBy = documentModel.CreatedBy,
-                            CreatedDate = DateTime.Now,
+                            CreatedOn = DateTime.Now,
                             ModifiedBy = documentModel.CreatedBy,
-                            ModifiedDate = DateTime.Now,
+                            ModifiedOn = DateTime.Now,
                             IsDeleted = false
                         };
 
@@ -212,7 +212,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             {
                 fundingSource.IsDeleted = true;
 
-                fundingSource.ModifiedDate = DateTime.Now; // optional, if you have a DeletedDate column
+                fundingSource.ModifiedOn = DateTime.Now; // optional, if you have a DeletedDate column
 
                 _context.FundingSources.Update(fundingSource);
                 _context.SaveChanges();
