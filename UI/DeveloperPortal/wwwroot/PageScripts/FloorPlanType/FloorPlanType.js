@@ -150,7 +150,14 @@ var FloorPlanType = {
                 $('#' + spanId).html('select a valid option');
             }
         });
+        if ($('#bTypes_0_edit_option').attr('style') === "") {
 
+            var selectedValue = $('#bTypes_0_edit_option').val();
+            if (selectedValue == '0') {
+                $('#bTypes_0_edit_span_option').html('select a valid option');
+                isValid = false;
+            }
+        }
         if (isValid) {
             var formData = $('#editFloorPlanForm').serialize();
 
@@ -188,8 +195,10 @@ var FloorPlanType = {
 
         if (selectedText === 'Full') {
             $('#' + id + '_option').show().prop('required', true);
+            $('#' + id + '_option_span').show();
         } else {
             $('#' + id + '_option').hide().prop('required', false);
+            $('#' + id + '_option_span').hide();
         }
     },
     saveFloorPlan: function () {
@@ -380,8 +389,10 @@ var FloorPlanType = {
         var text = $('#' + id + ' option:selected').text();
         if (text === 'Full') {
             $('#' + id + '_option').show();
+            $('#bTypes_0_edit_span_option').show();
         } else {
             $('#' + id + '_option').hide();
+            $('#bTypes_0_edit_span_option').hide();
         }
     },
 
