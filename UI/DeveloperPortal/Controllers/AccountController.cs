@@ -95,16 +95,20 @@ namespace DeveloperPortal.Controllers
                         signupModel.PhoneNumber = GetApplicantDataByKey("phoneNumber", tokens);
                         signupModel.City = GetApplicantDataByKey("city", tokens);
                         signupModel.State = GetApplicantDataByKey("state", tokens);
+                        signupModel.LutStateCD = GetApplicantDataByKey("state", tokens);
                         signupModel.Zipcode = GetApplicantDataByKey("zipCode", tokens);
                         signupModel.PhoneType = GetApplicantDataByKey("phoneType", tokens);
+                        signupModel.LutPhoneTypeCd = GetApplicantDataByKey("phoneType", tokens);
                         signupModel.PhoneExtension = GetApplicantDataByKey("extension", tokens);
 
                         if (int.TryParse(GetApplicantDataByKey("streetNumber", tokens), out var num))
                             signupModel.StreetNum = num;
 
                         signupModel.StreetDir = GetApplicantDataByKey("streetDirection", tokens);
+                        signupModel.LutPreDirCd = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.StreetName = GetApplicantDataByKey("streetName", tokens);
                         signupModel.StreetType = GetApplicantDataByKey("streetType", tokens);
+                        signupModel.LutStreetTypeCD = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.UnitNumber = GetApplicantDataByKey("unitNumber", tokens);
                         signupModel.PostBoxNum = GetApplicantDataByKey("poBoxNumber", tokens);
                         signupModel.IsPostBox = GetApplicantDataByKey("poBox", tokens)
@@ -299,7 +303,7 @@ namespace DeveloperPortal.Controllers
 
                                 /*saving contact */
                                 //signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
-                              int contactId= await  _accountService.ContactIdentifierSave(signupModel, username, Constants.AppConstant.TPPSource);
+                              int contactId= await  _accountService.ContactIdentifierSave(signupModel, username, Constants.AppConstant.WebRegister);
 
                                 ///* Saving subscription data to DB */
                                 ///Ananth: Commented below piece of code

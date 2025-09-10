@@ -527,85 +527,173 @@ function GetControlIndex() {
 
 function SaveLocalData(currentStep) {
     var json = localStorage.getItem('ApplicantJson');
-    var j = $.parseJSON(json)
-    
+    var j = $.parseJSON(json);
+ 
     switch (currentStep) {
         case "step-0":
-            var accountType = $('#AccountType option:selected').text();
-            var step0Json = { 'accountType': accountType };
-            j["Applicant"][2]["Data"] = step0Json;
-
-            break;
-        case "step-1":
-            var firstName = $('#FirstName').val();
-            var lastName = $('#LastName').val();
-            var middleName = $('#MiddleName').val();
-            var email = $('#Email').val();
-            var companyName = $('#CompanyName').val();
-            var title = $('#Title').val();
-            var password = $('#Password').val();
-
-            var step1Json = { 'firstName': firstName, 'lastName': lastName, 'middleName': middleName, 'email': email, 'companyName': companyName, 'title': title, 'password': password };
-
-            /*
-            New structure:
-            {
-                "Applicant":[
-                    {
-                        "step": "YourInfo",
-                        "Data": step1Json
-                    },
-                    {
-                        "step": "ContactInfo",
-                        "Data": step2Json
-                    },
-                    {
-                        "step": "ProjectList",
-                        "Data": step3Json
-                    }
-                ]
+            // AccountType - get selected radio label
+            var selectedRadio = $('input[name="AccountType"]:checked');
+            if (selectedRadio.length === 0) {
+                console.warn("No account type selected.");
+                break;
             }
-            */
-            localStorage.setItem('YourInfo', JSON.stringify(step1Json));
-            console.log(JSON.stringify(step1Json));
-            j["Applicant"][0]["Data"] = step1Json;
-            
+
+            var selectedId = selectedRadio.val(); // e.g., "1138"
+            var accountTypeLabel = $(`label[for="AccountType_${selectedId}"]`).text().trim();
+
+            var step0Json = { 'accountType': accountTypeLabel };
+
+            // Update the correct step in the JSON array
+            let step0 = j.Applicant.find(x => x.step === "AccountType");
+            if (step0) {
+                step0.Data = step0Json;
+            } else {
+                j.Applicant.push({ step: "AccountType", Data: step0Json });
+            }
             break;
+
+        case "step-1":
+            // Personal Information
+            var step1Json = {
+                firstName: $('#FirstName').val(),
+                lastName: $('#LastName').val(),
+                middleName: $('#MiddleName').val(),
+                email: $('#Email').val(),
+                companyName: $('#CompanyName').val(),
+                title: $('#Title').val(),
+                password: $('#Password').val()
+            };
+
+            let step1 = j.Applicant.find(x => x.step === "YourInfo");
+            if (step1) {
+                step1.Data = step1Json;
+            } else {
+                j.Applicant.push({ step: "YourInfo", Data: step1Json });
+            }
+
+            break;
+
         case "step-2":
-            var phoneNumber = $('#PhoneNumber').val();
-            var city = $('#City').val();
-            var state = $('#State').val();
-            var zipCode = $('#ZipCode').val();
-            var phoneType = $('#PhoneType').val();
-            var extension = $('#Extension').val();
-            var streetNumber = $('#StreetNumber').val();
-            var streetDirection = $('#StreetDirection').val();
-            var streetName = $('#StreetName').val();
-            var streetType = $('#StreetType').val();
-            var unitNumber = $('#UnitNumber').val();
-            var poBoxNumber = $('#POBoxNumber').val();
-            var poBox = $('#POBox:checked').val();
+            // Contact Information
+            var step2Json = {
+                phoneNumber: $('#PhoneNumber').val(),
+                city: $('#City').val(),
+                state: $('#State').val(),
+                zipCode: $('#ZipCode').val(),
+                phoneType: $('#PhoneType').val(),
+                extension: $('#Extension').val(),
+                streetNumber: $('#StreetNumber').val(),
+                streetDirection: $('#StreetDirection').val(),
+                streetName: $('#StreetName').val(),
+                streetType: $('#StreetType').val(),
+                unitNumber: $('#UnitNumber').val(),
+                poBoxNumber: $('#POBoxNumber').val(),
+                poBox: $('input[name="POBox"]:checked').val()
 
-            var step2Json = { 'phoneNumber': phoneNumber, 'city': city, 'state': state, 'zipCode': zipCode, 'phoneType': phoneType, 'extension': extension, 'streetNumber': streetNumber, 'streetDirection': streetDirection, 'streetName': streetName, 'streetType': streetType, 'unitNumber': unitNumber, 'poBoxNumber': poBoxNumber, 'poBox': poBox };
+                //poBox: $('#POBox').is(':checked') ? "Yes" : "No"
+            };
 
-            localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
-            j["Applicant"][1]["Data"] = step2Json;
+            let step2 = j.Applicant.find(x => x.step === "ContactInfo");
+            if (step2) {
+                step2.Data = step2Json;
+            } else {
+                j.Applicant.push({ step: "ContactInfo", Data: step2Json });
+            }
+
             break;
-        //case "step-3":
-        //    var jsonObj = [];
-        //    $('#divProjects > div').each(function (index) {
-        //        console.log('index: ' + index);
-        //        var proj = $('#div' + (index + 1) + '>:first-child').text();
-        //        jsonObj.push(proj);
-        //    })
-        //    localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
-        //    j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
-        //    break;
+
         default:
+            console.warn("Unrecognized step:", currentStep);
+            break;
     }
+
+    // ✅ Save updated data back to localStorage
     localStorage.setItem("ApplicantJson", JSON.stringify(j));
-    console.log(localStorage.getItem("ApplicantJson"));
+    console.log("Updated ApplicantJson:", localStorage.getItem("ApplicantJson"));
 }
+
+
+//function SaveLocalData(currentStep) {
+//    var json = localStorage.getItem('ApplicantJson');
+//    var j = $.parseJSON(json)
+    
+//    switch (currentStep) {
+//        case "step-0":
+//            var accountType = $('#AccountType option:selected').text();
+//            var step0Json = { 'accountType': accountType };
+//            j["Applicant"][2]["Data"] = step0Json;
+
+//            break;
+//        case "step-1":
+//            var firstName = $('#FirstName').val();
+//            var lastName = $('#LastName').val();
+//            var middleName = $('#MiddleName').val();
+//            var email = $('#Email').val();
+//            var companyName = $('#CompanyName').val();
+//            var title = $('#Title').val();
+//            var password = $('#Password').val();
+
+//            var step1Json = { 'firstName': firstName, 'lastName': lastName, 'middleName': middleName, 'email': email, 'companyName': companyName, 'title': title, 'password': password };
+
+//            /*
+//            New structure:
+//            {
+//                "Applicant":[
+//                    {
+//                        "step": "YourInfo",
+//                        "Data": step1Json
+//                    },
+//                    {
+//                        "step": "ContactInfo",
+//                        "Data": step2Json
+//                    },
+//                    {
+//                        "step": "ProjectList",
+//                        "Data": step3Json
+//                    }
+//                ]
+//            }
+//            */
+//            localStorage.setItem('YourInfo', JSON.stringify(step1Json));
+//            console.log(JSON.stringify(step1Json));
+//            j["Applicant"][0]["Data"] = step1Json;
+            
+//            break;
+//        case "step-2":
+//            var phoneNumber = $('#PhoneNumber').val();
+//            var city = $('#City').val();
+//            var state = $('#State').val();
+//            var zipCode = $('#ZipCode').val();
+//            var phoneType = $('#PhoneType').val();
+//            var extension = $('#Extension').val();
+//            var streetNumber = $('#StreetNumber').val();
+//            var streetDirection = $('#StreetDirection').val();
+//            var streetName = $('#StreetName').val();
+//            var streetType = $('#StreetType').val();
+//            var unitNumber = $('#UnitNumber').val();
+//            var poBoxNumber = $('#POBoxNumber').val();
+//            var poBox = $('#POBox:checked').val();
+
+//            var step2Json = { 'phoneNumber': phoneNumber, 'city': city, 'state': state, 'zipCode': zipCode, 'phoneType': phoneType, 'extension': extension, 'streetNumber': streetNumber, 'streetDirection': streetDirection, 'streetName': streetName, 'streetType': streetType, 'unitNumber': unitNumber, 'poBoxNumber': poBoxNumber, 'poBox': poBox };
+
+//            localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
+//            j["Applicant"][1]["Data"] = step2Json;
+//            break;
+//        //case "step-3":
+//        //    var jsonObj = [];
+//        //    $('#divProjects > div').each(function (index) {
+//        //        console.log('index: ' + index);
+//        //        var proj = $('#div' + (index + 1) + '>:first-child').text();
+//        //        jsonObj.push(proj);
+//        //    })
+//        //    localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
+//        //    j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
+//        //    break;
+//        default:
+//    }
+//    localStorage.setItem("ApplicantJson", JSON.stringify(j));
+//    console.log(localStorage.getItem("ApplicantJson"));
+//}
 /*Summary Page*/
 function LoadSummaryPage() {
     var yourInfo = localStorage.getItem('YourInfo');

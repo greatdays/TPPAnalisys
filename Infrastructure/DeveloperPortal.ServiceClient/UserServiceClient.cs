@@ -146,11 +146,11 @@ namespace DeveloperPortal.ServiceClient
                     signupModel.StreetName = model.StreetName;
                 }
 
-                if (!string.IsNullOrEmpty(model.PhoneType))
-                {
-                    signupModel.PhoneNumber = model.PhoneHome;
-                    signupModel.LutPhoneTypeCd = "H";
-                }
+                //if (!string.IsNullOrEmpty(model.PhoneType))
+                //{
+                //    signupModel.PhoneNumber = model.PhoneHome;
+                //    signupModel.LutPhoneTypeCd = "H";
+                //}
 
                 if (!string.IsNullOrEmpty(model.PhoneHome))
                 {
@@ -170,7 +170,9 @@ namespace DeveloperPortal.ServiceClient
 
 
 
-                //signupModel.Extn = model.PhoneExtension;
+                signupModel.Extn = model.PhoneExtension;
+                signupModel.PhoneExtension = model.PhoneExtension;
+
 
                 //signupModel.AltPhoneNumber = model.AltPhoneNo;
                 //signupModel.LutAltPhoneTypeCd = model.AltPhoneType;
@@ -185,7 +187,7 @@ namespace DeveloperPortal.ServiceClient
                 signupModel1 =  await UserServiceClient.GetLookupLists_P2(config);
 
                 //signupModel.LutAltPhoneTypeCd = signupModel1.LutAltPhoneTypeCd;
-                signupModel.LutPhoneTypeCd = signupModel1.LutPhoneTypeCd;
+                //signupModel.LutPhoneTypeCd = signupModel1.LutPhoneTypeCd;
                 signupModel.LutPhoneTypeCdList = signupModel1.LutPhoneTypeCdList;
                 //signupModel.LutPreDirCd = signupModel1.LutPreDirCd;
                 //signupModel.AlternateContact_LutPreDirCd = signupModel1.LutPreDirCd;
