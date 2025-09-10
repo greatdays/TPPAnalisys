@@ -2220,6 +2220,10 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+            entity.Property(e => e.ReferenceId)
+                .HasMaxLength(128)
+                .HasColumnName("ReferenceID");
+            entity.Property(e => e.ReferenceType).HasMaxLength(40);
 
             entity.HasOne(d => d.Folder).WithMany(p => p.AssnFolders)
                 .HasForeignKey(d => d.FolderId)
@@ -6743,13 +6747,14 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsFixedLength();
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.DocumentId).HasColumnName("DocumentID");
+            entity.Property(e => e.FundingSourceName).HasMaxLength(100);
             entity.Property(e => e.HvUnit).HasColumnName("HV_Unit");
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsFixedLength();
-            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.MuUnit).HasColumnName("MU_Unit");
 
             entity.HasOne(d => d.Document).WithMany(p => p.FundingSources)
