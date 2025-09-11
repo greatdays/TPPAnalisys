@@ -11,7 +11,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7122/"
+      "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
     },
     "https": {
       "commandName": "Project",
@@ -20,7 +20,7 @@
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7122/"
+      "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP"
     },
     "IIS Express": {
       "commandName": "IISExpress",
