@@ -366,9 +366,9 @@ var FloorPlanType = {
             dynamicTable += '<td><select class="form-control add_bOptions" name="bathroomOption" id="bTypes_' + (i + 1) + '_option" style="display:none;" required>';
             dynamicTable += '<option value="0">-Select Bathroom Option-</option>';
 
-            if (Array.isArray(FloorPlanType.LutFloorBathrommOptions)) {
+            if (Array.isArray(FloorPlanType.LutTotalBathroomTypeOption)) {
 
-                FloorPlanType.LutFloorBathrommOptions.forEach(function (value) {
+                FloorPlanType.LutTotalBathroomTypeOption.forEach(function (value) {
                     dynamicTable += '<option value="' + value.value + '">' + value.text + '</option>';
                 });
             }
