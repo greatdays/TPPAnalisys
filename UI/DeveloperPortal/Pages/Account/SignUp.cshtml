@@ -54,7 +54,7 @@
             </li> *@
             <li role="presentation" class="disabled wizard-item" aria-disabled="true">
 
-                <a disabled="disabled" tabindex="-1" href="#step-4" type="button" role="tab" class="form_btn-circle app-circle" aria-selected="false">
+                <a disabled="disabled" tabindex="-1" href="#step-3" type="button" role="tab" class="form_btn-circle app-circle" aria-selected="false">
                     <span class="roundcircle"><span class="fa"></span></span> <span class="round-tab app-stepper-desc signUpBreadCircles">Summary</span>
                 </a>
             </li>
@@ -88,7 +88,7 @@
                     <partial name="ProjectRegistration" model="projRegistrationModel"></partial>
                 }
             </div> *@
-            <div class="setup-content" id="step-4" role="tabpanel" style="display: none">
+            <div class="setup-content" id="step-3" role="tabpanel" style="display: none">
                 @{
                     //IConfiguration config = null;
                     var summaryModel = new SummaryModel(Configuration);
@@ -361,11 +361,13 @@
                     CheckIfEmpty('ZipCode', 'zip code', '');
                     CheckIfEmpty('PhoneType', '', 'Please select phone type.');
                     //CheckIfPhoneTypeIsEmpty();
+                       //SaveLocalData(curStepBtn);
+                    // populateSummary();
                     break;
                 case "step-3":
                     console.log("step 3");
                     SaveLocalData(curStepBtn);
-
+                   // populateSummary();
                     LoadSummaryPage();
                     break;
             }
