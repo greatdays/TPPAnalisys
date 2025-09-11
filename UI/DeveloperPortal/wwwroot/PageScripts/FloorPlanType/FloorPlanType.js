@@ -45,7 +45,6 @@ var FloorPlanType = {
             data: { projectId: projectId },
             cache: false,
             success: function (data) {
-                console.log("Floor Plan Data:", data);
                 const table = $('#floorPlanTable');
 
                 // Destroy previous instance if exists
@@ -106,7 +105,6 @@ var FloorPlanType = {
     SaveeditedFloorPlan: function () {
         var isValid = true;
         $('#lblError_fp_siteId_edit').html('');
-        console.log($('#siteList_edit').val());
         if ($('#siteList_edit').val() == 'Select') {
             $('#lblError_fp_siteId_edit').html('Please select a valid Site');
             isValid = false;
@@ -137,7 +135,6 @@ var FloorPlanType = {
             isValid = false;
         }
         $('.edit_bTypes').each(function (index, elem) {
-            console.log($(elem).val());
             if ($(elem).val() == '' || $(elem).val() == '0') {
                 isValid = false;
                 var spanId = $(elem).attr('id') + '_span';
@@ -162,7 +159,6 @@ var FloorPlanType = {
         if (isValid) {
             var formData = $('#editFloorPlanForm').serialize();
 
-            console.log(formData);
             $.ajax({
                 url: APPURL + 'FloorPlanType/_EditFloorPlanType',
                 type: 'POST',
@@ -321,8 +317,6 @@ var FloorPlanType = {
 
             dynamicTable += '<td><select class="form-control edit_bOptions" name="bathroomOption" id="bTypes_' + (i + 1) + '_edit_option" style="display:none;" name="LutBathroomTypeOptionID">';
             dynamicTable += '<option value="0">-Select Bathroom Option-</option>';
-
-            // ✅ Safe iteration over LutFloorBathrommOptions
             if (Array.isArray(FloorPlanType.LutFloorBathrommOptions)) {
                 FloorPlanType.LutFloorBathrommOptions.forEach(function (value) {
                     dynamicTable += '<option value="' + value.value + '">' + value.text + '</option>';
@@ -372,9 +366,9 @@ var FloorPlanType = {
             dynamicTable += '<td><select class="form-control add_bOptions" name="bathroomOption" id="bTypes_' + (i + 1) + '_option" style="display:none;" required>';
             dynamicTable += '<option value="0">-Select Bathroom Option-</option>';
 
-            if (Array.isArray(FloorPlanType.LutTotalBathroomTypeOption)) {
+            if (Array.isArray(FloorPlanType.LutFloorBathrommOptions)) {
 
-                FloorPlanType.LutTotalBathroomTypeOption.forEach(function (value) {
+                FloorPlanType.LutFloorBathrommOptions.forEach(function (value) {
                     dynamicTable += '<option value="' + value.value + '">' + value.text + '</option>';
                 });
             }
@@ -432,6 +426,16 @@ var FloorPlanType = {
 // Initialize when DOM is ready
 $(document).ready(function () {
     FloorPlanType.init();
+    var addModal = document.getElementById('addFloorPlanType');
+    if (addModal) {
+        addModal.addEventListener('hidden.bs.modal', function () {
+            document.getElementById('floorPlanForm').reset();
+            document.getElementById('bathroomTypeDiv').innerHTML = '';
+            document.querySelectorAll('.text-danger').forEach(function (el) {
+                el.innerHTML = '';
+            });
+        });
+    }
     var activeTab = localStorage.getItem('floorplanActiveTab');
     if (activeTab) {
         $('.tab button.tablinks').removeClass('active');
