@@ -147,6 +147,7 @@
             document.getElementById("divPOBoxNo").classList.toggle("d-none", isPOBoxYes);
         }
         $(document).ready(function () {
+                togglePOBoxSection();
              // Bind change event to radio buttons
         $('input[name="IsPostBox"]').on('change', togglePOBoxSection);
             $('#myAccountForm').on('submit', function (e) {
