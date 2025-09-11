@@ -355,11 +355,10 @@ window.FundingSourceManager = class FundingSourceManager {
             <tr data-id="${fs.fundingSourceId}">
                 <td>${fs.fundingSource}</td>
                 <td>${fs.fileName}</td>
-                <td>${fs.notes}</td>
+                <td style="word-wrap: break-word;">${fs.notes}</td>
                 <td>${fs.mU_Unit}</td>
                 <td>${fs.hV_Unit}</td>
-                <td>${new Date(fs.createdDate).toLocaleDateString()}</td>
-                <td>
+                <td style="width:15%">
                     <button class="btn btn-sm btn-warning btn-edit" data-id="${fs.fundingSourceId}">
                         <i class="fas fa-edit"></i>
                     </button>
@@ -429,7 +428,7 @@ window.FundingSource = class FundingSource {
             return;
         }
 
-        $.get('/FundingSource/GetFundingSourcesById', { caseId, controlViewModelId })
+        $.get(APPURL + 'FundingSource/GetFundingSourcesById', { caseId, controlViewModelId })
             .done((html) => {
                 $(`#${targetDiv}`).html(html);
                 setTimeout(() => {
