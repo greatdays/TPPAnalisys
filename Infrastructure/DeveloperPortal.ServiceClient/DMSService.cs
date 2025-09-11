@@ -18,7 +18,7 @@ namespace DeveloperPortal.ServiceClient
             _config = config;
         }
         [HttpPost]
-        public JsonResult SubmitUploadedDocument(IFormFileCollection file,int caseId,string category,string createdBy)
+        public JsonResult SubmitUploadedDocument(IFormFileCollection file,int caseId, string category, string fileSubCategory, string createdBy)
         {
             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
             UploadResponse response = new UploadResponse();
@@ -36,8 +36,8 @@ namespace DeveloperPortal.ServiceClient
                 
             };
             info.MetaData.Add(FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString()});
-            info.MetaData.Add(FieldType.Category, new string[] { "Project"});
-            info.MetaData.Add(FieldType.SubCategory, new string[] { "Document" });
+            info.MetaData.Add(FieldType.Category, new string[] { category });
+            info.MetaData.Add(FieldType.SubCategory, new string[] { fileSubCategory });
            
 
             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))

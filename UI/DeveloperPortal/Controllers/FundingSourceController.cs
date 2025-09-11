@@ -275,7 +275,7 @@ public class FundingSourceController : Controller
 
             // Upload to DMS
             var uploadResponse = new DMSService(_config)
-                .SubmitUploadedDocument(file,  caseId, fileCategory, viewModel.CreatedBy);
+                .SubmitUploadedDocument(file,  caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
 
             var response = uploadResponse.Value as UploadResponse;
 
