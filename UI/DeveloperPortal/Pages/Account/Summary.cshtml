@@ -108,41 +108,46 @@
 </div>
 
 <script>
+
+        function populateSummary() {
+        let applicantJson = localStorage.getItem("ApplicantJson");
+        if (!applicantJson) {
+            console.warn("No ApplicantJson found in localStorage. Redirecting back to step 1.");
+            window.location.href = "/Account/Signup"; // or wherever your first step is
+            return;
+        }
+        console.log("summaru page isbeingn called",applicantJson);
+        if (applicantJson) {
+            let data = JSON.parse(applicantJson);
+
+            let yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
+            $("#spnName").text(
+                (yourInfo.firstName || "") + " " + (yourInfo.middleName || "") + " " + (yourInfo.lastName || "")
+            );
+            $("#spnCompanyName").text(yourInfo.companyName || "");
+            $("#spnTitle").text(yourInfo.title || "");
+            $("#spnLoginId").text(yourInfo.email || "");
+
+            let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
+            $("#spnPhoneNumber").text(contactInfo.phoneNumber || "");
+            $("#spnExtn").text(contactInfo.extension || "");
+            $("#spnMailingAddress1").text(
+                (contactInfo.streetNumber || "") + " " +
+                (contactInfo.streetDirection || "") + " " +
+                (contactInfo.streetName || "") + " " +
+                (contactInfo.streetType || "")
+            );
+            $("#spnMailingAddress2").text(
+                (contactInfo.unitNumber || "") + " " +
+                (contactInfo.city || "") + " " +
+                (contactInfo.state || "") + " " +
+                (contactInfo.zipCode || "")
+            );
+        }
+    }
+
      $(document).ready(function(){ 
-         console.log('summary'); 
-
-          // Get ApplicantJson from localStorage
-            let applicantJson = localStorage.getItem("ApplicantJson");
-                if (applicantJson) {
-                    let data = JSON.parse(applicantJson);
-
-                    // Extract step-1 (YourInfo)
-                    let yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
-                    $("#spnName").text(
-                        (yourInfo.firstName || "") + " " + (yourInfo.middleName || "") + " " + (yourInfo.lastName || "")
-                    );
-                    $("#spnCompanyName").text(yourInfo.companyName || "");
-                    $("#spnTitle").text(yourInfo.title || "");
-                    $("#spnLoginId").text(yourInfo.email || "");
-
-                    // Extract step-2 (ContactInfo)
-                    let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
-                    $("#spnPhoneNumber").text(contactInfo.phoneNumber || "");
-                    $("#spnExtn").text(contactInfo.extension || "");
-                    $("#spnMailingAddress1").text(
-                        (contactInfo.streetNumber || "") + " " +
-                        (contactInfo.streetDirection || "") + " " +
-                        (contactInfo.streetName || "") + " " +
-                        (contactInfo.streetType || "")
-                    );
-                    $("#spnMailingAddress2").text(
-                        (contactInfo.unitNumber || "") + " " +
-                        (contactInfo.city || "") + " " +
-                        (contactInfo.state || "") + " " +
-                        (contactInfo.zipCode || "")
-                    );
-                }
-
+         // populateSummary();
                 //ends here
          $('#btnEditYourInfo').on('click', function () { $('a[href="#step-1"]').click() }) 
          $('#btnEditContactMethods').on('click', function () { $('a[href="#step-2"]').click(); }) 

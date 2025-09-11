@@ -184,7 +184,7 @@ function IsTermsAndConditionsAccepted(ctlDivId, ctlId) {
 //stopping from moving forward from one partial view to another without filling the details
 
 function validateStep(stepContainer) {
-    console.log("called ", stepContainer);
+    //console.log("called ", stepContainer);
     let isValid = true;
 
     $(stepContainer).find('[data-required="true"]').each(function () {
@@ -430,22 +430,29 @@ function ValidatePhoneType(ctlId) {
     }
 }
 function OnPOBoxChanged() {
-    var selectedVal = $('#POBox:checked').val();
+    var selectedVal = $('input[name="POBox"]:checked').val();
     var delay = 600;
     var poBoxField = $('#POBoxNumber');
 
     if (selectedVal === 'Yes') {
         $('#divPOBoxYes').show(delay);
         $('#divPOBoxNo').hide(delay);
-        poBoxField.attr('data-required', 'true');  // required
+        poBoxField.attr('data-required', 'true');
+
+        // Clear street fields
+        clearMailingFields(["StreetNumber", "StreetDirection", "StreetName", "StreetType", "UnitNumber"]);
+
     } else {
         $('#divPOBoxYes').hide(delay);
         $('#divPOBoxNo').show(delay);
-        poBoxField.removeAttr('data-required');    // not required when hidden
-        poBoxField.val(''); // clear value to avoid stale data
+        poBoxField.removeAttr('data-required');
+        poBoxField.val('');
+
+        // Clear POBox
+        clearMailingFields(["POBoxNumber"]);
     }
 
-    // 🔄 Re-run validation to update button
+    // Re-run validation
     var currentStep = $('#divPOBoxYes').closest('.setup-content');
     var nextBtn = currentStep.find('.nextBtn');
 
@@ -455,6 +462,32 @@ function OnPOBoxChanged() {
         nextBtn.prop('disabled', true).addClass('disabled-btn');
     }
 }
+
+function clearMailingFields(fields) {
+    let applicantJson = localStorage.getItem("ApplicantJson");
+    if (!applicantJson) return;
+    console.log("called clearning ");
+    let data = JSON.parse(applicantJson);
+    let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
+    console.log("contact info", contactInfo);
+    fields.forEach(f => {
+        let camelKey = f.charAt(0).toLowerCase() + f.slice(1); // e.g. StreetNumber → streetNumber
+        if (contactInfo.hasOwnProperty(camelKey)) {
+            contactInfo[camelKey] = "";
+        }
+    });
+
+    // save back
+    let idx = data.Applicant.findIndex(x => x.step === "ContactInfo");
+    if (idx > -1) {
+        data.Applicant[idx].Data = contactInfo;
+    }
+
+    localStorage.setItem("ApplicantJson", JSON.stringify(data));
+}
+
+
+
 
 //function OnPOBoxChanged() {
 //    var selectedVal = $('#POBox:checked').val();
@@ -574,7 +607,8 @@ function SaveLocalData(currentStep) {
             break;
 
         case "step-2":
-            // Contact Information
+            var isPOBox = $('input[name="POBox"]:checked').val() === "Yes";
+
             var step2Json = {
                 phoneNumber: $('#PhoneNumber').val(),
                 city: $('#City').val(),
@@ -582,15 +616,13 @@ function SaveLocalData(currentStep) {
                 zipCode: $('#ZipCode').val(),
                 phoneType: $('#PhoneType').val(),
                 extension: $('#Extension').val(),
-                streetNumber: $('#StreetNumber').val(),
-                streetDirection: $('#StreetDirection').val(),
-                streetName: $('#StreetName').val(),
-                streetType: $('#StreetType').val(),
-                unitNumber: $('#UnitNumber').val(),
-                poBoxNumber: $('#POBoxNumber').val(),
+                streetNumber: isPOBox ? "" : $('#StreetNumber').val(),
+                streetDirection: isPOBox ? "" : $('#StreetDirection').val(),
+                streetName: isPOBox ? "" : $('#StreetName').val(),
+                streetType: isPOBox ? "" : $('#StreetType').val(),
+                unitNumber: isPOBox ? "" : $('#UnitNumber').val(),
+                poBoxNumber: isPOBox ? $('#POBoxNumber').val() : "",
                 poBox: $('input[name="POBox"]:checked').val()
-
-                //poBox: $('#POBox').is(':checked') ? "Yes" : "No"
             };
 
             let step2 = j.Applicant.find(x => x.step === "ContactInfo");
@@ -599,8 +631,8 @@ function SaveLocalData(currentStep) {
             } else {
                 j.Applicant.push({ step: "ContactInfo", Data: step2Json });
             }
-
             break;
+
 
         default:
             console.warn("Unrecognized step:", currentStep);
@@ -610,6 +642,7 @@ function SaveLocalData(currentStep) {
     // ✅ Save updated data back to localStorage
     localStorage.setItem("ApplicantJson", JSON.stringify(j));
     console.log("Updated ApplicantJson:", localStorage.getItem("ApplicantJson"));
+    populateSummary();
 }
 
 
@@ -747,7 +780,7 @@ function LoadSummaryPage() {
         $('#spnMailingAddress2').text(line2);
     }
 
-    console.log('projList:' + projList);
+    //console.log('projList:' + projList);
     if (projList != undefined) {
         json = JSON.parse(projList);
         var spanProj = '';
