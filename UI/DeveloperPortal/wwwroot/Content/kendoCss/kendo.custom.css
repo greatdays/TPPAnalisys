@@ -2055,8 +2055,8 @@ span.k-colorpicker {
 .k-gantt-toolbar .k-button,
 .km-pane-wrapper .k-header .k-button {
     color: #ffffff;
-    background-color: #003399;
-    border-color: #003399;
+    background-color: #113F67;
+    border-color: #113F67;
     box-shadow: none;
 }
 .k-grid .k-header .k-button:hover,
@@ -2076,8 +2076,8 @@ span.k-colorpicker {
 .k-scheduler .k-scheduler-toolbar ul li.k-state-hover,
 .k-scheduler .k-scheduler-toolbar .k-state-selected,
 .k-gantt-toolbar .k-button {
-    background-color: #003399;
-    border-color: #003399;
+    background-color: #113F67;
+    border-color: #113F67;
 }
 .k-gantt .k-gantt-toolbar .k-button:active {
   background: #ffffff;

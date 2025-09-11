@@ -273,6 +273,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 unitAtt.FloorPlanType = unitModel.FloorPlanType;
                 unitAtt.AccessibleFeatureType = unitModel.AdditionalAccecibility;
                 unitAtt.IsManagersUnit = unitModel.ManagersUnit.HasValue ? unitModel.ManagersUnit.HasValue : false;
+                unitAtt.IsCompliant = unitModel.IsCompliant;
                 await _projectDetailRepository.SaveChangesWithAuditAsync(userName);
                 var policyComplianceDetail = await _projectDetailRepository.PolicyComplianceDetail(unitModel.ServiceRequestId);
                 if (policyComplianceDetail == null && unitModel.IsCompliant)
@@ -354,6 +355,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     PropSnapshotId = propSnapshot.PropSnapshotId,
                     SquareFeet = 0,
                     IsVca = model.IsVCA,
+                    IsCompliant=model.IsCompliant,
                     IsCsa = model.IsCSA,
                     IsManagersUnit = model.ManagersUnit,
                     LutTotalBedroomId = model.LutTotalBedroomID,
@@ -364,7 +366,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                     CreatedOn = DateTime.Now
                 };
 
-                //ps.UnitAttributes.Add(newUnitAttribute);
+                propSnapshot.UnitAttributePropSnapshot=newUnitAttribute;
 
                 #endregion
                 await _projectDetailRepository.AddPropSnapshots(model.CaseId, propSnapshot, userName);
