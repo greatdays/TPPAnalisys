@@ -81,7 +81,7 @@
 
 						<div class="col-md-6 mb-3">
 							<label class="wraping_label" for="bathroom">Number of Bathroom <span class="text-danger">*</span></label>
-							<select class="form-control" id="bathroom" name="LutTotalBathroomID" required>
+							<select class="form-control" id="bathroom" onchange="FloorPlanType.onSelectBathroomCount();" name="LutTotalBathroomID" required>
 								<option>Select</option>
 								@foreach (var bathroom in Model.LutTotalBathrooms)
 								{
@@ -115,7 +115,6 @@
 	FloorPlanType.bathroomOptionValues = `@Html.Raw(string.Join("", Model.LutTotalBathroomTypeOption.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
 	FloorPlanType.LutBathroomType = @Html.Raw(Json.Serialize(Model.LutBathroomType));
 	FloorPlanType.LutTotalBathroomTypeOption = @Html.Raw(Json.Serialize(Model.LutTotalBathroomTypeOption));
-	console.log('hI'+FloorPlanType.LutTotalBathroomTypeOption);
 </script>
 <style>
 	#floorplan_bathroomtype {

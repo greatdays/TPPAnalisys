@@ -89,7 +89,7 @@ namespace DeveloperPortal.Controllers
 
 
             //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, caseId, category, createdBy);
+            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, caseId, fileCategory, fileSubCategory, createdBy);
 
             var response = uploadResponse.Value as UploadResponse;
 

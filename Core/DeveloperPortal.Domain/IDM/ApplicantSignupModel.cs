@@ -55,6 +55,7 @@ namespace DeveloperPortal.Models.IDM
         public string PhoneNumber { get; set; }
         public string PhoneExtension { get; set; }
         public string PhoneType { get; set; }
+        public string Extn { get; set; }
         public bool IsPostBox { get; set; }
         public string PostBoxNum { get; set; }
         public int? StreetNum { get; set; }
@@ -68,7 +69,7 @@ namespace DeveloperPortal.Models.IDM
         public string Zipcode { get; set; }
         #endregion
 
-        public int? ContactAddressID { get; set; }
+        public int ContactAddressID { get; set; }
         public int? HouseNum { get; set; }
         public string HouseFracNum { get; set; }
         public string LutPreDirCd { get; set; }
@@ -85,6 +86,10 @@ namespace DeveloperPortal.Models.IDM
         public string EmployeeID { get; set; }
 
         public string Department { get; set; }
+
+
+        //For Client
+        public bool IsClient { get; set; }
 
         public string Designation { get; set; }
         public List<LutState> LutStateCDList { get; set; }

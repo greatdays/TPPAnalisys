@@ -7,7 +7,7 @@ public partial class AssnFolderDocument
 {
     public int AssnFolderDocumentId { get; set; }
 
-    public int? FolderId { get; set; }
+    public int FolderId { get; set; }
 
     public int DocumentId { get; set; }
 

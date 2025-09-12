@@ -19,5 +19,9 @@ public partial class AssnFolder
 
     public DateTime? ModifiedOn { get; set; }
 
+    public string? ReferenceId { get; set; }
+
+    public string? ReferenceType { get; set; }
+
     public virtual Folder Folder { get; set; } = null!;
 }
