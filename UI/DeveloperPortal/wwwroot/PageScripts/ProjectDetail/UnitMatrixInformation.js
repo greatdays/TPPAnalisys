@@ -215,7 +215,6 @@ var UnitMatrixInformation=
     GetUnitModalData:function (){
         window.setTimeout(function () {
             var url = APPURL + "ProjectDetail/GetUnitModalData"
-            /*var url = '@Url.Action("GetUnitModalData", "ProjectDetail", new { area = "Construction" })';*/
             AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
                 function (result) {
                     kgridEditModelData = result;
@@ -302,16 +301,17 @@ var UnitMatrixInformation=
         return data.unitType == null ? "" : data.unitType;
     },
     ManagersUnitTemplate :function (data) {
-        return data.managersUnit ? "<span class='k-icon k-i-x'></span>" : "";
+        return data.managersUnit ? "Yes" : "No";;
+
     },
     IsCompliantTemplate: function (data) {
         return data.isCompliant ? "Yes" : "No";
     },
     IsComplianceWithCSATemplate: function (data) {
-        return data.isCSA ? "<span class='k-icon k-i-x'></span>" : "";
+        return data.isCSA ? "Yes" : "No";
     },
     IsComplianceWithVCATemplate: function (data) {
-        return data.isVCA ? "<span class='k-icon k-i-x'></span>" : "";
+        return data.isVCA ? "Yes" : "No";
     },
     SetUnitTotalGridData:function (data) {
         if ($(".k-unit-grid-title").length == 0) {
