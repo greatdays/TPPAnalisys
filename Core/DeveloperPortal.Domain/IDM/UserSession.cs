@@ -52,6 +52,17 @@ namespace DeveloperPortal.Models.IDM
 
             return userSession; // return.
         }
+        public static UserSession GetUserSession(IHttpContextAccessor context)
+        {
+            UserSession userSession = context.HttpContext.Session != null ? context.HttpContext.Session.GetObjectFromJson<UserSession>("AppUser") : new UserSession();
+            if (userSession == null)
+            {
+                userSession = new UserSession();
+                //userSession.UserName = "Guest";
+            }
+
+            return userSession; // return.
+        }
 
         /// <summary>
         /// set user session

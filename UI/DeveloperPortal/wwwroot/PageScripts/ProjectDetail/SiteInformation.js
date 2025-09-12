@@ -134,10 +134,10 @@ var SiteInformation=
                 url = 'Construction/ConstructionNew/GetInpectionHistoryForProject?caseId=' + caseId;
                 SiteInformation.LoadSiteActionTable(title, url, columns);
                 break;
-             case "Documents":
-                 url = '@Url.Action("GetFilesById", "DMS", new { area = "Document" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + documentControlViewModelId
-                 SiteInformation.LoadSiteAction(title, url);
-                 break;
+             //case "Documents":
+             //    url = '@Url.Action("GetFilesById", "DMS", new { area = "Document" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + documentControlViewModelId
+             //    SiteInformation.LoadSiteAction(title, url);
+             //    break;
             // case "Logs":
             //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + caseId + '&projectId=' + refProjectSiteID + '&controlViewModelId=' + logsControlViewModelId;
             //    SiteInformation.LoadSiteAction(title, url);
