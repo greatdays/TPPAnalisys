@@ -2,6 +2,7 @@
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Constants;
+using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.IDM;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
@@ -29,18 +30,15 @@ namespace DeveloperPortal.Pages.Account
         public void OnGet()
         {
             var sessionUser = HttpContext.Session.GetObjectFromJson<UserSession>("AppUser");
-
-            string AccountType = "";
             Account = new MyAccountInput();
             var roles = UserSession.GetUserSession(HttpContext).Roles;
 
             string[] appRoleList = new string[] { UserRoles.NAC, UserRoles.GeneralContractor, UserRoles.Architect, UserRoles.PropertyDeveloper, UserRoles.CASp,UserRoles.Guest };
             var userRole = roles?.Where(x => appRoleList.Contains(x))?.FirstOrDefault();
-            bool isAccTypeSelected = false;
-            
-           if (userRole != null) {
  
+           if (userRole != null) {
                     applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2(sessionUser.UserName , _config).Result;
+                    Account.SelectedRole = userRole;
                     Account.FirstName = !string.IsNullOrEmpty(applicantsignupModel.FirstName) ? applicantsignupModel.FirstName : sessionUser.FirstName;
                     Account.MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName : UserSession.GetUserSession(HttpContext).MiddleName;
                     Account.LastName = !string.IsNullOrEmpty(applicantsignupModel.LastName) ? applicantsignupModel.LastName : sessionUser.LastName;
@@ -62,7 +60,7 @@ namespace DeveloperPortal.Pages.Account
                     Account.PhoneExtension = applicantsignupModel.PhoneExtension;
                     Account.Company = applicantsignupModel.Company;
                     Account.Title = applicantsignupModel.Title;
-                    Account.StreetNum = applicantsignupModel.StreetNum;
+                    Account.StreetNum = applicantsignupModel.HouseNum;
                     Account.StreetName = applicantsignupModel.StreetName;
                     Account.UnitNumber = applicantsignupModel.Unit;
                     Account.City = applicantsignupModel.City;
@@ -78,14 +76,47 @@ namespace DeveloperPortal.Pages.Account
 
         public IActionResult OnPostUpdate([FromForm] MyAccountInput signupModel)
         {
+            
             var userSession = UserSession.GetUserSession(HttpContext);
             if (userSession == null)
             {
                 return new JsonResult(new { success = false, error = "User session not found." });
             }
 
-            // Always reload the latest model from DB/service
-            applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2("Test94@yopmail.com", _config).Result;
+            List<string> roles = new List<string>();
+            string selectedLookupRole = string.Empty;
+            if (signupModel.SelectedRole == string.Empty)
+            {
+                selectedLookupRole = UserRoles.Guest;
+            }
+            else
+            {
+                switch (signupModel.SelectedRole)
+                {
+                    case "Property Developer":
+                        selectedLookupRole = UserRoles.PropertyDeveloper;
+                        break;
+                    case "Architect":
+                        selectedLookupRole = UserRoles.Architect;
+                        break;
+                    case "CASp":
+                        selectedLookupRole = UserRoles.CASp;
+                        break;
+                    case "General Contractor":
+                        selectedLookupRole = UserRoles.GeneralContractor;
+                        break;
+                    case "NAC":
+                        selectedLookupRole = UserRoles.NAC;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            roles.Add(selectedLookupRole);
+           
+
+            // reload the latest model from DB/service
+            applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2(userSession.UserName, _config).Result;
 
             // Update only if provided, otherwise keep existing
             applicantsignupModel.FirstName = !string.IsNullOrWhiteSpace(signupModel.FirstName)
@@ -108,9 +139,6 @@ namespace DeveloperPortal.Pages.Account
                 ? signupModel.PhoneNumber
                 : applicantsignupModel.PhoneNumber;
 
-            //applicantsignupModel.PhoneExtension = !string.IsNullOrWhiteSpace(signupModel.PhoneExtension)
-            //    ? signupModel.PhoneExtension
-            //    : applicantsignupModel.PhoneExtension; 
             applicantsignupModel.PhoneExtension = !string.IsNullOrWhiteSpace(signupModel.PhoneExtension)
                 ? signupModel.PhoneExtension
                 : applicantsignupModel.PhoneExtension;
@@ -123,7 +151,7 @@ namespace DeveloperPortal.Pages.Account
                 ? signupModel.Title
                 : applicantsignupModel.Title;
 
-            applicantsignupModel.StreetNum = signupModel.StreetNum ?? applicantsignupModel.StreetNum;
+            applicantsignupModel.HouseNum = signupModel.StreetNum ?? applicantsignupModel.StreetNum;
             applicantsignupModel.StreetName = signupModel.StreetName ?? applicantsignupModel.StreetName;
 
             applicantsignupModel.Unit = !string.IsNullOrWhiteSpace(signupModel.UnitNumber)
@@ -139,7 +167,6 @@ namespace DeveloperPortal.Pages.Account
                 : applicantsignupModel.Zipcode;
 
             applicantsignupModel.IsPostBox = signupModel.IsPostBox;
-
 
             applicantsignupModel.PostBoxNum = !string.IsNullOrWhiteSpace(signupModel.PostBoxNum)
                 ? signupModel.PostBoxNum
@@ -171,79 +198,31 @@ namespace DeveloperPortal.Pages.Account
                 FirstName = applicantsignupModel.FirstName.Trim(),
                 MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName.Trim() : "",
                 LastName = applicantsignupModel.LastName.Trim(),
-                UserName = "Test94@yopmail.com", // replace with session later
+                UserName =userSession.UserName.Trim(),
                 Email = applicantsignupModel.EmailId.Trim(),
                 ContactPhone = applicantsignupModel.PhoneNumber,
-                Provider = "SQL"
+                Provider = userSession.Provider.Trim()
             };
+            idmuser.AppList = new List<Models.IDM.AppDetail>();
+            idmuser.AppList.Add(new Models.IDM.AppDetail()
+            {
+                AppKey = _config["AppSettings:AppKey"],
+                AppName = _config["AppSettings:AppKey"],
+                Roles = roles
+            });
 
             IDMAuthenticate authenticate = new IDMAuthenticate(_config);
             idmuser = authenticate.UpdateIDMUserProfile(idmuser);
 
             // Save changes back to DB
             int contactId = _accountService
-                .ContactIdentifierSave(applicantsignupModel, "Test94@yopmail.com", Constants.AppConstant.WebRegister)
+                .ContactIdentifierSave(applicantsignupModel, userSession.UserName, Constants.AppConstant.WebRegister)
                 .Result;
 
             return new JsonResult(new { success = true, received = signupModel });
         }
 
 
-        //public IActionResult OnPostUpdate([FromForm] MyAccountInput signupModel)
-        //{
-        //    var userSession = UserSession.GetUserSession(HttpContext);
-        //    applicantsignupModel =  UserServiceClient.GetMyAccountDetail_P2("Test88@yopmail.com", _config).Result;
-
-        //    if (userSession == null)
-        //    {
-        //        return new JsonResult(new { success = false, error = "User session not found." });
-        //    }
-        //    applicantsignupModel.FirstName = signupModel.FirstName;
-        //    applicantsignupModel.MiddleName = signupModel.MiddleName;
-        //    applicantsignupModel.LastName = signupModel.LastName;
-        //    applicantsignupModel.EmailId = signupModel.EmailId;
-
-        //    applicantsignupModel.PhoneNumber = signupModel.PhoneNumber;
-        //    applicantsignupModel.PhoneExtension = signupModel.PhoneExtension;
-
-        //    applicantsignupModel.Company = signupModel.Company;
-        //    applicantsignupModel.Title = signupModel.Title;
-
-        //    applicantsignupModel.StreetNum = signupModel.StreetNum;
-        //    applicantsignupModel.Unit = signupModel.UnitNumber;
-        //    applicantsignupModel.City = signupModel.City;
-        //    applicantsignupModel.Zipcode = signupModel.Zipcode;
-
-        //    applicantsignupModel.LutPhoneTypeCd = signupModel.LutPhoneTypeCd;
-        //    applicantsignupModel.LutPreDirCd = signupModel.LutPreDirCd;
-        //    applicantsignupModel.LutStreetTypeCD = signupModel.LutStreetTypeCd;
-        //    applicantsignupModel.LutStateCD = signupModel.LutStateCD;
-
-        //    // Required for contact update
-        //    applicantsignupModel.CurrentFirstName = signupModel.FirstName;
-        //    applicantsignupModel.CurrentLastName = signupModel.LastName;
-        //    OrganizationContactModel organizations = new OrganizationContactModel();
-        //    IDMUser idmuser = new IDMUser();
-
-        //    idmuser.FirstName = signupModel.FirstName.Trim();
-        //    idmuser.MiddleName = !string.IsNullOrEmpty(signupModel.MiddleName) ? signupModel.MiddleName.Trim() : "";
-        //    idmuser.LastName = signupModel.LastName.Trim();
-        //    idmuser.UserName = "Test88@yopmail.com";//UserSession.GetUserSession(HttpContext).UserName.Trim();
-        //    idmuser.Email = signupModel.EmailId.Trim();
-        //    idmuser.ContactPhone = signupModel.PhoneNumber;
-        //    idmuser.Provider = "SQL";//--UserSession.GetUserSession(HttpContext).Provider.Trim();
-
-        //    // Authenticate and update IDM profile
-        //    IDMAuthenticate authenticate = new IDMAuthenticate(_config);
-        //    idmuser = authenticate.UpdateIDMUserProfile(idmuser);
-
-        //     /*Update User account details*/
-        //    //int ContactID = applicantsignupModel.SaveContactInformation(applicantsignupModel, UserSession.GetUserSession(HttpContext).UserName, DeveloperPortal.Constants.AppConstant.WebRegister);
-        //    int contactId =  _accountService.ContactIdentifierSave(applicantsignupModel,/* UserSession.GetUserSession(HttpContext).UserName*/"Test88@yopmail.com", Constants.AppConstant.WebRegister).Result;
-
-
-        //    return new JsonResult(new { success = true, received = signupModel });
-        //}
     }
 
     public class MyAccountInput
@@ -278,6 +257,7 @@ namespace DeveloperPortal.Pages.Account
         public int? IDMUserID { get; set; }
         public bool IsAccountTypeSelected { get; set; }
         public bool IsLocked { get; set; }
+        public string SelectedRole { get; set; }
         public List<LutPhoneType> LutPhoneTypeCdList { get; set; } = new();
         public List<LutPreDir> LutPreDirCdList { get; set; } = new();
         public List<LutStreetType> LutStreetTypeList { get; set; } = new();
