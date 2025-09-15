@@ -163,9 +163,9 @@
                data: applicantJson,
                success: function (data) {
                     localStorage.setItem('ApplicantJson', '');
-                    $('#successModal').fadeIn();
-                    $('#goToDashboardBtn').on('click', function () {
-                       window.location.href = _APPURL + "Dashboard";
+                    $('#successModal').modal('show');
+                    $('#btnOk').on('click', function () {
+                       window.location.href = _APPURL ;
                     });
                 },
                error: function (xhr, status, error) {
