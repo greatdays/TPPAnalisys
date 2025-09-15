@@ -7,6 +7,7 @@ using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using IDMAuthenticate = DeveloperPortal.DataAccess.Entity.Models.IDM.IDMAuthenticate;
 
 namespace DeveloperPortal.Pages.Account
 {
