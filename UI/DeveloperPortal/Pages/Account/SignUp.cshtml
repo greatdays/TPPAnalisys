@@ -4,7 +4,10 @@
 @model DeveloperPortal.Pages.Account.SignUpModel
 @inject IConfiguration Configuration
 @inject IAccountService accountService;
-
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+}
 <script src="~/js/jquery-block-ui/blockUICollection.js"></script>
 
 <style>
