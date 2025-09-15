@@ -21,7 +21,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
         Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId);
 
-        Task<bool> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel);
+        Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel);
 
         Task<bool> DeleteFundingSource(int id);
 

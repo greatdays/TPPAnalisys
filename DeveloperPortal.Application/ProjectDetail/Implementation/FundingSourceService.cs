@@ -45,7 +45,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             FundingSourceViewModel lstFundingSourceViewModel = new FundingSourceViewModel();
             try
             {
-                lstFundingSourceViewModel = _fundingSourceRepository.GetFundingSourceById(funDingSourceId).Result;
+                lstFundingSourceViewModel = await _fundingSourceRepository.GetFundingSourceById(funDingSourceId);
             }
             catch (Exception e)
             {
@@ -57,17 +57,17 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
 
 
-        public async Task<DocumentModel> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel)
+        public async Task<bool> SaveDocumentForFundingSource( FundingSourceViewModel viewModel)
         {
 
-            bool isSuccess = await _fundingSourceRepository.SaveDocumentForFundingSource(documentModel, viewModel);
+            bool isSuccess = await _fundingSourceRepository.SaveDocumentForFundingSource(viewModel);
             if (isSuccess)
             {
-                return documentModel;
+                return true;
             }
             else
             {
-                return new DocumentModel();
+                return false;
             }
 
         }
