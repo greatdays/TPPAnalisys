@@ -201,6 +201,74 @@
                 </div>
             </div>
         </div>
+
+    <!-- START USER ACCOUNT ACTIVATE -->
+    <div id="divUserAccountActivity" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="AccountActivationTitle">
+                        Account Activation
+                    </h1>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="h5">
+                        @if (TempData["Status"] != null)
+                        {
+                            switch (TempData["Status"].ToString())
+                            {
+                                case "Expired":
+                                    {
+                                        <span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
+                                        break;
+                                    }
+                                case "NotActivated":
+                                    {
+                                        <span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
+                                        break;
+                                    }
+                                case "AlreadyActivated":
+                                    {
+                                        <span>Your account is already activated. You may now log in with your email and password.</span>
+                                        break;
+                                    }
+                                case "Success":
+                                    {
+                                        <span>Your account is activated successfully. You may now log in with your email and password.</span>
+
+                                        break;
+                                    }
+                                case "SystemError":
+                                    {
+                                        <span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
+                                        break;
+                                    }
+                                case "DomainDifferent":
+                                    {
+                                        <span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        @TempData["message"]
+                                        break;
+                                    }
+                            }
+                        }
+                    </div>
+
+                </div>
+                 <div class="modal-footer">
+                <button id="btnUserActivityOK" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- END USER ACCOUNT ACTIVATE -->
         <!-- Modal PopUp End -->
                 @Html.Partial("_LoadingOverlay")
     </body>
@@ -281,6 +349,14 @@
             }
         });
 
+   @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
+    {
+        <text>
+                    $(function () {
+                        $("#divUserAccountActivity").modal("show");
+                    });
+        </text>
+    }
         // Optional: Show for all AJAX calls (jQuery)
         $(document).ajaxStart(function () {
             LoadingOverlay.show();
