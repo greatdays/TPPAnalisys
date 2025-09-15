@@ -53,7 +53,7 @@ namespace DeveloperPortal.Controllers
         [Route("account/login")]
         [HttpGet]
         public IActionResult Login(string ReturnUrl = null)
-        {
+            {
             return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["AppSettings:ApplicationURL"]}{ReturnUrl}");
         }
 
