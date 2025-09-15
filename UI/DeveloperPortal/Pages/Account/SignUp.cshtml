@@ -100,11 +100,29 @@
 </div>
 
 @*Success Pop up*@
-<div id="successModal" class="modal-success">
-    <div class="modal-success-content">
-        <h2>Success!</h2>
-        <p>Your account has been created.</p>
-        <button id="goToDashboardBtn">Go to my Dashboard</button>
+
+<div id="successModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-modal="true" aria-labelledby="divSignupSuccessModalTitle">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="divSignupSuccessModalTitle">Success</h1>
+            </div>
+            <div class="modal-body text-center">
+                <p class="text-center Succescheck-circle"><span class="fas fa-check-circle" aria-hidden="true"><span class="sr-only">Complete</span></span></p>
+                <div class="Succes-title">
+                    Your account has been created successfully.
+                </div>
+                <p class="Succes-text">
+                    Before you can login, you must activate your account by clicking on the link that was sent to your email address. The link will expire after 24 hours, please activate your account before the link expires. If you did not receive this email, be sure to check your junk/spam folder. If you have entered an incorrect email address, you will need to re-register with the correct email address.
+                </p>
+
+                <div class="d-flex Succesbutton">
+                    <button id="btnOk" class="btn btn-primary m-0" type="button">Ok</button>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -113,6 +131,10 @@
         var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "AccountType","Data": ""}]}';
         localStorage.setItem('ApplicantJson', applicantJson);
 
+          $("#btnOk").on("click", function () {
+              var _APPURL ='@Configuration["AppSettings:ApplicationURL"]';
+            window.location.href = _APPURL;
+        });
         var StepChanged = function f($target) {
             $active = $target || $('.wizard-item.active > a');
             var $parent = $active.parent();
