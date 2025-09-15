@@ -15,6 +15,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{059B31D5-D16E-4738-BAD9-E8CA4BB9BD21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A01021F7-7CC5-469E-9419-3F35FAEFCB69}"
+	ProjectSection(SolutionItems) = preProject
+		UI\DeveloperPortal\Areas\Document\Models\DMSModel.cs = UI\DeveloperPortal\Areas\Document\Models\DMSModel.cs
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F0AC9BCF-4B98-4DCE-B848-8AB688CCBDD9}"
 EndProject

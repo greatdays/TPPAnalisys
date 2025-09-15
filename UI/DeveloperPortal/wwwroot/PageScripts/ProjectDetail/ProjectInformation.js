@@ -48,12 +48,16 @@
                 //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divPolicyContacts");
                 //     break;
-                 case "tabDocuments":
-                    var caseId = Id; // Replace with your method to get case ID
-                    // Replace with your method
-                    console.log(Id);
-                                          // Load documents using the new DMS static method
-                    DMS.LoadDocuments(caseId);
+                case "tabDocuments":
+                    //debugger;
+                    if (window.DMS) {
+                        DMS.LoadDocuments(Id);
+                    }
+                    else {
+                        console.error("DMS class not loaded yet");
+                    }
+   
+                    
                     break;
 
                 case "tabFundingSource":

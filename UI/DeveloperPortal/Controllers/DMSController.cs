@@ -1,67 +1,54 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Data;
-using DeveloperPortal.Areas.Document.Models;
-using DeveloperPortal.Application.DMS.Interface;
-using DeveloperPortal.Domain.Dashboard;
-using DeveloperPortal.Domain.DMS;
-using DeveloperPortal.Application.DMS.Implementation;
-using DeveloperPortal.ServiceClient;
-using DeveloperPortal.Models.PlanReview;
-using Microsoft.AspNetCore.StaticFiles;
-using DeveloperPortal.Application.ProjectDetail.Interface;
-using System.Net.Http.Headers;
+﻿using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.Notification.Interface;
-using DeveloperPortal.Domain.Notification;
-using DeveloperPortal.Domain.Resources;
-using System.Threading.Tasks;
+using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Net.Mime;
-using ComCon.DataAccess.Models.IDM;
 
-
-namespace DeveloperPortal.Areas.Document.Controllers
+namespace DeveloperPortal.Controllers
 {
-    [Area("Document")]
     public class DMSController : Controller
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
         private readonly IDocumentService _documentService;
         private IProjectDetailService _projectDetailService;
         private ISendNotificationEmail sendNotificationEmail;
-        private string _BaseURL = "", _GoogleDriveId = "",_AAHP_Google_UName="",AAHP_Google_Pwd="";
+        private string _BaseURL = "", _GoogleDriveId = "", _AAHP_Google_UName = "", AAHP_Google_Pwd = "";
         private bool _IsCreatedGoogleDriveFolder = false;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        // Inject IHttpContextAccessor instead of HttpContext
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService, 
-            IConfiguration config, ISendNotificationEmail _sendNotificationEmail, IWebHostEnvironment webHostEnvironment)
+        public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService,
+            IConfiguration config, ISendNotificationEmail _sendNotificationEmail, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             this._config = config;
-            this._documentService= documentService;
+            this._documentService = documentService;
             this._projectDetailService = projectDetailService;
             this._BaseURL = _config["AAHRApiSettings:URL"].ToString();
             this._GoogleDriveId = _config["AAHRApiSettings:GoogleDrive"].ToString();
-            this._IsCreatedGoogleDriveFolder = true;//Convert.ToBoolean(_config["AAHRApiSettings:IsCreatedGoogleDriveFolder"].ToString());
-            this.sendNotificationEmail= _sendNotificationEmail;
+            this._IsCreatedGoogleDriveFolder = true;
+            this.sendNotificationEmail = _sendNotificationEmail;
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
             this.AAHP_Google_Pwd = _config["LAHD:password"].ToString();
             this._webHostEnvironment = webHostEnvironment;
-
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
-        [Route("Document/DMS/GetFilesById")]
         public async Task<IActionResult> GetFilesById(int caseId, int controlViewModelId)
         {
-           /* NotificationCredential notificationCredential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
+            /* NotificationCredential notificationCredential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
 
-            List<NotificationInfoModel> notificationInfoModels =  sendNotificationEmail.GetNotificationInfo("email to applicant signing up",null, "ananthakrishnan.mohandas@lacity.org", "", "");
+             List<NotificationInfoModel> notificationInfoModels =  sendNotificationEmail.GetNotificationInfo("email to applicant signing up",null, "ananthakrishnan.mohandas@lacity.org", "", "");
 
-           
-            await sendNotificationEmail.SendMail(notificationInfoModels, notificationCredential, "SignUp");*/
-                //sendNotification.SendMail(this.notificationInfoList, new NotificationCredential(), emailAction);
-           
+
+             await sendNotificationEmail.SendMail(notificationInfoModels, notificationCredential, "SignUp");*/
+            //sendNotification.SendMail(this.notificationInfoList, new NotificationCredential(), emailAction);
+
 
             var model = new DMSModel
             {
@@ -69,7 +56,7 @@ namespace DeveloperPortal.Areas.Document.Controllers
                 ProjectId = caseId
             };
 
-            return View("~/Areas/Document/Views/DMS/DMSView.cshtml", model);
+            return PartialView("~/Pages/DMS/DMSView.cshtml", model);
         }
 
         [HttpPost]
@@ -89,11 +76,11 @@ namespace DeveloperPortal.Areas.Document.Controllers
             var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
             var category = Convert.ToString(HttpContext.Request.Form["Category"]);
             var comment = Convert.ToString(HttpContext.Request.Form["Description"]);
-            // var createdBy= UserSession.GetUserSession().UserName.ToString();
-            var createdBy = "amohandas";
+            var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor).UserName ?? "System";
+            // var createdBy = "amohandas";
             //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
             var documentType = fileType;
-           // var emailId = "ananthakrishnan.mohandas@lacity.org";
+            // var emailId = "ananthakrishnan.mohandas@lacity.org";
 
             var folderId = await _documentService.GetRecentFolderId();
 
@@ -126,11 +113,11 @@ namespace DeveloperPortal.Areas.Document.Controllers
                     Attributes = "",
                     FileSize = file[0].Length.ToString(),
                     CaseId = caseId,
-                    Comment= comment,
+                    Comment = comment,
                     OtherDocumentType = category,
-                    CreatedBy= createdBy,
-                    CreatedOn=DateTime.Now,
-                    IsDeleted= false
+                    CreatedBy = createdBy,
+                    CreatedOn = DateTime.Now,
+                    IsDeleted = false
 
                 };
 
@@ -228,24 +215,24 @@ namespace DeveloperPortal.Areas.Document.Controllers
             return PartialView("~/Areas/Document/Views/DMS/DMSViewNew.cshtml", model);
         }*/
 
-       /* [HttpGet]
-        [Route("DownloadDocument")]
-        public async Task<IActionResult> DownloadDocument(string fileID)
-        {
-            var result = await AAHRServiceClient.DownloadDocument(_BaseURL, fileID);
+        /* [HttpGet]
+         [Route("DownloadDocument")]
+         public async Task<IActionResult> DownloadDocument(string fileID)
+         {
+             var result = await AAHRServiceClient.DownloadDocument(_BaseURL, fileID);
 
-            if (result == null)
-            {
-                string script = "<script>alert('File could not be found.'); window.history.back();</script>";
-                return Content(script, "text/html");
+             if (result == null)
+             {
+                 string script = "<script>alert('File could not be found.'); window.history.back();</script>";
+                 return Content(script, "text/html");
 
-            }
+             }
 
-            var (stream, fileName, contentType) = result.Value;
-            //return Content($"Stream Length: {stream.Length}, FileName: {fileName}, ContentType: {contentType}");
+             var (stream, fileName, contentType) = result.Value;
+             //return Content($"Stream Length: {stream.Length}, FileName: {fileName}, ContentType: {contentType}");
 
-            return File(stream, contentType, fileName);
-        }*/
+             return File(stream, contentType, fileName);
+         }*/
         [HttpGet]
         [Route("DownloadDocument")]
         public async Task<IActionResult> DownloadDocument(string fileName, string filePath)
@@ -297,11 +284,9 @@ namespace DeveloperPortal.Areas.Document.Controllers
             }
             catch (Exception ex)
             {
-               // _logger.LogError(ex, "Error downloading document with fileName: {FileName}, filePath: {FilePath}", fileName, filePath);
+                // _logger.LogError(ex, "Error downloading document with fileName: {FileName}, filePath: {FilePath}", fileName, filePath);
                 return StatusCode(500, "An error occurred while downloading the document.");
             }
         }
     }
-
 }
-

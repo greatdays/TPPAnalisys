@@ -70,7 +70,7 @@ window.FundingSourceManager = class FundingSourceManager {
         // Delete Funding Source
         $(document).on('click', '.btn-delete', (e) => {
             e.preventDefault();
-            debugger;
+           // debugger;
             this.deleteFundingSource($(e.currentTarget).data('id'));
         });
 
