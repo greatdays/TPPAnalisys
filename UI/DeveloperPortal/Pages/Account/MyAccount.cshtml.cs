@@ -218,6 +218,8 @@ namespace DeveloperPortal.Pages.Account
             int contactId = _accountService
                 .ContactIdentifierSave(applicantsignupModel, userSession.UserName, Constants.AppConstant.WebRegister)
                 .Result;
+            // ASP.NET Core version explicitly
+            Microsoft.AspNetCore.Http.SessionExtensions.SetString(HttpContext.Session, "ProfileComplete", "true");
 
             return new JsonResult(new { success = true, received = signupModel });
         }
