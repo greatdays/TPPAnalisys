@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DeveloperPortal.Pages.Account
+namespace DeveloperPortal.Pages
 {
     public class SignupModel : PageModel
     {

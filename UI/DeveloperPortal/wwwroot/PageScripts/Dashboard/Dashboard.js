@@ -33,7 +33,7 @@ handleSubmit : function (e) {
 	debugger;
 	//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	// Send to backend
-	$.post(APPURL + "/Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+	$.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
 		if (response.success) {
 			$('#ActionModal').modal('hide');
 			Dashboard.PopulateMyProjectData();
@@ -119,7 +119,7 @@ PopulateMyProjectData : function() {
 
 	$('#' + tableName).DataTable({
 		ajax: {
-			url: APPURL + '/Dashboard/GetProjectData',
+			url: APPURL + 'Dashboard/GetProjectData',
 			data: { name: dashboardCategory },
 			type: 'POST',
 			"headers": {
