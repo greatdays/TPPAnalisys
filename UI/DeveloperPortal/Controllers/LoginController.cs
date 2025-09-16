@@ -278,10 +278,12 @@ namespace DeveloperPortal.Controllers
 
                         if (data != null)
                         {
+                            HttpContext.Session.SetString("ProfileComplete", "true");
                             return RedirectToPage("/Dashboard");
                         }
                         else
                         {
+                            HttpContext.Session.SetString("ProfileComplete", "false");
                             return RedirectToPage("/Account/MyAccount");
 
                         }
