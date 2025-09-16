@@ -119,7 +119,7 @@ PopulateMyProjectData : function() {
 
 	$('#' + tableName).DataTable({
 		ajax: {
-			url: APPURL + '/Dashboard/GetProjectData',
+			url: APPURL + 'Dashboard/GetProjectData',
 			data: { name: dashboardCategory },
 			type: 'POST',
 			"headers": {
