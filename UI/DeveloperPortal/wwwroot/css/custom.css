@@ -82,9 +82,12 @@ body {
 }
 
 .body-content {
-    margin-top: 50px;
-    max-width: 100% !important;
- /*   margin-bottom: 350px;*/
+    /* This is the essential fix for your fixed headers. */
+    padding-top: 46px;
+    /* This is good for responsive design, but try to avoid !important. */
+    max-width: 100%;
+    /* Only add this if you intentionally want an extra 50px of space. */
+    /* margin-top: 50px; */
 }
 
 .navbar {
@@ -230,13 +233,12 @@ a.nav-link.nav-link-basic:hover {
 .bottomNavBar {
     display: flex;
     align-items: center;
-    background: #2C3E5C; /*#001D80*/
-    height: 55px;
+    background: #2C3E5C;
+    height: var(--bottom-nav-height); /* Use the variable */
     position: fixed;
     width: 100%;
-    top: 55px;
+    top: var(--top-nav-height); /* Position below the top bar */
     z-index: 1000;
-    -webkit-transition: top .2s ease-out;
     transition: top .2s ease-out;
     color: white;
 }
