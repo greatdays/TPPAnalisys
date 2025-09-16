@@ -31,14 +31,16 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="fileuploader">Upload File*</label>
-                        <input type="file" id="fileuploader" name="File" class="form-control"
-                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" required />
+                        <label for="fileuploader">Upload File(s)*</label>
+                        <input type="file" id="fileuploader" name="Files" class="form-control"
+                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif"
+                               multiple required />
                         <div class="form-text">
-                            Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF
+                            Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF<br />
+                            You can select multiple files at once.
                         </div>
                         <div class="invalid-feedback" id="fileError">
-                            Please select a file to upload.
+                            Please select one or more valid file(s).
                         </div>
                     </div>
 
@@ -79,4 +81,17 @@
         maxFileSize: 20971520, // 10MB in bytes
         allowedExtensions: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif']
     };
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find the cancel button and the upload form
+        const cancelButton = document.getElementById('cancelUpload');
+        const uploadForm = document.getElementById('uploadForm');
+
+        if (cancelButton && uploadForm) {
+            // Add a click event listener to the cancel button
+            cancelButton.addEventListener('click', function() {
+                // Reset the form to clear all input fields
+                uploadForm.reset();
+            });
+        }
+    });
 </script>

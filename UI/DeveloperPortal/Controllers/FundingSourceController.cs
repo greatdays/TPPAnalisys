@@ -133,7 +133,7 @@ public class FundingSourceController : Controller
     /// Add/Edit Funding source
     /// </summary>
     [HttpPost]
-    public async Task<ActionResult> SaveFundingSource(FundingSourceViewModel viewModel, IFormFileCollection File)
+    public async Task<ActionResult> SaveFundingSource(FundingSourceViewModel viewModel, List<IFormFile> File)
     {
 
         var fileCategory = "Project";
@@ -167,7 +167,7 @@ public class FundingSourceController : Controller
     /// </summary>
    
 
-    private async Task<UploadResponse> SubmitUploadedDocument(IFormFileCollection file,  int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
+    private async Task<UploadResponse> SubmitUploadedDocument(List<IFormFile> file,  int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
     {
         try
         {
@@ -188,25 +188,25 @@ public class FundingSourceController : Controller
             }
 
             // Upload to DMS
-            var uploadResponse = new DMSService(_config)
+            var uploadResponse = await new DMSService(_config)
                 .SubmitUploadedDocument(file, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
 
-            var response = uploadResponse.Value as UploadResponse;
+            var response = uploadResponse;
 
-            if (response == null || (response.ErrorMessages?.Length > 0))
+            if (response == null || (response[0].ErrorMessages?.Length > 0))
             {
                 FileUploadResult = new FileUploadResult
                 {
                     Success = false,
                     ErrorMessage = "Failed to upload document.\n" +
-                                  (response?.ErrorMessages != null
-                                      ? string.Join("; ", response.ErrorMessages)
+                                  (response[0]?.ErrorMessages != null
+                                      ? string.Join("; ", response[0].ErrorMessages)
                                       : "Unknown error")
                 };
             }
 
             // Save document metadata
-            return response;
+            return response[0];
         }
         catch (Exception ex)
         {

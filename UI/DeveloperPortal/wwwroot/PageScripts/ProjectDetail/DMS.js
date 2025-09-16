@@ -147,6 +147,7 @@ window.DMSManager = class DMSManager {
         }
     }
 
+
     /**
      * Shows the file upload modal.
      */
@@ -209,46 +210,59 @@ window.DMSManager = class DMSManager {
      * @returns {boolean} - True if the file is valid, otherwise false.
      */
     validateFile(event) {
-        const file = event.target.files[0];
+        const files = event.target.files;
         const $f = $(event.target);
 
-        if (!file) {
+        // Check if any files were selected
+        if (files.length === 0) {
             $f.removeClass("is-valid").addClass("is-invalid");
+            this.showError("No files selected.");
             return false;
         }
 
-        if (this.modalConfig.maxFileSize && file.size > this.modalConfig.maxFileSize) {
-            this.showError(`File too large. Max: ${this.formatFileSize(this.modalConfig.maxFileSize)}`);
-            $f.removeClass("is-valid").addClass("is-invalid");
-            return false;
-        }
-
-        if (this.modalConfig.allowedExtensions?.length > 0) {
-            const ext = "." + file.name.split(".").pop().toLowerCase();
-            if (!this.modalConfig.allowedExtensions.includes(ext)) {
-                this.showError("File type not allowed.");
+        for (const file of files) {
+            // Validate file size
+            if (this.modalConfig.maxFileSize && file.size > this.modalConfig.maxFileSize) {
+                this.showError(`File too large: ${file.name}. Max size: ${this.formatFileSize(this.modalConfig.maxFileSize)}`);
                 $f.removeClass("is-valid").addClass("is-invalid");
                 return false;
             }
+
+            // Validate file extension
+            if (this.modalConfig.allowedExtensions?.length > 0) {
+                const ext = "." + file.name.split(".").pop().toLowerCase();
+                if (!this.modalConfig.allowedExtensions.includes(ext)) {
+                    this.showError(`File type not allowed: ${file.name}.`);
+                    $f.removeClass("is-valid").addClass("is-invalid");
+                    return false;
+                }
+            }
         }
 
-        $f.removeClass("is-invalid").addClass("is-valid");
-        this.hideError();
+        // If all files pass validation
+       // $f.removeClass("is-invalid").addClass("is-valid");
+        //this.hideError();
         return true;
     }
-
     /**
      * Validates the entire upload form before submission.
      * @returns {boolean} - True if the form is valid, otherwise false.
      */
     validateForm() {
         const fileInput = document.getElementById(this.modalConfig.fileInputId);
-        let valid = !!fileInput && fileInput.files.length > 0 && this.validateFile({ target: fileInput });
+        if (!fileInput || fileInput.files.length === 0) {
+            this.showError("Please select a file.");
+            return false;
+        }
+
+        let valid = this.validateFile({ target: fileInput });
+
         if (this.modalConfig.categoryId) {
             valid = valid && this.validateField(document.getElementById(this.modalConfig.categoryId));
         }
         return valid;
     }
+
 
     /**
      * Handles the file upload process, from validation to AJAX submission.
@@ -283,7 +297,17 @@ window.DMSManager = class DMSManager {
         // Set upload state
         this.isUploading = true;
 
-        const formData = this.buildFormData(files[0]);
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append("files", files[i]);
+        }
+
+        // Append form data from the UI
+        formData.append("folderName", $("#FolderName").val());
+        formData.append("projectId", $("#ProjectId").val());
+        formData.append("category", $(`#${this.modalConfig.categoryId}`).val());
+        formData.append("description", $(`#${this.modalConfig.descriptionId}`).val());
+
         this.performUpload(formData, this.getUploadUrl());
     }
 

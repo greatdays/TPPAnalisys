@@ -68,80 +68,79 @@ namespace DeveloperPortal.Controllers
         }
         [HttpPost]
         [Route("UploadFile")]
-        public async Task<JsonResult> UploadFile()
+        public async Task<JsonResult> UploadFile(
+                                                    List<IFormFile> files,
+                                                    [FromForm] int projectId,
+                                                    [FromForm] string category,
+                                                    [FromForm] string description
+                                                )
         {
-            IFormFileCollection file = HttpContext.Request.Form.Files;
-            var fileType = GetMimeTypeForFileExtension(file[0].FileName);
-            var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
-            var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
-            var category = Convert.ToString(HttpContext.Request.Form["Category"]);
-            var comment = Convert.ToString(HttpContext.Request.Form["Description"]);
+            // Directly binds to the "files" parameter from FormData
+
+           // var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
+            var caseId = projectId;
+            var comment = description;
             var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor).UserName ?? "System";
-            // var createdBy = "amohandas";
-            //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
-            var documentType = fileType;
-            // var emailId = "ananthakrishnan.mohandas@lacity.org";
 
-            var folderId = await _documentService.GetRecentFolderId();
-
-            this._AAHP_Google_UName = _config["LAHD:username"].ToString();
             string fileCategory = "Project", fileSubCategory = "Document";
 
+            // 1. Await the async service call. This is the most important change.
+            // The method now returns a List<UploadResponse> directly.
+            var responses = await new DMSService(_config).SubmitUploadedDocument(files, caseId, fileCategory, fileSubCategory, createdBy);
 
-            //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, caseId, fileCategory, fileSubCategory, createdBy);
-
-            var response = uploadResponse.Value as UploadResponse;
-
-            if (response == null || (response.ErrorMessages != null && response.ErrorMessages.Length > 0))
+            if (responses == null || responses.Count == 0)
             {
                 return new JsonResult(new
                 {
                     Success = false,
-                    Message = "Failed to upload document.\n" +
-                              (response?.ErrorMessages != null
-                                  ? string.Join("; ", response.ErrorMessages)
-                                  : "Unknown error")
+                    Message = "Failed to upload document.\nNo response received."
                 });
             }
-            else
+
+            // Check for any failed uploads.
+            var failed = responses.Where(r => r.ReturnStatus == Status.Failed).ToList();
+
+            if (failed.Any())
             {
+                return new JsonResult(new
+                {
+                    Success = false,
+                    Message = "Failed to upload some documents.\n" +
+                              string.Join("; ", failed.SelectMany(f => f.ErrorMessages))
+                });
+            }
+
+            var savedDocuments = new List<DocumentModel>();
+
+            for (int i = 0; i < responses.Count; i++)
+            {
+                var response = responses[i];
+                var f = files[i];
+
                 var documentModel = new DocumentModel()
                 {
-                    Name = file[0].FileName,
-                    Link = response.UniqueId.ToString(),
+                    Name = f.FileName,
+                    Link = response.UniqueId.ToString(), // Use null-conditional operator
                     Attributes = "",
-                    FileSize = file[0].Length.ToString(),
+                    FileSize = f.Length.ToString(),
                     CaseId = caseId,
                     Comment = comment,
                     OtherDocumentType = category,
                     CreatedBy = createdBy,
                     CreatedOn = DateTime.Now,
                     IsDeleted = false
-
                 };
 
-                var document = _documentService.SaveDocument(documentModel).Result;
+                var document = await _documentService.SaveDocument(documentModel);
+                savedDocuments.Add(document);
             }
 
-            /* var documentModel = new DocumentModel()
-             {
-                 Name = file.FileName,
-                 Link = response.UniqueId.ToString(),
-                 Attributes = "",
-                 FileSize = file.Length.ToString(),
-                 CaseId = caseId,
-                 FolderId = folderId,
-                 Comment= comment,
-                 OtherDocumentType = category,
-                 CreatedBy= "ananthakrishnan",
-                 CreatedOn=DateTime.Now,
-                 IsDeleted= false
-
-             };
-
-             var document = _documentService.SaveDocument(documentModel).Result;*/
-            return Json(uploadResponse);
+            return new JsonResult(new
+            {
+                Success = true,
+                Message = $"{savedDocuments.Count} document(s) uploaded successfully."
+               
+            });
         }
         // GET: api/<DashboardController>
         [HttpGet]
