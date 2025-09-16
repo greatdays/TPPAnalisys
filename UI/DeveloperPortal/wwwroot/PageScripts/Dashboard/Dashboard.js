@@ -33,7 +33,7 @@ handleSubmit : function (e) {
 	debugger;
 	//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	// Send to backend
-	$.post(APPURL + "/Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+	$.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
 		if (response.success) {
 			$('#ActionModal').modal('hide');
 			Dashboard.PopulateMyProjectData();
