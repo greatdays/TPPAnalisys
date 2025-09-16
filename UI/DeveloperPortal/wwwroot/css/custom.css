@@ -1744,4 +1744,36 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
 }
 /* End Font Size */
 
+
+.tabs {
+    display: flex;
+    cursor: pointer;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.tab {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background: #f1f1f1;
+    margin-right: 5px;
+}
+
+    .tab.active {
+        background: #fff;
+        border-top: 2px solid #007BFF;
+        font-weight: bold;
+    }
+
+.tab-content {
+    display: none;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
+
+    .tab-content.active {
+        display: block;
+    }
+
 /* UI Developer Bootstrap override classes  */
