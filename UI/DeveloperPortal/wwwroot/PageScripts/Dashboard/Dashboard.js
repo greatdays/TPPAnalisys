@@ -239,7 +239,7 @@ GetACHPDetail : function(achpNumber, callback) {
 	var token = $('input[name="__RequestVerificationToken"]').val();
 	//var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
 	$.ajax({
-		url: APPURL + '/Dashboard?handler=GetACHPDetails',
+		url: APPURL + 'Dashboard?handler=GetACHPDetails',
 		type: 'POST',
 		contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 		headers: {
