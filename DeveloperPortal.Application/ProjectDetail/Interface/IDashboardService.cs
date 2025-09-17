@@ -23,6 +23,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
 
         Task<ContactIdentifier> GetUserContactIdentifierData();
 
+       
 
 
     }
