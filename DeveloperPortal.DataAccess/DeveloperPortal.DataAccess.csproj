@@ -122,6 +122,8 @@
     <Compile Include="Entity\Models\Generated\AwardBidPackage.cs" />
     <Compile Include="Entity\Models\Generated\BackgroundCheck.cs" />
     <Compile Include="Entity\Models\Generated\BackgroundCheckReport.cs" />
+    <Compile Include="Entity\Models\Generated\BackupCase.cs" />
+    <Compile Include="Entity\Models\Generated\BackupCaseLog.cs" />
     <Compile Include="Entity\Models\Generated\BatchJob.cs" />
     <Compile Include="Entity\Models\Generated\BatchJobDetail.cs" />
     <Compile Include="Entity\Models\Generated\BatchJobDetailLog.cs" />
@@ -173,11 +175,13 @@
     <Compile Include="Entity\Models\Generated\ExistingRetrofitImportantDateMapping.cs" />
     <Compile Include="Entity\Models\Generated\Extension.cs" />
     <Compile Include="Entity\Models\Generated\FairHousing.cs" />
+    <Compile Include="Entity\Models\Generated\FhpropertyAssociatedAccount.cs" />
     <Compile Include="Entity\Models\Generated\Field.cs" />
     <Compile Include="Entity\Models\Generated\FloorPlanBathroomType.cs" />
     <Compile Include="Entity\Models\Generated\FloorPlanType.cs" />
     <Compile Include="Entity\Models\Generated\Folder.cs" />
     <Compile Include="Entity\Models\Generated\Form.cs" />
+    <Compile Include="Entity\Models\Generated\FundingSource.cs" />
     <Compile Include="Entity\Models\Generated\Grievance.cs" />
     <Compile Include="Entity\Models\Generated\GrievanceAppeal.cs" />
     <Compile Include="Entity\Models\Generated\GrievanceLog.cs" />
@@ -191,11 +195,13 @@
     <Compile Include="Entity\Models\Generated\ImpersonatedUserLoginDetail.cs" />
     <Compile Include="Entity\Models\Generated\ImportantDate.cs" />
     <Compile Include="Entity\Models\Generated\ImportProject.cs" />
+    <Compile Include="Entity\Models\Generated\ImportProject1.cs" />
     <Compile Include="Entity\Models\Generated\Inspection.cs" />
     <Compile Include="Entity\Models\Generated\InspectionDetail.cs" />
     <Compile Include="Entity\Models\Generated\InspectionHistory.cs" />
     <Compile Include="Entity\Models\Generated\InspectionNotification.cs" />
     <Compile Include="Entity\Models\Generated\InspectionScheduled.cs" />
+    <Compile Include="Entity\Models\Generated\JsonConfigMaster.cs" />
     <Compile Include="Entity\Models\Generated\LACountyServicePlanningArea.cs" />
     <Compile Include="Entity\Models\Generated\LAServiceArea2012.cs" />
     <Compile Include="Entity\Models\Generated\Level.cs" />
@@ -204,6 +210,11 @@
     <Compile Include="Entity\Models\Generated\LinksLinkDetail.cs" />
     <Compile Include="Entity\Models\Generated\LinksLog.cs" />
     <Compile Include="Entity\Models\Generated\LinksTracking.cs" />
+    <Compile Include="Entity\Models\Generated\Links_DisplayConfig.cs" />
+    <Compile Include="Entity\Models\Generated\Links_Image.cs" />
+    <Compile Include="Entity\Models\Generated\Links_LinkDetail.cs" />
+    <Compile Include="Entity\Models\Generated\Links_Log.cs" />
+    <Compile Include="Entity\Models\Generated\Links_Tracking.cs" />
     <Compile Include="Entity\Models\Generated\Listing.cs" />
     <Compile Include="Entity\Models\Generated\ListingSnap.cs" />
     <Compile Include="Entity\Models\Generated\Location.cs" />
@@ -212,12 +223,14 @@
     <Compile Include="Entity\Models\Generated\LutAccessibilityComplianceStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutAccessibleUnitFeature.cs" />
     <Compile Include="Entity\Models\Generated\LutAccountTypeCategory.cs" />
+    <Compile Include="Entity\Models\Generated\LutAffirmativeMarketingOutreach.cs" />
     <Compile Include="Entity\Models\Generated\LutAHUPScore.cs" />
     <Compile Include="Entity\Models\Generated\LutAltContactType.cs" />
     <Compile Include="Entity\Models\Generated\LutAMI.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicableAccessibilityStandard.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationDeclineReason.cs" />
     <Compile Include="Entity\Models\Generated\LutApplicationType.cs" />
+    <Compile Include="Entity\Models\Generated\LutAssociatedRole.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutBatchType.cs" />
     <Compile Include="Entity\Models\Generated\LutBathroomType.cs" />
@@ -231,6 +244,7 @@
     <Compile Include="Entity\Models\Generated\LutCaseReferralType.cs" />
     <Compile Include="Entity\Models\Generated\LutCertificateType.cs" />
     <Compile Include="Entity\Models\Generated\LutCESType.cs" />
+    <Compile Include="Entity\Models\Generated\LutChangeRole.cs" />
     <Compile Include="Entity\Models\Generated\LutCloseReason.cs" />
     <Compile Include="Entity\Models\Generated\LutComplianceStatus.cs" />
     <Compile Include="Entity\Models\Generated\LutConstructionType.cs" />
@@ -318,6 +332,8 @@
     <Compile Include="Entity\Models\Generated\LutRACategory.cs" />
     <Compile Include="Entity\Models\Generated\LutRARequestType.cs" />
     <Compile Include="Entity\Models\Generated\LutRASubCategory.cs" />
+    <Compile Include="Entity\Models\Generated\LutReasonDeterminationNotProvidedSooner.cs" />
+    <Compile Include="Entity\Models\Generated\LutReasonTenantNotTransferredSooner.cs" />
     <Compile Include="Entity\Models\Generated\LutReferenceType.cs" />
     <Compile Include="Entity\Models\Generated\LutRelatedEntity.cs" />
     <Compile Include="Entity\Models\Generated\LutRenderType.cs" />
@@ -364,6 +380,7 @@
     <Compile Include="Entity\Models\Generated\NeighborhoodCouncil.cs" />
     <Compile Include="Entity\Models\Generated\NewsDisplayConfig.cs" />
     <Compile Include="Entity\Models\Generated\NewsNewsDetail.cs" />
+    <Compile Include="Entity\Models\Generated\NewStaffContactInfo.cs" />
     <Compile Include="Entity\Models\Generated\News_DisplayConfig.cs" />
     <Compile Include="Entity\Models\Generated\News_NewsDetail.cs" />
     <Compile Include="Entity\Models\Generated\NonCoveredProjectSite.cs" />
@@ -402,6 +419,7 @@
     <Compile Include="Entity\Models\Generated\ProjectAttributeLog.cs" />
     <Compile Include="Entity\Models\Generated\ProjectLog.cs" />
     <Compile Include="Entity\Models\Generated\ProjectSite.cs" />
+    <Compile Include="Entity\Models\Generated\ProjectSite10252023.cs" />
     <Compile Include="Entity\Models\Generated\ProjectSiteAdditionalQuestion.cs" />
     <Compile Include="Entity\Models\Generated\ProjectSiteAdditionalQuestionsSnap.cs" />
     <Compile Include="Entity\Models\Generated\ProjectSiteAttribute.cs" />
@@ -433,14 +451,17 @@
     <Compile Include="Entity\Models\Generated\QREffectiveCommunication.cs" />
     <Compile Include="Entity\Models\Generated\QRFairHousing.cs" />
     <Compile Include="Entity\Models\Generated\QRGrievanceLog.cs" />
+    <Compile Include="Entity\Models\Generated\QrnewStaffContactInfo.cs" />
     <Compile Include="Entity\Models\Generated\QROccupancyUnit.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteFutureWaitList.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteNoChangeReport.cs" />
     <Compile Include="Entity\Models\Generated\QRProjectSiteUpcomingUnitVacancy.cs" />
+    <Compile Include="Entity\Models\Generated\QrpropertyAssociatedAccount.cs" />
     <Compile Include="Entity\Models\Generated\QRReasonableAccommodation.cs" />
     <Compile Include="Entity\Models\Generated\QRUpcomingUnitVacancy.cs" />
     <Compile Include="Entity\Models\Generated\QRUtilizationSurvey.cs" />
     <Compile Include="Entity\Models\Generated\QuarterlyReport.cs" />
+    <Compile Include="Entity\Models\Generated\RandomUser.cs" />
     <Compile Include="Entity\Models\Generated\ReasonableAccommodation.cs" />
     <Compile Include="Entity\Models\Generated\Region.cs" />
     <Compile Include="Entity\Models\Generated\replacementapn.cs" />
@@ -507,6 +528,7 @@
     <Compile Include="Entity\Models\Generated\TempPrefHouseId.cs" />
     <Compile Include="Entity\Models\Generated\TestUnit.cs" />
     <Compile Include="Entity\Models\Generated\TestUnitDetail.cs" />
+    <Compile Include="Entity\Models\Generated\TppangelenoUser.cs" />
     <Compile Include="Entity\Models\Generated\TQR2FairHousingBatch1.cs" />
     <Compile Include="Entity\Models\Generated\TQR2ServiceRequestBatch1.cs" />
     <Compile Include="Entity\Models\Generated\tqrCorrectionNote.cs" />
@@ -537,6 +559,7 @@
     <Compile Include="Entity\Models\Generated\vwAffordableApplicationCloseDateNotification.cs" />
     <Compile Include="Entity\Models\Generated\vwAllPropertyList.cs" />
     <Compile Include="Entity\Models\Generated\vwAllPropertyPolicyAnalyst.cs" />
+    <Compile Include="Entity\Models\Generated\VwAllPropertyPolicyAnalyst8118.cs" />
     <Compile Include="Entity\Models\Generated\vwAllPurportedUnitsDetail.cs" />
     <Compile Include="Entity\Models\Generated\vwApplication.cs" />
     <Compile Include="Entity\Models\Generated\vwApplicationUser.cs" />
@@ -567,6 +590,7 @@
     <Compile Include="Entity\Models\Generated\VwOlapHimsmilestone.cs" />
     <Compile Include="Entity\Models\Generated\VwOlapHimsparticipantInfo.cs" />
     <Compile Include="Entity\Models\Generated\VwOlapHimsunitInfo.cs" />
+    <Compile Include="Entity\Models\Generated\VwOlapMasterDataBySite.cs" />
     <Compile Include="Entity\Models\Generated\VwOlapPmpdetail.cs" />
     <Compile Include="Entity\Models\Generated\VwOlapPmpdetailsUpdated.cs" />
     <Compile Include="Entity\Models\Generated\VwOlapPolicyCaseDetail.cs" />
@@ -627,6 +651,7 @@
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummary.cs" />
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummary1.cs" />
     <Compile Include="Entity\Models\Generated\vwProjectSiteUnitSummaryAll.cs" />
+    <Compile Include="Entity\Models\Generated\VwPropertyContact.cs" />
     <Compile Include="Entity\Models\Generated\VwPropertyContactdetail.cs" />
     <Compile Include="Entity\Models\Generated\vwPropertySearch.cs" />
     <Compile Include="Entity\Models\Generated\vwSRSummary.cs" />
@@ -654,6 +679,7 @@
     <Compile Include="Entity\Models\Generated\WF_ActionView.cs" />
     <Compile Include="Entity\Models\Generated\WF_ActionViewPermission.cs" />
     <Compile Include="Entity\Models\Generated\WF_CaseCondition.cs" />
+    <Compile Include="Entity\Models\Generated\WF_Definition.cs" />
     <Compile Include="Entity\Models\Generated\WF_State.cs" />
     <Compile Include="Entity\Models\Generated\WorkExtension.cs" />
     <Compile Include="Entity\Models\Generated\WorkLog.cs" />
@@ -677,6 +703,7 @@
     <Compile Include="Entity\Models\IDM\ApplicationDetail.cs" />
     <Compile Include="Entity\Models\IDM\AuthenticateResponse.cs" />
     <Compile Include="Entity\Models\IDM\AuthResponse.cs" />
+    <Compile Include="Entity\Models\IDM\IDMAuthenticate.cs" />
     <Compile Include="Entity\Models\IDM\UserSession.cs" />
     <Compile Include="Entity\Models\IDM\UserSystemDetail.cs" />
     <Compile Include="Entity\Models\StoredProcedureModels\ProjectParticipantsModel.cs" />

@@ -43,7 +43,7 @@
 
     <div class="_footer-logo">
         @* Eric Kim -alt text has been changed *@
-        <img alt="Los Angeles Housing Department" src="~/Images/LAHD-logo-color-large.png" class="_img-responsive">
+        <img alt="Los Angeles Housing Department" src="~/Images/logo.png" class="_img-responsive">
     </div>
     <div class="_address-contact-subscribe flex-wrap">
         <ul class="_add-cont flex-wrap">
@@ -75,7 +75,7 @@
                 </span>
             </li>
         </ul>
-        <a class="_subscribe-button ripple" href="https://housing.lacity.org/about-us/subscribe-to-newsletters">
+        <a class="_subscribe-button ripple btn btn-primary btn-pill m-0 font-15 ml-auto pl-3 pr-3 mr-4" href="https://housing.lacity.org/about-us/subscribe-to-newsletters">
             <img aria-hidden="true" alt="Subscribe to our Newsletter button" class="_subscribe-icon" src="~/images/newsletter.png" /> <span>
                 Subscribe to our Newsletter
             </span>
@@ -83,17 +83,16 @@
     </div>
     <div class="_Leadership-SocialMedia flex-wrap">
         <ul class="Opportunities-links flex-wrap">
-            <li><a href="#">Site Map</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Media Center</a></li>
+            <li><a href="https://housing.lacity.gov/sitemap">Site Map</a></li>
+            <li><a href="https://housing.lacity.gov/about-us/privacy-policy">Privacy Policy</a></li>
+            <li><a href="https://housingdev2.lacity.org/AAHRDev/ComCon/Tab/RenderTab?tabName=Terms%20and%20Conditions">Terms & Conditions</a></li>
+            <li><a href="https://housing.lacity.gov/about-us/media-center">Media Center</a></li>
 
 
             <li><a href="https://housing.lacity.org/about-us/accessibility">Accessibility</a></li>
             <li>
 
-                <button data-toggle="modal" style="padding: 9px;
-    padding-left: 25px;" class="SupportedBrowserButton mb-0" data-target="#BrowserSupportPopUp">
+                <button data-toggle="modal" data-target="#BrowserSupportPopUp" class="SupportedBrowserButton btn btn-primary m-0 btn-pill font-15 pl-3 pr-3">
                     Supported Browsers
                 </button>
 
@@ -133,7 +132,9 @@
 </footer>
 
 
-<div id="BrowserSupportPopUp" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false" data-backdrop="static" style="display:none">
+
+    <div class="modal fade" id="BrowserSupportPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">

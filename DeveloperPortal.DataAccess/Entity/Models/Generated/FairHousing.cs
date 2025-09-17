@@ -49,6 +49,16 @@ public partial class FairHousing
 
     public bool? IsAnyChangeInRole { get; set; }
 
+    public bool? IsAnyChangeInFiveReqRoles { get; set; }
+
+    public bool? IsOpmrequiredNewPropMgmtStaffToCreateAahraccount { get; set; }
+
+    public DateOnly? AccountNlinkPropertyDate { get; set; }
+
+    public bool? IsOpmrequiredNewPropMgmtStaffToAttendAnnualFh { get; set; }
+
+    public DateOnly? TrainingAttendedDate { get; set; }
+
     public bool? IsAwareOfAnyFhac { get; set; }
 
     public string? CourtName { get; set; }
@@ -68,6 +78,8 @@ public partial class FairHousing
     public virtual ICollection<AssnFairHousingCertifyTerm> AssnFairHousingCertifyTerms { get; set; } = new List<AssnFairHousingCertifyTerm>();
 
     public virtual ICollection<AssnFhacfiledDate> AssnFhacfiledDates { get; set; } = new List<AssnFhacfiledDate>();
+
+    public virtual ICollection<FhpropertyAssociatedAccount> FhpropertyAssociatedAccounts { get; set; } = new List<FhpropertyAssociatedAccount>();
 
     public virtual LutSignatureTitle? LutSignatureTitle { get; set; }
 

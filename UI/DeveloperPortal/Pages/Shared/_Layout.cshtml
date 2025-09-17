@@ -14,13 +14,14 @@
     <title>@ViewData["Title"] - DeveloperPortal</title>
     <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+   
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
     <link href="~/content/font-awesome.css" rel="stylesheet" />
 
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
     <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
@@ -87,16 +88,18 @@
     <script>
         // correct lacity global navbar
         $(document).ready(function () {
-        $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-        $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-        $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-        $("#global_nav_la_4324422-rightwrap > a").each(function () {
-        $(this).append('<img class="navbar-new-window-icon" src="/Images/icons8-external-link-30.png" alt="Opens in new window">');
-        });
+            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+            $("#global_nav_la_4324422-rightwrap > a").each(function () {
+                var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
+                $(this).append('<img class="navbar-new-window-icon" src="' + imgSrc + '" alt="Opens in new window">');
+            });
         });
     </script>
+
 
 </head>
 <body>
@@ -122,7 +125,7 @@
                     <ul class="navbar-nav botNav-left-hide">
                         <li class="nav-item navItem-decor">
                             <a class="nav-link nav-link-basic" href='~/dashboard'>
-                                Dashboard
+                                My Dashboard
                             </a>
                         </li>
                         <li class="nav-item navItem-decor">
@@ -154,7 +157,7 @@
             </div>
         </header>
         <div class=" body-content">
-            <main role="main" class="pb-3 pt-3">
+            <main role="main" class="">
                         @RenderBody()
             </main>
         </div>
@@ -201,29 +204,132 @@
                 </div>
             </div>
         </div>
+
+    <!-- START USER ACCOUNT ACTIVATE -->
+    <div id="divUserAccountActivity" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="AccountActivationTitle">
+                        Account Activation
+                    </h1>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="h5">
+                        @if (TempData["Status"] != null)
+                        {
+                            switch (TempData["Status"].ToString())
+                            {
+                                case "Expired":
+                                    {
+                                        <span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
+                                        break;
+                                    }
+                                case "NotActivated":
+                                    {
+                                        <span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
+                                        break;
+                                    }
+                                case "AlreadyActivated":
+                                    {
+                                        <span>Your account is already activated. You may now log in with your email and password.</span>
+                                        break;
+                                    }
+                                case "Success":
+                                    {
+                                        <span>Your account is activated successfully. You may now log in with your email and password.</span>
+
+                                        break;
+                                    }
+                                case "SystemError":
+                                    {
+                                        <span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
+                                        break;
+                                    }
+                                case "DomainDifferent":
+                                    {
+                                        <span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        @TempData["message"]
+                                        break;
+                                    }
+                            }
+                        }
+                    </div>
+
+                </div>
+                 <div class="modal-footer">
+                <button id="btnUserActivityOK" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- END USER ACCOUNT ACTIVATE -->
         <!-- Modal PopUp End -->
                 @Html.Partial("_LoadingOverlay")
     </body>
 
-    <script>
-              //my Account
-          // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
-          //     console.log("Clikced");
-          //    window.location.href = 'Account/MyAccount';
-          // });
-        function showLoadingOverlay() {
-           document.getElementById("loadingOverlay").style.display = "block";
-        }
+<script>
+        $(document).ready(function () {
+        $('.setup-content').each(function () {
+            let step = $(this);
+            let nextBtn = step.find('.nextBtn');
+            // nextBtn.prop('disabled', true);
 
-        function hideLoadingOverlay() {
-            document.getElementById("loadingOverlay").style.display = "none";
+            step.on('change keyup', '[data-required="true"]', function () {
+                if (validateStep(step)) {
+                    nextBtn.prop('disabled', false).removeClass('disabled-btn');
+                } else {
+                    nextBtn.prop('disabled', true).addClass('disabled-btn');
+                }
+            });
+        });
+    });
+
+          //my Account
+      // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
+      //     console.log("Clikced");
+      //    window.location.href = 'Account/MyAccount';
+      //
+           window.LoadingOverlay = {
+        show: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "block";
+            } else {
+                console.warn("Loading overlay element not found");
+            }
+        },
+
+        hide: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "none";
+            }
+        },
+
+        toggle: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = overlay.style.display === "none" ? "block" : "none";
+            }
         }
+    };
+
+    // Usage: LoadingOverlay.show(), LoadingOverlay.hide()
 
         // Show on form submission
         document.addEventListener("submit", function (e) {
             const form = e.target;
             if (form.tagName === "FORM") {
-                showLoadingOverlay();
+                 LoadingOverlay.show();
             }
         }, true);
 
@@ -241,16 +347,24 @@
                     !link.href.startsWith("javascript:") &&
                     !isSamePageAnchor
                 ) {
-                    showLoadingOverlay();
+                   LoadingOverlay.show();
                 }
             }
         });
 
+   @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
+    {
+        <text>
+                    $(function () {
+                        $("#divUserAccountActivity").modal("show");
+                    });
+        </text>
+    }
         // Optional: Show for all AJAX calls (jQuery)
         $(document).ajaxStart(function () {
-            showLoadingOverlay();
+            LoadingOverlay.show();
         }).ajaxStop(function () {
-            hideLoadingOverlay();
+            LoadingOverlay.hide();
         });
     </script>
     </html>

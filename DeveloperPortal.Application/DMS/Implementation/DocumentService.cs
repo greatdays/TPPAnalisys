@@ -45,13 +45,14 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 foreach (var document in resultDocuments)
                 {
                     fileModel = new Domain.DMS.FileModel();
-                    fileModel.ID = Convert.ToString(document.DocumentId);
+                    fileModel.DocumentId = document.DocumentId;
                     fileModel.Roles = "NAC";
                     fileModel.UploadedDate = document.CreatedOn;
                     fileModel.Name = document.Name;
                     fileModel.UploadedBy = document.CreatedBy;
                     fileModel.Category = document.OtherDocumentType;
                     fileModel.Link = document.Link;
+                    fileModel.Comment = document.Comment;
 
                     fileModels.Add(fileModel);
                 }
@@ -76,6 +77,11 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 return new DocumentModel();
             }
 
+        }
+        public async Task<bool> DeleteDocument(int id)
+        {
+
+            return await _documentRepository.DeleteDocument(id);
         }
         public async Task<FolderModel> SaveFolder(FolderModel folderModel)
         {
@@ -111,6 +117,10 @@ namespace DeveloperPortal.Application.DMS.Implementation
             List<FolderModel> folderList = await _storedProcedureExecutor.ExecuteStoredProcAsync<FolderModel>(StoredProcedureNames.SP_uspGetDMSFolderDetails, projectIdParam, parentFolderIdParam);
             return folderList;
 
+        }
+        public async Task<int> GetRecentFolderId()
+        {
+            return await _documentRepository.GetRecentFolderId();
         }
     }
 }

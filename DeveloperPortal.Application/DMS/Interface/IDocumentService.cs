@@ -16,6 +16,8 @@ namespace DeveloperPortal.Application.DMS.Interface
         Task<FolderModel> SaveFolder(FolderModel folderModel);
         Task<List<FolderModel>> GetFolderDetails(int projectId);
         Task<List<FolderModel>> GetSubFolderDetails(int projectId, int parentFolderId);
+        Task<int> GetRecentFolderId();
+        Task<bool> DeleteDocument(int id);
         //Task<List<FolderTree>> GetFolderTree(int projectId);
     }
 }

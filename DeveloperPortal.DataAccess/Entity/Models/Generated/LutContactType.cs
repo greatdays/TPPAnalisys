@@ -45,6 +45,8 @@ public partial class LutContactType
 
     public virtual ICollection<AssnPropContact> AssnPropContacts { get; set; } = new List<AssnPropContact>();
 
+    public virtual ICollection<FhpropertyAssociatedAccount> FhpropertyAssociatedAccounts { get; set; } = new List<FhpropertyAssociatedAccount>();
+
     public virtual ICollection<Hrmapplication> Hrmapplications { get; set; } = new List<Hrmapplication>();
 
     public virtual ICollection<ServiceRequestContact> ServiceRequestContacts { get; set; } = new List<ServiceRequestContact>();

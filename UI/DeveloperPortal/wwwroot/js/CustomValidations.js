@@ -180,8 +180,90 @@ function IsTermsAndConditionsAccepted(ctlDivId, ctlId) {
     }
 }
 
+
+//stopping from moving forward from one partial view to another without filling the details
+
+function validateStep(stepContainer) {
+    //console.log("called ", stepContainer);
+    let isValid = true;
+
+    $(stepContainer).find('[data-required="true"]').each(function () {
+        let field = $(this);
+
+        // Skip validation if hidden
+        if (!field.is(':visible')) {
+            return;
+        }
+
+        if (field.is(':radio')) {
+            let group = field.attr('name');
+            if ($('input[name="' + group + '"]:checked').length === 0) {
+                isValid = false;
+            }
+        }
+        else if (field.is(':checkbox')) {
+            if (!field.is(':checked')) {
+                isValid = false;
+            }
+        }
+        else if (field.is('select')) {
+            if (!field.val() || field.val() === "0") {
+                isValid = false;
+            }
+        }
+        else {
+            if (!field.val().trim()) {
+                isValid = false;
+            }
+        }
+    });
+
+    return isValid;
+}
+
+//function validateStep(stepContainer) {
+//    console.log("called ", stepContainer);
+//    let isValid = true;
+
+//    $(stepContainer).find('[data-required="true"]:visible').each(function () {
+//        let field = $(this);
+
+//        if (field.is(':radio')) {
+//            let group = field.attr('name');
+//            if ($('input[name="' + group + '"]:checked').length === 0) {
+//                isValid = false;
+//            }
+//        }
+//        else if (field.is(':checkbox')) {
+//            if (!field.is(':checked')) {
+//                isValid = false;
+//            }
+//        }
+//        else if (field.is('select')) {
+//            // placeholder values like "" or "0" are invalid
+//            if (!field.val() || field.val() === "0") {
+//                isValid = false;
+//            }
+//        }
+//        else {
+//            if (!field.val() || field.val().trim() === "") {
+//                isValid = false;
+//            }
+//        }
+//    });
+
+//    return isValid;
+//}
+
+
+
+//ends here
+
+
+
 /* Contact Methods form validation */
 function InitializeContactMethods() {
+    console.log("contact method intialize");
     SetMaxLength('Extension', 5);
     SetMaxLength('UnitNumber', 20);
     SetMaxLength('City', 20);
@@ -347,21 +429,88 @@ function ValidatePhoneType(ctlId) {
             $(ctl).next('.text-danger').remove();
     }
 }
-
 function OnPOBoxChanged() {
-    var selectedVal = $('#POBox:checked').val();
+    var selectedVal = $('input[name="POBox"]:checked').val();
     var delay = 600;
-    switch (selectedVal) {
-        case 'Yes':
-            $('#divPOBoxYes').show(delay);
-            $('#divPOBoxNo').hide(delay);
-            break;
-        case 'No':
-            $('#divPOBoxYes').hide(delay);
-            $('#divPOBoxNo').show(delay);
-            break;
+    var poBoxField = $('#POBoxNumber');
+
+    if (selectedVal === 'Yes') {
+        $('#divPOBoxYes').show(delay);
+        $('#divPOBoxNo').hide(delay);
+        poBoxField.attr('data-required', 'true');
+
+        // Clear street fields
+        clearMailingFields(["StreetNumber", "StreetDirection", "StreetName", "StreetType", "UnitNumber"]);
+
+    } else {
+        $('#divPOBoxYes').hide(delay);
+        $('#divPOBoxNo').show(delay);
+        poBoxField.removeAttr('data-required');
+        poBoxField.val('');
+
+        // Clear POBox
+        clearMailingFields(["POBoxNumber"]);
+    }
+
+    // Re-run validation
+    var currentStep = $('#divPOBoxYes').closest('.setup-content');
+    var nextBtn = currentStep.find('.nextBtn');
+
+    if (validateStep(currentStep)) {
+        nextBtn.prop('disabled', false).removeClass('disabled-btn');
+    } else {
+        nextBtn.prop('disabled', true).addClass('disabled-btn');
     }
 }
+
+function clearMailingFields(fields) {
+    let applicantJson = localStorage.getItem("ApplicantJson");
+    if (!applicantJson) return;
+    console.log("called clearning ");
+    let data = JSON.parse(applicantJson);
+    let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
+    console.log("contact info", contactInfo);
+    fields.forEach(f => {
+        let camelKey = f.charAt(0).toLowerCase() + f.slice(1); // e.g. StreetNumber → streetNumber
+        if (contactInfo.hasOwnProperty(camelKey)) {
+            contactInfo[camelKey] = "";
+        }
+    });
+
+    // save back
+    let idx = data.Applicant.findIndex(x => x.step === "ContactInfo");
+    if (idx > -1) {
+        data.Applicant[idx].Data = contactInfo;
+    }
+
+    localStorage.setItem("ApplicantJson", JSON.stringify(data));
+}
+
+
+
+
+//function OnPOBoxChanged() {
+//    var selectedVal = $('#POBox:checked').val();
+//    var delay = 600;
+//    switch (selectedVal) {
+//        case 'Yes':
+//            $('#divPOBoxYes').show(delay);
+//            $('#divPOBoxNo').hide(delay);
+//            break;
+//        case 'No':
+//            $('#divPOBoxYes').hide(delay);
+//            $('#divPOBoxNo').show(delay);
+//            break;
+//    }
+//    var currentStep = $('#divPOBoxYes').closest('.setup-content');
+//    var nextBtn = currentStep.find('.nextBtn');
+
+//    if (validateStep(currentStep)) {
+//        nextBtn.prop('disabled', false).removeClass('disabled-btn');
+//    } else {
+//        nextBtn.prop('disabled', true).addClass('disabled-btn');
+//    }
+//}
 
 function CheckIfPOBoxFieldsAreEmpty() {
     var selectedVal = $('#POBox:checked').val();
@@ -411,85 +560,173 @@ function GetControlIndex() {
 
 function SaveLocalData(currentStep) {
     var json = localStorage.getItem('ApplicantJson');
-    var j = $.parseJSON(json)
-    
+    var j = $.parseJSON(json);
+ 
     switch (currentStep) {
         case "step-0":
-            var accountType = $('#AccountType option:selected').text();
-            var step0Json = { 'accountType': accountType };
-            j["Applicant"][2]["Data"] = step0Json;
-
-            break;
-        case "step-1":
-            var firstName = $('#FirstName').val();
-            var lastName = $('#LastName').val();
-            var middleName = $('#MiddleName').val();
-            var email = $('#Email').val();
-            var companyName = $('#CompanyName').val();
-            var title = $('#Title').val();
-            var password = $('#Password').val();
-
-            var step1Json = { 'firstName': firstName, 'lastName': lastName, 'middleName': middleName, 'email': email, 'companyName': companyName, 'title': title, 'password': password };
-
-            /*
-            New structure:
-            {
-                "Applicant":[
-                    {
-                        "step": "YourInfo",
-                        "Data": step1Json
-                    },
-                    {
-                        "step": "ContactInfo",
-                        "Data": step2Json
-                    },
-                    {
-                        "step": "ProjectList",
-                        "Data": step3Json
-                    }
-                ]
+            // AccountType - get selected radio label
+            var selectedRadio = $('input[name="AccountType"]:checked');
+            if (selectedRadio.length === 0) {
+                console.warn("No account type selected.");
+                break;
             }
-            */
-            localStorage.setItem('YourInfo', JSON.stringify(step1Json));
-            console.log(JSON.stringify(step1Json));
-            j["Applicant"][0]["Data"] = step1Json;
-            
+
+            var selectedId = selectedRadio.val(); // e.g., "1138"
+            var accountTypeLabel = $(`label[for="AccountType_${selectedId}"]`).text().trim();
+
+            var step0Json = { 'accountType': accountTypeLabel };
+
+            // Update the correct step in the JSON array
+            let step0 = j.Applicant.find(x => x.step === "AccountType");
+            if (step0) {
+                step0.Data = step0Json;
+            } else {
+                j.Applicant.push({ step: "AccountType", Data: step0Json });
+            }
             break;
+
+        case "step-1":
+            // Personal Information
+            var step1Json = {
+                firstName: $('#FirstName').val(),
+                lastName: $('#LastName').val(),
+                middleName: $('#MiddleName').val(),
+                email: $('#Email').val(),
+                companyName: $('#CompanyName').val(),
+                title: $('#Title').val(),
+                password: $('#Password').val()
+            };
+
+            let step1 = j.Applicant.find(x => x.step === "YourInfo");
+            if (step1) {
+                step1.Data = step1Json;
+            } else {
+                j.Applicant.push({ step: "YourInfo", Data: step1Json });
+            }
+
+            break;
+
         case "step-2":
-            var phoneNumber = $('#PhoneNumber').val();
-            var city = $('#City').val();
-            var state = $('#State').val();
-            var zipCode = $('#ZipCode').val();
-            var phoneType = $('#PhoneType').val();
-            var extension = $('#Extension').val();
-            var streetNumber = $('#StreetNumber').val();
-            var streetDirection = $('#StreetDirection').val();
-            var streetName = $('#StreetName').val();
-            var streetType = $('#StreetType').val();
-            var unitNumber = $('#UnitNumber').val();
-            var poBoxNumber = $('#POBoxNumber').val();
-            var poBox = $('#POBox:checked').val();
+            var isPOBox = $('input[name="POBox"]:checked').val() === "Yes";
 
-            var step2Json = { 'phoneNumber': phoneNumber, 'city': city, 'state': state, 'zipCode': zipCode, 'phoneType': phoneType, 'extension': extension, 'streetNumber': streetNumber, 'streetDirection': streetDirection, 'streetName': streetName, 'streetType': streetType, 'unitNumber': unitNumber, 'poBoxNumber': poBoxNumber, 'poBox': poBox };
+            var step2Json = {
+                phoneNumber: $('#PhoneNumber').val(),
+                city: $('#City').val(),
+                state: $('#State').val(),
+                zipCode: $('#ZipCode').val(),
+                phoneType: $('#PhoneType').val(),
+                extension: $('#Extension').val(),
+                streetNumber: isPOBox ? "" : $('#StreetNumber').val(),
+                streetDirection: isPOBox ? "" : $('#StreetDirection').val(),
+                streetName: isPOBox ? "" : $('#StreetName').val(),
+                streetType: isPOBox ? "" : $('#StreetType').val(),
+                unitNumber: isPOBox ? "" : $('#UnitNumber').val(),
+                poBoxNumber: isPOBox ? $('#POBoxNumber').val() : "",
+                poBox: $('input[name="POBox"]:checked').val()
+            };
 
-            localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
-            j["Applicant"][1]["Data"] = step2Json;
+            let step2 = j.Applicant.find(x => x.step === "ContactInfo");
+            if (step2) {
+                step2.Data = step2Json;
+            } else {
+                j.Applicant.push({ step: "ContactInfo", Data: step2Json });
+            }
             break;
-        //case "step-3":
-        //    var jsonObj = [];
-        //    $('#divProjects > div').each(function (index) {
-        //        console.log('index: ' + index);
-        //        var proj = $('#div' + (index + 1) + '>:first-child').text();
-        //        jsonObj.push(proj);
-        //    })
-        //    localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
-        //    j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
-        //    break;
+
+
         default:
+            console.warn("Unrecognized step:", currentStep);
+            break;
     }
+
+    // ✅ Save updated data back to localStorage
     localStorage.setItem("ApplicantJson", JSON.stringify(j));
-    console.log(localStorage.getItem("ApplicantJson"));
+    console.log("Updated ApplicantJson:", localStorage.getItem("ApplicantJson"));
+    populateSummary();
 }
+
+
+//function SaveLocalData(currentStep) {
+//    var json = localStorage.getItem('ApplicantJson');
+//    var j = $.parseJSON(json)
+    
+//    switch (currentStep) {
+//        case "step-0":
+//            var accountType = $('#AccountType option:selected').text();
+//            var step0Json = { 'accountType': accountType };
+//            j["Applicant"][2]["Data"] = step0Json;
+
+//            break;
+//        case "step-1":
+//            var firstName = $('#FirstName').val();
+//            var lastName = $('#LastName').val();
+//            var middleName = $('#MiddleName').val();
+//            var email = $('#Email').val();
+//            var companyName = $('#CompanyName').val();
+//            var title = $('#Title').val();
+//            var password = $('#Password').val();
+
+//            var step1Json = { 'firstName': firstName, 'lastName': lastName, 'middleName': middleName, 'email': email, 'companyName': companyName, 'title': title, 'password': password };
+
+//            /*
+//            New structure:
+//            {
+//                "Applicant":[
+//                    {
+//                        "step": "YourInfo",
+//                        "Data": step1Json
+//                    },
+//                    {
+//                        "step": "ContactInfo",
+//                        "Data": step2Json
+//                    },
+//                    {
+//                        "step": "ProjectList",
+//                        "Data": step3Json
+//                    }
+//                ]
+//            }
+//            */
+//            localStorage.setItem('YourInfo', JSON.stringify(step1Json));
+//            console.log(JSON.stringify(step1Json));
+//            j["Applicant"][0]["Data"] = step1Json;
+            
+//            break;
+//        case "step-2":
+//            var phoneNumber = $('#PhoneNumber').val();
+//            var city = $('#City').val();
+//            var state = $('#State').val();
+//            var zipCode = $('#ZipCode').val();
+//            var phoneType = $('#PhoneType').val();
+//            var extension = $('#Extension').val();
+//            var streetNumber = $('#StreetNumber').val();
+//            var streetDirection = $('#StreetDirection').val();
+//            var streetName = $('#StreetName').val();
+//            var streetType = $('#StreetType').val();
+//            var unitNumber = $('#UnitNumber').val();
+//            var poBoxNumber = $('#POBoxNumber').val();
+//            var poBox = $('#POBox:checked').val();
+
+//            var step2Json = { 'phoneNumber': phoneNumber, 'city': city, 'state': state, 'zipCode': zipCode, 'phoneType': phoneType, 'extension': extension, 'streetNumber': streetNumber, 'streetDirection': streetDirection, 'streetName': streetName, 'streetType': streetType, 'unitNumber': unitNumber, 'poBoxNumber': poBoxNumber, 'poBox': poBox };
+
+//            localStorage.setItem('ContactInfo', JSON.stringify(step2Json));
+//            j["Applicant"][1]["Data"] = step2Json;
+//            break;
+//        //case "step-3":
+//        //    var jsonObj = [];
+//        //    $('#divProjects > div').each(function (index) {
+//        //        console.log('index: ' + index);
+//        //        var proj = $('#div' + (index + 1) + '>:first-child').text();
+//        //        jsonObj.push(proj);
+//        //    })
+//        //    localStorage.setItem('ProjectList', JSON.stringify(jsonObj));
+//        //    j["Applicant"][2]["Data"] = JSON.stringify(jsonObj);
+//        //    break;
+//        default:
+//    }
+//    localStorage.setItem("ApplicantJson", JSON.stringify(j));
+//    console.log(localStorage.getItem("ApplicantJson"));
+//}
 /*Summary Page*/
 function LoadSummaryPage() {
     var yourInfo = localStorage.getItem('YourInfo');
@@ -543,7 +780,7 @@ function LoadSummaryPage() {
         $('#spnMailingAddress2').text(line2);
     }
 
-    console.log('projList:' + projList);
+    //console.log('projList:' + projList);
     if (projList != undefined) {
         json = JSON.parse(projList);
         var spanProj = '';

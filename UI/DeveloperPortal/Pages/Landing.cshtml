@@ -1,0 +1,48 @@
+﻿@page "/"
+@model DeveloperPortal.Pages.Account.SignUpModel
+
+<header class="landing-banner">
+    <div>
+        <h1>Welcome to the ACHP Construction Portal</h1>
+        <h2>Submit and track your Accessible Housing Program plan documents online.</h2>
+    </div>
+</header>
+
+<form id="landing-signin">
+
+    <div class="landing-signup-actions">
+        <button type="submit" class="landing-signin-button btn btn-primary btn-lg" id="btnSignIn">Sign In</button>
+        @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
+    </div>
+
+    <p class="divider">Or</p>
+    
+    <div class="landing-signup-actions">
+        <button type="submit" class="landing-signup-button btn btn-warning btn-lg" id="btnSignUp">Sign Up</button>
+    </div>
+   @*  <div class="landing-signup-actions">
+        <button type="submit" class="landing-signup-button" id="btnMyAccount">My Account</button>
+    </div> *@
+    
+    <div id="loginError" style="color: red; margin-top: 1em;"></div>
+</form>
+
+
+<script>
+
+        document.getElementById("btnSignIn").addEventListener("click", function () {
+        window.location.href = '@Url.Action("Login", "Account")';
+    });
+
+    document.getElementById("landing-signin").addEventListener("submit", async function(evt) {
+        evt.preventDefault();
+    });
+  
+
+   
+    document.getElementById('btnSignUp').onclick = function() {
+    window.location.href = APPURL + 'Account/SignUp';
+    };
+</script>
+
+

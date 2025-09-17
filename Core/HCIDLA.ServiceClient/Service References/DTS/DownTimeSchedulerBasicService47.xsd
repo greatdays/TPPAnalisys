@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DownTimeScheduler.WcfIISHostBasicService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DownTimeScheduler.WcfIISHostBasicService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="ApplicationNameEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BIMSIntranet" />
+      <xs:enumeration value="BIMSCP" />
+      <xs:enumeration value="BIMSMobile" />
+      <xs:enumeration value="CRIS" />
+      <xs:enumeration value="CRISIntranet" />
+      <xs:enumeration value="CPRAIntranet" />
+      <xs:enumeration value="EARFormIntranet" />
+      <xs:enumeration value="FIMS" />
+      <xs:enumeration value="FIMSIntranet" />
+      <xs:enumeration value="G2G" />
+      <xs:enumeration value="HRAdminIntranet" />
+      <xs:enumeration value="RENT" />
+      <xs:enumeration value="RENTIntranet" />
+      <xs:enumeration value="HIMS" />
+      <xs:enumeration value="HIMSIntranet" />
+      <xs:enumeration value="NspWebPortalExternal" />
+      <xs:enumeration value="ChpsExternal" />
+      <xs:enumeration value="HopwaExtenal" />
+      <xs:enumeration value="NofaExternal" />
+      <xs:enumeration value="AcHPIntranet" />
+      <xs:enumeration value="AcHPWeb" />
+      <xs:enumeration value="LandUse" />
+      <xs:enumeration value="THPCP" />
+      <xs:enumeration value="THPStaffInternet" />
+      <xs:enumeration value="THPStaffIntranet" />
+      <xs:enumeration value="AAHRInternetTest" />
+      <xs:enumeration value="AAHRIntranetTest" />
+      <xs:enumeration value="AAHRStageInternetLAHousingDev" />
+      <xs:enumeration value="AAHRInternetLAHousing" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ApplicationNameEnum" nillable="true" type="tns:ApplicationNameEnum" />
+</xs:schema>

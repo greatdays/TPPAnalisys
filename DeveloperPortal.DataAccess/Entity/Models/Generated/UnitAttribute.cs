@@ -191,6 +191,8 @@ public partial class UnitAttribute
 
     public string? FloorPlanType { get; set; }
 
+    public bool? IsCompliant { get; set; }
+
     public virtual ICollection<AssnUnitFeature> AssnUnitFeatures { get; set; } = new List<AssnUnitFeature>();
 
     public virtual PropSnapshot? CurrentProjSitePropSnapShot { get; set; }

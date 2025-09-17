@@ -6,7 +6,6 @@ using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-
 namespace DeveloperPortal.DataAccess.Entity.Data;
 
 public partial class AAHREntities : DbContext
@@ -17,7 +16,7 @@ public partial class AAHREntities : DbContext
     }
 
     public AAHREntities(DbContextOptions<AAHREntities> options, IConfiguration configuration)
-        : base(options)
+      : base(options)
     {
         _configuration = configuration;
     }
@@ -216,6 +215,10 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<BackgroundCheckReport> BackgroundCheckReports { get; set; }
 
+    public virtual DbSet<BackupCase> BackupCases { get; set; }
+
+    public virtual DbSet<BackupCaseLog> BackupCaseLogs { get; set; }
+
     public virtual DbSet<BatchJob> BatchJobs { get; set; }
 
     public virtual DbSet<BatchJobDetail> BatchJobDetails { get; set; }
@@ -316,6 +319,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<FairHousing> FairHousings { get; set; }
 
+    public virtual DbSet<FhpropertyAssociatedAccount> FhpropertyAssociatedAccounts { get; set; }
+
     public virtual DbSet<Field> Fields { get; set; }
 
     public virtual DbSet<FloorPlanBathroomType> FloorPlanBathroomTypes { get; set; }
@@ -325,6 +330,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<Folder> Folders { get; set; }
 
     public virtual DbSet<Form> Forms { get; set; }
+
+    public virtual DbSet<FundingSource> FundingSources { get; set; }
 
     public virtual DbSet<Grievance> Grievances { get; set; }
 
@@ -350,6 +357,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<ImportProject> ImportProjects { get; set; }
 
+    public virtual DbSet<ImportProject1> ImportProjects1 { get; set; }
+
     public virtual DbSet<ImportantDate> ImportantDates { get; set; }
 
     public virtual DbSet<Inspection> Inspections { get; set; }
@@ -361,6 +370,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<InspectionNotification> InspectionNotifications { get; set; }
 
     public virtual DbSet<InspectionScheduled> InspectionScheduleds { get; set; }
+
+    public virtual DbSet<JsonConfigMaster> JsonConfigMasters { get; set; }
 
     public virtual DbSet<LacountyServicePlanningArea> LacountyServicePlanningAreas { get; set; }
 
@@ -394,6 +405,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<LutAccountTypeCategory> LutAccountTypeCategories { get; set; }
 
+    public virtual DbSet<LutAffirmativeMarketingOutreach> LutAffirmativeMarketingOutreaches { get; set; }
+
     public virtual DbSet<LutAhupscore> LutAhupscores { get; set; }
 
     public virtual DbSet<LutAltContactType> LutAltContactTypes { get; set; }
@@ -405,6 +418,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<LutApplicationDeclineReason> LutApplicationDeclineReasons { get; set; }
 
     public virtual DbSet<LutApplicationType> LutApplicationTypes { get; set; }
+
+    public virtual DbSet<LutAssociatedRole> LutAssociatedRoles { get; set; }
 
     public virtual DbSet<LutBatchStatus> LutBatchStatuses { get; set; }
 
@@ -429,6 +444,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<LutCertificateType> LutCertificateTypes { get; set; }
 
     public virtual DbSet<LutCestype> LutCestypes { get; set; }
+
+    public virtual DbSet<LutChangeRole> LutChangeRoles { get; set; }
 
     public virtual DbSet<LutCloseReason> LutCloseReasons { get; set; }
 
@@ -604,6 +621,10 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<LutRasubCategory> LutRasubCategories { get; set; }
 
+    public virtual DbSet<LutReasonDeterminationNotProvidedSooner> LutReasonDeterminationNotProvidedSooners { get; set; }
+
+    public virtual DbSet<LutReasonTenantNotTransferredSooner> LutReasonTenantNotTransferredSooners { get; set; }
+
     public virtual DbSet<LutReferenceType> LutReferenceTypes { get; set; }
 
     public virtual DbSet<LutRelatedEntity> LutRelatedEntities { get; set; }
@@ -694,6 +715,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<NeighborhoodCouncil> NeighborhoodCouncils { get; set; }
 
+    public virtual DbSet<NewStaffContactInfo> NewStaffContactInfos { get; set; }
+
     public virtual DbSet<NewsDisplayConfig> NewsDisplayConfigs { get; set; }
 
     public virtual DbSet<NewsNewsDetail> NewsNewsDetails { get; set; }
@@ -770,6 +793,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<ProjectSite> ProjectSites { get; set; }
 
+    public virtual DbSet<ProjectSite10252023> ProjectSite10252023s { get; set; }
+
     public virtual DbSet<ProjectSiteAdditionalQuestion> ProjectSiteAdditionalQuestions { get; set; }
 
     public virtual DbSet<ProjectSiteAdditionalQuestionsSnap> ProjectSiteAdditionalQuestionsSnaps { get; set; }
@@ -826,6 +851,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<QrgrievanceLog> QrgrievanceLogs { get; set; }
 
+    public virtual DbSet<QrnewStaffContactInfo> QrnewStaffContactInfos { get; set; }
+
     public virtual DbSet<QroccupancyUnit> QroccupancyUnits { get; set; }
 
     public virtual DbSet<QrprojectSiteFutureWaitList> QrprojectSiteFutureWaitLists { get; set; }
@@ -834,6 +861,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<QrprojectSiteUpcomingUnitVacancy> QrprojectSiteUpcomingUnitVacancies { get; set; }
 
+    public virtual DbSet<QrpropertyAssociatedAccount> QrpropertyAssociatedAccounts { get; set; }
+
     public virtual DbSet<QrreasonableAccommodation> QrreasonableAccommodations { get; set; }
 
     public virtual DbSet<QrupcomingUnitVacancy> QrupcomingUnitVacancies { get; set; }
@@ -841,6 +870,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<QrutilizationSurvey> QrutilizationSurveys { get; set; }
 
     public virtual DbSet<QuarterlyReport> QuarterlyReports { get; set; }
+
+    public virtual DbSet<RandomUser> RandomUsers { get; set; }
 
     public virtual DbSet<ReasonableAccommodation> ReasonableAccommodations { get; set; }
 
@@ -920,8 +951,6 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<Svcarea201210252023> Svcarea201210252023s { get; set; }
 
-    public virtual DbSet<SysdiagramsBak> SysdiagramsBaks { get; set; }
-
     public virtual DbSet<TContactIdentifier> TContactIdentifiers { get; set; }
 
     public virtual DbSet<TabControlViewMap> TabControlViewMaps { get; set; }
@@ -944,9 +973,7 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<TemplateMaster> TemplateMasters { get; set; }
 
-    public virtual DbSet<TestUnit> TestUnits { get; set; }
-
-    public virtual DbSet<TestUnitDetail> TestUnitDetails { get; set; }
+    public virtual DbSet<TppangelenoUser> TppangelenoUsers { get; set; }
 
     public virtual DbSet<Tqr2fairHousingBatch1> Tqr2fairHousingBatch1s { get; set; }
 
@@ -963,8 +990,6 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<TrainingRegistry> TrainingRegistries { get; set; }
 
     public virtual DbSet<TrainingSession> TrainingSessions { get; set; }
-
-    public virtual DbSet<TrainingSession13> TrainingSession13s { get; set; }
 
     public virtual DbSet<TrainingSessionTrainer> TrainingSessionTrainers { get; set; }
 
@@ -1005,6 +1030,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<VwAllPropertyList> VwAllPropertyLists { get; set; }
 
     public virtual DbSet<VwAllPropertyPolicyAnalyst> VwAllPropertyPolicyAnalysts { get; set; }
+
+    public virtual DbSet<VwAllPropertyPolicyAnalyst8118> VwAllPropertyPolicyAnalyst8118s { get; set; }
 
     public virtual DbSet<VwAllPurportedUnitsDetail> VwAllPurportedUnitsDetails { get; set; }
 
@@ -1063,6 +1090,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<VwOlapHimsparticipantInfo> VwOlapHimsparticipantInfos { get; set; }
 
     public virtual DbSet<VwOlapHimsunitInfo> VwOlapHimsunitInfos { get; set; }
+
+    public virtual DbSet<VwOlapMasterDataBySite> VwOlapMasterDataBySites { get; set; }
 
     public virtual DbSet<VwOlapPmpdetail> VwOlapPmpdetails { get; set; }
 
@@ -1123,6 +1152,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<VwProjectSiteUnitSummary1> VwProjectSiteUnitSummaries1 { get; set; }
 
     public virtual DbSet<VwProjectSiteUnitSummaryAll> VwProjectSiteUnitSummaryAlls { get; set; }
+
+    public virtual DbSet<VwPropertyContact> VwPropertyContacts { get; set; }
 
     public virtual DbSet<VwPropertyContactdetail> VwPropertyContactdetails { get; set; }
 
@@ -1188,7 +1219,6 @@ public partial class AAHREntities : DbContext
             optionsBuilder.UseSqlServer(connectionString);
         }
     }
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -2195,6 +2225,10 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+            entity.Property(e => e.ReferenceId)
+                .HasMaxLength(128)
+                .HasColumnName("ReferenceID");
+            entity.Property(e => e.ReferenceType).HasMaxLength(40);
 
             entity.HasOne(d => d.Folder).WithMany(p => p.AssnFolders)
                 .HasForeignKey(d => d.FolderId)
@@ -3846,6 +3880,8 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.LutReasonDeterminationNotProvidedSoonerId).HasColumnName("LutReasonDeterminationNotProvidedSoonerID");
+            entity.Property(e => e.LutReasonTenantNotTransferredSoonerId).HasColumnName("LutReasonTenantNotTransferredSoonerID");
             entity.Property(e => e.LutTotalBathroomId).HasColumnName("LutTotalBathroomID");
             entity.Property(e => e.LutTotalBedroomId).HasColumnName("LutTotalBedroomID");
             entity.Property(e => e.LutTransferWaitListReasonId).HasColumnName("LutTransferWaitListReasonID");
@@ -3872,6 +3908,14 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.CurrentUnitPropSnapShot).WithMany(p => p.AutransferWaitListCurrentUnitPropSnapShots)
                 .HasForeignKey(d => d.CurrentUnitPropSnapShotId)
                 .HasConstraintName("FK_AUTransferWaitList_PropSnapshot");
+
+            entity.HasOne(d => d.LutReasonDeterminationNotProvidedSooner).WithMany(p => p.AutransferWaitLists)
+                .HasForeignKey(d => d.LutReasonDeterminationNotProvidedSoonerId)
+                .HasConstraintName("FK_AUTransferWaitList_LutReasonDeterminationNotProvidedSooner");
+
+            entity.HasOne(d => d.LutReasonTenantNotTransferredSooner).WithMany(p => p.AutransferWaitLists)
+                .HasForeignKey(d => d.LutReasonTenantNotTransferredSoonerId)
+                .HasConstraintName("FK_AUTransferWaitList_LutReasonTenantNotTransferredSooner");
 
             entity.HasOne(d => d.LutTotalBathroom).WithMany(p => p.AutransferWaitLists)
                 .HasForeignKey(d => d.LutTotalBathroomId)
@@ -4130,6 +4174,82 @@ public partial class AAHREntities : DbContext
                 .HasConstraintName("FK_BackgroundCheckReport_BackgroundCheck");
         });
 
+        modelBuilder.Entity<BackupCase>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("backup_Case", "CMS");
+
+            entity.Property(e => e.AssigneeId)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("AssigneeID");
+            entity.Property(e => e.AssigneeName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.AutoNextAction)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.AutoStautsModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.CaseId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CaseID");
+            entity.Property(e => e.CaseTypeId).HasColumnName("CaseTypeID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(256)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(256)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.Summary).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<BackupCaseLog>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("backup_CaseLog", "CMS");
+
+            entity.Property(e => e.Action)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CaseId).HasColumnName("CaseID");
+            entity.Property(e => e.CaseLogId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CaseLogID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.FromState)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.LastAssigneeId)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("LastAssigneeID");
+            entity.Property(e => e.LastAssigneeName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.NewAssigneeId)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("NewAssigneeID");
+            entity.Property(e => e.NewAssigneeName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ToState)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<BatchJob>(entity =>
         {
             entity.HasKey(e => e.BatchJobId).HasName("PkBatchJob");
@@ -4269,7 +4389,7 @@ public partial class AAHREntities : DbContext
 
             entity.HasOne(d => d.NotificationLogs).WithMany(p => p.BatchJobDetails)
                 .HasForeignKey(d => d.NotificationLogsId)
-                .HasConstraintName("FkBatchJobDetail_NotificationLogs");
+                .HasConstraintName("FK_BatchJobDetail_NotificationLogs");
 
             entity.HasOne(d => d.NotificationTemplate).WithMany(p => p.BatchJobDetails)
                 .HasForeignKey(d => d.NotificationTemplateId)
@@ -6301,6 +6421,7 @@ public partial class AAHREntities : DbContext
             entity.ToTable("FairHousing", "AAHR");
 
             entity.Property(e => e.FairHousingId).HasColumnName("FairHousingID");
+            entity.Property(e => e.AccountNlinkPropertyDate).HasColumnName("AccountNLinkPropertyDate");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -6308,6 +6429,8 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Fhorganization).HasColumnName("FHOrganization");
             entity.Property(e => e.IsAwareOfAnyFhac).HasColumnName("IsAwareOfAnyFHAC");
+            entity.Property(e => e.IsOpmrequiredNewPropMgmtStaffToAttendAnnualFh).HasColumnName("IsOPMRequiredNewPropMgmtStaffToAttendAnnualFH");
+            entity.Property(e => e.IsOpmrequiredNewPropMgmtStaffToCreateAahraccount).HasColumnName("IsOPMRequiredNewPropMgmtStaffToCreateAAHRAccount");
             entity.Property(e => e.LegalOwnerName).HasMaxLength(300);
             entity.Property(e => e.LutSignatureTitleId).HasColumnName("LutSignatureTitleID");
             entity.Property(e => e.ModifiedBy)
@@ -6347,6 +6470,47 @@ public partial class AAHREntities : DbContext
                 .HasForeignKey(d => d.ProjectSitePropSnapShotId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_FairHousing_PropSnapshot");
+        });
+
+        modelBuilder.Entity<FhpropertyAssociatedAccount>(entity =>
+        {
+            entity.HasKey(e => e.FhpropertyAssociatedAccountsId);
+
+            entity.ToTable("FHPropertyAssociatedAccounts", "AAHR");
+
+            entity.Property(e => e.FhpropertyAssociatedAccountsId)
+                .ValueGeneratedNever()
+                .HasColumnName("FHPropertyAssociatedAccountsID");
+            entity.Property(e => e.ContactIdentifierId).HasColumnName("ContactIdentifierID");
+            entity.Property(e => e.ContactName)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.ContactType)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.FairHousingId).HasColumnName("FairHousingID");
+            entity.Property(e => e.LutContactTypeId).HasColumnName("LutContactTypeID");
+            entity.Property(e => e.NextEnrolledFhtrainingDate).HasColumnName("NextEnrolledFHTrainingDate");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ProjectSitePropSnapShotId).HasColumnName("ProjectSitePropSnapShotID");
+
+            entity.HasOne(d => d.FairHousing).WithMany(p => p.FhpropertyAssociatedAccounts)
+                .HasForeignKey(d => d.FairHousingId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_FHPropertyAssociatedAccounts_FairHousing");
+
+            entity.HasOne(d => d.LutContactType).WithMany(p => p.FhpropertyAssociatedAccounts)
+                .HasForeignKey(d => d.LutContactTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_FHPropertyAssociatedAccounts_LutContactType");
+
+            entity.HasOne(d => d.ProjectSitePropSnapShot).WithMany(p => p.FhpropertyAssociatedAccounts)
+                .HasForeignKey(d => d.ProjectSitePropSnapShotId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_FHPropertyAssociatedAccounts_PropSnapshot");
         });
 
         modelBuilder.Entity<Field>(entity =>
@@ -6579,6 +6743,28 @@ public partial class AAHREntities : DbContext
                         j.HasKey("FormId", "CaseTypeId").HasName("PK_AssnFormTypeCaseType");
                         j.ToTable("AssnFormCaseType", "DF");
                     });
+        });
+
+        modelBuilder.Entity<FundingSource>(entity =>
+        {
+            entity.ToTable("FundingSource", "PnC");
+
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.DocumentId).HasColumnName("DocumentID");
+            entity.Property(e => e.FundingSourceName).HasMaxLength(100);
+            entity.Property(e => e.HvUnit).HasColumnName("HV_Unit");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsFixedLength();
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.MuUnit).HasColumnName("MU_Unit");
+
+            entity.HasOne(d => d.Document).WithMany(p => p.FundingSources)
+                .HasForeignKey(d => d.DocumentId)
+                .HasConstraintName("FK_FundingSource_Document");
         });
 
         modelBuilder.Entity<Grievance>(entity =>
@@ -7709,6 +7895,99 @@ public partial class AAHREntities : DbContext
                 .IsFixedLength();
         });
 
+        modelBuilder.Entity<ImportProject1>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ImportPr__3214EC27A4D12B26");
+
+            entity.ToTable("ImportProject");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Attributes)
+                .IsUnicode(false)
+                .HasDefaultValue("");
+            entity.Property(e => e.Cestype)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CESType");
+            entity.Property(e => e.City)
+                .HasMaxLength(40)
+                .IsUnicode(false);
+            entity.Property(e => e.CouncilDistrict)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.FileGroup)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.FileNumber)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.GroupImport)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Himsnumber)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("HIMSNumber");
+            entity.Property(e => e.HimsprojUniqueId).HasColumnName("HIMSProjUniqueId");
+            entity.Property(e => e.HouseFracNum)
+                .HasMaxLength(5)
+                .IsUnicode(false);
+            entity.Property(e => e.HouseNum)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Hvratio)
+                .HasColumnType("decimal(18, 5)")
+                .HasColumnName("HVRatio");
+            entity.Property(e => e.LutProjSourceCd)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("LutProjSourceCD");
+            entity.Property(e => e.LutProjectFundId).HasColumnName("LutProjectFundID");
+            entity.Property(e => e.LutProjectSiteStatusId).HasColumnName("LutProjectSiteStatusID");
+            entity.Property(e => e.LutTypeofProjectId).HasColumnName("LutTypeofProjectID");
+            entity.Property(e => e.MobilityRatio).HasColumnType("decimal(18, 5)");
+            entity.Property(e => e.ModifiedBy).HasMaxLength(50);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.Neighborhood).HasMaxLength(500);
+            entity.Property(e => e.NeighborhoodId).HasColumnName("NeighborhoodID");
+            entity.Property(e => e.PostDirCd)
+                .HasMaxLength(5)
+                .IsUnicode(false);
+            entity.Property(e => e.PreDirCd)
+                .HasMaxLength(2)
+                .IsUnicode(false);
+            entity.Property(e => e.Prefix)
+                .HasMaxLength(5)
+                .IsUnicode(false)
+                .HasColumnName("prefix");
+            entity.Property(e => e.PrimaryApn)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("PrimaryAPN");
+            entity.Property(e => e.PropertyName)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.Region).HasMaxLength(500);
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
+            entity.Property(e => e.SiteAddress).IsUnicode(false);
+            entity.Property(e => e.SiteAddressId).HasColumnName("SiteAddressID");
+            entity.Property(e => e.Source)
+                .HasMaxLength(50)
+                .HasDefaultValue("ACHP");
+            entity.Property(e => e.SourceRefId)
+                .HasDefaultValue(0)
+                .HasColumnName("SourceRefID");
+            entity.Property(e => e.Status).HasMaxLength(20);
+            entity.Property(e => e.StreetName)
+                .HasMaxLength(40)
+                .IsUnicode(false);
+            entity.Property(e => e.StreetTypeCd)
+                .HasMaxLength(4)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<ImportantDate>(entity =>
         {
             entity.ToTable("ImportantDate", "AAHPCC");
@@ -7916,6 +8195,17 @@ public partial class AAHREntities : DbContext
                 .HasForeignKey(d => d.ServiceRequestId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_InspectionRequest_ServiceRequest");
+        });
+
+        modelBuilder.Entity<JsonConfigMaster>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__JsonConf__3214EC275B8B0454");
+
+            entity.ToTable("JsonConfigMaster", "CC");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Identifier).HasMaxLength(100);
         });
 
         modelBuilder.Entity<LacountyServicePlanningArea>(entity =>
@@ -8428,6 +8718,31 @@ public partial class AAHREntities : DbContext
                 .HasColumnName("RowID");
         });
 
+        modelBuilder.Entity<LutAffirmativeMarketingOutreach>(entity =>
+        {
+            entity.ToTable("LutAffirmativeMarketingOutreach", "AAHR");
+
+            entity.Property(e => e.LutAffirmativeMarketingOutreachId).HasColumnName("LutAffirmativeMarketingOutreachID");
+            entity.Property(e => e.ContactFirstName)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.ContactLastName)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.Email)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.Name)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.Phone)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.TypeOfResource)
+                .HasMaxLength(10)
+                .IsFixedLength();
+        });
+
         modelBuilder.Entity<LutAhupscore>(entity =>
         {
             entity.HasKey(e => e.LutAhupscoreId).HasName("PK__LutAHUPS__D64FDF198B05ACC9");
@@ -8505,7 +8820,7 @@ public partial class AAHREntities : DbContext
 
         modelBuilder.Entity<LutApplicableAccessibilityStandard>(entity =>
         {
-            entity.HasKey(e => e.LutApplicableAccessibilityStandardId).HasName("PK__LutAppli__76866F9D6AA035E2");
+            entity.HasKey(e => e.LutApplicableAccessibilityStandardId).HasName("PK__tmp_ms_x__76866F9D4432C1F6");
 
             entity.ToTable("LutApplicableAccessibilityStandards", "AAHR");
 
@@ -8566,6 +8881,27 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<LutAssociatedRole>(entity =>
+        {
+            entity.ToTable("LutAssociatedRole", "AAHR");
+
+            entity.Property(e => e.LutAssociatedRoleId).HasColumnName("LutAssociatedRoleID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.RoleName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<LutBatchStatus>(entity =>
@@ -8893,6 +9229,27 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.RowId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("RowID");
+        });
+
+        modelBuilder.Entity<LutChangeRole>(entity =>
+        {
+            entity.ToTable("LutChangeRole", "AAHR");
+
+            entity.Property(e => e.LutChangeRoleId).HasColumnName("LutChangeRoleID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.RoleName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<LutCloseReason>(entity =>
@@ -10025,7 +10382,7 @@ public partial class AAHREntities : DbContext
 
         modelBuilder.Entity<LutLcmdetermination>(entity =>
         {
-            entity.HasKey(e => e.LutLcmdeterminationId).HasName("PK__LutLCMDe__951C165DB7647B6B");
+            entity.HasKey(e => e.LutLcmdeterminationId).HasName("PK__LutLCMDe__951C165D87E24D43");
 
             entity.ToTable("LutLCMDeterminations", "AAHR");
 
@@ -11000,6 +11357,46 @@ public partial class AAHREntities : DbContext
                 .HasForeignKey(d => d.LutRacategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_LutRASubCategory_LutRACategory");
+        });
+
+        modelBuilder.Entity<LutReasonDeterminationNotProvidedSooner>(entity =>
+        {
+            entity.ToTable("LutReasonDeterminationNotProvidedSooner", "AAHR");
+
+            entity.Property(e => e.LutReasonDeterminationNotProvidedSoonerId).HasColumnName("LutReasonDeterminationNotProvidedSoonerID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<LutReasonTenantNotTransferredSooner>(entity =>
+        {
+            entity.ToTable("LutReasonTenantNotTransferredSooner", "AAHR");
+
+            entity.Property(e => e.LutReasonTenantNotTransferredSoonerId).HasColumnName("LutReasonTenantNotTransferredSoonerID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<LutReferenceType>(entity =>
@@ -12265,6 +12662,54 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.Wkt)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("WKT");
+        });
+
+        modelBuilder.Entity<NewStaffContactInfo>(entity =>
+        {
+            entity.ToTable("NewStaffContactInfo", "AAHR");
+
+            entity.Property(e => e.NewStaffContactInfoId).HasColumnName("NewStaffContactInfoID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.DeletedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.FirstName).HasMaxLength(100);
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.Property(e => e.LastName).HasMaxLength(100);
+            entity.Property(e => e.LutAssociatedRoleId).HasColumnName("LutAssociatedRoleID");
+            entity.Property(e => e.LutChangeRoleId).HasColumnName("LutChangeRoleID");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.ProjSitePropSnapshotId).HasColumnName("ProjSitePropSnapshotID");
+            entity.Property(e => e.Title).HasMaxLength(100);
+
+            entity.HasOne(d => d.LutAssociatedRole).WithMany(p => p.NewStaffContactInfos)
+                .HasForeignKey(d => d.LutAssociatedRoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NewStaffContactInfo_LutAssociatedRole");
+
+            entity.HasOne(d => d.LutChangeRole).WithMany(p => p.NewStaffContactInfos)
+                .HasForeignKey(d => d.LutChangeRoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NewStaffContactInfo_LutChangeRole");
+
+            entity.HasOne(d => d.ProjSitePropSnapshot).WithMany(p => p.NewStaffContactInfos)
+                .HasForeignKey(d => d.ProjSitePropSnapshotId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NewStaffContactInfo_PropSnapshot");
         });
 
         modelBuilder.Entity<NewsDisplayConfig>(entity =>
@@ -13643,6 +14088,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.LutTypeofProjectId).HasColumnName("LutTypeofProjectID");
             entity.Property(e => e.ModifiedBy).HasMaxLength(50);
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.ProjectStatusLabel).HasMaxLength(255);
             entity.Property(e => e.RefProjectId).HasColumnName("RefProjectID");
             entity.Property(e => e.SettlementAddress).IsUnicode(false);
             entity.Property(e => e.Source).HasMaxLength(50);
@@ -13672,7 +14118,7 @@ public partial class AAHREntities : DbContext
 
         modelBuilder.Entity<ProjectAttribute>(entity =>
         {
-            entity.HasKey(e => e.ProjectAttributeId).HasName("PK__tmp_ms_x__A180E8873AF662C8");
+            entity.HasKey(e => e.ProjectAttributeId).HasName("PK__tmp_ms_x__A180E8873DDCB611");
 
             entity.ToTable("ProjectAttribute", "AAHR", tb => tb.HasTrigger("trg_ProjectAttributeLog"));
 
@@ -13904,6 +14350,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.SiteAddress).IsUnicode(false);
             entity.Property(e => e.SiteAddressId).HasColumnName("SiteAddressID");
             entity.Property(e => e.SiteNum).HasDefaultValue(0);
+            entity.Property(e => e.SiteStatusLabel).HasMaxLength(255);
             entity.Property(e => e.Source).HasMaxLength(50);
             entity.Property(e => e.SourceRefId).HasColumnName("SourceRefID");
             entity.Property(e => e.Status).HasMaxLength(20);
@@ -13939,6 +14386,62 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.SiteAddressNavigation).WithMany(p => p.ProjectSites)
                 .HasForeignKey(d => d.SiteAddressId)
                 .HasConstraintName("FK_ProjectSite_SiteAddress");
+        });
+
+        modelBuilder.Entity<ProjectSite10252023>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("ProjectSite_10252023", "PnC");
+
+            entity.Property(e => e.Attributes).IsUnicode(false);
+            entity.Property(e => e.ConstructionHvratio)
+                .HasColumnType("decimal(18, 5)")
+                .HasColumnName("ConstructionHVRatio");
+            entity.Property(e => e.ConstructionMobilityRatio).HasColumnType("decimal(18, 5)");
+            entity.Property(e => e.CouncilDistrict)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.CreatedBy).HasMaxLength(50);
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.FileNumber)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Himsnumber)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("HIMSNumber");
+            entity.Property(e => e.HimsprojUniqueId).HasColumnName("HIMSProjUniqueId");
+            entity.Property(e => e.Hvratio)
+                .HasColumnType("decimal(18, 5)")
+                .HasColumnName("HVRatio");
+            entity.Property(e => e.LacountyServicePlanningAreaId).HasColumnName("LACountyServicePlanningAreaID");
+            entity.Property(e => e.LutCestypeId).HasColumnName("LutCESTypeID");
+            entity.Property(e => e.LutOccupancyStatusId).HasColumnName("LutOccupancyStatusID");
+            entity.Property(e => e.LutProjectSiteStatusId).HasColumnName("LutProjectSiteStatusID");
+            entity.Property(e => e.MobilityRatio).HasColumnType("decimal(18, 5)");
+            entity.Property(e => e.ModifiedBy).HasMaxLength(50);
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.NeighborhoodCouncil)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.NeighborhoodId).HasColumnName("NeighborhoodID");
+            entity.Property(e => e.PrimaryApn)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("PrimaryAPN");
+            entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+            entity.Property(e => e.ProjectSiteId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ProjectSiteID");
+            entity.Property(e => e.PropertyName).HasMaxLength(500);
+            entity.Property(e => e.RefProjectSiteId).HasColumnName("RefProjectSiteID");
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
+            entity.Property(e => e.SiteAddress).IsUnicode(false);
+            entity.Property(e => e.SiteAddressId).HasColumnName("SiteAddressID");
+            entity.Property(e => e.Source).HasMaxLength(50);
+            entity.Property(e => e.SourceRefId).HasColumnName("SourceRefID");
+            entity.Property(e => e.Status).HasMaxLength(20);
         });
 
         modelBuilder.Entity<ProjectSiteAdditionalQuestion>(entity =>
@@ -14952,6 +15455,8 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.LutReasonDeterminationNotProvidedSoonerId).HasColumnName("LutReasonDeterminationNotProvidedSoonerID");
+            entity.Property(e => e.LutReasonTenantNotTransferredSoonerId).HasColumnName("LutReasonTenantNotTransferredSoonerID");
             entity.Property(e => e.LutTotalBathroomId).HasColumnName("LutTotalBathroomID");
             entity.Property(e => e.LutTotalBedroomId).HasColumnName("LutTotalBedroomID");
             entity.Property(e => e.LutTransferWaitListReasonId).HasColumnName("LutTransferWaitListReasonID");
@@ -14982,6 +15487,14 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.CurrentUnitPropSnapShot).WithMany(p => p.QrautransferWaitListCurrentUnitPropSnapShots)
                 .HasForeignKey(d => d.CurrentUnitPropSnapShotId)
                 .HasConstraintName("FK_QRAUTransferWaitList_PropSnapshot");
+
+            entity.HasOne(d => d.LutReasonDeterminationNotProvidedSooner).WithMany(p => p.QrautransferWaitLists)
+                .HasForeignKey(d => d.LutReasonDeterminationNotProvidedSoonerId)
+                .HasConstraintName("FK_QRAUTransferWaitList_LutReasonDeterminationNotProvidedSooner");
+
+            entity.HasOne(d => d.LutReasonTenantNotTransferredSooner).WithMany(p => p.QrautransferWaitLists)
+                .HasForeignKey(d => d.LutReasonTenantNotTransferredSoonerId)
+                .HasConstraintName("FK_QRAUTransferWaitList_LutReasonTenantNotTransferredSooner");
 
             entity.HasOne(d => d.LutTotalBathroom).WithMany(p => p.QrautransferWaitLists)
                 .HasForeignKey(d => d.LutTotalBathroomId)
@@ -15242,6 +15755,7 @@ public partial class AAHREntities : DbContext
             entity.ToTable("QRFairHousing", "AAHR");
 
             entity.Property(e => e.QrfairHousingId).HasColumnName("QRFairHousingID");
+            entity.Property(e => e.AccountNlinkPropertyDate).HasColumnName("AccountNLinkPropertyDate");
             entity.Property(e => e.CreatedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -15250,6 +15764,8 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.FairHousingId).HasColumnName("FairHousingID");
             entity.Property(e => e.Fhorganization).HasColumnName("FHOrganization");
             entity.Property(e => e.IsAwareOfAnyFhac).HasColumnName("IsAwareOfAnyFHAC");
+            entity.Property(e => e.IsOpmrequiredNewPropMgmtStaffToAttendAnnualFh).HasColumnName("IsOPMRequiredNewPropMgmtStaffToAttendAnnualFH");
+            entity.Property(e => e.IsOpmrequiredNewPropMgmtStaffToCreateAahraccount).HasColumnName("IsOPMRequiredNewPropMgmtStaffToCreateAAHRAccount");
             entity.Property(e => e.LegalOwnerName).HasMaxLength(500);
             entity.Property(e => e.LutSignatureTitleId).HasColumnName("LutSignatureTitleID");
             entity.Property(e => e.ModifiedBy)
@@ -15400,6 +15916,55 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.UnitPropSnapShot).WithMany(p => p.QrgrievanceLogUnitPropSnapShots)
                 .HasForeignKey(d => d.UnitPropSnapShotId)
                 .HasConstraintName("FK_QRGrievanceLog_TenantPropSnapshot");
+        });
+
+        modelBuilder.Entity<QrnewStaffContactInfo>(entity =>
+        {
+            entity.ToTable("QRNewStaffContactInfo", "AAHR");
+
+            entity.Property(e => e.QrnewStaffContactInfoId).HasColumnName("QRNewStaffContactInfoID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasDefaultValue("System")
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.FirstName).HasMaxLength(100);
+            entity.Property(e => e.LastName).HasMaxLength(100);
+            entity.Property(e => e.LutAssociatedRoleId).HasColumnName("LutAssociatedRoleID");
+            entity.Property(e => e.LutChangeRoleId).HasColumnName("LutChangeRoleID");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.NewStaffContactInfoId).HasColumnName("NewStaffContactInfoID");
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.QuarterlyReportId).HasColumnName("QuarterlyReportID");
+            entity.Property(e => e.Title).HasMaxLength(100);
+
+            entity.HasOne(d => d.LutAssociatedRole).WithMany(p => p.QrnewStaffContactInfos)
+                .HasForeignKey(d => d.LutAssociatedRoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_QRNewStaffContactInfo_LutAssociatedRole");
+
+            entity.HasOne(d => d.LutChangeRole).WithMany(p => p.QrnewStaffContactInfos)
+                .HasForeignKey(d => d.LutChangeRoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_QRNewStaffContactInfo_LutChangeRole");
+
+            entity.HasOne(d => d.NewStaffContactInfo).WithMany(p => p.QrnewStaffContactInfos)
+                .HasForeignKey(d => d.NewStaffContactInfoId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_QRNewStaffContactInfo_NewStaffContactInfo");
+
+            entity.HasOne(d => d.QuarterlyReport).WithMany(p => p.QrnewStaffContactInfos)
+                .HasForeignKey(d => d.QuarterlyReportId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_QRNewStaffContactInfo_QuarterlyReport");
         });
 
         modelBuilder.Entity<QroccupancyUnit>(entity =>
@@ -15641,6 +16206,29 @@ public partial class AAHREntities : DbContext
                 .HasForeignKey(d => d.QuarterlyReportId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_QRProjectSiteUpcomingUnitVacancy_QuarterlyReport");
+        });
+
+        modelBuilder.Entity<QrpropertyAssociatedAccount>(entity =>
+        {
+            entity.ToTable("QRPropertyAssociatedAccount", "AAHR");
+
+            entity.Property(e => e.QrpropertyAssociatedAccountId).HasColumnName("QRPropertyAssociatedAccountID");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(50);
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Phone).HasMaxLength(50);
+            entity.Property(e => e.QrfairHousingId).HasColumnName("QRFairHousingID");
+            entity.Property(e => e.QuarterlyReportId).HasColumnName("QuarterlyReportID");
+            entity.Property(e => e.Role).HasMaxLength(50);
         });
 
         modelBuilder.Entity<QrreasonableAccommodation>(entity =>
@@ -15889,6 +16477,15 @@ public partial class AAHREntities : DbContext
             entity.HasOne(d => d.SubmittedCaseLog).WithMany(p => p.QuarterlyReportSubmittedCaseLogs)
                 .HasForeignKey(d => d.SubmittedCaseLogId)
                 .HasConstraintName("FK_QuarterlyReport_CaseLog");
+        });
+
+        modelBuilder.Entity<RandomUser>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.FirstName).HasMaxLength(50);
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.LastName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<ReasonableAccommodation>(entity =>
@@ -16764,7 +17361,7 @@ public partial class AAHREntities : DbContext
                 .HasComment("Reference to SPView_DBConfiguration table")
                 .HasColumnName("DBConfigId");
             entity.Property(e => e.Spname)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .HasComment("This field is used to store stored procedure name which is exists on selected database server.")
                 .HasColumnName("SPName");
 
@@ -17462,23 +18059,6 @@ public partial class AAHREntities : DbContext
                 .HasColumnName("SPA_NAME");
         });
 
-        modelBuilder.Entity<SysdiagramsBak>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("sysdiagrams_bak");
-
-            entity.Property(e => e.Definition).HasColumnName("definition");
-            entity.Property(e => e.DiagramId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("diagram_id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(128)
-                .HasColumnName("name");
-            entity.Property(e => e.PrincipalId).HasColumnName("principal_id");
-            entity.Property(e => e.Version).HasColumnName("version");
-        });
-
         modelBuilder.Entity<TContactIdentifier>(entity =>
         {
             entity
@@ -17998,38 +18578,20 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.TemplateName).HasMaxLength(100);
         });
 
-        modelBuilder.Entity<TestUnit>(entity =>
+        modelBuilder.Entity<TppangelenoUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TestUnit__3214EC2786D59EBD");
+            entity.HasKey(e => e.UserId).HasName("PK__TPPAngel__1788CC4CFBC81A27");
 
-            entity.ToTable("TestUnit");
+            entity.ToTable("TPPAngelenoUsers");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.AchpbuildingNo)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("ACHPBuildingNo");
-            entity.Property(e => e.UnitNum)
-                .HasMaxLength(10)
-                .IsUnicode(false);
-        });
+            entity.HasIndex(e => e.Email, "UQ__TPPAngel__A9D10534E604936A").IsUnique();
 
-        modelBuilder.Entity<TestUnitDetail>(entity =>
-        {
-            entity.HasNoKey();
-
-            entity.Property(e => e.AchpbuildingNo)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("ACHPBuildingNo");
-            entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ID");
-            entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
-            entity.Property(e => e.ProjectSiteId).HasColumnName("ProjectSiteID");
-            entity.Property(e => e.UnitNum)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Email).HasMaxLength(256);
+            entity.Property(e => e.FirstName).HasMaxLength(100);
+            entity.Property(e => e.LastName).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Tqr2fairHousingBatch1>(entity =>
@@ -18622,24 +19184,6 @@ public partial class AAHREntities : DbContext
                 .HasForeignKey(d => d.LutTrainingSessionStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FkTrainingSession_LutTrainingSessionStatus");
-        });
-
-        modelBuilder.Entity<TrainingSession13>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("TrainingSession13");
-
-            entity.Property(e => e.Comment).IsUnicode(false);
-            entity.Property(e => e.Email).HasMaxLength(500);
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(501)
-                .IsUnicode(false);
-            entity.Property(e => e.LastName)
-                .HasMaxLength(501)
-                .IsUnicode(false);
-            entity.Property(e => e.TrainingRegistryId).HasColumnName("TrainingRegistryID");
-            entity.Property(e => e.TrainingSessionId).HasColumnName("TrainingSessionID");
         });
 
         modelBuilder.Entity<TrainingSessionTrainer>(entity =>
@@ -19799,6 +20343,29 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.PropertyName).HasMaxLength(500);
         });
 
+        modelBuilder.Entity<VwAllPropertyPolicyAnalyst8118>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vwAllPropertyPolicyAnalyst_8118", "AAHR");
+
+            entity.Property(e => e.AssigneeFullName)
+                .HasMaxLength(201)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.AssigneeName)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.FileNumber)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.ProjectSiteId).HasColumnName("ProjectSiteID");
+            entity.Property(e => e.PropSnapshotId).HasColumnName("PropSnapshotID");
+            entity.Property(e => e.PropertyName).HasMaxLength(500);
+        });
+
         modelBuilder.Entity<VwAllPurportedUnitsDetail>(entity =>
         {
             entity
@@ -20527,6 +21094,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ApplicationStartDate)
                 .HasMaxLength(23)
                 .IsUnicode(false);
+            entity.Property(e => e.Attributes).IsUnicode(false);
             entity.Property(e => e.ConventionalWaitListCloseDate)
                 .HasMaxLength(23)
                 .IsUnicode(false);
@@ -20570,6 +21138,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.MaxRent).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.MobilityRatio).HasColumnType("decimal(18, 5)");
             entity.Property(e => e.MobilitywHvunitCnt).HasColumnName("MobilitywHVUnitCnt");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.Neighborhood)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -20772,12 +21341,9 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("Modified By");
-            entity.Property(e => e.ModifiedOn)
-                .HasMaxLength(200)
-                .IsUnicode(false)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.OriginalFileName)
-                .HasMaxLength(4000)
+                .HasMaxLength(200)
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("Original File Name");
@@ -22905,6 +23471,191 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ProjUniqueId).HasColumnName("ProjUniqueID");
         });
 
+        modelBuilder.Entity<VwOlapMasterDataBySite>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_OLAP_MasterDataBySite", "AAHR");
+
+            entity.Property(e => e.AcHpNo)
+                .HasMaxLength(500)
+                .HasColumnName("AcHP No.");
+            entity.Property(e => e.AssistanceAnimalRefundLog)
+                .HasMaxLength(500)
+                .HasColumnName("Assistance Animal Refund Log");
+            entity.Property(e => e.CesStatus)
+                .HasMaxLength(500)
+                .HasColumnName("CES Status");
+            entity.Property(e => e.CommentsConcerningEnforcement).HasColumnName("Comments Concerning Enforcement");
+            entity.Property(e => e.CompletedRegistryPropertyListingContactInformationUnitInformationAmenitiesImages)
+                .HasMaxLength(500)
+                .HasColumnName("Completed Registry Property Listing(Contact Information, Unit Information, Amenities, Images)");
+            entity.Property(e => e.ComplianceAchieved)
+                .HasMaxLength(500)
+                .HasColumnName("Compliance Achieved?");
+            entity.Property(e => e.ComplianceDueDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Compliance Due Date");
+            entity.Property(e => e.ConventionalUnitWaitingList)
+                .HasMaxLength(500)
+                .HasColumnName("Conventional Unit Waiting List");
+            entity.Property(e => e.CorrectiveActionPlanCompleteYesNoPartially)
+                .HasMaxLength(500)
+                .HasColumnName("Corrective Action Plan Complete (Yes/No/Partially)");
+            entity.Property(e => e.CorrectiveActionPlanDueDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Corrective Action Plan Due Date");
+            entity.Property(e => e.CorrectiveActionPlanExtensionSGrantedYesNo)
+                .HasMaxLength(500)
+                .HasColumnName("Corrective Action Plan Extension(s) Granted (Yes/No)");
+            entity.Property(e => e.CorrectiveActionPlanIssueDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Corrective Action Plan Issue Date");
+            entity.Property(e => e.CorrectiveActionPlanReceivedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Corrective Action Plan Received Date");
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.DateCityCertificationDecertified)
+                .HasColumnType("datetime")
+                .HasColumnName("Date City Certification Decertified");
+            entity.Property(e => e.DateCityCertificationIssued)
+                .HasColumnType("datetime")
+                .HasColumnName("Date City Certification Issued");
+            entity.Property(e => e.DateCityCertificationRecertified)
+                .HasColumnType("datetime")
+                .HasColumnName("Date City Certification Recertified");
+            entity.Property(e => e.DateNonComplianceCaseClosed)
+                .HasColumnType("datetime")
+                .HasColumnName("Date Non-Compliance Case Closed");
+            entity.Property(e => e.DevelopmentOwnerCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Development Owner (Company)");
+            entity.Property(e => e.DisabilityCoordinatorCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Disability Coordinator (Company)");
+            entity.Property(e => e.DueDateForAnyExtensionToComply)
+                .HasColumnType("datetime")
+                .HasColumnName("Due Date for Any Extension to Comply");
+            entity.Property(e => e.ExtensionEndDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Extension End Date");
+            entity.Property(e => e.GrievanceCoordinatorCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Grievance Coordinator (Company)");
+            entity.Property(e => e.HimsNo)
+                .HasMaxLength(500)
+                .HasColumnName("HIMS No.");
+            entity.Property(e => e.HousingType).HasColumnName("Housing Type");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
+            entity.Property(e => e.LastFairHousingTrainingAttendedAdaCoordinator)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - ADA Coordinator");
+            entity.Property(e => e.LastFairHousingTrainingAttendedDesignatedOwnerRepresentative)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - Designated Owner Representative");
+            entity.Property(e => e.LastFairHousingTrainingAttendedGrievanceCoordinator)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - Grievance Coordinator");
+            entity.Property(e => e.LastFairHousingTrainingAttendedOnSiteManager)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - On-Site Manager");
+            entity.Property(e => e.LastFairHousingTrainingAttendedPropertyManager)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - Property Manager");
+            entity.Property(e => e.LastFairHousingTrainingAttendedRegionalManager)
+                .HasMaxLength(500)
+                .HasColumnName("Last Fair Housing Training Attended - Regional Manager");
+            entity.Property(e => e.LeasingAgentCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Leasing Agent (Company)");
+            entity.Property(e => e.ManagingGeneralPartnerCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Managing General Partner (Company)");
+            entity.Property(e => e.NameOfPrimaryOwner)
+                .HasMaxLength(500)
+                .HasColumnName("Name of Primary Owner");
+            entity.Property(e => e.NewOwnershipPropertyManagementDate)
+                .HasColumnType("datetime")
+                .HasColumnName("New Ownership/Property Management Date");
+            entity.Property(e => e.NonComplianceCaseNumber)
+                .HasMaxLength(500)
+                .HasColumnName("Non-Compliance Case Number");
+            entity.Property(e => e.NonComplianceCaseOpenDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Non-Compliance Case Open Date");
+            entity.Property(e => e.OccupancyStatus90OrAbove)
+                .HasMaxLength(500)
+                .HasColumnName("Occupancy Status (90% or Above)");
+            entity.Property(e => e.OnSiteManagerCompany)
+                .HasMaxLength(500)
+                .HasColumnName("On-Site Manager (Company)");
+            entity.Property(e => e.OpmEmail).HasColumnName("OPM Email");
+            entity.Property(e => e.OpmPhone).HasColumnName("OPM Phone");
+            entity.Property(e => e.OrderToComplyIssueDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Order to Comply Issue Date");
+            entity.Property(e => e.PolicyComplianceDueDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Policy Compliance Due Date");
+            entity.Property(e => e.PolicyComplianceReviewDate)
+                .HasMaxLength(500)
+                .HasColumnName("Policy Compliance Review Date");
+            entity.Property(e => e.PostingRequirementsVerifiedUponSiteAuditRevPoliciesApps110DfehEngSpanHudPosters)
+                .HasMaxLength(500)
+                .HasColumnName("Posting Requirements (Verified Upon Site Audit) Rev. Policies, Apps 1-10, DFEH (Eng/Span) & HUD Posters");
+            entity.Property(e => e.ProjectName)
+                .HasMaxLength(500)
+                .HasColumnName("Project Name");
+            entity.Property(e => e.PropertyAddress).HasColumnName("Property Address");
+            entity.Property(e => e.PropertyManagementCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Property Management (Company)");
+            entity.Property(e => e.PropertyManagementPlanPmpUpdated2020)
+                .HasMaxLength(500)
+                .HasColumnName("Property Management Plan (PMP) - Updated 2020");
+            entity.Property(e => e.PropertyName).HasColumnName("Property Name");
+            entity.Property(e => e.ReceiptOfVcaAndAcknowledgement)
+                .HasMaxLength(500)
+                .HasColumnName("Receipt of VCA and Acknowledgement");
+            entity.Property(e => e.RegionalOrComplianceManagerCompany)
+                .HasMaxLength(500)
+                .HasColumnName("Regional or Compliance Manager (Company)");
+            entity.Property(e => e.ReportedDateOfFullOccupancy)
+                .HasColumnType("datetime")
+                .HasColumnName("Reported Date of Full Occupancy");
+            entity.Property(e => e.ResponsibleCityStaff)
+                .HasMaxLength(500)
+                .HasColumnName("Responsible City Staff");
+            entity.Property(e => e.RevisedPoliciesDistributionReceiptOfTenantAcknowledgements)
+                .HasMaxLength(500)
+                .HasColumnName("Revised Policies Distribution & Receipt of Tenant Acknowledgements");
+            entity.Property(e => e.SelfCertificationOfAdoptionAndCompliance)
+                .HasMaxLength(500)
+                .HasColumnName("Self-Certification of Adoption and Compliance");
+            entity.Property(e => e.SubsequentActions).HasColumnName("Subsequent Actions");
+            entity.Property(e => e.TotalUnitCount).HasColumnName("Total Unit Count");
+            entity.Property(e => e.TypeOfConstruction)
+                .HasMaxLength(500)
+                .HasColumnName("Type of Construction");
+            entity.Property(e => e.UtilizationSurveyOfOccupancy)
+                .HasMaxLength(500)
+                .HasColumnName("Utilization Survey of Occupancy");
+            entity.Property(e => e._1stQuarterReport)
+                .HasMaxLength(500)
+                .HasColumnName("1st Quarter Report");
+            entity.Property(e => e._2ndQuarterReport)
+                .HasMaxLength(500)
+                .HasColumnName("2nd Quarter Report");
+            entity.Property(e => e._3rdQuarterReport)
+                .HasMaxLength(500)
+                .HasColumnName("3rd Quarter Report");
+            entity.Property(e => e._4thQuarterReport)
+                .HasMaxLength(500)
+                .HasColumnName("4th Quarter Report");
+        });
+
         modelBuilder.Entity<VwOlapPmpdetail>(entity =>
         {
             entity
@@ -23415,10 +24166,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e._127200WaitListMoveInDate)
                 .HasColumnType("datetime")
                 .HasColumnName("127_200_WaitListMoveInDate");
-            entity.Property(e => e._321000AccessibleUnitWaitListPosition)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("321_000_AccessibleUnitWaitListPosition");
+            entity.Property(e => e._321000AccessibleUnitWaitListPosition).HasColumnName("321_000_AccessibleUnitWaitListPosition");
             entity.Property(e => e._322000LotteryPosition).HasColumnName("322_000_LotteryPosition");
             entity.Property(e => e._323000ConventionalWaitListPosition)
                 .HasMaxLength(50)
@@ -24385,7 +25133,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.QuarterlyReportId).HasColumnName("QuarterlyReportID");
             entity.Property(e => e.RaquarterReportId).HasColumnName("RAQuarterReportID");
             entity.Property(e => e.RarequestType)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("RARequestType");
             entity.Property(e => e.ReasonableAccommodationId).HasColumnName("ReasonableAccommodationID");
             entity.Property(e => e.RequestDate).HasColumnType("datetime");
@@ -24410,7 +25158,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e._047150SubCategoryOther).HasColumnName("047_150_Sub Category - Other");
             entity.Property(e => e._047200DescribeReasonableModificationRequest).HasColumnName("047_200_Describe reasonable modification request");
             entity.Property(e => e._047300TypeOfReasonableAccommodation)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("047_300_Type of reasonable accommodation");
             entity.Property(e => e._047301SubCategoryRent).HasColumnName("047_301_Sub Category - Rent");
             entity.Property(e => e._047302SubCategoryAlternateTenantContacts).HasColumnName("047_302_Sub Category - Alternate Tenant Contacts");
@@ -24543,7 +25291,7 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .HasColumnName("339_100_RequestedUnitSizeBathroom_RALog");
             entity.Property(e => e._340000RaOrRmRequestRalog)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .HasColumnName("340_000_RA_Or_RM_Request_RALog");
             entity.Property(e => e._341000DeterminationStatusPartiallyGrantedRalog)
                 .HasMaxLength(1)
@@ -25175,6 +25923,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.MaximumMobilityVcacount).HasColumnName("MaximumMobilityVCACount");
             entity.Property(e => e.ModifiedBy).HasMaxLength(50);
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.PProjectName).HasColumnName("P_ProjectName");
             entity.Property(e => e.ProjectAttributeId).HasColumnName("ProjectAttributeID");
             entity.Property(e => e.ProjectAttributeLogId).HasColumnName("ProjectAttributeLogID");
             entity.Property(e => e.ProjectName)
@@ -25524,6 +26273,28 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e._4orMoreBedroom).HasColumnName("4orMoreBedroom");
         });
 
+        modelBuilder.Entity<VwPropertyContact>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vw_propertyContact", "PnC");
+
+            entity.Property(e => e.ContactType)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Fullname)
+                .HasMaxLength(201)
+                .IsUnicode(false)
+                .HasColumnName("fullname");
+            entity.Property(e => e.Name)
+                .HasMaxLength(150)
+                .HasColumnName("name");
+            entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
+        });
+
         modelBuilder.Entity<VwPropertyContactdetail>(entity =>
         {
             entity
@@ -25791,6 +26562,9 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .HasColumnName("AcHPAssociatedAPN");
             entity.Property(e => e.BuildingDescription).IsUnicode(false);
+            entity.Property(e => e.BuildingFileNumber)
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.ClearedByAcHpforTco).HasColumnName("ClearedByAcHPForTCO");
             entity.Property(e => e.CreatedBy).HasMaxLength(50);
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
@@ -25890,6 +26664,9 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.StructureAttributeId).HasColumnName("StructureAttributeID");
             entity.Property(e => e.StructureAttributeLogId).HasColumnName("StructureAttributeLogID");
             entity.Property(e => e.StructureId).HasColumnName("StructureID");
+            entity.Property(e => e.StructureNo)
+                .HasMaxLength(500)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<VwStructureLog>(entity =>
@@ -26082,6 +26859,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.TenantRequestedBedroomsId).HasColumnName("TenantRequestedBedroomsID");
             entity.Property(e => e.TenantRequestedUnitTypeId).HasColumnName("TenantRequestedUnitTypeID");
             entity.Property(e => e.UnitAttributeId).HasColumnName("UnitAttributeID");
+            entity.Property(e => e.UnitNum).HasMaxLength(20);
         });
 
         modelBuilder.Entity<VwUnitLog>(entity =>
@@ -26557,6 +27335,4 @@ public partial class AAHREntities : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-   
 }

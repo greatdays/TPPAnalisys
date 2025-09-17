@@ -46,7 +46,7 @@ namespace DeveloperPortal.Models.Helper
                     SecurityAnswer = string.Empty,
                     AppList = idmUser.AppList
                 };
-                HttpResponseMessage response = client.PostAsJsonAsync("api/Account/Signup_AAHR_Applicant", idmModel).Result;
+                HttpResponseMessage response = client.PostAsJsonAsync("api/Account/Signup", idmModel).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     var result = response.Content.ReadAsStringAsync().Result;

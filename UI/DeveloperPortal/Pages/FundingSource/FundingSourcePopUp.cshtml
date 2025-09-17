@@ -1,0 +1,64 @@
+﻿@model DeveloperPortal.Domain.FundingSource.FundingSourceViewModel
+@using DeveloperPortal.Domain.FundingSource
+
+
+@using (Html.BeginForm("SaveFundingSource", "FundingSource",  FormMethod.Post, new { enctype = "multipart/form-data", id = "editFundingSourceForm" }))
+{
+    
+
+    <div>
+        @Html.HiddenFor(model => model.FundingSourceId)
+        @Html.HiddenFor(model => model.DocumentID)
+        @Html.HiddenFor(model => model.CaseId)
+        @Html.HiddenFor(model => model.FileName)
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.FundingSource, new { @class = "form-label" })
+            <span class="text-danger">*</span>
+            @Html.TextBoxFor(model => model.FundingSource, new { @class = "form-control", @id = "FundingSource" })
+            <div class="invalid-feedback">Funding Source is required</div>
+        </div>
+
+
+        <div class="mb-3">
+            @Html.LabelFor(model => model.Notes, new { @class = "form-label" })
+            @Html.TextAreaFor(model => model.Notes, new { @class = "form-control", @id = "Notes", maxlength = "250" })
+            <small id="notesError" class="text-danger d-none">Maximum 250 characters allowed.</small>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.MU_Unit, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.MU_Unit, new { @class = "form-control", @id = "MU_Unit", type = "number" })
+            <span id="muUnitError" class="text-danger" style="display:none;"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.HV_Unit, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.HV_Unit, new { @class = "form-control", @id = "HV_Unit", type = "number" })
+            <span id="hvUnitError" class="text-danger" style="display:none;"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(m => m.FileName, new { @class = "form-label" })
+            <span>:  @Model.FileName</span>
+        </div>
+
+
+        <div class="form-group mb-3">
+            <label for="fileuploader" class="form-label">Upload File</label>
+            <span class="text-danger">*</span>
+            <input type="file" id="fileuploader" name="File" class="form-control"
+                   accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
+            <div class="invalid-feedback">Please upload a valid file.</div>
+        </div>
+
+       
+
+        <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+            <button id="saveChangesBtn" type="button" class="btn btn-primary" onclick="Reoladdata()">Save changes</button>
+        </div>
+    </div>
+
+    
+}
+

@@ -67,6 +67,8 @@ public partial class PropSnapshot
 
     public virtual ICollection<FairHousing> FairHousings { get; set; } = new List<FairHousing>();
 
+    public virtual ICollection<FhpropertyAssociatedAccount> FhpropertyAssociatedAccounts { get; set; } = new List<FhpropertyAssociatedAccount>();
+
     public virtual ICollection<GrievanceLog> GrievanceLogProjSitePropSnapShots { get; set; } = new List<GrievanceLog>();
 
     public virtual ICollection<GrievanceLog> GrievanceLogUnitPropSnapShots { get; set; } = new List<GrievanceLog>();
@@ -78,6 +80,8 @@ public partial class PropSnapshot
     public virtual ICollection<Listing> Listings { get; set; } = new List<Listing>();
 
     public virtual Location? Location { get; set; }
+
+    public virtual ICollection<NewStaffContactInfo> NewStaffContactInfos { get; set; } = new List<NewStaffContactInfo>();
 
     public virtual ICollection<Pmpsnap> Pmpsnaps { get; set; } = new List<Pmpsnap>();
 

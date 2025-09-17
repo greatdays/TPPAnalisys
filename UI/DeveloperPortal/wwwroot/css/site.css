@@ -70,13 +70,15 @@
     }
 
     .landing-banner h2 {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     .landing-banner > div {
-        width: 700px;
+        width: 100%;
+        max-width:700px;
         margin: 0 auto;
         position: relative;
+        text-align:center;
     }
 
     .landing-banner p {
@@ -95,8 +97,8 @@
     flex-direction: column;
     margin: auto;
     width: 600px;
-/*    height: 575px;*/
-    padding: 3em 4em;
+    /*    height: 575px;*/
+    padding: 3em 4em 2em;
     color: black;
     background-color: white;
     border-radius: 8px;
@@ -351,6 +353,7 @@ body {
 
 .page-content {
     width: 100%;
+    min-height:55vh;
 }
 
 .title {
@@ -10317,10 +10320,10 @@ h2.usename.Contact-Infon-name {
     display: none;
 }
 
-.SupportedBrowserButton {
+/*.SupportedBrowserButton {*/
     /*font-size: 15px;*/
     /*color: #fff;*/
-    color: white;
+    /*color: white;
     outline: none;
     padding: 6px 30px;
     border: 0;
@@ -10332,9 +10335,9 @@ h2.usename.Contact-Infon-name {
     margin-left: auto;
     min-width: 190.5px;
     letter-spacing: .5px;
-    margin-bottom: 20px;
+    margin-bottom: 20px;*/
     /*font-weight: 400;*/
-}
+/*}*/
 
 div#divdropdownmenu a:last-child {
     border-radius: 0px 0px 5px 5px;

@@ -4,123 +4,114 @@
         padding-top: 0px;
          padding-bottom:10px;
         margin-top: 0px;
-    }</style>
-<div class="accordion" >
+    }
+
+    /* Compact summary header */
+    .tpp-summary {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        box-shadow: 0 10px 25px rgba(0,0,0,.06);
+    }
+
+    .tpp-summary__header {
+        background-color: #113F67 !important;
+        padding: 10px 14px;
+    }
+
+    .tpp-summary__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .tpp-title {
+   
+        font-size: 16px;
+    }
+
+    .tpp-top-right {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .tpp-status {
+        background: #ecfdf5;
+        border: 1px solid #d1fae5;
+        border-radius: 999px;
+        padding: 4px 10px;
+/*         font-weight: 600; */
+        font-size: 12px;
+    }
+
+    /* Pills */
+    .tpp-meta {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 8px;
+    }
+
+    .tpp-kv {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        border-radius: 999px;
+        font-size: 12px;
+     
+        padding: 6px 10px;
+    }
+
+/*         .tpp-kv > span {
+            color: #6b7280;
+        }
+ */
+    /* Toggle button */
+    .tpp-toggle {
+        border-radius: 999px;
+        padding: 4px 8px;
+        line-height: 1.2;
+    }
+
+    /* Optional body spacer to match your existing card layout */
+    .tpp-actions-body {
+        background: #fff;
+    }
+
+
+</style>
+<br />
+<div class="" >
     @{
-        <div class="row GridviewViewRow">
-            <div class="col-sm-12">
-                <gridv>
-                    <div class="card penal-details backgroundwhite dataTable-changes" id="accheader">
-                        <div class="card-header accordion-header" style="cursor: default;    background-color: #003399 !important;">
-                            <div style="padding: 10px 0px;">
-                                <span class="card-header-title" style="    font-weight: bold;color:white">
-                                    <span class="bold">ProjectName :</span><span class="cd-value"> @Model.ProjectName</span> &nbsp;&nbsp;
-                                </span>
-                            </div>
-                            
-                        </div>
-                        <div class="card-body table-content" id="divSummaryView" style="position: relative;">
-                            <div class="Case-details Case-addrees" style="border: solid 0px #ddd !important;margin-bottom: 0px; padding: 0px 15px; display:flex">
-                                <div class="col-md-12" style="padding-left:5px;padding-right:5px;">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title left-border">Address</span>
-                                                        <span class="row-text"> @Model.SiteAddress</span>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border"> ACHP # </span>
-                                                        <span class="row-text">
-                                                            @Model.AcHPFileProjectNumber
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border">Project #</span>
-                                                        <span class="row-text">@Model.ProjectServiceRequestNumber</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border"> Type of Occupancy </span>
-                                                        <span class="row-text">@Model.TypeOfOccupancy </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border">Status</span>
-                                                        <span class="row-text">@Model.Status</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border"> Covenant Expiration Date </span>
-                                                        <span class="row-text"> N/A</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border">Type of Construction Project</span>
-                                                        <span class="row-text">@Model.CaseType </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border"> HIMS # </span>
-                                                        <span class="row-text">@Model.HIMSNumber</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border">Assignee</span>
-                                                        <span class="row-text">@Model.AssigneeName </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="row-box">
-                                                        <span class="row-title lelf-border"> LA County Assessors </span>
-                                                        <span class="row-text"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 Case-deatils Case-addrees" id="divProjectActionsContainer" style="margin-bottom:0px;display:none">
-                                    <span class="site-more-info">Project Actions</span>
-
-                                    <div id="divProjectActions" style="    display: contents;">
-                                     
-                                    </div>
-                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=Assign for Review&amp;caseId=25662&amp;formId=3459" onclick="OpenActionPopUp(this, false)">Edit Project Information</a>
-                                    <a href="javascript:void(0);" modal-data="/comcon/FormComponent/ActionViewFormPart?actionName=ReAssign&amp;caseId=25662&amp;formId=3444" onclick="OpenActionPopUp(this, false)">Add Floor Plan</a>
-                                </div>
-                            </div>
-                        </div>
+        <div class="tpp-summary card" id="project-summary" aria-label="Project Summary">
+            <div class="card-header tpp-summary__header">
+                <div class="tpp-summary__top">
+                    <div class="tpp-title">
+                        <span class="bold">Project:</span>
+                        <span class="cd-value">@Model.ProjectName</span>
                     </div>
-                </gridv>
-            </div>
+                    <div class="tpp-top-right">
+                        <span class="tpp-status" id="overall-status">@Model.Status</span>
+                    </div>
+                </div>
 
+                <!-- pill-style key/values -->
+                <ul class="tpp-meta" id="tpp-meta">
+                    <li class="tpp-kv"><span>Address:</span><strong>@Model.SiteAddress</strong></li>
+                    <li class="tpp-kv"><span>ACHP #:</span><strong>@Model.AcHPFileProjectNumber</strong></li>
+                    <li class="tpp-kv"><span>Type of Occupancy:</span><strong>@Model.TypeOfOccupancy</strong></li>
+                    <li class="tpp-kv"><span>Status:</span><strong>@Model.Status</strong></li>
+                    <li class="tpp-kv"><span>Type of Construction:</span><strong>@Model.CaseType</strong></li>
+                    <li class="tpp-kv"><span>Assigned Staff:</span><strong>@Model.AssigneeName</strong></li>
+                    <li class="tpp-kv"><span>APN:</span><strong>@(string.IsNullOrWhiteSpace(Model.APN) ? "—" : Model.APN)</strong></li>
+                </ul>
+            </div>
         </div>
     }
 </div>

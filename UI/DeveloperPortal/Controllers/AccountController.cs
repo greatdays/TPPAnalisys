@@ -26,6 +26,9 @@ using DeveloperPortal.Models.Common;
 using static DeveloperPortal.ServiceClient.ServiceClient;
 using ComCon.DataAccess.Models.Helpers;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Domain.Resources;
+using DeveloperPortal.Application.Notification.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 
 namespace DeveloperPortal.Controllers
 {
@@ -36,20 +39,21 @@ namespace DeveloperPortal.Controllers
         private IConfiguration _config;
         private IHttpContextAccessor _contextAccessor;
         private IAccountService _accountService;
-
+        private ISendNotificationEmail _sendNotificationEmail;
         // Here we are using Dependency Injection to inject the Configuration object
         public AccountController(IConfiguration config, 
-            IHttpContextAccessor httpConfig, IAccountService service)
+            IHttpContextAccessor httpConfig, IAccountService service, ISendNotificationEmail sendNotificationEmail)
         {
             _config = config;
             _contextAccessor = httpConfig;
             _accountService = service;
+            _sendNotificationEmail= sendNotificationEmail;
         }
 
         [Route("account/login")]
         [HttpGet]
         public IActionResult Login(string ReturnUrl = null)
-        {
+            {
             return Redirect($"{_config["IDMSettings:CentralIDMURL"]}&returnUrl={_config["AppSettings:ApplicationURL"]}{ReturnUrl}");
         }
 
@@ -94,16 +98,20 @@ namespace DeveloperPortal.Controllers
                         signupModel.PhoneNumber = GetApplicantDataByKey("phoneNumber", tokens);
                         signupModel.City = GetApplicantDataByKey("city", tokens);
                         signupModel.State = GetApplicantDataByKey("state", tokens);
+                        signupModel.LutStateCD = GetApplicantDataByKey("state", tokens);
                         signupModel.Zipcode = GetApplicantDataByKey("zipCode", tokens);
                         signupModel.PhoneType = GetApplicantDataByKey("phoneType", tokens);
+                        signupModel.LutPhoneTypeCd = GetApplicantDataByKey("phoneType", tokens);
                         signupModel.PhoneExtension = GetApplicantDataByKey("extension", tokens);
 
                         if (int.TryParse(GetApplicantDataByKey("streetNumber", tokens), out var num))
                             signupModel.StreetNum = num;
 
                         signupModel.StreetDir = GetApplicantDataByKey("streetDirection", tokens);
+                        signupModel.LutPreDirCd = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.StreetName = GetApplicantDataByKey("streetName", tokens);
                         signupModel.StreetType = GetApplicantDataByKey("streetType", tokens);
+                        signupModel.LutStreetTypeCD = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.UnitNumber = GetApplicantDataByKey("unitNumber", tokens);
                         signupModel.PostBoxNum = GetApplicantDataByKey("poBoxNumber", tokens);
                         signupModel.IsPostBox = GetApplicantDataByKey("poBox", tokens)
@@ -246,7 +254,7 @@ namespace DeveloperPortal.Controllers
                             AppKey = GetConfigValue("AppSettings:AppKey"),
                             AppName = GetConfigValue("AppSettings:AppKey"),
                             Roles = roles
-                        }); ;
+                        }); 
 
                         // Call IDM and create an account
                         idmuser = applicationUser.ApplicantSignUp(idmuser);
@@ -256,49 +264,12 @@ namespace DeveloperPortal.Controllers
                             if (idmuser.Status.Contains("successfully"))
                             {
                                 data.Result.Status = true;
-                                // auto login current user
-                                ApplicantUser objUser = new ApplicantUser();
-
-                                objUser.UserName = username;
-                                objUser.Password = signupModel.Password;
-                                objUser.Provider = "SQL";
-
-                                objUser = new AccountServiceClient(_config, _contextAccessor).AuthenticateUser(objUser);
-
-                                if (objUser.IDMUserId > 0)
-                                {
-                                    //var userDetail = objUser.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(_config["ThisApplication:Application"]));
-                                    ApplicationDetail thisapp = objUser.AppList.Find(a => a.AppName.Equals(GetConfigValue("AppSettings:Application")));
-                                    var authenticateResponse = new IDMServiceClient(_config).ValidateToken(thisapp.JWTToken);
-                                    //// add response to session.                                
-                                    //FormsAuthentication.SetAuthCookie(objUser.UserName, true);
-                                    //objUser.
-                                    var identity = new ClaimsIdentity(new[] {
-                                        new Claim(ClaimTypes.Name, authenticateResponse.Username),
-                                        new Claim(ClaimTypes.Role,string.Join(",", thisapp.Roles))
-                                        }, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                                    var principal = new ClaimsPrincipal(identity);
-
-                                    var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                                    //UserSession.SetUserInSession(UserSession.AssignValues(HttpContext, r, thisapp.JWTToken, Constants.Application.Name));
-                                    UserSession.SetUserInSession(HttpContext,
-                                        UserSession.AssignValues(HttpContext,
-                                            authenticateResponse,
-                                            thisapp.JWTToken,
-                                            new Constants.Application(_config).GetConfigValue("Name")
-                                        ));
-                                }
-
-                                // End - auto login
-
                                 // Save entry in contact tables
                                 signupModel.IsApplicant = true;
 
                                 /*saving contact */
                                 //signupModel.SaveContactInformation(signupModel, username, Constants.AppConstant.WebRegister);
-                              int contactId= await  _accountService.ContactIdentifierSave(signupModel, username, Constants.AppConstant.TPPSource);
+                              int contactId= await  _accountService.ContactIdentifierSave(signupModel, username, Constants.AppConstant.WebRegister);
 
                                 ///* Saving subscription data to DB */
                                 ///Ananth: Commented below piece of code
@@ -331,20 +302,20 @@ namespace DeveloperPortal.Controllers
                                 if (idmuser.Email != "")
                                 {
                                     /*send email to user for account activation*/
-                                    //string AccountActivationUrl = ConfigurationManager.AppSettings["ApplicantAccountActivation"] + idmuser.RegistrationActivationCode + "&User=" + idmuser.Email;
-                                    signupModel.NotificationData.Add("firstname", idmuser.FirstName);
-                                    signupModel.NotificationData.Add("lastname", idmuser.LastName);
-                                    signupModel.NotificationData.Add("username", idmuser.UserName);
-                                    //signupModel.NotificationData.Add("AccountActivationLink", "<a href='" + AccountActivationUrl.ToString() + "' target='_blank' >" + "Please click here to complete the registration process and activate your account." + "</a>");
+                                    string AccountActivationUrl = _config["AppSettings:ApplicantAccountActivation"] + idmuser.RegistrationActivationCode + "&User=" + idmuser.Email;
+                                    Dictionary<string, string> NotificationData = new Dictionary<string, string>();
+
+                                    NotificationData.Add("firstname", idmuser.FirstName);
+                                    NotificationData.Add("lastname", idmuser.LastName);
+                                    NotificationData.Add("username", idmuser.UserName);
+                                    NotificationData.Add("AccountActivationLink", "<a href='" + AccountActivationUrl.ToString() + "' target='_blank' >" + "Please click here to complete the registration process and activate your account." + "</a>");
                                     //convert the config value into hours.
-                                    //int t = int.Parse(ConfigurationManager.AppSettings["ACTIVATION-LINK-EXPIRATION"].ToString());
-                                    //string time = (t / 60).ToString();
-                                    //signupModel.NotificationData.Add("time", time);
-                                    /*send notification to registerd user*/
-                                    //TODO: Add 'ComConEntities' connectionstring from AAHR
-                                    //<add name="ComConEntities" connectionString="metadata=res://*/Entity.ComCon.csdl|res://*/Entity.ComCon.ssdl|res://*/Entity.ComCon.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=10.43.20.101;initial catalog=AAHRDev;persist security info=True;user id=appACHP;password=BDpwD7@cHP;multipleactiveresultsets=True;application name=EntityFramework&quot;" providerName="System.Data.EntityClient" />
-                                    //TODO: Implement email notification
-                                    //signupModel.SendNotificationMail(EmailTemplate.ET_EmailToApplicantSigningUp, idmuser.Email, EmailAction.EA_Signup);
+                                    int t = int.Parse(_config["AppSettings:ACTIVATION-LINK-EXPIRATION"].ToString());
+                                    string time = (t / 60).ToString();
+                                    NotificationData.Add("time", time);
+                                   var notificationInfo=_sendNotificationEmail.GetNotificationInfo(EmailTemplate.ET_EmailToPersonSigningUp, NotificationData, idmuser.Email);
+                                    var notificationCrdential = _sendNotificationEmail.GetNotificationCrdential("AAHR");
+                                  await _sendNotificationEmail.SendMail(notificationInfo, notificationCrdential, EmailAction.EA_Signup);
                                 }
 
                                 ///* Saving subscription data to DB */
@@ -397,8 +368,63 @@ namespace DeveloperPortal.Controllers
 
             return Json(data);
         }
+       
+        [HttpGet("Activate")]
+        public ActionResult ActivateAAHRUser(string activationcode, string User)
+        {
+            IDMAuthenticate authenticate = new IDMAuthenticate(_config);
+            IDMUser idmuser = new IDMUser();
+            SignupModel signupModel = new SignupModel();
+            idmuser = authenticate.ActivateAAHRUser(activationcode);
+            if (idmuser.Status != null)
+            {
+                ViewBag.Message = idmuser.Status.Remove(0, 8);
+                if (idmuser.Status.Contains("IDM110"))
+                {
+                    TempData["Status"] = "NotActivated";
+                }
+                else if (idmuser.Status.Contains("IDM119"))
+                {
+                    TempData["Status"] = "Expired";
+                }
+                else if (idmuser.Status.Contains("IDM111"))
+                {
+                    TempData["Status"] = "AlreadyActivated";
+                }
+                else
+                {
+                    TempData["Status"] = "Success";
+                }
+                TempData["message"] = idmuser.Status.Remove(0, 8);
 
+            }
+            else
+            {
+                string LogMessage = "IDM Error: Account activation. \n Activation Code: " + activationcode + "\n IDM Error Message: "
+                                     + idmuser.ErrorMessage;
+
+                TempData["Status"] = "SystemError";
+            }
+            
+            return Redirect($"{_config["AppSettings:ApplicationURL"]}");
+
+        }
         #endregion
+        //[HttpPost]
+  
+        //public IActionResult UpdateAccount()
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    // your update logic
+        //    return Json(new { success = true, message = "Account updated!" });
+        //}
+
+
+
 
         [HttpPost]
         public ActionResult GetACHPDetails(string achpNumber)
@@ -496,11 +522,16 @@ namespace DeveloperPortal.Controllers
                         select ((JProperty)x).Value.ToString();
             string tokenValue = query.FirstOrDefault();
 
-            tokenValue = (tokenValue.IsNullOrEmpty()) ? string.Empty : tokenValue;
+            tokenValue = (tokenValue==null||tokenValue=="") ? string.Empty : tokenValue;
 
             return tokenValue;
         }
 
+        public async Task<List<VwAspNetRole>> getUSerRole()
+        {
+            var roleData = await _accountService.GetUSerRole(null);
+            return roleData;
+        }
         [HttpGet("GetLookUpData")]
         public async Task<JsonResult> GetLookupData()
         {
@@ -509,8 +540,9 @@ namespace DeveloperPortal.Controllers
             List<PhoneType> phoneTypeList = new List<PhoneType>();
             List<Directions> directionsList = new List<Directions>();
             List<StreetType> StreetTypeList = new List<StreetType>();
+            List<userRoleType> UserRole = new List<userRoleType>();
 
-        string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
+            string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
             var response = string.Empty;
             string json = string.Empty;
 
@@ -609,6 +641,19 @@ namespace DeveloperPortal.Controllers
                     }
                     json = JsonConvert.SerializeObject(StreetTypeList, Formatting.Indented);
                     break;
+                case "UserRole":
+                    // JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
+                    var data = await getUSerRole();
+                    foreach (var item in data)
+                    {
+                        userRoleType userRoleType = new userRoleType();
+                        userRoleType.RoleID = item.RoleId;
+                        userRoleType.RoleName = item.Name;
+                        UserRole.Add(userRoleType);
+                    }
+
+                    json = JsonConvert.SerializeObject(UserRole, Formatting.Indented);
+                    break;
                 default:
                     break;
             }
@@ -625,6 +670,11 @@ namespace DeveloperPortal.Controllers
             Models.IDM.SignupModel result = await client.GetFromJsonAsync<Models.IDM.SignupModel>("api/user/lookuplist");
             return result;
         }
+    }
+    internal class userRoleType
+    {
+        public int RoleID { get; internal set; }
+        public string RoleName { get; internal set; }
     }
 
     internal class StreetType

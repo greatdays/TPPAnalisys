@@ -1,0 +1,152 @@
+﻿@model DeveloperPortal.Domain.ProjectDetail.FloorPlanTypeModel
+<div class="collapse multi-collapse show intake_form_acc_body" id="floor_plan">
+	<button class="add-tab-button btn-primary mb-2 constructionbtn" style="float:right;" data-bs-toggle="modal" data-bs-target="#addFloorPlanType"> Add Floor plan</button>
+	<table id="floorPlanTable" class="table table-striped table-bordered bodyHeaderTable mt-3">
+	</table>
+</div>
+<div class="modal fade discrepencyModal custModal" id="editFloorPlanType" tabindex="-1" role="dialog" aria-labelledby="editFloorPlanTypeTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				@*MOD09122023 - AAHP-5668 code changes*@
+				<h5 class="modal-title" id="editFloorPlanTypeTitle">Edit Floor Plan Type</h5>
+				<button type="button" class="close editclose" aria-label="Close" data-bs-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="edit_floorPlan">
+			</div>
+			<div class="modal-footer addFPTFooter justify-content-center">
+				<button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" onclick="FloorPlanType.SaveeditedFloorPlan();">Update</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade discrepencyModal custModal" id="addFloorPlanType" tabindex="-1" role="dialog" aria-labelledby="addFloorPlanTypeTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
+		<form id="floorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="AddFloorPlanType">
+			<input type="hidden" name="ProjectSiteID" value="@Model.ProjectSiteID" />
+			<input type="hidden" id="hiddenProjectID" name="ProjectID" value="@Model.ProjectID" />
+			<input type="hidden" name="CaseId" value="@Context.Request.Query["Id"]" />
+			<div class="modal-content" style="width: 625px;">
+				<div class="modal-header">
+					<h5 class="modal-title" id="discrepencyModalTitle">Add Floor Plan Type</h5>
+					<button type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_siteId"></span>
+						</div>
+						<div class="col-md-6 mb-3">
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_buildings"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="wraping_label" for="floorplan">Floor Plan Type <span class="text-danger">*</span></label>
+							<input class="form-control" type="text" id="floorplan" name="Name" required autocomplete="off" />
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_floorplan"></span>
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label class="wraping_label" for="squarefeet">Square Footage <span class="text-danger">*</span></label>
+							<input class="form-control" type="number" name="SquareFeet" onkeydown="return event.keyCode != 69" min="0" id="squarefeet" maxlength="5" required />
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_squarefeet"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="wraping_label" for="bedroom">Number of Bedroom <span class="text-danger">*</span></label>
+							<select class="form-control" id="bedroom" name="LutTotalBedroomID" required>
+								<option>Select</option>
+								@foreach (var bedroom in Model.LutTotalBedrooms)
+								{
+									<option value="@bedroom.Value">@bedroom.Text</option>
+								}
+							</select>
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_bedroom"></span>
+						</div>
+
+						<div class="col-md-6 mb-3">
+							<label class="wraping_label" for="bathroom">Number of Bathroom <span class="text-danger">*</span></label>
+							<select class="form-control" id="bathroom" onchange="FloorPlanType.onSelectBathroomCount();" name="LutTotalBathroomID" required>
+								<option>Select</option>
+								@foreach (var bathroom in Model.LutTotalBathrooms)
+								{
+									<option value="@bathroom.Value">@bathroom.Text</option>
+								}
+							</select>
+							<div class="invalid-feedback"></div>
+							<span class="text-danger" id="lblError_fp_bathroom"></span>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3" id="bathroomTypeDiv">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="modal-footer justify-content-center addFPTFooter">
+					<button type="button" class="btn btn-outline-light close-btn" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="FloorPlanType.saveFloorPlan();">Save</button>
+				</div>
+
+			</div>
+		</form>
+	</div>
+</div>
+<script src="@Url.Content("~/PageScripts/FloorPlanType/FloorPlanType.js")"></script>
+<script>
+	var FloorPlanType = FloorPlanType || {};
+	FloorPlanType.bathroomTypeOptions = `@Html.Raw(string.Join("", Model.LutBathroomType.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
+	FloorPlanType.bathroomOptionValues = `@Html.Raw(string.Join("", Model.LutTotalBathroomTypeOption.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
+	FloorPlanType.LutBathroomType = @Html.Raw(Json.Serialize(Model.LutBathroomType));
+	FloorPlanType.LutTotalBathroomTypeOption = @Html.Raw(Json.Serialize(Model.LutTotalBathroomTypeOption));
+</script>
+<style>
+	#floorplan_bathroomtype {
+		width: 592px;
+	}
+
+	.btn-primary {
+		background-color: #135b79;
+		color: #fff;
+		padding: 10px 15px;
+		border-color: #135b79;
+	}
+
+	.addFPTFooter button {
+		height: 46px !important;
+		width: 160px;
+		padding: 0px !important;
+		margin: 0 !important;
+		border-radius: 0;
+		border: none;
+		background: #ededed;
+	}
+
+	.close-btn:hover {
+		background: #ededed;
+	}
+
+	#bathroomTypeDiv {
+		width: 692px;
+	}
+
+	#floorPlanTable_filter {
+		margin-top: 10px;
+	}
+</style>

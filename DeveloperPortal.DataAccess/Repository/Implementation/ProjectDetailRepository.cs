@@ -143,6 +143,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         /// <returns></returns>
         public async Task<bool> AddPropSnapshots(int caseId, PropSnapshot ps, string userName)
         {
+            await SaveChangesWithAuditAsync(userName);
             var serviceRequest = _context.ServiceRequests.FirstOrDefault(s => s.CaseId == caseId);
             if (serviceRequest != null)
             {
@@ -188,7 +189,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         /// <returns></returns>
         public async Task<List<PropSnapshot>> PropSnapshotByBuilding(int structureId)
         {
-            return await _context.PropSnapshots.Where(x => x.StructureId == structureId && x.IdentifierType == "Building").ToListAsync();
+            return await _context.PropSnapshots.Include(x=>x.ServiceRequests).Where(x => x.StructureId == structureId && x.IdentifierType == "Building").ToListAsync();
         }
 
         /// <summary>

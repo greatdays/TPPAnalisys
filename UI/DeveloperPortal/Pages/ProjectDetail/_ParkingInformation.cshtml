@@ -220,9 +220,9 @@
                     </div>
                     <div class="col-sm-4">
                         
-                        <a id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access" style="background: #003399;color: white;" role-access="true" onclick="BuildingInformation.editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</a>
-                        <a id="cancelEditBuildingSummary" class="k-button k-button-icontext k-grid-add" style="background: #003399;color: white;margin-left :15px;" onclick="BuildingInformation.cancelBuildingSummary()">Cancel</a>
-                        <button id="updateBuildingSummary" class="k-button k-button-icontext k-grid-add"  style="background: #003399;color: white;" type="submit">Update</button>
+                        <a id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access btn btn-primary btn-sm" style="background: #113F67;color: white;" role-access="true" onclick="BuildingInformation.editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</a>
+                        <a id="cancelEditBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;margin-left :15px;" onclick="BuildingInformation.cancelBuildingSummary()">Cancel</a>
+                        <button id="updateBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;" type="submit">Update</button>
                     </div>
                    
                 </div>
@@ -429,12 +429,13 @@
             <img src="~/Images/question-circle.svg" class="question-mark-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" data-original-title="Double click permit numbers below to view LADBS details" />
         </div>
         <div>
-            <div style="display: inline;">
-                <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em;">
+            <div class="d-flex justify-content-between">
+                <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em; max-width:470px;">
                     <label for="LADBS_PermitNumber">Permit #:</label>
                     <input id="LADBS_PermitNumber" class="form-group" />
                     <button id="linkPermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="LadbsInformation.linkPermitNumber()">Query Permit Number</button>
-                    <div id="invalid-permit-message" style="display: none;"></div>
+                    <div id="invalid-permit-message" style="display: none; width:100%; padding-top:10px;"></div>
+                    <div id="LADBSerror" class="text-danger" style="padding:10px 0 0 60px;" hidden> </div>
                 </div>
                 <div style="float: inline-end;padding-right: 1em;padding-top: 1em;padding-bottom: 2em;">
                     <button id="syncPermitNumbers" class="btn btn btn-primary" onclick="LadbsInformation.syncPermitNumbers()">Sync All Permit Numbers</button>
@@ -442,8 +443,7 @@
                 </div>
             </div>
 
-            <div id="LADBSerror" style="padding-left: 2em;margin-bottom: 2em;" hidden>
-            </div>
+           
         </div>
 
         <table id="dtPermitNumberData"></table>
@@ -466,7 +466,7 @@
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title"> Parking Information</span>
-            <button id="editParkingInfo" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="ParkingInformation.edit()">Edit Parking Information</button>
+            <button id="editParkingInfo" class="k-button k-button-icontext k-grid-add no-access btn btn-primary btn-sm" role="button" role-access="true" onclick="ParkingInformation.edit()">Edit Parking Information</button>
             <button id="cancelEditParking" class="k-button k-button-icontext k-grid-add" style="margin-left :15px;" role="button" onclick="ParkingInformation.cancel()">Cancel</button>
             <button id="updateBuildingParking" class="k-button k-button-icontext k-grid-add" role="button" onclick="ParkingInformation.update()">Update</button>
         </div>

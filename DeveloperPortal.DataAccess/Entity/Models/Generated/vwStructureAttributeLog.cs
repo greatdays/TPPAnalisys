@@ -19,6 +19,10 @@ public partial class VwStructureAttributeLog
 
     public string? PsSiteAddress { get; set; }
 
+    public string StructureNo { get; set; } = null!;
+
+    public string BuildingFileNumber { get; set; } = null!;
+
     public int StructureAttributeLogId { get; set; }
 
     public int StructureAttributeId { get; set; }

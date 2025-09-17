@@ -10,6 +10,7 @@ using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using static DeveloperPortal.Domain.PropertySnapshot.Constants;
 
@@ -57,7 +58,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 ContactRenderModel contact = new ContactRenderModel();
 
                 /*Contact details*/
-                //contact.ContactId = signupModel.ContactID;
+                contact.ContactId = signupModel.ContactID;
                 contact.UserName = userName;
                 contact.IDMUserName = (source == AppConstant.WebRegister) ? userName : null;
                 contact.FirstName = signupModel.FirstName;
@@ -65,10 +66,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 contact.LastName = signupModel.LastName;
                 contact.Email = signupModel.EmailId;
                 contact.Title = (signupModel.Title != null ? signupModel.Title.Trim() : "");
-                contact.Company = (signupModel.CompanyName != null ? signupModel.CompanyName : "");//Company
-                //contact.OrganizationId = signupModel.OrganizationID;
-                //contact.AdditionalEmail = signupModel.AdditionalEmail;
+                contact.Company = (signupModel.Company != null ? signupModel.Company : "");//Company
+                contact.OrganizationId = signupModel.OrganizationID;
+                contact.AdditionalEmail = signupModel.AdditionalEmail;
                 contact.Source = source;
+                contact.BirthDay = signupModel.BirthDay;
+                contact.BirthMonth = signupModel.BirthMonth;
+                contact.BirthYear = signupModel.BirthYear;
 
                 //Original Phone Type
                 switch (signupModel.LutPhoneTypeCd)
@@ -94,21 +98,26 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     contactAddressAttributeList.Add("IsPOBox", "true");
                     contact.ContactAddressAttribute = JsonConvert.SerializeObject(contactAddressAttributeList);
                 }
-
-
-                contact.HouseNum = Convert.ToString(signupModel.StreetNum); //HouseNum
-                //contact.HouseFracNum = signupModel.HouseFracNum;
-                contact.PreDirection = signupModel.StreetDir;// LutPreDirCd;
+                else
+                {
+                    contactAddressAttributeList.Add("IsPOBox", "false");
+                    contact.ContactAddressAttribute = JsonConvert.SerializeObject(contactAddressAttributeList);
+                }
+                /*Contact Address details*/
+                contact.ContactAddressId = signupModel.ContactAddressID;
+                contact.HouseNum = signupModel.IsPostBox ? "" : Convert.ToString(signupModel.HouseNum);
+                contact.HouseFracNum = signupModel.IsPostBox ? "" : signupModel.HouseFracNum;
+                contact.PreDirection = signupModel.IsPostBox ? "" : signupModel.LutPreDirCd;
                 contact.StreetName = signupModel.IsPostBox ? signupModel.PostBoxNum : signupModel.StreetName;
-                contact.StreetTypeCd = signupModel.StreetType;// LutStreetTypeCD;
-                contact.PostDirection = signupModel.StreetDir;// PostDirCd;
+                contact.StreetTypeCd = signupModel.IsPostBox ? "" : signupModel.LutStreetTypeCD;
+                contact.PostDirection = signupModel.IsPostBox ? "" : signupModel.PostDirCd;
                 contact.City = signupModel.City;
-                contact.State = signupModel.State;// LutStateCD;
-                contact.Zip = signupModel.Zipcode; //zip
-                contact.Unit = signupModel.UnitNumber;//Unit
-                //contact.IsMarkedForMailing = signupModel.AlternateContactMethodcd == (int)ContactMethods.USMail ? true : false;
-                //contact.PropContactId = signupModel.PropContactId;
-
+                contact.State = signupModel.LutStateCD;
+                contact.Zip = signupModel.Zipcode;
+                contact.Unit = signupModel.IsPostBox ? "" : signupModel.Unit;
+                contact.IsMarkedForMailing = signupModel.AlternateContactMethodcd == (int)ContactMethods.USMail ? true : false;
+                contact.PropContactId = signupModel.PropContactId;
+               
                 contact.Type = ContactTypes.Applicant; //TODO: find the type
 
 
@@ -117,6 +126,31 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 client.BaseAddress = new Uri(_config["AreaMgmtAPIURL:PropertyApiURL"]);
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                if (signupModel.IsClient != true)
+                {
+                    //Check if user already exist in PCMS
+                    HttpResponseMessage httpResponseMessage = client.GetAsync(string.Format("Contact/GetContactByUserName?userName={0}", Uri.EscapeDataString(contact.IDMUserName).Replace("%20", "+"))).Result;
+                    if (httpResponseMessage.IsSuccessStatusCode)
+                    {
+                        var result = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                        var contactResponse = JsonConvert.DeserializeObject<BaseResponse>(result);
+                        ContactRenderModel contactRenderModel = JsonConvert.DeserializeObject<ContactRenderModel>(contactResponse.Response.ToString());
+                        contactID = Convert.ToInt32(contactRenderModel.ContactId);
+
+                        if (contact.ContactAddressId == 0 && contactRenderModel.ContactAddressId != 0)
+                        {
+                            contact.ContactAddressId = contactRenderModel.ContactAddressId;
+                        }
+                    }
+
+                    contact.ContactId = contactID;
+
+                }
+                else
+                {
+                    contact.ContactId = signupModel.ContactID;
+                }
 
                 //save contact information to PCMS
                 HttpResponseMessage response = client.PostAsJsonAsync("ContactMgmt/Save", contact).Result;
@@ -154,6 +188,17 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     {
                         contactIdentifier = new ContactIdentifier();
                     }
+
+                ContactIdentifier alt_contactIdentifier = _context.ContactIdentifiers.FirstOrDefault(m => m.AltContactReferenceId == contactIdentifier.ContactIdentifierId);
+                bool altcontactexists = false;
+                if (alt_contactIdentifier == null)
+                {
+                    alt_contactIdentifier = new ContactIdentifier();
+                }
+                else
+                {
+                    altcontactexists = true;
+                }
                 if (contactType == "" || contactType == null)
                 {
                     Attributes = !string.IsNullOrEmpty(attributes)
@@ -191,7 +236,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     PostDirCd = string.Empty,
                     StreetTypeCd = model.StreetType,
                     City = model.City,
-                    State = model.State,
+                    State = model.LutStateCD,
                     Zip = model.Zipcode,
                     PhoneNumber = model.PhoneNumber,
                     PhoneHome = model.PhoneNumber,
@@ -223,10 +268,86 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     IsDeleted = false,
                     CreatedBy = userName,
                     CreatedOn = DateTime.Now
-                };
-              
+                   
 
-                    _context.ContactIdentifiers.Add(entity);
+                };
+                var contactOrganization = contactIdentifier.AssnOrganizationContacts.FirstOrDefault(x => x.Organization.Name == model.Company && x.IsDeleted == false && x.Organization.IsDeleted == false);
+                if (!string.IsNullOrEmpty(model.Company))
+                {
+                    if (contactOrganization == null || model.OrganizationID == 0)
+                    {
+                        
+                            List<AssnOrganizationContact> lstOrgContact = _context.AssnOrganizationContacts.Where(o => o.IsDeleted != true && o.ContactIdentifierId == contactIdentifier.ContactIdentifierId).ToList();
+                            foreach (var orgContact in lstOrgContact)
+                            {
+                                orgContact.IsDeleted = true;
+                                _context.Entry(orgContact).State = EntityState.Modified;
+                                _context.SaveChanges(userName);
+                            }
+                        
+
+                        var organization = _context.Organizations.FirstOrDefault(x => x.Name == model.Company && x.IsDeleted == false);
+                        if (organization == null)
+                        {
+                            organization = new Organization
+                            {
+                                Name = model.Company,
+                                IsDeleted = false,
+                                IsReviewRequired = false
+                            };
+
+                            _context.Organizations.Add(organization);
+                            _context.SaveChanges(userName);
+                        }
+                        contactOrganization = new AssnOrganizationContact
+                        {
+                            OrganizationId = organization.OrganizationId,
+                            AssociationType = "Full Time",
+                            AssociatedFrom = DateOnly.FromDateTime(DateTime.Now.AddYears(-2)),
+                            AssociatedTo = DateOnly.FromDateTime(DateTime.Now),
+
+                            IsReviewRequired = false,
+                            IsDeleted = false,
+                            Source = source,
+
+                            CreatedOn = DateTime.Now,   // ✅ set explicitly
+                            CreatedBy = userName,       // if you track user
+                            ModifiedOn = DateTime.Now,  // or leave null if allowed
+                            ModifiedBy = userName
+                        };
+
+
+                        contactIdentifier.AssnOrganizationContacts.Add(contactOrganization);
+                    }
+                    else
+                    {
+                        contactOrganization.Organization.Name = model.Company;
+                    }
+                }
+                else
+                {
+                    //To clean up old undeleted records.
+                    List<AssnOrganizationContact> lstOrgContact = _context.AssnOrganizationContacts.Where(o => o.IsDeleted != true && o.ContactIdentifierId == contactIdentifier.ContactIdentifierId).ToList();
+                    foreach (var orgContact in lstOrgContact)
+                    {
+                        orgContact.IsDeleted = true;
+                        if (contactOrganization != null)
+                        {
+                            if (orgContact.AssnOrganizationContactId == contactOrganization.AssnOrganizationContactId)
+                            {
+                                orgContact.AssociatedTo = DateOnly.FromDateTime(DateTime.Now);
+                            }
+
+                        }
+                        _context.Entry(orgContact).State = EntityState.Modified;
+                        _context.SaveChanges(userName);
+                    }
+
+                }
+
+
+
+                _context.ContactIdentifiers.Add(entity);
                 await _context.SaveChangesAsync();
 
                 return entity.ContactId;
@@ -296,7 +417,12 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             return (savedProjects, notSavedProjects);
         }
-    
+
+        public async Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID)
+        {
+            var data = await _accountRepository.GetUSerRole(ApplicationID);
+            return data;
+        }
     }
 }
 

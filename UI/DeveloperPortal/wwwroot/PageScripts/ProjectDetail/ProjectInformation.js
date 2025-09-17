@@ -20,7 +20,8 @@
                }
            });
         },
-        openTab: function (evt, tabName) {
+    openTab: function (evt, tabName) {
+ 
             // Get all elements with class="tabcontent" and hide them
             $(".tabcontent").css("display", "none");
             // Get all elements with class="tablinks" and remove the class "active"
@@ -47,12 +48,25 @@
                 //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divPolicyContacts");
                 //     break;
-                 case "tabDocuments":
-                    var caseId = Id; // Replace with your method to get case ID
-                    // Replace with your method
-                    console.log(Id);
-                                          // Load documents using the new DMS static method
-                    DMS.LoadDocuments(caseId);
+                case "tabDocuments":
+                    //debugger;
+                    if (window.DMS) {
+                        DMS.LoadDocuments(Id);
+                    }
+                    else {
+                        console.error("DMS class not loaded yet");
+                    }
+   
+                    
+                    break;
+
+                case "tabFundingSource":
+                    if (window.FundingSource) {
+                        FundingSource.LoadFundingSources(Id);
+                    } else {
+                        console.error("FundingSource class not loaded yet");
+                    }
+                    break;
                     break;
                 // case "tabLogs":
                 //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;

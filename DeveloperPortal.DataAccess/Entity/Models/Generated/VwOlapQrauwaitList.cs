@@ -75,7 +75,7 @@ public partial class VwOlapQrauwaitList
 
     public DateTime? _127200WaitListMoveInDate { get; set; }
 
-    public string? _321000AccessibleUnitWaitListPosition { get; set; }
+    public int? _321000AccessibleUnitWaitListPosition { get; set; }
 
     public int? _322000LotteryPosition { get; set; }
 
