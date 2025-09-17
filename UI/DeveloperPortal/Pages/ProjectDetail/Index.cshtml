@@ -140,6 +140,12 @@ a.paginate_button { float: left !important; }
   outline-offset: 2px;
 }
 
+/* selected checklist pill */
+.tpp-step.current{
+  border: 2px solid #2563eb;   /* thicker border */
+  background: #eff6ff;         /* subtle highlight */
+}
+
 
 </style>
 
@@ -376,4 +382,19 @@ a.paginate_button { float: left !important; }
       setTimeout(showDocsDefault, 0);
     });
   })();
+
+  // highlight the clicked step
+document.getElementById('steps')?.addEventListener('click', e => {
+  const li = e.target.closest('.tpp-step');
+  if (!li || li.classList.contains('locked')) return;
+  document.querySelector('.tpp-step.current')?.classList.remove('current');
+  li.classList.add('current');
+});
+
+// set "Documents" as selected on load (change the selector if your default differs)
+window.addEventListener('load', () => {
+  document.querySelector('.tpp-step [onclick*="tabDocuments"]')
+    ?.closest('.tpp-step')
+    ?.classList.add('current');
+});
 </script>

@@ -19,7 +19,7 @@
                     <th>Filename</th>
                     <th>Category</th>
                     <th>Uploader</th>
-                    <th>Shared</th>
+                    <th>Comment</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -35,7 +35,8 @@
                             <td><span title="@file.Name">@file.Name</span></td>
                             <td>@file.Category</td>
                             <td>@file.UploadedBy</td>
-                            <td>@file.Roles</td>
+                      @*       <td>@file.Roles</td> *@
+                            <td></td>
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(file.Link))
                                 {
