@@ -17,6 +17,7 @@ namespace DeveloperPortal.Application.Common
         public const string SP_uspGetDMSDocumentDetails = "DMS.uspGetDMSDocumentDetails";
         public const string SP_uspGetDMSFolderDetails = "DMS.uspGetDMSFolderDetails";
 
+        public const string SP_uspRoGetBuildingParkingInfo = "AAHPCC.uspRoGetBuildingParkingInfo";
     }
 
 
