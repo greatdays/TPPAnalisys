@@ -217,18 +217,18 @@ a.paginate_button { float: left !important; }
 					<button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
 				<span class="tpp-step-badge badge">Required</span>
 			  </li>
-			  <li class="tpp-step step" data-step="Building & Parking">
+			  <li class="tpp-step step" data-step="Building & Units">
 				<span class="tpp-step-idx idx">5</span>
-				<span class="tpp-step-label">Building Information</span>
+				  <button  class="tablink-plain"   onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Building & Unit Information </button>
 				<span class="tpp-step-badge badge">Required</span>
 			  </li>
-			  <li class="tpp-step step" data-step="Units">
+	@* 		  <li class="tpp-step step" data-step="parking">
 				<span class="tpp-step-idx idx">6</span>
-				  <button  class="tablink-plain"   onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Unit Information </button>
+				<span class="tpp-step-label">Parking Information</span>
 				<span class="tpp-step-badge badge">Required</span>
-			  </li>
+			  </li> *@
 			  <li class="tpp-step step" data-step="Funding">
-				<span class="tpp-step-idx idx">7</span>
+				<span class="tpp-step-idx idx">6</span>
 				 <button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
 				<span class="tpp-step-badge badge">Required</span>
 			  </li>
