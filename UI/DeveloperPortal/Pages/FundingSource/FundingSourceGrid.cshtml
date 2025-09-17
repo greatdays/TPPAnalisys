@@ -81,21 +81,18 @@
 </style>
 <div class="row">
 	@Html.HiddenFor(model => model.CaseId)
-	<button class="add-tab-button btn-primary mb-2" type="button" id="uploadFundingSourceBtn" style="float:left; margin-left:1%;" data-original-title="" title="">  Upload Funding Source</button>
+	
 	<div class="col-md-12">
 
 
 		<div class="card penal-details backgroundwhite dataTable-changes master_my_team_widget tabepenal">
 			<div class="card-header" id="collapse_ActivityLog">
-				Funding Source
-
+				
+				<h5 class="card-title mb-0">Funding Source</h5>
+				<button class="btn btn-primary" type="button" id="uploadFundingSourceBtn" style="float:right; margin-right:1%;" data-original-title="" title=""> <i class="fas fa-plus"></i> Add Funding Source</button>
 
 			</div>
-			@* <div class="text-center">
-				<span id="createimportproject_header_loader" class="spinner-border spinner-border-lg" role="status" aria-hidden="true" hidden style="text-align:center"></span>
-				<span id="createimportproject_loading_status_txt" hidden style="text-align:center">Loading...</span>
-			</div> *@
-
+			
 			<div class="col-md-12 modal-body">
 				<table id="fundingSourceGrid" class="table table-bordered table-striped">
 					<thead>

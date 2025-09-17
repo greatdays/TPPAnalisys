@@ -202,30 +202,30 @@ a.paginate_button { float: left !important; }
 
 		  <div class="tpp-checklist__body">
 			<ol class="tpp-steps" id="steps">
-			  
-			 <li class="tpp-step step" data-step="Documents">
+
+					<li class="tpp-step step" data-step="Documents" onclick="ProjectInformation.openTab(event, 'tabDocuments')">
 				<span class="tpp-step-idx idx">1</span>
-					<button class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabDocuments')">Project Documents</button>
+					<button class="tablink-plain"  >Project Documents</button>
 			
 			  </li>
-			  <li class="tpp-step step" data-step="team">
+					<li class="tpp-step step" data-step="team" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">
 				<span class="tpp-step-idx idx">2</span>
-					<button class="tablink-plain" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Team Information</button>
+					<button class="tablink-plain" >Project Team Information</button>
 				
 			  </li>
-			  <li class="tpp-step step" data-step="site">
+					<li class="tpp-step step" data-step="site" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')">
 				<span class="tpp-step-idx idx">3</span>
-					<button   class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+					<button   class="tablink-plain"   id="btnSiteInformation">Site Information </button>
 
 			  </li>
-			  <li class="tpp-step step" data-step="floor">
+					<li class="tpp-step step" data-step="floor" onclick="ProjectInformation.openTab(event, 'partialContainer')">
 				<span class="tpp-step-idx idx">4</span>
-					<button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
+					<button  class="tablink-plain"  >Floor Plan Type</button>
 
 			  </li>
-			  <li class="tpp-step step" data-step="Building & Units">
+					<li class="tpp-step step" data-step="Building & Units" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')">
 				<span class="tpp-step-idx idx">5</span>
-				  <button  class="tablink-plain"   onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Building & Unit Information </button>
+				  <button  class="tablink-plain"    id="btnProjectInformation">Building & Unit Information </button>
 				
 			  </li>
 	@* 		  <li class="tpp-step step" data-step="parking">
@@ -233,9 +233,9 @@ a.paginate_button { float: left !important; }
 				<span class="tpp-step-label">Parking Information</span>
 				<span class="tpp-step-badge badge">Required</span>
 			  </li> *@
-			  <li class="tpp-step step" data-step="Funding">
+					<li class="tpp-step step" data-step="Funding" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">
 				<span class="tpp-step-idx idx">6</span>
-				 <button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
+				 <button  class="tablink-plain" >Funding Source</button>
 	
 			  </li>
 			 @*  <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button> *@
