@@ -5,12 +5,11 @@
 <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">DMS File Upload</h5>
-        <button type="button" id="btn-add-file" class="btn btn-primary">
+        <button type="button" id="btn-add-file" class="btn btn-primary" onclick="DMS.AddDocument()">
             <i class="fas fa-plus"></i> Add Document
         </button>
     </div>
 
-    <!-- Documents Table -->
     <div class="table-responsive">
         <table id="dmsDataTable" class="table table-striped table-bordered align-middle w-100">
             <thead>
@@ -29,7 +28,6 @@
                     foreach (var file in Model.FolderModel.Files)
                     {
                         var driveFileId = !string.IsNullOrEmpty(file.Link) ? file.Link : "";
-
                         <tr>
                             <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
                             <td><span title="@file.Name">@file.Name</span></td>
@@ -40,25 +38,26 @@
                                 @if (!string.IsNullOrWhiteSpace(file.Link))
                                 {
                                     <a href="javascript:void(0)"
-                                       onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
-                                       class="btn btn-sm btn-primary" title="Download @file.Name">
-                                        <i class="fas fa-download"></i> Download
+                                                           onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
+                                                           class="btn btn-sm btn-primary" title="Download @file.Name">
+                                        <i class="fas fa-download"></i>
                                     </a>
                                 }
                                 else
                                 {
                                     <span class="text-muted">-</span>
                                 }
+                               @*  <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.Id" type="button" onclick="DMS.DeleteDocument(@file.Id)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button> *@
                             </td>
                         </tr>
                     }
                 }
                 else
                 {
-                    <!-- Important: leave tbody empty, DataTables will inject "emptyTable" message -->
                 }
             </tbody>
-
         </table>
     </div>
 </div>
@@ -77,19 +76,17 @@
     }
 }
 
-<!-- Hidden Inputs -->
 <input type="hidden" id="ProjectId" value="@projectIdFromName" />
 <input type="hidden" id="FolderName" value="@Model.FolderModel?.Name" />
 <input type="hidden" id="FolderId" value="@Model.FolderModel?.Id" />
 
-<!-- Include File Upload Modal Partial -->
 @await Html.PartialAsync("~/Pages/DMS/_FileUploadModal.cshtml", Model)
 
-<!-- Configuration Script -->
 <script>
     // Configure DMS with server-side values
     window.dmsConfig = {
         uploadUrl: '@Url.Action("UploadFile", "DMS")',
+       // deleteUrl: '@Url.Action("DeleteFile", "DMS")', // Added delete URL
         reloadUrl: '@Url.Action("GetFilesById", "DMS")',
         projectId: '@projectIdFromName',
         folderName: '@(Model.FolderModel?.Name ?? "")',
@@ -131,25 +128,31 @@
 </script>
 
 <style>
+
     /* Custom styles for better UX */
-    .table th {
-        background-color: #f8f9fa;
-        border-top: 2px solid #dee2e6;
-        font-weight: 600;
+        .table th {
+                background-color: #f8f9fa;
+                border-top: 2px solid #dee2e6;
+                font-weight: 600;
+
     }
 
-    .btn-sm {
-        font-size: 0.875rem;
+        .btn-sm {
+                font-size: 0.875rem;
+
     }
 
-    #dmsDataTable tbody tr:hover {
-        background-color: #f8f9fa;
+        #dmsDataTable tbody tr:hover {
+                background-color: #f8f9fa;
+
     }
+
 
     /* Empty table row styling */
-    .no-data-row td {
-        background-color: #f8f9fa !important;
-        border: 1px solid #dee2e6 !important;
-        font-style: italic;
+        .no-data-row td {
+                background-color: #f8f9fa !important;
+                border: 1px solid #dee2e6 !important;
+                font-style: italic;
+
     }
 </style>

@@ -1,6 +1,5 @@
 ﻿@model DeveloperPortal.Domain.DMS.DMSModel
 
-<!-- Add File Modal -->
 <div class="modal fade" id="addFileModal" tabindex="-1" aria-labelledby="AddFileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -9,11 +8,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form id="uploadForm" enctype="multipart/form-data">
+            @using (Html.BeginForm("UploadFile", "DMS", FormMethod.Post, new { enctype = "multipart/form-data", id = "uploadForm" }))
+            {
                 <div class="modal-body">
                     <div class="alert alert-danger" id="uploadError" style="display: none;">
                         <span id="uploadErrorMessage"></span>
                     </div>
+
+                    @Html.Hidden("ProjectId")
+                    @Html.Hidden("FolderName")
+                    @Html.Hidden("FolderId")
 
                     <div class="form-group mb-3">
                         <label for="category">Category*</label>
@@ -32,22 +36,18 @@
 
                     <div class="form-group mb-3">
                         <label for="fileuploader">Upload File(s)*</label>
-                        <input type="file" id="fileuploader" name="Files" class="form-control"
-                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif"
-                               multiple required />
-                        <div class="form-text">
-                            Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF<br />
-                            You can select multiple files at once.
-                        </div>
+                        <input type="file" id="fileuploader" name="Files" class="form-control" multiple
+                               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
+
                         <div class="invalid-feedback" id="fileError">
                             Please select one or more valid file(s).
                         </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="Description"
-                                  rows="3" placeholder="Optional description for the document"></textarea>
+                        <label for="comments">Comments</label>
+                        <textarea class="form-control" id="comments" name="Comments"
+                                                   rows="3" placeholder="Optional comments for the document"></textarea>
                     </div>
                 </div>
 
@@ -56,42 +56,10 @@
                         Cancel
                     </button>
                     <button id="uploadFile" type="button" class="btn btn-primary">
-                        <span id="uploadButtonText">Upload</span>
-
+                        Upload
                     </button>
                 </div>
-            </form>
+            }
         </div>
     </div>
 </div>
-
-<!-- Modal Configuration Script -->
-<script>
-     
-    // Pass modal-specific configuration to JavaScript
-    window.dmsModalConfig = {
-        modalId: 'addFileModal',
-        formId: 'uploadForm',
-        fileInputId: 'fileuploader',
-        categoryId: 'category',
-       // statusId: 'status',
-        descriptionId: 'description',
-        uploadButtonId: 'uploadFile',
-        cancelButtonId: 'cancelUpload',
-        maxFileSize: 20971520, // 10MB in bytes
-        allowedExtensions: ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif']
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-        // Find the cancel button and the upload form
-        const cancelButton = document.getElementById('cancelUpload');
-        const uploadForm = document.getElementById('uploadForm');
-
-        if (cancelButton && uploadForm) {
-            // Add a click event listener to the cancel button
-            cancelButton.addEventListener('click', function() {
-                // Reset the form to clear all input fields
-                uploadForm.reset();
-            });
-        }
-    });
-</script>

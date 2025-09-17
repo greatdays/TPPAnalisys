@@ -69,78 +69,148 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         [Route("UploadFile")]
         public async Task<JsonResult> UploadFile(
-                                                    List<IFormFile> files,
-                                                    [FromForm] int projectId,
-                                                    [FromForm] string category,
-                                                    [FromForm] string description
-                                                )
+                                          List<IFormFile> files,
+                                          [FromForm] int projectId,
+                                          [FromForm] string category,
+                                          [FromForm] string comments = "" // Corrected parameter name
+                                         )
         {
-            // Directly binds to the "files" parameter from FormData
-
-           // var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
-            var caseId = projectId;
-            var comment = description;
-            var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor).UserName ?? "System";
-
-            string fileCategory = "Project", fileSubCategory = "Document";
-
-            // 1. Await the async service call. This is the most important change.
-            // The method now returns a List<UploadResponse> directly.
-            var responses = await new DMSService(_config).SubmitUploadedDocument(files, caseId, fileCategory, fileSubCategory, createdBy);
-
-            if (responses == null || responses.Count == 0)
+            try
             {
-                return new JsonResult(new
+                // Validate input
+                if (files == null || files.Count == 0)
                 {
-                    Success = false,
-                    Message = "Failed to upload document.\nNo response received."
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "No files were selected for upload."
+                    });
+                }
+
+                if (projectId <= 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Invalid project ID."
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Category is required."
+                    });
+                }
+
+                // Filter out empty files
+                var validFiles = files.Where(f => f != null && f.Length > 0).ToList();
+                if (validFiles.Count == 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "No valid files found. Please ensure files are not empty."
+                    });
+                }
+
+                var caseId = projectId;
+                // Use the 'comments' parameter directly
+                var comment = comments ?? string.Empty;
+                var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor)?.UserName ?? "System";
+
+                string fileCategory = "Project";
+                string fileSubCategory = "Document";
+
+                // Upload documents to DMS
+                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, caseId, fileCategory, fileSubCategory, createdBy);
+
+                if (responses == null || responses.Count == 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Failed to upload documents. No response received from document service."
+                    });
+                }
+
+                // Check for failed uploads
+                var failedUploads = responses.Where(r => r.ReturnStatus == Status.Failed).ToList();
+                if (failedUploads.Any())
+                {
+                    var errorMessages = failedUploads
+                        .SelectMany(f => f.ErrorMessages)
+                        .ToList();
+
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = $"Failed to upload {failedUploads.Count} of {responses.Count} documents. Errors: {string.Join("; ", errorMessages)}"
+                    });
+                }
+
+                // Save successful uploads to database
+                var savedDocuments = new List<DocumentModel>();
+                var successfulResponses = responses.Where(r => r.ReturnStatus == Status.Success).ToList();
+
+                for (int i = 0; i < successfulResponses.Count && i < validFiles.Count; i++)
+                {
+                    var response = successfulResponses[i];
+                    var file = validFiles[i];
+
+                    try
+                    {
+                        var documentModel = new DocumentModel()
+                        {
+                            Name = file.FileName,
+                            Link = response.UniqueId.ToString() ?? string.Empty,
+                            Attributes = string.Empty,
+                            FileSize = file.Length.ToString(),
+                            CaseId = caseId,
+                            Comment = comment, // Correctly using the 'comment' variable
+                            OtherDocumentType = category,
+                            CreatedBy = createdBy,
+                            CreatedOn = DateTime.Now,
+                            IsDeleted = false
+                        };
+
+                        var savedDocument = await _documentService.SaveDocument(documentModel);
+                        savedDocuments.Add(savedDocument);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error but continue with other files
+                        // _logger.LogError(ex, "Error saving document metadata for file: {FileName}", file.FileName);
+                        Console.WriteLine($"Error saving document metadata for file {file.FileName}: {ex.Message}");
+                    }
+                }
+
+                var successMessage = savedDocuments.Count == 1
+                    ? "1 document uploaded successfully."
+                    : $"{savedDocuments.Count} documents uploaded successfully.";
+
+                return Json(new
+                {
+                    Success = true,
+                    Message = successMessage,
+                    UploadedCount = savedDocuments.Count,
+                    TotalCount = validFiles.Count
                 });
             }
-
-            // Check for any failed uploads.
-            var failed = responses.Where(r => r.ReturnStatus == Status.Failed).ToList();
-
-            if (failed.Any())
+            catch (Exception ex)
             {
-                return new JsonResult(new
+                // Log the full exception details
+                // _logger.LogError(ex, "Unexpected error during file upload for project {ProjectId}", projectId);
+                Console.WriteLine($"Unexpected error during file upload: {ex}");
+
+                return Json(new
                 {
                     Success = false,
-                    Message = "Failed to upload some documents.\n" +
-                              string.Join("; ", failed.SelectMany(f => f.ErrorMessages))
+                    Message = "An unexpected error occurred during upload. Please try again."
                 });
             }
-
-            var savedDocuments = new List<DocumentModel>();
-
-            for (int i = 0; i < responses.Count; i++)
-            {
-                var response = responses[i];
-                var f = files[i];
-
-                var documentModel = new DocumentModel()
-                {
-                    Name = f.FileName,
-                    Link = response.UniqueId.ToString(), // Use null-conditional operator
-                    Attributes = "",
-                    FileSize = f.Length.ToString(),
-                    CaseId = caseId,
-                    Comment = comment,
-                    OtherDocumentType = category,
-                    CreatedBy = createdBy,
-                    CreatedOn = DateTime.Now,
-                    IsDeleted = false
-                };
-
-                var document = await _documentService.SaveDocument(documentModel);
-                savedDocuments.Add(document);
-            }
-
-            return new JsonResult(new
-            {
-                Success = true,
-                Message = $"{savedDocuments.Count} document(s) uploaded successfully."
-               
-            });
         }
         // GET: api/<DashboardController>
         [HttpGet]
