@@ -6,165 +6,166 @@
         <h4 class="mb-4 fw-bold">My Account</h4>
 
         <div class="alert alert-success d-none" id="successMsg"></div>
+            <form id="myAccountForm" method="post">
+                @Html.AntiForgeryToken()
+                <div class="row g-3">
+                    <div style="width:57px;margin-left:16px;">
+                        <label>Title <span class="text-danger">*</span></label>
+                        <input id="Title" name="Title" class="form-control" value="@Model.Account.Title" />
+                        <span class="text-danger small d-none" id="errTitle">Title is required.</span>
+                    </div>
 
-        <form id="myAccountForm" method="post">
-            @Html.AntiForgeryToken()
+                    <div class="form-group col-md-3">
+                        <label>First Name <span class="text-danger">*</span></label>
+                        <input id="FirstName" name="FirstName" class="form-control" value="@Model.Account.FirstName" />
+                        <span class="text-danger small d-none" id="errFirstName">First name is required.</span>
+                    </div>
 
-            <div class="row g-3">
+                    <div class="form-group col-md-4">
+                        <label>Middle Name</label>
+                        <input id="MiddleName" name="MiddleName" class="form-control" value="@Model.Account.MiddleName" />
+                    </div>
 
-                <div class="form-group col-md-4">
-                    <label>First Name <span class="text-danger">*</span></label>
-                    <input id="FirstName" name="FirstName" class="form-control" value="@Model.Account.FirstName" />
-                    <span class="text-danger small d-none" id="errFirstName">First name is required.</span>
-                </div>
+                    <div class="form-group col-md-3">
+                        <label>Last Name <span class="text-danger">*</span></label>
+                        <input id="LastName" name="LastName" class="form-control" value="@Model.Account.LastName" />
+                        <span class="text-danger small d-none" id="errLastName">Last name is required.</span>
+                    </div>
 
-                <div class="form-group col-md-4">
-                    <label>Middle Name</label>
-                    <input id="MiddleName" name="MiddleName" class="form-control" value="@Model.Account.MiddleName" />
-                </div>
+                    <div class="form-group col-md-4">
+                        <label>Email <span class="text-danger">*</span></label>
+                        <input id="Email" name="EmailId" class="form-control" value="@Model.Account.EmailId" />
+                        <span class="text-danger small d-none" id="errEmail">Valid email is required.</span>
+                    </div>
 
-                <div class="form-group col-md-4">
-                    <label>Last Name <span class="text-danger">*</span></label>
-                    <input id="LastName" name="LastName" class="form-control" value="@Model.Account.LastName" />
-                    <span class="text-danger small d-none" id="errLastName">Last name is required.</span>
-                </div>
+                    <div class="form-group col-md-2">
+                        <label>Phone Type <span class="text-danger">*</span></label>
+                        <select id="PhoneType" name="LutPhoneTypeCd" class="form-control">
+                            @foreach (var type in Model.Account.LutPhoneTypeCdList)
+                            {
+                                @Html.Raw($"<option value='{type.LutPhoneTypeCd}' {(type.LutPhoneTypeCd == Model.Account.LutPhoneTypeCd ? "selected" : "")}>{type.Description}</option>")
+                            }
+                        </select>
+                        <span class="text-danger small d-none" id="errPhoneType">Select a phone type.</span>
+                    </div>
 
-                <div class="form-group col-md-6">
-                    <label>Email <span class="text-danger">*</span></label>
-                    <input id="Email" name="EmailId" class="form-control" value="@Model.Account.EmailId" />
-                    <span class="text-danger small d-none" id="errEmail">Valid email is required.</span>
-                </div>
+                    <div class="form-group col-md-2">
+                        <label for="Extension">Extension <span class="text-danger">*</span></label>
+                        <input id="Extension" name="PhoneExtension" class="form-control" value="@Model.Account.PhoneExtension" />
+                        <span class="text-danger small d-none" id="errExt">Phone Extension is required.</span>
+                    </div>
 
-                <div class="form-group col-md-3">
-                    <label>Phone Type <span class="text-danger">*</span></label>
-                    <select id="PhoneType" name="LutPhoneTypeCd" class="form-control">
-                        @foreach (var type in Model.Account.LutPhoneTypeCdList)
-                        {
-                            @Html.Raw($"<option value='{type.LutPhoneTypeCd}' {(type.LutPhoneTypeCd == Model.Account.LutPhoneTypeCd ? "selected" : "")}>{type.Description}</option>")
-                        }
-                    </select>
-                    <span class="text-danger small d-none" id="errPhoneType">Select a phone type.</span>
-                </div>
+                    <div class="form-group col-md-3">
+                        <label>Phone Number <span class="text-danger">*</span></label>
+                        <input id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
+                        <span class="text-danger small d-none" id="errPhoneNumber">Phone number is required.</span>
+                    </div>
 
-                <div class="form-group col-md-3">
-                    <label>Phone Number <span class="text-danger">*</span></label>
-                    <input id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.Account.PhoneNumber" />
-                    <span class="text-danger small d-none" id="errPhoneNumber">Phone number is required.</span>
-                </div>
 
-                <div class="form-group col-md-2">
-                    <label for="Extension">Extension <span class="text-danger">*</span></label>
-                    <input id="Extension" name="PhoneExtension" class="form-control" value="@Model.Account.PhoneExtension" />
-                    <span class="text-danger small d-none" id="errExt">Phone Extension is required.</span>
-                </div>
 
-                <div class="form-group col-md-6">
-                    <label>Company <span class="text-danger">*</span></label>
-                    <input id="CompanyName" name="Company" class="form-control" value="@Model.Account.Company" />
-                    <span class="text-danger small d-none" id="errCompany">Company Name is required.</span>
-                </div>
+                    <div class="form-group col-md-8">
+                        <label>Company <span class="text-danger">*</span></label>
+                        <input id="CompanyName" name="Company" class="form-control" value="@Model.Account.Company" />
+                        <span class="text-danger small d-none" id="errCompany">Company Name is required.</span>
+                    </div>
 
-                <div class="col-md-6">
-                    <label>Title <span class="text-danger">*</span></label>
-                    <input id="Title" name="Title" class="form-control" value="@Model.Account.Title" />
-                    <span class="text-danger small d-none" id="errTitle">Title is required.</span>
-                </div>
+                    <!-- Roles Dropdown -->
+                    <div class="form-group col-md-3">
+                        <label>Select Role <span class="text-danger">*</span></label>
+                        <select id="Roles" name="SelectedRole" class="form-control" data-selected-role="@Model.Account.SelectedRole">
+                            @* <option value="">-- Select Account Type --</option> *@
 
-                <div class="form-group col-md-12 mt-3">
-                    <label>P.O.Box?</label><br />
-                    <label><input id="POBoxNo" type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
-                    <label><input id="POBoxYes" type="radio" name="IsPostBox" value="true" @(Model.Account.IsPostBox ? "checked" : "") /> Yes</label>
-                </div>
-                <!-- Roles Dropdown -->
-                <div class="form-group col-md-6">
-                    <label>Select Role <span class="text-danger">*</span></label>
-                    <select id="Roles" name="SelectedRole" class="form-control" data-selected-role="@Model.Account.SelectedRole">
-                        @* <option value="">-- Select Account Type --</option> *@
-                      
-                    </select>
-                    <span class="text-danger small d-none" id="errAccountType">Please select an user role.</span>
-                </div>
+                        </select>
+                        <span class="text-danger small d-none" id="errAccountType">Please select an user role.</span>
+                    </div>
 
-                <!-- If POBox = No -->
-                <div id="divPOBoxNo" class="form-group col-md-12">
-                    <div class="row g-3 mt-1">
-                        <div class="col-md-6">
-                            <label>Street Number <span class="text-danger">*</span></label>
-                            <input id="StreetNumber" name="StreetNum" class="form-control" value="@Model.Account.StreetNum" />
-                            <span class="text-danger small d-none" id="errStreetNumber">Street number is required.</span>
-                        </div>
+                    <div class="form-group col-md-12 mt-3">
+                        <label>P.O.Box?</label><br />
+                        <label><input id="POBoxNo" type="radio" name="IsPostBox" value="false" @(Model.Account.IsPostBox ? "" : "checked") /> No</label>
+                        <label><input id="POBoxYes" type="radio" name="IsPostBox" value="true" @(Model.Account.IsPostBox ? "checked" : "") /> Yes</label>
+                    </div>
 
-                        <div class="form-group col-md-6">
-                            <label>Pre Direction <span class="text-danger">*</span></label>
-                            <select id="LutPreDirCd" name="LutPreDirCd" class="form-control">
-                                @foreach (var type in Model.Account.LutPreDirCdList)
-                                {
-                                    @Html.Raw($"<option value='{type.LutPreDirCD}' {(type.LutPreDirCD == Model.Account.LutPreDirCd ? "selected" : "")}>{type.LutPreDirCD}</option>")
-                                }
-                            </select>
-                        </div>
 
-                        <div class="form-group col-md-6">
-                            <label>Street Name <span class="text-danger">*</span></label>
-                            <input id="StreetName" name="StreetName" class="form-control" value="@Model.Account.StreetName" />
-                            <span class="text-danger small d-none" id="errStreetName">Street name is required.</span>
-                        </div>
+                    <!-- If POBox = No -->
+                    <div id="divPOBoxNo" class="form-group col-md-12">
+                        <div class="row g-3 mt-1">
+                            <div class="col-md-4">
+                                <label>Street Number <span class="text-danger">*</span></label>
+                                <input id="StreetNumber" name="StreetNum" class="form-control" value="@Model.Account.StreetNum" />
+                                <span class="text-danger small d-none" id="errStreetNumber">Street number is required.</span>
+                            </div>
 
-                        <div class="form-group col-md-6">
-                            <label>Street Type <span class="text-danger">*</span></label>
-                            <select id="LutStreetTypeCd" name="LutStreetTypeCd" class="form-control">
-                                @foreach (var type in Model.Account.LutStreetTypeList)
-                                {
-                                    @Html.Raw($"<option value='{type.LutStreetTypeCd}' {(type.LutStreetTypeCd == Model.Account.LutStreetTypeCd ? "selected" : "")}>{type.LutStreetTypeCd}</option>")
-                                }
-                            </select>
-                        </div>
+                            <div class="form-group col-md-4">
+                                <label>Pre Direction <span class="text-danger">*</span></label>
+                                <select id="LutPreDirCd" name="LutPreDirCd" class="form-control">
+                                    @foreach (var type in Model.Account.LutPreDirCdList)
+                                    {
+                                        @Html.Raw($"<option value='{type.LutPreDirCD}' {(type.LutPreDirCD == Model.Account.LutPreDirCd ? "selected" : "")}>{type.LutPreDirCD}</option>")
+                                    }
+                                </select>
+                            </div>
 
-                        <div class="form-group col-md-6">
-                            <label>Unit Number</label>
-                            <input id="UnitNumber" name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
-                            @* <span class="text-danger small d-none" id="errZipCode">Unit  is required.</span> *@
+                            <div class="form-group col-md-3">
+                                <label>Street Name <span class="text-danger">*</span></label>
+                                <input id="StreetName" name="StreetName" class="form-control" value="@Model.Account.StreetName" />
+                                <span class="text-danger small d-none" id="errStreetName">Street name is required.</span>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Street Type <span class="text-danger">*</span></label>
+                                <select id="LutStreetTypeCd" name="LutStreetTypeCd" class="form-control">
+                                    @foreach (var type in Model.Account.LutStreetTypeList)
+                                    {
+                                        @Html.Raw($"<option value='{type.LutStreetTypeCd}' {(type.LutStreetTypeCd == Model.Account.LutStreetTypeCd ? "selected" : "")}>{type.LutStreetTypeCd}</option>")
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label>Unit Number</label>
+                                <input id="UnitNumber" name="UnitNumber" class="form-control" value="@Model.Account.UnitNumber" />
+                                @* <span class="text-danger small d-none" id="errZipCode">Unit  is required.</span> *@
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- If POBox = Yes -->
-                <div id="divPOBoxYes" class="form-group col-md-12 d-none mt-3">
-                    <label>P.O.Box Number <span class="text-danger">*</span></label>
-                    <input id="POBoxNumber" name="POBoxNumber" class="form-control" value="@Model.Account.PostBoxNum" />
-                    <span class="text-danger small d-none" id="errPOBoxNumber">PO Box number is required.</span>
-                </div>
+                    <!-- If POBox = Yes -->
+                    <div id="divPOBoxYes" class="form-group col-md-11 d-none mt-3">
+                        <label>P.O.Box Number <span class="text-danger">*</span></label>
+                        <input id="POBoxNumber" name="POBoxNumber" class="form-control" value="@Model.Account.PostBoxNum" />
+                        <span class="text-danger small d-none" id="errPOBoxNumber">PO Box number is required.</span>
+                    </div>
 
-                <!-- Common fields -->
-                <div class="form-group col-md-6">
-                    <label>City <span class="text-danger">*</span></label>
-                    <input id="City" name="City" class="form-control" value="@Model.Account.City" />
-                    <span class="text-danger small d-none" id="errCity">City is required.</span>
-                </div>
+                    <!-- Common fields -->
+                    <div class="form-group col-md-4">
+                        <label>City <span class="text-danger">*</span></label>
+                        <input id="City" name="City" class="form-control" value="@Model.Account.City" />
+                        <span class="text-danger small d-none" id="errCity">City is required.</span>
+                    </div>
 
-                <div class="form-group col-md-3">
-                    <label>State <span class="text-danger">*</span></label>
-                    <select id="LutStateCD" name="LutStateCD" class="form-control">
-                        @foreach (var type in Model.Account.LutStateCDList)
-                        {
-                            @Html.Raw($"<option value='{type.LutStateCd}' {(type.LutStateCd == Model.Account.LutStateCD ? "selected" : "")}>{type.Description}</option>")
-                        }
-                    </select>
-                    <span class="text-danger small d-none" id="errState">State is required.</span>
-                </div>
+                    <div class="form-group col-md-4">
+                        <label>State <span class="text-danger">*</span></label>
+                        <select id="LutStateCD" name="LutStateCD" class="form-control">
+                            @foreach (var type in Model.Account.LutStateCDList)
+                            {
+                                @Html.Raw($"<option value='{type.LutStateCd}' {(type.LutStateCd == Model.Account.LutStateCD ? "selected" : "")}>{type.Description}</option>")
+                            }
+                        </select>
+                        <span class="text-danger small d-none" id="errState">State is required.</span>
+                    </div>
 
-                <div class="form-group col-md-3">
-                    <label>Zip Code <span class="text-danger">*</span></label>
-                    <input id="ZipCode" name="ZipCode" class="form-control" value="@Model.Account.Zipcode" />
-                    <span class="text-danger small d-none" id="errZipCode">Zip code is required.</span>
-                </div>
+                    <div class="form-group col-md-3">
+                        <label>Zip Code <span class="text-danger">*</span></label>
+                        <input id="ZipCode" name="ZipCode" class="form-control" value="@Model.Account.Zipcode" />
+                        <span class="text-danger small d-none" id="errZipCode">Zip code is required.</span>
+                    </div>
 
-                <div class="form-group col-12 text-end mt-4">
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
+                    <div class="form-group col-12 text-end mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
 
-            </div>
-        </form>
+                </div>
+            </form>
     </div>
 </div>
 
@@ -400,7 +401,7 @@
                 formData.__RequestVerificationToken = token;
 
                 $.ajax({
-                    url: '/Account/MyAccount?handler=Update',
+                    url:APPURL+ 'Account/MyAccount?handler=Update',
                     type: 'POST',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     data: formData,
