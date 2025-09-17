@@ -104,6 +104,27 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
             return true;
         }
+        public async Task<bool> DeleteDocument(int id)
+        {
+            var deleteDocument = _context.Documents.FirstOrDefault(fs => fs.DocumentId == id);
+
+            if (deleteDocument != null)
+            {
+                deleteDocument.IsDeleted = true;
+
+                deleteDocument.ModifiedOn = DateTime.Now; // optional, if you have a DeletedDate column
+
+                _context.Documents.Update(deleteDocument);
+                _context.SaveChanges();
+
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+        }
         private FolderModel UpdateDocumentFolderDetail(FolderModel folderModel, string refenceType, string username)
         {
 

@@ -1,36 +1,34 @@
 ﻿/**
  * Document Management System (DMS) JavaScript Module
- * Handles document table initialization, file upload modal, and AJAX operations
- * Fixed version - prevents double file upload issue
+ * Handles document table initialization, modal operations for adding files,
+ * and deleting documents with grid reload.
  */
 window.DMSManager = class DMSManager {
     constructor() {
         this.dataTable = null;
-        this.addFileModal = null;
-        this.modalConfig = window.dmsModalConfig || {};
-        this.config = window.dmsConfig || {};
-        this.$table = null;
+        this.modal = null;
         this.isInitialized = false;
-        this.isUploading = false; // Add upload state tracking
 
-        // Bind methods to the class instance to maintain `this` context
+        // Bind all necessary methods
         this.bindEvents = this.bindEvents.bind(this);
-        this.handleFileUpload = this.handleFileUpload.bind(this);
-        this.reloadDocumentsTab = this.reloadDocumentsTab.bind(this);
+        this.handleFormSubmission = this.handleFormSubmission.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
+        this.reloadGrid = this.reloadGrid.bind(this);
+        this.showError = this.showError.bind(this);
+        this.showServerError = this.showServerError.bind(this);
+        this.validateFile = this.validateFile.bind(this);
+        this.validateForm = this.validateForm.bind(this);
+        this.performAjaxSubmission = this.performAjaxSubmission.bind(this);
     }
 
-    /**
-     * Initializes the DMS functionality.
-     */
     init() {
-        // Destroy any existing instance first
         if (window.dmsManager && window.dmsManager !== this) {
-            console.log("Destroying existing DMSManager instance");
+            console.log("DMSManager: Destroying existing instance");
             window.dmsManager.destroy();
         }
 
         if (this.isInitialized) {
-            console.warn("DMSManager is already initialized. Skipping.");
+            console.warn("DMSManager: Already initialized. Skipping.");
             return;
         }
 
@@ -44,34 +42,29 @@ window.DMSManager = class DMSManager {
         this.initializeModal();
         this.bindEvents();
         this.isInitialized = true;
-
-        // Set the global reference
         window.dmsManager = this;
         console.log("DMSManager initialized successfully");
     }
 
-    /**
-     * Initialize DataTable.
-     * This function is called every time the table content is reloaded to ensure
-     * DataTables correctly recognizes the new data.
-     */
-    initializeDataTable() {
-        if (!$.fn.DataTable) {
-            console.error("DataTables plugin not loaded");
-            return;
+    destroy() {
+        console.log("DMSManager: Destroying instance");
+        if (this.dataTable && $.fn.DataTable.isDataTable(this.$table)) {
+            this.dataTable.destroy();
+            this.dataTable = null;
         }
+        $(document).off(".dms");
+        this.$table = null;
+        this.isInitialized = false;
+        if (window.dmsManager === this) {
+            window.dmsManager = null;
+        }
+    }
 
+    initializeDataTable() {
         try {
-            // Check if a DataTable instance already exists and destroy it
-            // before re-initialization to prevent conflicts.
-            if (this.$table === null) { this.$table = $("#dmsDataTable"); }
             if ($.fn.DataTable.isDataTable(this.$table)) {
                 this.$table.DataTable().destroy();
-                // Note: Clearing the table content is now done by the server-rendered HTML
-                // in the reloadDocumentsTab method, so we don't need to empty it here.
             }
-
-            // Initialize the DataTable with the provided configuration.
             this.dataTable = this.$table.DataTable({
                 paging: true,
                 searching: true,
@@ -79,472 +72,250 @@ window.DMSManager = class DMSManager {
                 responsive: true,
                 language: { emptyTable: "No documents available" },
                 columnDefs: [
-                    { targets: -1, orderable: false, searchable: false } // Last column (Actions)
+                    { targets: -1, orderable: false, searchable: false }
                 ]
             });
         } catch (error) {
-            console.error("Error initializing DataTable:", error);
-            // This error often indicates a mismatch between the number of <thead> columns and <tbody> data cells.
-            this.handleDataTableError();
+            console.error("DMSManager: Error initializing DataTable:", error);
         }
     }
 
-    /**
-     * Handle DataTable init errors by displaying a user-friendly message.
-     */
-    handleDataTableError() {
-        this.$table.html(
-            `<div class="alert alert-warning"><h5>Table Loading Issue</h5>
-             <p>Could not initialize documents table. This may be due to a server-side error, missing table structure, or JavaScript conflicts.</p>
-             <button class="btn btn-outline-warning btn-sm" onclick="location.reload()">Refresh</button>
-             </div>`
-        );
-    }
-
-    /**
-     * Modal setup.
-     */
     initializeModal() {
-        const el = document.getElementById(this.modalConfig.modalId);
+        const el = document.getElementById("addFileModal");
         if (el) {
-            // Use native Bootstrap.Modal if available, fall back to jQuery.
-            this.addFileModal = typeof bootstrap !== "undefined" ? new bootstrap.Modal(el) : $(el);
+            this.modal = typeof bootstrap !== "undefined" ? new bootstrap.Modal(el) : $(el);
         }
     }
 
-    /**
-     * Binds all necessary event listeners for the DMS module.
-     * Fixed version with proper namespacing to prevent duplicate handlers.
-     */
     bindEvents() {
-        // First, unbind any existing DMS events to prevent duplicates
+        console.log("DMSManager: Attaching event listeners...");
         $(document).off(".dms");
 
-        // Event for the "Add Document" button with namespace
         $(document).on("click.dms", "#btn-add-file", (e) => {
             e.preventDefault();
-            this.showAddFileModal();
+            this.showAddModal();
         });
 
-        // Event for the file upload button inside the modal with namespace
-        if (this.modalConfig.uploadButtonId) {
-            $(document).on("click.dms", `#${this.modalConfig.uploadButtonId}`, (e) => {
-                e.preventDefault();
-                this.handleFileUpload();
-            });
-        }
+        $(document).on("click.dms", "#uploadFile", (e) => {
+            e.preventDefault();
+            this.handleFormSubmission();
+        });
 
-        // Events for the upload modal to reset the form with namespace
-        if (this.modalConfig.modalId) {
-            const sel = `#${this.modalConfig.modalId}`;
-            $(document).on("hidden.bs.modal.dms", sel, () => this.onModalHidden());
-            $(document).on("show.bs.modal.dms", sel, () => this.onModalShow());
-        }
+        $(document).on("click.dms", ".btn-delete-file", (e) => {
+            e.preventDefault();
+            const documentId = $(e.target).closest("button").data("id");
+            if (documentId) {
+                this.handleDelete(documentId);
+            }
+        });
+    }
 
-        // Event to validate the file input on change with namespace
-        if (this.modalConfig.fileInputId) {
-            $(document).on("change.dms", `#${this.modalConfig.fileInputId}`, (e) => this.validateFile(e));
+    showAddModal() {
+        if (this.modal) {
+            const form = $('#uploadForm');
+            form[0].reset();
+            form.find('.is-invalid').removeClass('is-invalid');
+            this.modal.show();
         }
     }
 
-    /**
-     * Shows the file upload modal.
-     */
-    showAddFileModal() {
-        if (this.addFileModal) {
-            typeof this.addFileModal.show === "function"
-                ? this.addFileModal.show()
-                : this.addFileModal.modal("show");
+    // Add this method to your DMSManager class
+    validateFile(file) {
+        const allowedExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif'];
+        const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+
+        if (!allowedExtensions.includes(extension)) {
+            return { isValid: false, message: `File type not allowed: ${file.name}.` };
         }
+
+        return { isValid: true };
     }
 
-    onModalShow() {
-        this.resetUploadForm();
-        this.hideError();
+    // This is the missing showError method
+    showError(fieldId, message) {
+        const field = $(`#${fieldId}`);
+        const errorDiv = field.siblings('.invalid-feedback');
+        if (errorDiv.length) {
+            errorDiv.text(message).show();
+        }
+        field.addClass('is-invalid');
     }
 
-    onModalHidden() {
-        this.resetUploadForm();
-        this.hideError();
-        this.isUploading = false; // Reset upload state when modal is hidden
-    }
-
-    /**
-     * Resets the file upload form fields and styling.
-     */
-    resetUploadForm() {
-        if (this.modalConfig.fileInputId) {
-            $(`#${this.modalConfig.fileInputId}`).val("").removeClass("is-valid is-invalid");
-        }
-        if (this.modalConfig.categoryId) {
-            $(`#${this.modalConfig.categoryId}`).val("").removeClass("is-valid is-invalid");
-        }
-        if (this.modalConfig.statusId) {
-            $(`#${this.modalConfig.statusId}`).val("").removeClass("is-valid is-invalid");
-        }
-        if (this.modalConfig.descriptionId) {
-            $(`#${this.modalConfig.descriptionId}`).val("").removeClass("is-valid is-invalid");
-        }
-        this.hideError();
-        $("#uploadSuccess").hide();
-        $("#uploadSuccessMessage").text("");
-    }
-
-    /**
-     * Validates a single form field to ensure it is not empty.
-     * @param {HTMLElement} field - The DOM element of the field to validate.
-     * @returns {boolean} - True if the field is valid, otherwise false.
-     */
-    validateField(field) {
-        if (!field) return false;
-        const $f = $(field);
-        const valid = $f.val()?.toString().trim() !== "";
-        $f.toggleClass("is-valid", valid).toggleClass("is-invalid", !valid);
-        return valid;
-    }
-
-    /**
-     * Validates the file input against size and extension constraints.
-     * @param {Event} event - The change event from the file input.
-     * @returns {boolean} - True if the file is valid, otherwise false.
-     */
-    validateFile(event) {
-        const file = event.target.files[0];
-        const $f = $(event.target);
-
-        if (!file) {
-            $f.removeClass("is-valid").addClass("is-invalid");
-            return false;
+    handleFormSubmission() {
+        const form = $('#uploadForm')[0];
+        if (!form) {
+            console.error("DMSManager: Form not found.");
+            return;
         }
 
-        if (this.modalConfig.maxFileSize && file.size > this.modalConfig.maxFileSize) {
-            this.showError(`File too large. Max: ${this.formatFileSize(this.modalConfig.maxFileSize)}`);
-            $f.removeClass("is-valid").addClass("is-invalid");
-            return false;
+        const files = $('#fileuploader')[0].files;
+
+        // First, check for general form validity (e.g., category selected)
+        if (!this.validateForm(form)) {
+            return;
         }
 
-        if (this.modalConfig.allowedExtensions?.length > 0) {
-            const ext = "." + file.name.split(".").pop().toLowerCase();
-            if (!this.modalConfig.allowedExtensions.includes(ext)) {
-                this.showError("File type not allowed.");
-                $f.removeClass("is-valid").addClass("is-invalid");
-                return false;
+        // Then, validate each file individually
+        let isValid = true;
+        for (let i = 0; i < files.length; i++) {
+            const validationResult = this.validateFile(files[i]);
+            if (!validationResult.isValid) {
+                this.showError('fileuploader', validationResult.message);
+                isValid = false;
+                break; // Stop checking after the first invalid file
             }
         }
 
-        $f.removeClass("is-invalid").addClass("is-valid");
-        this.hideError();
-        return true;
+        if (!isValid) {
+            return; // Exit if any file is invalid
+        }
+
+        // If all files are valid, proceed with the AJAX submission
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append("Files", files[i]);
+        }
+
+        formData.append("Category", $('#category').val());
+        formData.append("Comments", $('#comments').val());
+        formData.append("ProjectId", $("#ProjectId").val());
+        formData.append("FolderName", $("#FolderName").val());
+        formData.append("FolderId", $("#FolderId").val());
+
+        const url = window.dmsConfig.uploadUrl;
+        this.performAjaxSubmission(formData, url);
     }
 
-    /**
-     * Validates the entire upload form before submission.
-     * @returns {boolean} - True if the form is valid, otherwise false.
-     */
-    validateForm() {
-        const fileInput = document.getElementById(this.modalConfig.fileInputId);
-        let valid = !!fileInput && fileInput.files.length > 0 && this.validateFile({ target: fileInput });
-        if (this.modalConfig.categoryId) {
-            valid = valid && this.validateField(document.getElementById(this.modalConfig.categoryId));
+    validateForm(form) {
+        let isValid = true;
+        const category = $('#category').val().trim();
+        const fileInput = $('#fileuploader');
+        const fileCount = fileInput[0]?.files?.length;
+
+        $('#category, #fileuploader').removeClass('is-invalid');
+
+        if (category === "") {
+            $('#category').addClass('is-invalid');
+            isValid = false;
         }
-        return valid;
+
+        if (fileCount === 0) {
+            $('#fileuploader').addClass('is-invalid');
+            isValid = false;
+        }
+
+        return isValid;
     }
 
-    /**
-     * Handles the file upload process, from validation to AJAX submission.
-     * Fixed version with proper duplicate upload prevention.
-     */
-    handleFileUpload() {
-        console.log("handleFileUpload called - timestamp:", Date.now());
-
-        // Prevent multiple simultaneous uploads
-        if (this.isUploading) {
-            console.log("Upload already in progress, ignoring duplicate request");
-            return;
+    // Add a method to display the server-side error message
+    showServerError(message) {
+        const errorDiv = $("#uploadError");
+        if (errorDiv.length) {
+            $("#uploadErrorMessage").text(message);
+            errorDiv.show();
+        } else {
+            alert(message); // Fallback to an alert if the element doesn't exist
         }
-
-        const uploadButton = $(`#${this.modalConfig.uploadButtonId}`);
-        if (uploadButton.prop('disabled')) {
-            console.log("Upload button is disabled, ignoring request");
-            return;
-        }
-
-        if (!this.validateForm()) {
-            this.showError("Please fill all required fields with a valid file.");
-            return;
-        }
-
-        const files = $(`#${this.modalConfig.fileInputId}`).get(0)?.files;
-        if (!files?.length) {
-            this.showError("Please select a file.");
-            return;
-        }
-
-        // Set upload state
-        this.isUploading = true;
-
-        const formData = this.buildFormData(files[0]);
-        this.performUpload(formData, this.getUploadUrl());
     }
 
-    /**
-     * Builds the FormData object for the file upload.
-     * @param {File} file - The file to upload.
-     * @returns {FormData} - The FormData object.
-     */
-    buildFormData(file) {
-        const fd = new FormData();
-        fd.append("file", file);
-
-        ["ProjectId", "FolderName", "FolderId"].forEach((f) => {
-            const v = $(`#${f}`).val();
-            if (v) fd.append(f, v);
-        });
-
-        if (this.modalConfig.categoryId) {
-            const cat = $(`#${this.modalConfig.categoryId}`).val();
-            if (cat) fd.append("Category", cat);
-        }
-        if (this.modalConfig.descriptionId) {
-            const desc = $(`#${this.modalConfig.descriptionId}`).val();
-            if (desc?.trim()) fd.append("Description", desc.trim());
-        }
-        return fd;
-    }
-
-    getUploadUrl() {
-        return this.config.uploadUrl || "/DMS/UploadFile";
-    }
-
-    /**
-     * Performs the AJAX request to upload the file.
-     * @param {FormData} fd - The FormData object.
-     * @param {string} url - The upload URL.
-     */
-    performUpload(fd, url) {
-        this.hideError();
-        this.disableUploadButton();
+    // Update the performAjaxSubmission method
+    performAjaxSubmission(formData, url) {
+        if (this.modal) this.modal.hide();
         typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();
 
         $.ajax({
-            url,
-            data: fd,
+            url: url,
+            type: "POST",
+            data: formData,
             processData: false,
             contentType: false,
-            type: "POST",
-            timeout: 300000,
-            success: this.handleUploadSuccess.bind(this),
-            error: this.handleUploadError.bind(this),
+            success: () => {
+                this.reloadGrid();
+            },
+            error: (xhr) => {
+                alert('An error occurred while uploading.');
+                console.error("Ajax submission failed:", xhr);
+            },
             complete: () => {
-                this.enableUploadButton();
-                this.isUploading = false; // Reset upload state
                 typeof LoadingOverlay !== "undefined" && LoadingOverlay.hide();
             }
         });
     }
 
-    /**
-     * Handles a successful upload response.
-     */
-    handleUploadSuccess() {
-        this.showSuccess("File uploaded successfully!");
-        // Hide the modal using the correct method based on its type.
-        if (this.addFileModal) {
-            typeof this.addFileModal.hide === "function"
-                ? this.addFileModal.hide()
-                : this.addFileModal.modal("hide");
-        }
-        this.reloadDocumentsTab();
-    }
 
-    /**
-     * Handles a failed upload response and displays an error message.
-     * @param {object} xhr - The XMLHttpRequest object from the failed request.
-     */
-    handleUploadError(xhr) {
-        let msg = "Upload failed.";
-        try {
-            const res = xhr.responseJSON || JSON.parse(xhr.responseText || "{}");
-            msg = res.message || res.error || xhr.responseText || msg;
-        } catch (e) {
-            console.error("Failed to parse error response:", e);
-        }
-        // Check for common HTTP status codes and provide a more specific message.
-        if (xhr.status === 413) msg = "File too large.";
-        if (xhr.status === 415) msg = "Unsupported file format.";
-        if (xhr.status === 0 && xhr.statusText === "timeout") msg = "Upload timed out.";
-        this.showError(msg);
-    }
-
-    /**
-     * Displays an error message in the designated container.
-     * @param {string} msg - The error message to display.
-     */
-    showError(msg) {
-        const el = $("#uploadError");
-        if (el.length) {
-            $("#uploadErrorMessage").text(msg);
-            el.show();
-        } else {
-            // Fallback to console.error if the element is not found.
-            console.error("Upload Error:", msg);
-        }
-    }
-
-    /**
-     * Hides the error message container.
-     */
-    hideError() {
-        $("#uploadError").hide();
-        $("#uploadErrorMessage").text("");
-    }
-
-    /**
-     * Displays a success message in the designated container.
-     * @param {string} msg - The success message to display.
-     */
-    showSuccess(msg) {
-        const el = $("#uploadSuccess");
-        if (el.length) {
-            $("#uploadSuccessMessage").text(msg);
-            el.show();
-            // Automatically hide the message after 3 seconds.
-            setTimeout(() => el.hide(), 3000);
-        } else {
-            console.log("Success:", msg);
-        }
-    }
-
-    /**
-     * Disables the upload button and sets a loading state.
-     */
-    disableUploadButton() {
-        if (this.modalConfig.uploadButtonId) {
-            const $b = $(`#${this.modalConfig.uploadButtonId}`);
-            if (!$b.data("original-text")) $b.data("original-text", $b.text());
-            $b.prop("disabled", true).text("Uploading...");
-        }
-    }
-
-    /**
-     * Enables the upload button and restores its original text.
-     */
-    enableUploadButton() {
-        if (this.modalConfig.uploadButtonId) {
-            const $b = $(`#${this.modalConfig.uploadButtonId}`);
-            $b.prop("disabled", false).text($b.data("original-text"));
-        }
-    }
-
-    /**
-     * Reloads the documents table by fetching new HTML from the server.
-     */
-    reloadDocumentsTab() {
-        const caseId = $("#ProjectId").val();
-        const controlId = $("#FolderId").val();
-        if (!caseId) {
-            console.error("ProjectId missing");
+    // New method for handling the delete action
+    handleDelete(documentId) {
+        if (!documentId) {
+            console.error("DMSManager: documentId is required to delete.");
             return;
         }
 
-        $.get("/DMS/GetFilesById", { caseId, controlViewModelId: controlId })
-            .done((html) => {
-                // Replace the entire HTML content of the document table.
-                $("#divDocument").html(html);
-                // Re-initialize the DataTable on the new content.
-                this.initializeDataTable();
-            })
-            .fail(() => {
-                $("#divDocument").html("<div class='alert alert-danger'>Failed to load documents.</div>");
-            });
-    }
-
-    /**
-     * Formats a file size in bytes to a human-readable string.
-     * @param {number} bytes - The file size in bytes.
-     * @returns {string} - The formatted file size.
-     */
-    formatFileSize(bytes) {
-        if (bytes === 0) return "0 Bytes";
-        const k = 1024,
-            sizes = ["Bytes", "KB", "MB", "GB", "TB"];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
-    }
-
-    /**
-     * Destroys the DMSManager instance, clearing the DataTable and event listeners.
-     * Enhanced version with proper cleanup.
-     */
-    destroy() {
-        console.log("Destroying DMSManager instance");
-
-        if (this.dataTable && $.fn.DataTable.isDataTable(this.$table)) {
-            this.dataTable.destroy();
-            this.dataTable = null;
+        if (!confirm("Are you sure you want to delete this document?")) {
+            return;
         }
 
-        // Remove all DMS-namespaced events
-        $(document).off(".dms");
+        // Show loading overlay
+        typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();
 
-        // Clean up modal
-        if (this.addFileModal) {
-            // Hide modal if it's currently shown
-            try {
-                if (typeof this.addFileModal.hide === "function") {
-                    this.addFileModal.hide();
-                } else if (this.addFileModal.modal) {
-                    this.addFileModal.modal("hide");
+        $.ajax({
+            url: window.dmsConfig.deleteUrl,
+            type: "POST",
+            data: { id: documentId },
+            dataType: "json", // Expect a JSON response from the controller
+            success: (response) => {
+                if (response.success) {
+                    alert("Document deleted successfully.");
+                    this.reloadGrid();
+                } else {
+                    alert(response.message || "Failed to delete document.");
                 }
-            } catch (e) {
-                console.warn("Error hiding modal during destroy:", e);
+            },
+            error: (xhr) => {
+                console.error("DMS: Delete failed:", xhr);
+                alert("An error occurred while deleting document.");
+            },
+            complete: () => {
+                typeof LoadingOverlay !== "undefined" && LoadingOverlay.hide();
             }
-            this.addFileModal = null;
+        });
+    }
+
+    // Method to reload the entire grid
+    reloadGrid() {
+        const caseId = $("#ProjectId").val();
+        const folderId = $("#FolderId").val();
+        const targetDiv = "divDocument";
+
+        if (!caseId) {
+            console.error("DMSManager: ProjectId is missing for grid reload.");
+            return;
         }
 
-        // Clear references and state
-        this.$table = null;
-        this.isInitialized = false;
-        this.isUploading = false;
-
-        // Clear global reference only if it points to this instance
-        if (window.dmsManager === this) {
-            window.dmsManager = null;
-        }
+        // Pass the required IDs to the static LoadDocuments method
+        DMS.LoadDocuments(caseId, folderId, targetDiv);
     }
 };
 
-/**
- * Static DMS Class
- * Provides a public API for interacting with the DMSManager.
- * Fixed version with proper cleanup and initialization.
- */
 window.DMS = class DMS {
     static LoadDocuments(caseId, controlViewModelId = 0, targetDiv = "divDocument") {
         if (!caseId) {
-            console.error("CaseId required");
+            console.error("DMS: CaseId required");
             return;
         }
-
-        // Always destroy existing manager first
         if (window.dmsManager) {
-            console.log("Destroying existing DMSManager before loading new documents");
             window.dmsManager.destroy();
         }
 
-        $.get("/DMS/GetFilesById", { caseId, controlViewModelId })
+        $.get('/DMS/GetFilesById', { caseId, controlViewModelId })
             .done((html) => {
                 $(`#${targetDiv}`).html(html);
-
-                // Check if the table exists in the new HTML before initializing
                 if ($("#dmsDataTable").length > 0) {
-                    // Use requestAnimationFrame for better timing than setTimeout
                     requestAnimationFrame(() => {
                         window.dmsManager = new window.DMSManager();
                         window.dmsManager.init();
                     });
                 } else {
-                    console.warn("No dmsDataTable found in loaded HTML");
+                    console.warn("DMS: No dmsDataTable found in loaded HTML");
                 }
             })
             .fail(() => {
@@ -552,28 +323,33 @@ window.DMS = class DMS {
             });
     }
 
-    static Initialize(config = {}) {
-        window.dmsConfig = { ...window.dmsConfig, ...config };
+    static AddDocument() {
+        if (window.dmsManager) {
+            window.dmsManager.showAddModal();
+        }
     }
 
-    static RefreshDocuments() {
-        window.dmsManager ? window.dmsManager.reloadDocumentsTab() : console.warn("DMS not initialized");
+    static SaveDocument() {
+        if (window.dmsManager) {
+            window.dmsManager.handleFormSubmission();
+        } else {
+            console.error("DMS Manager not initialized. Cannot save document.");
+        }
     }
 
-    static GetManager() {
-        return window.dmsManager || null;
-    }
-
-    static IsLoaded() {
-        return !!(window.dmsManager && $("#dmsDataTable").length > 0);
+    // Public API method for deleting a document
+    static DeleteDocument(documentId) {
+        if (window.dmsManager) {
+            window.dmsManager.handleDelete(documentId);
+        } else {
+            console.error("DMS Manager not initialized. Cannot delete document.");
+        }
     }
 };
 
-// Global init for pages with the DMS table present on load.
-// Enhanced version with proper cleanup check.
 $(() => {
     if ($("#dmsDataTable").length > 0 && !window.dmsManager) {
-        console.log("Initializing DMSManager on document ready...");
+        console.log("DMS: Initializing on document ready...");
         window.dmsManager = new window.DMSManager();
         window.dmsManager.init();
     }

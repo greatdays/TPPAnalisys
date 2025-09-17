@@ -14,7 +14,8 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         Task<bool> SaveDocument(DocumentModel documentModel);
         Task<bool> SaveFolder(FolderModel folderModel, string userName);
         Task<int> GetRecentFolderId();
-        
+        Task<bool> DeleteDocument(int id);
+
 
     }
 }
