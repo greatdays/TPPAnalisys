@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.Notification.Interface;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.ServiceClient;
@@ -116,6 +117,8 @@ namespace DeveloperPortal.Controllers
                     });
                 }
 
+               
+
                 var caseId = projectId;
                 // Use the 'comments' parameter directly
                 var comment = comments ?? string.Empty;
@@ -211,6 +214,22 @@ namespace DeveloperPortal.Controllers
                     Message = "An unexpected error occurred during upload. Please try again."
                 });
             }
+        }
+        [HttpPost]
+        public ActionResult DeleteDocument(int id)
+        {
+            try
+            {
+
+                _documentService.DeleteDocument(id);
+                return Json(new { success = true, message = "Document deleted successfully" });
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+            // return Json(new { success = true, message = "Funding source saved successfully!" });
         }
         // GET: api/<DashboardController>
         [HttpGet]

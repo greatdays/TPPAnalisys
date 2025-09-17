@@ -17,6 +17,7 @@
                     <th>Date</th>
                     <th>Filename</th>
                     <th>Category</th>
+                    <th>Comment</th> @* Corrected header *@
                     <th>Uploader</th>
                     <th>Shared</th>
                     <th>Actions</th>
@@ -32,14 +33,15 @@
                             <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
                             <td><span title="@file.Name">@file.Name</span></td>
                             <td>@file.Category</td>
+                            <td>@file.Comment</td> @* Added Comment from model *@
                             <td>@file.UploadedBy</td>
                             <td>@file.Roles</td>
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(file.Link))
                                 {
                                     <a href="javascript:void(0)"
-                                                           onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
-                                                           class="btn btn-sm btn-primary" title="Download @file.Name">
+                                       onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
+                                       class="btn btn-sm btn-primary" title="Download @file.Name">
                                         <i class="fas fa-download"></i>
                                     </a>
                                 }
@@ -47,9 +49,9 @@
                                 {
                                     <span class="text-muted">-</span>
                                 }
-                               @*  <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.Id" type="button" onclick="DMS.DeleteDocument(@file.Id)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button> *@
+                                <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.DocumentId" type="button">
+                                    <i class="fas fa-trash-alt" title="Delete Document"></i>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -86,7 +88,7 @@
     // Configure DMS with server-side values
     window.dmsConfig = {
         uploadUrl: '@Url.Action("UploadFile", "DMS")',
-       // deleteUrl: '@Url.Action("DeleteFile", "DMS")', // Added delete URL
+        deleteUrl: '@Url.Action("DeleteDocument", "DMS")', @* Added delete URL *@
         reloadUrl: '@Url.Action("GetFilesById", "DMS")',
         projectId: '@projectIdFromName',
         folderName: '@(Model.FolderModel?.Name ?? "")',
@@ -128,31 +130,25 @@
 </script>
 
 <style>
-
     /* Custom styles for better UX */
-        .table th {
-                background-color: #f8f9fa;
-                border-top: 2px solid #dee2e6;
-                font-weight: 600;
-
+    .table th {
+        background-color: #f8f9fa;
+        border-top: 2px solid #dee2e6;
+        font-weight: 600;
     }
 
-        .btn-sm {
-                font-size: 0.875rem;
-
+    .btn-sm {
+        font-size: 0.875rem;
     }
 
-        #dmsDataTable tbody tr:hover {
-                background-color: #f8f9fa;
-
+    #dmsDataTable tbody tr:hover {
+        background-color: #f8f9fa;
     }
-
 
     /* Empty table row styling */
-        .no-data-row td {
-                background-color: #f8f9fa !important;
-                border: 1px solid #dee2e6 !important;
-                font-style: italic;
-
+    .no-data-row td {
+        background-color: #f8f9fa !important;
+        border: 1px solid #dee2e6 !important;
+        font-style: italic;
     }
 </style>
