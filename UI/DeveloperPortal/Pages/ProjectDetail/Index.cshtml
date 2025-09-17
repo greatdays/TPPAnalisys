@@ -4,198 +4,141 @@
 	ViewData["Title"] = "Project Details";
 }
 <style>
-	.table-responsive .row {
-		margin-bottom: 15px;
-	}
+	/* === Layout helpers used by tables/sections === */
+.table-responsive .row { margin-bottom: 15px; }
+.datatbl { width: 100% !important; }
+#unitKgrid .k-grid-add { margin-right: 110px; }
+.k-grid-content tr:last-child { border-bottom: 1px solid lightgray; }
 
-	.datatbl {
-		width: 100% !important;
-	}
+/* Tab: Site Information pagination fixes (plugin uses <li><a>) */
+#tabSiteInformation .pagination { display: list-item !important; text-align: start; }
+#tabSiteInformation .paginate_button a { margin-left: -5px !important; }
+#tabSiteInformation .paginate_button:first-child a { margin-left: -5px; }
 
-	#tabSiteInformation .pagination {
-		display: list-item !important;
-		text-align: start;
-	}
+/* Generic DataTables pager alignment */
+a.paginate_button { float: left !important; }
+.paginate_button:first-child a {
+  margin-left: 0;
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+}
+.paginate_button:last-child a {
+  border-top-right-radius: .25rem;
+  border-bottom-right-radius: .25rem;
+}
+.paginate_button.active a { color: #fff !important; background: #2C3E5C; }
 
-	#tabSiteInformation .paginate_button a {
-		margin-left: -5px !important;
-	}
+/* === Consolidated DataTables pagers (3 IDs share the same look) === */
+#dtPrkingData_paginate a.paginate_button,
+#dtSiteData_paginate a.paginate_button,
+#dtPermitNumberData_paginate a.paginate_button {
+  position: relative;
+  padding: .5rem .75rem !important;
+  margin: 1px !important;
+  line-height: 1.25;
+  color: #fff !important;
+  background-color: #2C3E5C !important;
+  border: 1px solid #2C3E5C !important;
+}
 
-	#tabSiteInformation .paginate_button:first-child a {
-		margin-left: -5px;
-	}
+#dtPrkingData_paginate .paginate_button:hover,
+#dtSiteData_paginate .paginate_button:hover,
+#dtPermitNumberData_paginate .paginate_button:hover,
+#dtPrkingData_paginate .paginate_button.current,
+#dtSiteData_paginate .paginate_button.current,
+#dtPermitNumberData_paginate .paginate_button.current {
+  color: #fff !important;
+  border: 1px solid #111 !important;
+  background: #111 !important;
+}
 
-	#unitKgrid .k-grid-add {
-		margin-right: 110px;
-	}
-
-	.k-grid-content tr:last-child {
-		border-bottom: solid 1px lightgray;
-	}
-
-
-	a.paginate_button {
-		float: left !important;
-	}
-
-	.paginate_button:first-child a {
-		margin-left: 0;
-		border-top-left-radius: .25rem;
-		border-bottom-left-radius: .25rem;
-	}
-
-	.paginate_button:last-child a {
-		border-top-right-radius: .25rem;
-		border-bottom-right-radius: .25rem;
-	}
-
-	.paginate_button.active a {
-		color: #fff !important;
-		background: #2C3E5C;
-	}
-
-	#dtPrkingData_paginate a.paginate_button {
-		position: relative;
-		padding: .5rem .75rem !important;
-		margin: 1px !important;
-		line-height: 1.25;
-		color: #fff !important;
-		background-color: #2C3E5C !important;
-		border: 1px solid #2C3E5C !important;
-	}
-
-	a#dtPrkingData_paginate {
-		color: #fff !important;
-	}
-
-	#dtPrkingData_paginate span {
-		float: left;
-		padding-right: 30px;
-	}
-
-	#dtPrkingData_paginate .paginate_button:hover {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
-
-	#dtPrkingData_paginate .paginate_button.current {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
-
-	#dtPrkingData_paginate a.paginate_button {
-		position: relative;
-		padding: .5rem .75rem !important;
-		margin: 1px !important;
-		;
-		line-height: 1.25;
-		color: #fff !important;
-		background-color: #2C3E5C !important;
-		border: 1px solid #2C3E5C !important;
-	}
-
-	a#dtSiteData_paginate {
-		color: #fff !important;
-	}
-
-	#dtSiteData_paginate span {
-		float: left;
-		padding-right: 30px;
-	}
-
-	#dtSiteData_paginate .paginate_button:hover {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
-
-	#dtSiteData_paginate .paginate_button.current {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
-
-	#dtSiteData_paginate a.paginate_button {
-		position: relative;
-		padding: .5rem .75rem !important;
-		margin: 1px !important;
-		;
-		line-height: 1.25;
-		color: #fff !important;
-		background-color: #2C3E5C !important;
-		border: 1px solid #2C3E5C !important;
-	}
+/* === Project Checklist (same card feel as summary) === */
+.tpp-checklist {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+  overflow: hidden; /* keeps header/body corners rounded */
+}
+.tpp-checklist__header {
+  background: #fafafa; /* match summary spacing, lighter header */
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tpp-checklist__header h3 { margin: 0; }
+.tpp-checklist__header .progressbar {
+  flex: 1 1 auto;
+  height: 8px;
+  background: #eef2f7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.tpp-checklist__header .progressbar > span {
+  display: block; height: 100%; width: 0;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  transition: width .35s ease;
+}
+.tpp-checklist__body { padding: 16px; }
 
 
-	a#dtPermitNumberData_paginate {
-		color: #fff !important;
-	}
+.tpp-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  margin: 0; padding: 0; list-style: none;
+}
+.tpp-step {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+.tpp-step.locked { opacity: .6; cursor: not-allowed; }
+.tpp-step-idx {
+  width: 26px; height: 26px; flex: 0 0 26px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; font-weight: 700; font-size: 12px;
+  background: #eef2ff; color: #2563eb;
+}
+.tpp-step.complete .tpp-step-idx { background: #ecfdf5; color: #16a34a; }
+.tpp-step-label { font-weight: 600; flex: 1 1 auto; }
+.tpp-step-badge {
+  margin-left: auto;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+.tpp-step.complete .tpp-step-badge { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
 
-	#dtPermitNumberData_paginate span {
-		float: left;
-		padding-right: 30px;
-	}
+/* Reusable page gutter so cards align (replaces inline styles) */
+.tpp-gutter { padding-left: 10px; padding-right: 10px; }
 
-	#dtPermitNumberData_paginate .paginate_button:hover {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
+@@media (min-width: 1200px) {
+  .tpp-gutter { padding-left: 22px; padding-right: 22px; }
+}
 
-	#dtPermitNumberData_paginate .paginate_button.current {
-		color: white !important;
-		border: 1px solid #111;
-		background-color: #111;
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));
-		background: -webkit-linear-gradient(top, #585858 0%, #111 100%);
-		background: -moz-linear-gradient(top, #585858 0%, #111 100%);
-		background: -ms-linear-gradient(top, #585858 0%, #111 100%);
-		background: -o-linear-gradient(top, #585858 0%, #111 100%);
-		background: linear-gradient(to bottom, #585858 0%, #111 100%)
-	}
-
-	#dtPermitNumberData_paginate a.paginate_button {
-		position: relative;
-		padding: .5rem .75rem !important;
-		margin: 1px !important;
-		;
-		line-height: 1.25;
-		color: #fff !important;
-		background-color: #2C3E5C !important;
-		border: 1px solid #2C3E5C !important;
-	}
+/* Visually unstyled button that still behaves like a button */
+.tablink-plain{
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;        /* same color as surrounding text */
+  font: inherit;         /* inherit font/size/weight */
+  cursor: pointer;
+  text-decoration: none; /* remove underline; add on hover if you like */
+}
+.tablink-plain:hover{ text-decoration: underline; }
+.tablink-plain:focus{
+  outline: 2px solid #94a3b8;   /* visible focus ring */
+  outline-offset: 2px;
+}
 
 
 </style>
@@ -233,48 +176,78 @@
 
     <!-- End Project Notification -->
     </div>
-
-    <div class="row">
-        <div class="col-md-8">
-            <h3 class="title" style="color:#393939; margin-bottom: 0;">  @Model.TabName</h3>
-        </div>
-        <div class="col-md-4">
-            <div class="page-title left-data">
-                <ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
-                    <li id="help">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#113F67 !important">
-                            <img src="~/Images/help.png" height="20" width="20">
-                        </a>
-                    </li>
-                    <li id="PrintAll">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#113F67 !important; margin-left:10px;">
-                            <img src="~/Images/printer.svg">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div style="padding-left: 010px; padding-right: 10px;">
+	<div class="tpp-gutter">
         @{
             Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
         }
-    </div><br />
+    </div>
+	
+	<br />
 
-	<div style="padding-left: 010px; padding-right: 10px;">
-		<!-- Tab links -->
-		<div class="tab">
-			<button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
-			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
-			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
-			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
-			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
-			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
-		</div>
+	<!-- Project Checklist (same card style as summary) -->
 
+
+	<div class="tpp-gutter">
+		<section class="tpp-checklist" id="panel-checklist" aria-label="Project Checklist">
+		  <div class="tpp-checklist__header">
+			<h4>Project Checklist</h4>
+			
+		  </div>
+
+		  <div class="tpp-checklist__body">
+			<ol class="tpp-steps" id="steps">
+			  
+			 <li class="tpp-step step" data-step="Documents">
+				<span class="tpp-step-idx idx">1</span>
+					<button class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabDocuments')">Project Documents</button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+			  <li class="tpp-step step" data-step="team">
+				<span class="tpp-step-idx idx">2</span>
+					<button class="tablink-plain" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Team Information</button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+			  <li class="tpp-step step" data-step="site">
+				<span class="tpp-step-idx idx">3</span>
+					<button   class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+			  <li class="tpp-step step" data-step="floor">
+				<span class="tpp-step-idx idx">4</span>
+					<button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'partialContainer')">Floor Plan Type</button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+			  <li class="tpp-step step" data-step="Building & Units">
+				<span class="tpp-step-idx idx">5</span>
+				  <button  class="tablink-plain"   onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Building & Unit Information </button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+	@* 		  <li class="tpp-step step" data-step="parking">
+				<span class="tpp-step-idx idx">6</span>
+				<span class="tpp-step-label">Parking Information</span>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li> *@
+			  <li class="tpp-step step" data-step="Funding">
+				<span class="tpp-step-idx idx">6</span>
+				 <button  class="tablink-plain"  onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
+				<span class="tpp-step-badge badge">Required</span>
+			  </li>
+			 @*  <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button> *@
+		@* 	   <li class="tpp-step step locked" data-step="building">
+				<span class="tpp-step-idx idx">4</span>
+				<span class="tpp-step-label">Building Information</span>
+				<span class="tpp-step-badge badge">Locked</span>
+			  </li> *@
+			</ol>
+		  </div>
+		</section>
+	</div>
+
+	<br />
+
+	<div class="tpp-gutter">
 		<!-- Tab content -->
-		<div id="tabProjectInformation" class="tabcontent" style="display: block ">
+		<div id="tabProjectInformation" class="tabcontent">
 			@{
 				Html.RenderPartial("_ProjectInformation");
 			}
@@ -296,12 +269,12 @@
 		<div id="tabPolicyContacts" class="tabcontent">
 			<div id="divPolicyContacts"></div>
 		</div>
-		<div id="tabDocuments" class="tabcontent">
+		<div id="tabDocuments" class="tabcontent"  style="display: block">
 			<div id="divDocument"></div>
 		</div>
 		<div id="tabFundingSource" class="tabcontent">
-    <div id="divFundingSource"></div>
-</div>
+			<div id="divFundingSource"></div>
+		</div>
 		<div id="tabLogs" class="tabcontent">
 			<div id="divLogs"></div>
 		</div>
@@ -317,7 +290,7 @@
 	}
 </div>
 
-<!--START Printing Deatils Popup -->
+@* <!--START Printing Deatils Popup -->
 <div class="modal" id="printDetailsPopup" data-backdrop="static" aria-labelledby="LinkPropertyPopupTitle" aria-modal="true" role="dialog" tabindex="-1" aria-hidden="true" style="overflow: hidden;">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content" style="width:660px">
@@ -337,7 +310,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> *@
 
 <script type="text/javascript">
 	var baseUrl = window.location.origin;
@@ -365,4 +338,42 @@
 	BuildingInformation.load();
 	SiteInformation.LoadSiteInformation()
 
+
+</script>
+
+
+<script>
+  (function () {
+    function showDocsDefault() {
+      // 1) Try the top tab bar button first
+      var btnDocs =
+        document.getElementById('btnDocuments') ||
+        document.querySelector('.tab .tablinks[onclick*="tabDocuments"]') ||
+        // 2) Then try the checklist trigger
+        document.querySelector('[id="lnkChecklistDocuments"], .tpp-checklist [onclick*="tabDocuments"], .tpp-checklist [data-target="tabDocuments"]');
+
+      // If we found any real trigger, click it (lets your existing logic run)
+      if (btnDocs && typeof btnDocs.click === 'function') {
+        btnDocs.click();
+        return;
+      }
+
+      // 3) Hard fallback: manually show the pane and set active state
+      var panes = document.querySelectorAll('.tabcontent');
+      panes.forEach(el => el.style.display = 'none');
+      var docsPane = document.getElementById('tabDocuments');
+      if (docsPane) docsPane.style.display = 'block';
+
+      // best-effort: mark whichever button exists as active
+      var active = document.querySelector('.tab .tablinks.active');
+      if (active) active.classList.remove('active');
+      var topBtn = document.getElementById('btnDocuments');
+      if (topBtn) topBtn.classList.add('active');
+    }
+
+    // Run AFTER everything else wires up (other scripts may set a default)
+    window.addEventListener('load', function () {
+      setTimeout(showDocsDefault, 0);
+    });
+  })();
 </script>
