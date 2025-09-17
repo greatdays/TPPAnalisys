@@ -8,9 +8,9 @@ namespace DeveloperPortal.Domain.DMS
 {
     public class FileModel
     {
+        public int DocumentId { get; set; }
         public string? Name { get; set; }
         public string? Link { get; set; }
-        public string? ID { get; set; }
        // public string? FileType { get; set; }
 
         public string? Category { get; set; }
@@ -28,5 +28,6 @@ namespace DeveloperPortal.Domain.DMS
         /// UploadedBy
         /// </summary>
         public string UploadedBy { get; set; } = string.Empty;
+        public string Comment { get; set; } = string.Empty;
     }
 }

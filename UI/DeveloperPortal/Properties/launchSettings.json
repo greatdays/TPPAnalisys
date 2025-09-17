@@ -31,8 +31,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-        "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP",
-        "sslPort": 0
+      "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP",
+      "sslPort": 0
     }
   }
 }

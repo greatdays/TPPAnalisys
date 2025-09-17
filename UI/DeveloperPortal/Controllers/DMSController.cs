@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.Notification.Interface;
+using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.ServiceClient;
@@ -68,80 +69,167 @@ namespace DeveloperPortal.Controllers
         }
         [HttpPost]
         [Route("UploadFile")]
-        public async Task<JsonResult> UploadFile()
+        public async Task<JsonResult> UploadFile(
+                                          List<IFormFile> files,
+                                          [FromForm] int projectId,
+                                          [FromForm] string category,
+                                          [FromForm] string comments = "" // Corrected parameter name
+                                         )
         {
-            IFormFileCollection file = HttpContext.Request.Form.Files;
-            var fileType = GetMimeTypeForFileExtension(file[0].FileName);
-            var folderName = Convert.ToString(HttpContext.Request.Form["FolderName"]); //projectSummary?.AcHPFileProjectNumber + "-" + model.ProjectName; parent foldername
-            var caseId = Convert.ToInt32(HttpContext.Request.Form["ProjectId"]);
-            var category = Convert.ToString(HttpContext.Request.Form["Category"]);
-            var comment = Convert.ToString(HttpContext.Request.Form["Description"]);
-            var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor).UserName ?? "System";
-            // var createdBy = "amohandas";
-            //var folderId = Convert.ToInt32(HttpContext.Request.Form["FolderId"]);
-            var documentType = fileType;
-            // var emailId = "ananthakrishnan.mohandas@lacity.org";
-
-            var folderId = await _documentService.GetRecentFolderId();
-
-            this._AAHP_Google_UName = _config["LAHD:username"].ToString();
-            string fileCategory = "Project", fileSubCategory = "Document";
-
-
-            //var folderPath = AAHRServiceClient.UploadFileAsync(_BaseURL, _GoogleDriveId, folderName, file, fileType, _AAHP_Google_UName, AAHP_Google_Pwd);
-            var uploadResponse = new DMSService(_config).SubmitUploadedDocument(file, caseId, fileCategory, fileSubCategory, createdBy);
-
-            var response = uploadResponse.Value as UploadResponse;
-
-            if (response == null || (response.ErrorMessages != null && response.ErrorMessages.Length > 0))
+            try
             {
-                return new JsonResult(new
+                // Validate input
+                if (files == null || files.Count == 0)
                 {
-                    Success = false,
-                    Message = "Failed to upload document.\n" +
-                              (response?.ErrorMessages != null
-                                  ? string.Join("; ", response.ErrorMessages)
-                                  : "Unknown error")
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "No files were selected for upload."
+                    });
+                }
+
+                if (projectId <= 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Invalid project ID."
+                    });
+                }
+
+                if (string.IsNullOrWhiteSpace(category))
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Category is required."
+                    });
+                }
+
+                // Filter out empty files
+                var validFiles = files.Where(f => f != null && f.Length > 0).ToList();
+                if (validFiles.Count == 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "No valid files found. Please ensure files are not empty."
+                    });
+                }
+
+               
+
+                var caseId = projectId;
+                // Use the 'comments' parameter directly
+                var comment = comments ?? string.Empty;
+                var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor)?.UserName ?? "System";
+
+                string fileCategory = "Project";
+                string fileSubCategory = "Document";
+
+                // Upload documents to DMS
+                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, caseId, fileCategory, fileSubCategory, createdBy);
+
+                if (responses == null || responses.Count == 0)
+                {
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = "Failed to upload documents. No response received from document service."
+                    });
+                }
+
+                // Check for failed uploads
+                var failedUploads = responses.Where(r => r.ReturnStatus == Status.Failed).ToList();
+                if (failedUploads.Any())
+                {
+                    var errorMessages = failedUploads
+                        .SelectMany(f => f.ErrorMessages)
+                        .ToList();
+
+                    return Json(new
+                    {
+                        Success = false,
+                        Message = $"Failed to upload {failedUploads.Count} of {responses.Count} documents. Errors: {string.Join("; ", errorMessages)}"
+                    });
+                }
+
+                // Save successful uploads to database
+                var savedDocuments = new List<DocumentModel>();
+                var successfulResponses = responses.Where(r => r.ReturnStatus == Status.Success).ToList();
+
+                for (int i = 0; i < successfulResponses.Count && i < validFiles.Count; i++)
+                {
+                    var response = successfulResponses[i];
+                    var file = validFiles[i];
+
+                    try
+                    {
+                        var documentModel = new DocumentModel()
+                        {
+                            Name = file.FileName,
+                            Link = response.UniqueId.ToString() ?? string.Empty,
+                            Attributes = string.Empty,
+                            FileSize = file.Length.ToString(),
+                            CaseId = caseId,
+                            Comment = comment, // Correctly using the 'comment' variable
+                            OtherDocumentType = category,
+                            CreatedBy = createdBy,
+                            CreatedOn = DateTime.Now,
+                            IsDeleted = false
+                        };
+
+                        var savedDocument = await _documentService.SaveDocument(documentModel);
+                        savedDocuments.Add(savedDocument);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error but continue with other files
+                        // _logger.LogError(ex, "Error saving document metadata for file: {FileName}", file.FileName);
+                        Console.WriteLine($"Error saving document metadata for file {file.FileName}: {ex.Message}");
+                    }
+                }
+
+                var successMessage = savedDocuments.Count == 1
+                    ? "1 document uploaded successfully."
+                    : $"{savedDocuments.Count} documents uploaded successfully.";
+
+                return Json(new
+                {
+                    Success = true,
+                    Message = successMessage,
+                    UploadedCount = savedDocuments.Count,
+                    TotalCount = validFiles.Count
                 });
             }
-            else
+            catch (Exception ex)
             {
-                var documentModel = new DocumentModel()
+                // Log the full exception details
+                // _logger.LogError(ex, "Unexpected error during file upload for project {ProjectId}", projectId);
+                Console.WriteLine($"Unexpected error during file upload: {ex}");
+
+                return Json(new
                 {
-                    Name = file[0].FileName,
-                    Link = response.UniqueId.ToString(),
-                    Attributes = "",
-                    FileSize = file[0].Length.ToString(),
-                    CaseId = caseId,
-                    Comment = comment,
-                    OtherDocumentType = category,
-                    CreatedBy = createdBy,
-                    CreatedOn = DateTime.Now,
-                    IsDeleted = false
-
-                };
-
-                var document = _documentService.SaveDocument(documentModel).Result;
+                    Success = false,
+                    Message = "An unexpected error occurred during upload. Please try again."
+                });
             }
+        }
+        [HttpPost]
+        public ActionResult DeleteDocument(int id)
+        {
+            try
+            {
 
-            /* var documentModel = new DocumentModel()
-             {
-                 Name = file.FileName,
-                 Link = response.UniqueId.ToString(),
-                 Attributes = "",
-                 FileSize = file.Length.ToString(),
-                 CaseId = caseId,
-                 FolderId = folderId,
-                 Comment= comment,
-                 OtherDocumentType = category,
-                 CreatedBy= "ananthakrishnan",
-                 CreatedOn=DateTime.Now,
-                 IsDeleted= false
+                _documentService.DeleteDocument(id);
+                return Json(new { success = true, message = "Document deleted successfully" });
 
-             };
-
-             var document = _documentService.SaveDocument(documentModel).Result;*/
-            return Json(uploadResponse);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+            // return Json(new { success = true, message = "Funding source saved successfully!" });
         }
         // GET: api/<DashboardController>
         [HttpGet]
