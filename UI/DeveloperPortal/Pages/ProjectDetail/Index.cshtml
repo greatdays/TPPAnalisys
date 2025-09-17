@@ -209,63 +209,64 @@
 <script src="~/PageScripts/BuildingIntake/BuildingInformation.js"></script>
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 <script src="~/pagescripts/ProjectDetail/FundingSource.js"></script>
+<script src="~/PageScripts/DevelopmentTeam/DevelopmentTeam.js"></script>
 <div class="page-content">
-    <div class="container-fluid">
-    <!-- Project Notification -->
-    @* Project Notification *@
-    @if (Model.ProjectSummary?.ReviewNote != null && Model.ProjectSummary.ReviewNote.Any())
-    {
-        <div class="project-notifications mt-4">
-            <div class="bg-warning1 p-3 text-center position-relative">
-                <span class="close-btn"></span>
-                <p>
-                    <b>You have new comments on @Model.ProjectSummary.ProjectName:</b>
-                    <br />
-                    @foreach (var note in Model.ProjectSummary.ReviewNote)
-                    {
-                        @note <br />
-                    }
-                </p>
-            </div>
-        </div>
-    }
+	<div class="container-fluid">
+		<!-- Project Notification -->
+		@* Project Notification *@
+		@if (Model.ProjectSummary?.ReviewNote != null && Model.ProjectSummary.ReviewNote.Any())
+		{
+			<div class="project-notifications mt-4">
+				<div class="bg-warning1 p-3 text-center position-relative">
+					<span class="close-btn"></span>
+					<p>
+						<b>You have new comments on @Model.ProjectSummary.ProjectName:</b>
+						<br />
+						@foreach (var note in Model.ProjectSummary.ReviewNote)
+						{
+							@note <br />
+						}
+					</p>
+				</div>
+			</div>
+		}
 
-    <!-- End Project Notification -->
-    </div>
+		<!-- End Project Notification -->
+	</div>
 
-    <div class="row">
-        <div class="col-md-8">
-            <h3 class="title" style="color:#393939; margin-bottom: 0;">  @Model.TabName</h3>
-        </div>
-        <div class="col-md-4">
-            <div class="page-title left-data">
-                <ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
-                    <li id="help">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#113F67 !important">
-                            <img src="~/Images/help.png" height="20" width="20">
-                        </a>
-                    </li>
-                    <li id="PrintAll">
-                        <a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#113F67 !important; margin-left:10px;">
-                            <img src="~/Images/printer.svg">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div style="padding-left: 010px; padding-right: 10px;">
-        @{
-            Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
-        }
-    </div><br />
+	<div class="row">
+		<div class="col-md-8">
+			<h3 class="title" style="color:#393939; margin-bottom: 0;">  @Model.TabName</h3>
+		</div>
+		<div class="col-md-4">
+			<div class="page-title left-data">
+				<ul class="quick-action-link" style="padding-top:15px;padding-right: 10px;">
+					<li id="help">
+						<a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" onclick="ProjectInformation.helpImage()" data-original-title="WorkFlow Image" title="WorkFlow Image" style="background:#113F67 !important">
+							<img src="~/Images/help.png" height="20" width="20">
+						</a>
+					</li>
+					<li id="PrintAll">
+						<a class="btn red-tooltip" href="#" data-toggle="tooltip" data-placement="bottom" title="Print" onclick="ProjectInformation.printSelectedTabs()" data-original-title="Print" style="background:#113F67 !important; margin-left:10px;">
+							<img src="~/Images/printer.svg">
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div style="padding-left: 010px; padding-right: 10px;">
+		@{
+			Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
+		}
+	</div><br />
 
 	<div style="padding-left: 010px; padding-right: 10px;">
 		<!-- Tab links -->
 		<div class="tab">
 			<button class="tablinks active" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')" id="btnProjectInformation">Project Information </button>
 			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')" id="btnSiteInformation">Site Information </button>
-			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">Project Participants</button>
+			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDevelopmentTeamList')">Development Team List</button>
 			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabDocuments')">Documents</button>
 			<button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button>
 			<button class="tablinks" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">Funding Source</button>
@@ -288,9 +289,10 @@
 		</div>
 		<div id="tabImportantDates" class="tabcontent">
 			<div id="divImportantDates"></div>
-		</div>
-		<div id="tabProjectParticipants" class="tabcontent">
-			<div id="divProjectParticipants"></div>
+        </div>
+		<div id="tabDevelopmentTeamList" class="tabcontent">
+			<div id="divDevelopmentTeamList">
+			</div>
 		</div>
 		<div id="tabPolicyContacts" class="tabcontent">
 			<div id="divPolicyContacts"></div>
@@ -299,8 +301,8 @@
 			<div id="divDocument"></div>
 		</div>
 		<div id="tabFundingSource" class="tabcontent">
-    <div id="divFundingSource"></div>
-</div>
+			<div id="divFundingSource"></div>
+		</div>
 		<div id="tabLogs" class="tabcontent">
 			<div id="divLogs"></div>
 		</div>

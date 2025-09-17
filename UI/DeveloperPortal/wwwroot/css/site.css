@@ -11583,3 +11583,27 @@ label.control-label.required-label:after {
     z-index: 10000; /* Make sure it's above everything */
 }
 
+.approvebtn {
+    background: green !important;
+    color: white !important;
+}
+
+.rejectbtn {
+    background: red !important;
+    color: white !important;
+}
+
+.related-information {
+    display: flex;
+    align-items: center;
+    background: #f4f4f4;
+    padding: 15px 10px 15px;
+    border: 1px solid #eee;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+    .related-information .custom-control {
+        margin-right: 15px;
+        margin-bottom: 8px;
+    }

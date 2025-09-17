@@ -13,7 +13,7 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         #region AsyncMethods
         Task<List<T>> ExecuteStoredProcAsync<T>(string storedProcName, params SqlParameter[] parameters) where T : class, new();
         Task<int> ExecuteNonQueryAsync(string storedProcName, params SqlParameter[] parameters);
-        Task<DataTable> ExecuteStoredProcedureWithDataTableAsync(string storedProcName, params SqlParameter[] parameters);
+         Task<DataTable> ExecuteStoredProcedureWithDataTableAsync(string storedProcName, List<SqlParameter> parameters);
         #endregion
 
         #region Non AsyncMethods

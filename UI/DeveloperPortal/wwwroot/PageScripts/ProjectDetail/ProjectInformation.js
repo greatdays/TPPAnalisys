@@ -34,25 +34,14 @@
             switch (tabName) {
                 case "tabSiteInformation":
                     SiteInformation.LoadSiteInformation();
-                break;
-                // case "tabImportantDates":
-                //     url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
-                //     LoadTabData(url, "divImportantDates");
-                //     break;
-                // case "tabProjectParticipants":
-                //     console.log("Id: " + Id);
-                //     url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
-                //     LoadTabData(url, "divProjectParticipants");
-                //     break;
-                // case "tabPolicyContacts":
-                //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
-                //     LoadTabData(url, "divPolicyContacts");
-                //     break;
+                   break;
+                case "tabDevelopmentTeamList":
+                    DevelopmentTeam.LoadParticipants();
+                     break;
                  case "tabDocuments":
                     var caseId = Id; // Replace with your method to get case ID
                     // Replace with your method
                     console.log(Id);
-                                          // Load documents using the new DMS static method
                     DMS.LoadDocuments(caseId);
                     break;
 
@@ -63,11 +52,6 @@
                         console.error("FundingSource class not loaded yet");
                     }
                     break;
-                    break;
-                // case "tabLogs":
-                //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
-                //     LoadTabData(url, "divLogs");
-                //     break;
                 default:
             }
         },
