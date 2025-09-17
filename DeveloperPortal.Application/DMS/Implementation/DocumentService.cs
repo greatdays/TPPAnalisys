@@ -32,7 +32,7 @@ namespace DeveloperPortal.Application.DMS.Implementation
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
             FolderDetails folderDetails = null;
-            var projectIdParam = new SqlParameter("ProjectID", caseId);
+            var projectIdParam = new SqlParameter("SiteAddressID", caseId);
 
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
                                                     StoredProcedureNames.SP_uspGetDMSDocumentDetails,

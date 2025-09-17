@@ -412,6 +412,7 @@
     <Compile Include="Entity\Models\Generated\PMPUnitAttributeSnap.cs" />
     <Compile Include="Entity\Models\Generated\PMPUnitInfoSummarySnap.cs" />
     <Compile Include="Entity\Models\Generated\PMPUnitSnap.cs" />
+    <Compile Include="Entity\Models\Generated\PnCFundingSource.cs" />
     <Compile Include="Entity\Models\Generated\PolicyComplianceDetail.cs" />
     <Compile Include="Entity\Models\Generated\PolicyComplianceReminder.cs" />
     <Compile Include="Entity\Models\Generated\Project.cs" />
@@ -529,6 +530,8 @@
     <Compile Include="Entity\Models\Generated\TestUnit.cs" />
     <Compile Include="Entity\Models\Generated\TestUnitDetail.cs" />
     <Compile Include="Entity\Models\Generated\TppangelenoUser.cs" />
+    <Compile Include="Entity\Models\Generated\TpprefreshToken.cs" />
+    <Compile Include="Entity\Models\Generated\Tppuser.cs" />
     <Compile Include="Entity\Models\Generated\TQR2FairHousingBatch1.cs" />
     <Compile Include="Entity\Models\Generated\TQR2ServiceRequestBatch1.cs" />
     <Compile Include="Entity\Models\Generated\tqrCorrectionNote.cs" />

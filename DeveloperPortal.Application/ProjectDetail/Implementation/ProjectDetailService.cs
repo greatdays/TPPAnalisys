@@ -412,7 +412,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                         siteInformation.CaseID = Convert.ToInt32(dataTableAllSites.Rows[i]["CaseID"]);
                         siteInformation.RefProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["RefProjectSiteID"]);
                         siteInformation.ProjectSiteID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectSiteID"]);
-                        siteInformation.ProjectID = Convert.ToInt32(dataTableAllSites.Rows[i]["ProjectID"]);
+                        siteInformation.ProjectID = Convert.ToInt32(dataTableAllSites.Rows[i]["SiteAddressID"]);
                         siteInformation.SiteName = dataTableAllSites.Rows[i]["SiteName"].ToString();
                         siteInformation.FileNumber = dataTableAllSites.Rows[i]["FileNumber"].ToString();
                         siteInformation.SiteAddress = dataTableAllSites.Rows[i]["SiteAddress"].ToString();

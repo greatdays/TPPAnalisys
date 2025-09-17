@@ -157,54 +157,71 @@
 							<!-- Tab Content -->
 							<!-- Start AcHP number search content -->
 							<div class="tab-content active" id="tab-1">
-								<p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
+								@* <p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
 								<h5>Provide your AcHP Number(s)</h5>
-								<p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p>
+								<p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p> *@
 
-								<form id="projectForm" onsubmit="Dashboard.handleSubmit(event)">
+								<form id="projectForm" method="post">
 									<div class="form-group">
-										<label for="acHpInput" class="font-weight-bold required">AcHP Number *</label>
+										<label for="acHpInput" class="font-weight-bold required">AcHP Number </label><span class="text-danger">*</span>
 										<div class="input-group">
 											<input type="text" id="acHpInput" class="form-control" placeholder="AcHP Number" required>
 											<div class="input-group-append">
-												<button class="btn btn-primary" type="button" onclick="Dashboard.addProject()">Add</button>
+												<button class="btn btn-primary" type="button" onclick="Dashboard.addProject()">Search</button>
 											</div>
 										</div>
 										<div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
 										<div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
 										<div id="validationMessage" class="text-danger mt-1" style="display: none;"></div>
 									</div>
-
 									<!-- Project List -->
 									<div id="divProjects" class="mb-3"></div>
+									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
+										<button class="btn btn-primary" type="button" onclick="Dashboard.handleSubmit()">Submit</button>
+										@* <button type="submit" class="btn btn-primary" asp-page-handler="SubmitAcHP" form="projectForm">Submit</button> *@
+										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
+									</div>
+
+									
+									
 								</form>
 							</div>
 							<!-- End AcHP number search content -->
 							<!-- Start APN Search -->
 							<div class="tab-content" id="tab-2">
-								<form action="">
-									<h5>Provide APN</h5>
+								<form action="APNForm">
+									<label for="APNInput">Provide APN</label><span class="text-danger">*</span>
 									<div class="input-group mb-3">
-										<input type="text" id="acHpInput" class="form-control" placeholder="APN" required>
+										<input type="text" id="APNInput" class="form-control" placeholder="APN" required>
 										<div class="input-group-append">
-											<button class="btn btn-primary" type="button">Search</button>
+											<button class="btn btn-primary" type="button" id="searchAPNButton" onclick="Dashboard.GetAPNProject()">Search</button>
 										</div>
 									</div>
+									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
+									<div id="noAPNData" class="text-danger mt-1" style="display: none;">No data found.</div>
+									<div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
+
 
 									<div class="form-group mb-3">
-										<label for="exampleFormControlSelect1">Example select</label>
-										<select class="form-control" id="exampleFormControlSelect1">
-											<option>Apn search option 1</option>
-											<option>Apn search option 2</option>
-											<option>Apn search option 3</option>
-											<option>4</option>
-											<option>5</option>
+										<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
+										<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
+											<option value="" disabled selected>Select Project Address</option>
 										</select>
 									</div>
 									<div class="form-group mb-3">
-										<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="">
+										<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
+										<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
 									</div>
-									
+									<div class="form-group mb-3">
+										<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
+										<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+									</div>
+
+									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
+										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitANP()">Submit</button>
+										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
+									</div>
+
 								</form>
 
 							</div>
@@ -216,10 +233,7 @@
 					</div>
 
 					<!-- Modal Footer -->
-					<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
-						<button type="submit" class="btn btn-primary" form="projectForm">Submit</button>
-						<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
-					</div>
+
 
 				</div>
 			</div>
