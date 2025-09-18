@@ -83,5 +83,13 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
             return $"EXEC {storedProcName} {paramNames}";
         }
+
+        public async Task<T> ExecuteStoredwithDatatableProcAsync<T>(string storedProcName, params SqlParameter[] parameters) where T : class, new()
+        {
+            var sql = BuildSqlCommand(storedProcName, parameters);
+
+            // Execute the stored procedure on the server and load results into memory
+            return _contextData.Set<T>().FromSqlRaw(sql, parameters).AsEnumerable().FirstOrDefault();
+        }
     }
 }

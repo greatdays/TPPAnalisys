@@ -496,7 +496,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 {
                     new SqlParameter() { ParameterName = "@CaseId", Value = caseId }
                 };
-            var dt = ExecuteStoreProcedure("AAHPCC.uspRoGetBuildingParkingInfo", sqlParameters);
+            var dt = ExecuteStoreProcedure(StoredProcedureNames.SP_uspRoGetBuildingParkingInfo, sqlParameters);
 
 
             buildingInformation = dt.ConvertDataTable<BuildingParkingInformationModal>();

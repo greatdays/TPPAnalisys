@@ -342,7 +342,7 @@ namespace DeveloperPortal.Controllers
 
             PcisPermitDetail pcisPermitDetail = await _projectDetailService.GetLADBSPermitDetails(propSnapshotId, PermitNumber);
 
-            string html = this.RenderViewAsync("..ProjectDetail/GetPermitDetails", pcisPermitDetail, true).Result;
+            string html = this.RenderViewAsync("../ProjectDetail/GetPermitDetails", pcisPermitDetail, true).Result;
 
             return Json(html);
         }

@@ -1,15 +1,15 @@
-﻿using Humanizer.Localisation;
+﻿using DeveloperPortal.Models.PlanReview;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using DeveloperPortal.Domain.DMS;
-using DeveloperPortal.Models.PlanReview;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DeveloperPortal.Areas.Document.Models
+namespace DeveloperPortal.Domain.DMS
 {
-
-
     public class DMSModel
     {
 

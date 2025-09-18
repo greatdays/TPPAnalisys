@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DeveloperPortal.Areas.Document.Views.DMS
+namespace DeveloperPortal.Pages.DMS
 {
     public class DMSViewModel : PageModel
     {

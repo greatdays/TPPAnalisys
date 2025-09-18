@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Domain.Dashboard;
 
 namespace DeveloperPortal.DataAccess.Entity.Data
 {
@@ -24,10 +25,18 @@ namespace DeveloperPortal.DataAccess.Entity.Data
         public virtual DbSet<AllConstructionData> AllConstructionData { get; set; }
         public virtual DbSet<DocumentModel> DocumentData { get; set; }
 
+        public DbSet<APNSearchSiteAddress> APNSearchSiteAddress { get; set; }
+        public DbSet<APNStoredProcedureResult> APNStoredProcedureResult { get; set; }
+
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AllConstructionData>().HasNoKey();
             modelBuilder.Entity<DocumentModel>().HasNoKey();
+            modelBuilder.Entity<APNSearchSiteAddress>().HasNoKey();
+            modelBuilder.Entity<APNStoredProcedureResult>().HasNoKey();
+
             //modelBuilder.Entity<AllConstructionData>(entity =>
             //{
             //    entity.HasNoKey();

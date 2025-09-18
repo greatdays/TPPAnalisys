@@ -22,6 +22,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.Application.Notification.Implementation;
+using DeveloperPortal.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeveloperPortal
 {
@@ -84,7 +86,7 @@ namespace DeveloperPortal
                 // These defaults will be used unless you override per‑attribute or per‑call
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;   
             })
             .AddCookie(options =>
             {
@@ -109,7 +111,7 @@ namespace DeveloperPortal
                     ValidateIssuerSigningKey = true
                 };
             });
-
+         
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -130,6 +132,7 @@ namespace DeveloperPortal
 
             app.UseRouting();
             app.UseSession();
+            app.UseMiddleware<ProfileCompleteMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

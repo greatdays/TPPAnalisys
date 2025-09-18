@@ -20,32 +20,31 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         public async Task<List<FundingSourceViewModel>> GetFundingSource(string referenceId)
         {
 
-            var fundingSources = await (from fs in _context.FundingSources
-                                        where !(fs.IsDeleted ?? false)
-                                        join d in _context.Documents
-                                            on fs.DocumentId equals d.DocumentId into dGroup
-                                        from d in dGroup.DefaultIfEmpty()
-                                        join adFiltered in _context.AssnDocuments
-                                            .Where(ad => ad.ReferenceId == referenceId) // ✅ filter here
-                                            on d.DocumentId equals adFiltered.DocumentId into adGroup
-                                        from ad in adGroup.DefaultIfEmpty()
-                                        orderby fs.FundingSourceId
-                                        select new FundingSourceViewModel
-                                        {
-                                            FundingSourceId = fs.FundingSourceId,
-                                            FundingSource = fs.FundingSourceName,
-                                            FileName = d.Name,
-                                            MU_Unit = fs.MuUnit,
-                                            HV_Unit = fs.HvUnit,
-                                            CaseId = ad.ReferenceId,
-                                            Notes = d.Comment,
-                                            DocumentID = d.DocumentId,
-                                            Link = d.Link,
-                                            CreatedDate = fs.CreatedOn,
-                                            FileSize = d.FileSize,
-                                            CreatedBy = fs.CreatedBy
-                                        })
-                            .ToListAsync();
+            var fundingSources = (from fs in _context.FundingSources
+                                  where !(fs.IsDeleted ?? false)
+                                  join d in _context.Documents
+                                             on fs.DocumentId equals d.DocumentId
+                                         join ad in _context.AssnDocuments
+                                             on d.DocumentId equals ad.DocumentId
+                                         where ad.ReferenceId == referenceId  
+                                         orderby fs.FundingSourceId
+                                         select new FundingSourceViewModel
+                                         {
+                                             FundingSourceId = fs.FundingSourceId,
+                                             FundingSource = fs.FundingSourceName,
+                                             FileName = d.Name,
+                                             MU_Unit = fs.MuUnit,
+                                             HV_Unit = fs.HvUnit,
+                                             CaseId = ad.ReferenceId,
+                                             Notes = d.Comment,
+                                             DocumentID = d.DocumentId,
+                                             Link = d.Link,
+                                             CreatedDate = fs.CreatedOn,
+                                             FileSize = d.FileSize,
+                                             CreatedBy = fs.CreatedBy
+                                         }).ToList();
+
+           
             return fundingSources;
         }
 
@@ -80,42 +79,35 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return fundingSources;
         }
 
-        public async Task<bool> SaveDocumentForFundingSource(DocumentModel documentModel, FundingSourceViewModel viewModel)
+        public async Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel)
         {
             try
             {
-                
+
                 if (viewModel.DocumentID != null)
                 {
                     var fundingSource = new FundingSource();
-                    var document =  _context.Documents.FirstOrDefault(x => x.DocumentId == viewModel.DocumentID);
+                    var document = _context.Documents.FirstOrDefault(x => x.DocumentId == viewModel.DocumentID);
                     if (viewModel.DocumentID != null && viewModel.DocumentID > 0)
                     {
                         document.DocumentId = viewModel.DocumentID ?? 0;
-                        document.Name = documentModel.Name;
-                        document.Link = documentModel.Link;
-                        document.FileSize = documentModel.FileSize;
-                        document.OtherDocumentType = documentModel.OtherDocumentType;
-                        document.Comment = documentModel.Comment;
-                        document.CreatedBy = documentModel.CreatedBy;
-                        document.CreatedOn = DateTime.Now;
-                        document.ModifiedBy = documentModel.CreatedBy;
-                        document.ModifiedOn = DateTime.Now;
+                        document.Name = viewModel.FileName;
+                        document.OtherDocumentType = "FundingSource";
+                        document.Comment = viewModel.Notes;
+                       
                         _context.Documents.Update(document);
                         _context.SaveChanges();
                         if (document.DocumentId != null)
                         {
 
-                                fundingSource.FundingSourceId = viewModel.FundingSourceId;
-                                fundingSource.MuUnit = viewModel.MU_Unit;
-                                fundingSource.HvUnit = viewModel.HV_Unit;
-                                fundingSource.FundingSourceName = viewModel.FundingSource;
-                                fundingSource.DocumentId = document.DocumentId;
-                                fundingSource.CreatedBy = documentModel.CreatedBy;
-                                fundingSource.CreatedOn = DateTime.Now;
-                                fundingSource.ModifiedBy = documentModel.CreatedBy;
-                                fundingSource.ModifiedOn = DateTime.Now;
-                                fundingSource.IsDeleted = false;
+                            fundingSource.FundingSourceId = viewModel.FundingSourceId;
+                            fundingSource.MuUnit = viewModel.MU_Unit;
+                            fundingSource.HvUnit = viewModel.HV_Unit;
+                            fundingSource.FundingSourceName = viewModel.FundingSource;
+                            fundingSource.DocumentId = document.DocumentId;
+                            fundingSource.ModifiedBy = viewModel.CreatedBy;
+                            fundingSource.ModifiedOn = DateTime.Now;
+                            fundingSource.IsDeleted = false;
 
                         }
                         _context.FundingSources.Update(fundingSource);
@@ -125,53 +117,45 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 }
                 else
                 {
-                    var document = new Document
+                    var fundingSource = new FundingSource
                     {
-                        Name = documentModel.Name,
-                        Link = documentModel.Link,
-                        FileSize = documentModel.FileSize,
-                        Comment = documentModel.Comment,
-                        Attributes = documentModel.Attributes,
-                        OtherDocumentType = documentModel.OtherDocumentType,
-                        CreatedBy = documentModel.CreatedBy,
+                        MuUnit = viewModel.MU_Unit,
+                        HvUnit = viewModel.HV_Unit,
+                        FundingSourceName = viewModel.FundingSource,
+                        CreatedBy = viewModel.CreatedBy,
                         CreatedOn = DateTime.Now,
-                        ModifiedBy = documentModel.CreatedBy,
+                        ModifiedBy = viewModel.CreatedBy,
                         ModifiedOn = DateTime.Now,
                         IsDeleted = false,
-                        AssnDocuments =
-                    {
-                        new AssnDocument
+                        Document = new Document
                         {
-                            ReferenceId = documentModel.CaseId.ToString(),
-                            ReferenceType = ReferenceType.Case.ToString(),
-                            CreatedBy =  documentModel.CreatedBy,
-                            CreatedOn =  DateTime.Now,
-                            ModifiedBy =  documentModel.CreatedBy,
-                            ModifiedOn =  DateTime.Now
-                        }
-                    }
-                    };
-                    _context.Documents.Add(document);
-                    await _context.SaveChangesAsync();
-
-                    if (document.DocumentId != null)
-                    {
-                        var fundingSource = new FundingSource
-                        {
-                            MuUnit = viewModel.MU_Unit,
-                            HvUnit = viewModel.HV_Unit,
-                            FundingSourceName = viewModel.FundingSource,
-                            DocumentId = document.DocumentId,
-                            CreatedBy = documentModel.CreatedBy,
+                            Name = viewModel.FileName,
+                            Link = viewModel.Link,
+                            FileSize = viewModel.FileSize,
+                            Comment = viewModel.Notes,
+                            Attributes = "",
+                            OtherDocumentType = "FundingSource",
+                            CreatedBy = viewModel.CreatedBy,
                             CreatedOn = DateTime.Now,
-                            ModifiedBy = documentModel.CreatedBy,
+                            ModifiedBy = viewModel.CreatedBy,
                             ModifiedOn = DateTime.Now,
-                            IsDeleted = false
-                        };
-
-                        _context.FundingSources.Add(fundingSource);
-                        await _context.SaveChangesAsync();
-                    }
+                            IsDeleted = false,
+                            AssnDocuments =
+                                {
+                                    new AssnDocument
+                                    {
+                                        ReferenceId = viewModel.CaseId.ToString(),
+                                        ReferenceType = "Case",
+                                        CreatedBy =  viewModel.CreatedBy,
+                                        CreatedOn =  DateTime.Now,
+                                        ModifiedBy =  viewModel.CreatedBy,
+                                        ModifiedOn =  DateTime.Now
+                                    }
+                                }
+                        }
+                    };
+                    _context.FundingSources.Add(fundingSource);
+                    _context.SaveChanges(viewModel.CreatedBy);
                 }
                 return true;
             }
@@ -180,7 +164,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
                 throw;
             }
-           
+
             return true;
         }
 

@@ -15,11 +15,10 @@
 			</div>
 		</div>
 		<!-- End Project Notification -->
-
 		<!-- Table Content-->
 		<div class="row dashboard-header-row">
 			<div class="col-md-12 button-container text-right mb-3">
-				<button class="edit-project-button btn btn-primary btn-sm" onclick="Dashboard.DisplayModal()">Link Project(s)</button>
+				<button class="edit-project-button btn btn-primary btn-lg" onclick="Dashboard.DisplayModal()">Find & Link Project(s)</button>
 			</div>
 		</div>
 
@@ -127,17 +126,17 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--modal-->
 		<div class="modal fade" id="ActionModal" tabindex="-1" role="dialog"
 			 aria-labelledby="ActionModalLabel" aria-hidden="true"
 			 data-backdrop="static" data-keyboard="false">
-			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 				<!-- Centered modal -->
 				<div class="modal-content">
 					<!-- Modal Header -->
 					<div class="modal-header  text-white" style=" background-color : #2C3E5C !important">
-						<h5 class="modal-title text-white" id="ActionModalLabel">Link Project(s)</h5>
+						<h5 class="modal-title text-white" id="ActionModalLabel">Find & Link Project(s)</h5>
 						<!-- Disabled X close -->
 						<!-- <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -146,34 +145,95 @@
 
 					<!-- Modal Body -->
 					<div class="modal-body">
-						<p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
-						<h5>Provide your AcHP Number(s)</h5>
-						<p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p>
 
-						<form id="projectForm" onsubmit="Dashboard.handleSubmit(event)">
-							<div class="form-group">
-								<label for="acHpInput" class="font-weight-bold required">AcHP Number *</label>
-								<div class="input-group">
-									<input type="text" id="acHpInput" class="form-control" placeholder="AcHP Number" required>
-									<div class="input-group-append">
-										<button class="btn btn-primary" type="button" onclick="Dashboard.addProject()">Add</button>
-									</div>
-								</div>
-								<div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
-								<div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
-								<div id="validationMessage" class="text-danger mt-1" style="display: none;"></div>
+						<!-- Start main tab div -->
+						<div class="lahd-main-tabs">
+							<!-- Tabs -->
+							<div class="tabs">
+								<div class="tab active" data-tab="1">AcHP Number</div>
+								<div class="tab" data-tab="2">APN </div>
 							</div>
 
-							<!-- Project List -->
-							<div id="divProjects" class="mb-3"></div>
-						</form>
+							<!-- Tab Content -->
+							<!-- Start AcHP number search content -->
+							<div class="tab-content active" id="tab-1">
+								@* <p class="small text-danger mb-3">All fields marked with an asterisk (*) are required!</p>
+								<h5>Provide your AcHP Number(s)</h5>
+								<p class="small mb-3">If you do not know your AcHP Number, please contact your assigned RCS.</p> *@
+
+								<form id="projectForm" method="post">
+									<div class="form-group">
+										<label for="acHpInput" class="font-weight-bold required">AcHP Number </label><span class="text-danger">*</span>
+										<div class="input-group">
+											<input type="text" id="acHpInput" class="form-control" placeholder="AcHP Number" required>
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" onclick="Dashboard.addProject()">Search</button>
+											</div>
+										</div>
+										<div id="acHpError" class="text-danger mt-1" style="display: none;">Please enter an AcHP Number.</div>
+										<div id="noData" class="text-danger mt-1" style="display: none;">No data found.</div>
+										<div id="validationMessage" class="text-danger mt-1" style="display: none;"></div>
+									</div>
+									<!-- Project List -->
+									<div id="divProjects" class="mb-3"></div>
+									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
+										<button class="btn btn-primary" type="button" onclick="Dashboard.handleSubmit()">Submit</button>
+										@* <button type="submit" class="btn btn-primary" asp-page-handler="SubmitAcHP" form="projectForm">Submit</button> *@
+										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
+									</div>
+
+									
+									
+								</form>
+							</div>
+							<!-- End AcHP number search content -->
+							<!-- Start APN Search -->
+							<div class="tab-content" id="tab-2">
+								<form action="APNForm">
+									<label for="APNInput">Provide APN</label><span class="text-danger">*</span>
+									<div class="input-group mb-3">
+										<input type="text" id="APNInput" class="form-control" placeholder="APN" required>
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="button" id="searchAPNButton" onclick="Dashboard.GetAPNProject()">Search</button>
+										</div>
+									</div>
+									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
+									<div id="noAPNData" class="text-danger mt-1" style="display: none;">No data found.</div>
+									<div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
+
+
+									<div class="form-group mb-3">
+										<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
+										<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
+											<option value="" disabled selected>Select Project Address</option>
+										</select>
+									</div>
+									<div class="form-group mb-3">
+										<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
+										<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+									</div>
+									<div class="form-group mb-3">
+										<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
+										<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+									</div>
+
+									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
+										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitANP()">Submit</button>
+										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
+									</div>
+
+								</form>
+
+							</div>
+							<!-- End APN Search -->
+							<!-- End Tab Content -->
+
+						</div>
+						<!-- End main tab div -->
 					</div>
 
 					<!-- Modal Footer -->
-					<div class="modal-footer d-flex justify-content-end">
-						<button type="submit" class="btn btn-primary" form="projectForm">Submit</button>
-						<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
-					</div>
+
 
 				</div>
 			</div>
@@ -195,10 +255,22 @@
 			Dashboard.init();
 			Dashboard.PopulateMyProjectData();
 
-			// const loader = document.getElementById('cm_loader');
-			// if (loader) {
-			// 	loader.style.display = 'none';
-			// }
+			  
+
+			$(".tab").click(function() {
+				var tabId = $(this).data("tab");
+
+				// Remove active from all tabs and contents
+				$(".tab, .tab-content").removeClass("active");
+
+				// Activate clicked tab and its content
+				$(this).addClass("active");
+				$("#tab-" + tabId).addClass("active");
+			});
+
 		});
+
+
 	</script>
+
 }

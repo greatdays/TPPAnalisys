@@ -185,6 +185,12 @@
     font-size: 18px;
 }
 
+#navbar-help {
+    color: white;
+    font-size: 15px;
+    margin-top: 3px;
+}
+
 /*LANDING PAGE END*/
 
 body, html {

@@ -18,6 +18,8 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
 
         #region Non AsyncMethods
         DataTable ExecuteStoreProcedure(string procedureName, List<SqlParameter> parameters);
+
+        Task<T> ExecuteStoredwithDatatableProcAsync<T>(string storedProcName, params SqlParameter[] parameters) where T : class, new();
         #endregion
 
     }

@@ -34,15 +34,33 @@
             switch (tabName) {
                 case "tabSiteInformation":
                     SiteInformation.LoadSiteInformation();
-                   break;
+                break;
+                // case "tabImportantDates":
+                //     url = '@Url.Action("ImportantDates", "Construction", new { area = "Construction" })?id=' + Id;
+                //     LoadTabData(url, "divImportantDates");
+                //     break;
+                // case "tabProjectParticipants":
+                //     console.log("Id: " + Id);
+                //     url = '@Url.Action("RenderContactById", "ProjectDetail", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ContactControlViewModelId;
+                //     LoadTabData(url, "divProjectParticipants");
+                //     break;
+                // case "tabPolicyContacts":
+                //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
+                //     LoadTabData(url, "divPolicyContacts");
+                //     break;
                 case "tabDevelopmentTeamList":
                     DevelopmentTeam.LoadParticipants();
-                     break;
-                 case "tabDocuments":
-                    var caseId = Id; // Replace with your method to get case ID
-                    // Replace with your method
-                    console.log(Id);
-                    DMS.LoadDocuments(caseId);
+                    break;
+                case "tabDocuments":
+                    //debugger;
+                    if (window.DMS) {
+                        DMS.LoadDocuments(Id);
+                    }
+                    else {
+                        console.error("DMS class not loaded yet");
+                    }
+   
+                    
                     break;
 
                 case "tabFundingSource":

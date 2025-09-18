@@ -32,7 +32,7 @@ namespace DeveloperPortal.Application.DMS.Implementation
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
             FolderDetails folderDetails = null;
-            var projectIdParam = new SqlParameter("ProjectID", caseId);
+            var projectIdParam = new SqlParameter("SiteAddressID", caseId);
 
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
                                                     StoredProcedureNames.SP_uspGetDMSDocumentDetails,
@@ -45,13 +45,14 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 foreach (var document in resultDocuments)
                 {
                     fileModel = new Domain.DMS.FileModel();
-                    fileModel.ID = Convert.ToString(document.DocumentId);
+                    fileModel.DocumentId = document.DocumentId;
                     fileModel.Roles = "NAC";
                     fileModel.UploadedDate = document.CreatedOn;
                     fileModel.Name = document.Name;
                     fileModel.UploadedBy = document.CreatedBy;
                     fileModel.Category = document.OtherDocumentType;
                     fileModel.Link = document.Link;
+                    fileModel.Comment = document.Comment;
 
                     fileModels.Add(fileModel);
                 }
@@ -76,6 +77,11 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 return new DocumentModel();
             }
 
+        }
+        public async Task<bool> DeleteDocument(int id)
+        {
+
+            return await _documentRepository.DeleteDocument(id);
         }
         public async Task<FolderModel> SaveFolder(FolderModel folderModel)
         {

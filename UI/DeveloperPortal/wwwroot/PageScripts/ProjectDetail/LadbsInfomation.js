@@ -9,8 +9,9 @@ var LadbsInformation=
         initPermitNumberList: function () 
         {
 
-            if (!$.fn.DataTable.isDataTable('#dtPermitNumberData')) {
-                dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
+            if ($.fn.DataTable.isDataTable('#dtPermitNumberData')) {
+                $('#dtPermitNumberData').dataTable().fnDestroy();
+            } dtPermitNumberDataTable = $('#dtPermitNumberData').dataTable({
                 ajax: {
                         url: APPURL + 'ProjectDetail/GetPermitNumbers',
                     data: function (d) {
@@ -35,12 +36,6 @@ var LadbsInformation=
                 oLanguage: {
                     sEmptyTable: "No record found."
                 }
-            })
-            .on('preXhr.dt', function () {
-                $('#loaderOverlay').fadeIn(100); // Show loading spinner
-            })
-            .on('xhr.dt', function () {
-                $('#loaderOverlay').fadeOut(300); // Hide loading spinner
             });
 
             dtPermitNumberDataTable.on('draw.dt', function () {
@@ -51,15 +46,17 @@ var LadbsInformation=
                 $(".dataTables_length").hide();
                 var PermitNumberData = $('#dtPermitNumberData').dataTable().fnGetData();
 
-                if (PermitNumberData.length > 0) {
+                if (PermitNumberData.length > 0 && PermitNumberData[0]!="") {
                     $("#dtPermitNumberData_paginate").show();
                     var pageItems = $("#dtPermitNumberData_paginate .paginate_button ");
                     var permitList = PermitNumberData[0].permitList;
                     for (var i = 0; i < pageItems.length; i++) {
                         var text = pageItems[i].text
                         if (text != '…') {
-                            if (parseInt(text) !== NaN || parseInt(text) !== 'undefined' || parseInt(text) !=='Previous') {
-                                pageItems[i].text=permitList[parseInt(text) - 1];
+                            if (parseInt(text) !== NaN || parseInt(text) !== 'undefined' || parseInt(text) !== 'Previous') {
+                                if (permitList[parseInt(text) - 1]) {
+                                    pageItems[i].text = permitList[parseInt(text) - 1];
+                                }
                             }
                         }
                     }
@@ -74,58 +71,37 @@ var LadbsInformation=
                         $("#dtPermitNumberData_wrapper").attr("hidden", false);
                         $("#permit-number-directions").attr("hidden", false);
                     }
-                        $('#loaderOverlay').fadeOut(300);
                 } else {
                     $("#dtPermitNumberData_paginate").hide();
-                    $('#loaderOverlay').fadeOut(300);
                 }
 
                 $("a.paginate_button[aria-controls='dtPermitNumberData']").on('dblclick', function () {
                     var params = this.text.split(" ");
                     $("#permitNumberInformationPopup").modal("show");
                     $("#permitNumberInformationPopupTitle").html(`Permit Details: ${this.text}`);
-                    $.ajax({
-                        type: "GET",
-                        url: APPURL + "ProjectDetail/GetPermitDetails",
-                        data: {
-                            PropsnapshotID:ldbsPropSnapshotId,
-                            PermitNumber: params[0]
-                        },
-                        success: function (data) {
+                    var payLoad = {
+                        PropsnapshotID: ldbsPropSnapshotId,
+                        PermitNumber: params[0]
+                    };
+                    AjaxCommunication.CreateRequest(this.window, "GET", APPURL + "ProjectDetail/GetPermitDetails", "", payLoad,
+                        function (data) {
                             $("#permitNumberInformationPopup .modal-body").html(data);
-                        },
-                        error: function (result) {
-                            console.log(result)
-                        }
-                    });
+                        }, null, true, null, false);
                 });
 
                 $("#dtPermitNumberData .sorting_disabled").attr("hidden", true);
             });
-        }
-        else {
-            var table = $('#dtPermitNumberData').DataTable();
-            $('#loaderOverlay').fadeIn(100); // Show loader before refresh
-            table.clear().draw();
-            table.ajax.reload(null, false); // false to stay on current page
-            table.one('xhr', function () {
-                $('#loaderOverlay').fadeOut(300); // Hide loader after refresh
-            });
-        }
     },
     syncPermitNumbers: function () {
 
         $('#invalid-permit-message').empty().hide();
-        
-        $.ajax({
-            type: "POST",
-            url: APPURL + "ProjectDetail/SaveLADBSData",
-            data: {
-                PropsnapshotID: ldbsPropSnapshotId,
-                PermitNumber: null
-            },
-            success: function (data) {
-                console.log(data)
+
+        var payLoad = {
+            PropsnapshotID: ldbsPropSnapshotId,
+            PermitNumber: null
+        };
+        AjaxCommunication.CreateRequest(this.window, "POST", APPURL + "ProjectDetail/SaveLADBSData", "", payLoad,
+            function (data) {
                 LadbsInformation.initPermitNumberList();
                 // Show invalid permits, if any
                 if (data.invalid && data.invalid.length > 0) {
@@ -144,39 +120,36 @@ var LadbsInformation=
                 } else {
                     $('#invalid-permit-message').empty().hide();
                 }
-            },
-            error: function (result) {
-                console.log(result)
-            }
-        });
+            }, null, true, null, false);
 
     },
 
    linkPermitNumber: function () {
-
-        $('#invalid-permit-message').empty().hide();
+       $('#invalid-permit-message').empty().hide();
+       $("#LADBSerror").attr("hidden", true);
         var permitNumber = $("#LADBS_PermitNumber").val();
-        
         if ((permitNumber === null || permitNumber.trim() === "")) {
             $("#LADBSerror").text("Permit Number or Department field is empty!");
             $("#LADBSerror").attr("hidden", false);
         }
         else {
-            $.ajax({
-                type: "POST",
-                url: APPURL + "ProjectDetail/SaveLADBSData",
-                data: {
-                    PropsnapshotID: ldbsPropSnapshotId,
-                    PermitNumber: permitNumber
-                },
-                success: function (data) {
-                    console.log(data)
-                    // Show invalid permits, if any
-                    if (data.invalid && data.invalid.length > 0) {
-                        const quotedInvalids = data.invalid.map(p => `"${p}"`).join(", ");
+            var payLoad = {
+                PropsnapshotID: ldbsPropSnapshotId,
+                PermitNumber: permitNumber
+            };
+            AjaxCommunication.CreateRequest(this.window, "POST", APPURL + "ProjectDetail/SaveLADBSData", "", payLoad ,
+                function (data) {
+                    LadbsInformation.LinkPermitNumberSuccess(data);
+                }, null, true, null, false);
+        }
+    },
+    LinkPermitNumberSuccess: function (data) {
+        // Show invalid permits, if any
+        if (data.invalid && data.invalid.length > 0) {
+            const quotedInvalids = data.invalid.map(p => `"${p}"`).join(", ");
 
-                        $('#invalid-permit-message')
-                            .html(`
+            $('#invalid-permit-message')
+                .html(`
                             <div class="alert alert-danger mt-2">
                                 Permit number <strong>${quotedInvalids}</strong> does not exist.<br/>
                                 <small class="text-muted">
@@ -184,79 +157,52 @@ var LadbsInformation=
                                     Other special characters, spaces, or unstructured words will be treated as invalid.
                                 </small>
                             </div>`).show();
-                    } else {
-                        $('#invalid-permit-message').empty().hide();
-                    }
-                },
-                error: function (result) {
-                    console.log(result)
-                }
-            });
-            $('#loaderOverlay').fadeIn(100); // Show loading spinner
-            $('#dtPermitNumberData').DataTable().clear().draw();
-
+        } else {
+            $('#invalid-permit-message').empty().hide();
             LadbsInformation.initPermitNumberList();
+            $("#LADBS_PermitNumber").val("")
         }
     },
 
     updatePermitNumber:function () {
 
         $('#invalid-permit-message').empty().hide();
-        var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
-        console.log(params)
-        $.ajax({
-            type: "POST",
-            url: APPURL + "ProjectDetail/SaveLADBSData",
-            data: {
-                PropsnapshotID: ldbsPropSnapshotId,
-                PermitNumber: params[0]
-            },
-            success: function (data) {
+        var params = $("#dtPermitNumberData_wrapper a.current").text().split(" ");
+        var payLoad = {
+            PropsnapshotID: ldbsPropSnapshotId,
+            PermitNumber: params[0]
+            };
+        AjaxCommunication.CreateRequest(this.window, "POST", APPURL + "ProjectDetail/SaveLADBSData", "", payLoad,
+            function (data) {
                 if (data == "OK") {
-                    $/*('#loaderOverlay').fadeIn(100); // Show loading spinner*/
                     $("#LADBSerror").attr("hidden", true);
-                    $("#dtPermitNumberData_wrapper .active a").dblclick();
+                    $("#dtPermitNumberData_wrapper a.current").dblclick();
                 }
                 else {
                     $("#LADBSerror").attr("hidden", false);
                 }
-            },
-            error: function (result) {
-                console.log(result)
-            }
-        });
+            }, null, true, null, false);
     },
 
    deletePermitNumber: function() {
 
         $('#invalid-permit-message').empty().hide();
-        var params = $("#dtPermitNumberData_wrapper .active a").text().split(" ");
+        var params = $("#dtPermitNumberData_wrapper a.current").text().split(" ");
 
-        $.ajax({
-            type: "POST",
-            url: APPURL + "ProjectDetail/SaveLADBSData",
-            data: {
-                PropsnapshotID: ldbsPropSnapshotId,
-                PermitNumber: params[0],
-                Delete: true
-            },
-            success: function (data) {
-                if (data == "OK") {
-                    $('#loaderOverlay').fadeIn(100); // Show loading spinner
-                    $("#LADBSerror").attr("hidden", true);
-
-                    $('#dtPermitNumberData').DataTable().clear().draw();
-
-                    LadbsInformation.initPermitNumberList();
-                }
-                else {
-                    $("#LADBSerror").attr("hidden", false);
-                }
-            },
-            error: function (result) {
-                console.log(result)
-            }
-        });
+       var payLoad = {
+           PropsnapshotID: ldbsPropSnapshotId,
+           PermitNumber: params[0],
+           Delete: true
+       };
+       AjaxCommunication.CreateRequest(this.window, "POST", APPURL + "ProjectDetail/SaveLADBSData", "", payLoad,
+           function (data) {
+               if (data == "OK") {
+                   $("#LADBSerror").attr("hidden", true);
+                   $('#dtPermitNumberData').DataTable().clear().draw();
+               }
+               else {
+                   $("#LADBSerror").attr("hidden", false);
+               }
+           }, null, true, null, false);
     }
-
 };

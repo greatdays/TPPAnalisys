@@ -1,13 +1,18 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection.Metadata;
 using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity.Models;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
+using DeveloperPortal.Domain.Dashboard;
 using DeveloperPortal.Models.Common;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,9 +26,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         public readonly IAccountRepository _accountRepository;
         private IConfiguration _config;
         private readonly AAHREntities _context;
-
-        public AccountService(IAccountRepository accountRepository, IConfiguration config, AAHREntities context)
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+        public AccountService(IStoredProcedureExecutor storedProcedureExecutor, IAccountRepository accountRepository, IConfiguration config, AAHREntities context)
         {
+            _storedProcedureExecutor = storedProcedureExecutor;
             _accountRepository = accountRepository;
             _config = config;
             _context = context;
@@ -117,7 +123,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 contact.Unit = signupModel.IsPostBox ? "" : signupModel.Unit;
                 contact.IsMarkedForMailing = signupModel.AlternateContactMethodcd == (int)ContactMethods.USMail ? true : false;
                 contact.PropContactId = signupModel.PropContactId;
-               
+
                 contact.Type = ContactTypes.Applicant; //TODO: find the type
 
 
@@ -170,7 +176,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
                     var contactId = await SaveContactToContactIdentifier(signupModel, contactID, contact.Type, userName, JsonConvert.SerializeObject(Attributes), source);
 
-                   
+
                 }
                 return contactID;
             }
@@ -181,13 +187,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             string Attributes = "";
             try
             {
-         
-                    ContactIdentifier contactIdentifier = _context.ContactIdentifiers.FirstOrDefault(m => m.ContactId == contactId && m.IsDeleted == false);
 
-                    if (contactIdentifier == null)
-                    {
-                        contactIdentifier = new ContactIdentifier();
-                    }
+                ContactIdentifier contactIdentifier = _context.ContactIdentifiers.FirstOrDefault(m => m.ContactId == contactId && m.IsDeleted == false);
+
+                if (contactIdentifier == null)
+                {
+                    contactIdentifier = new ContactIdentifier();
+                }
 
                 ContactIdentifier alt_contactIdentifier = _context.ContactIdentifiers.FirstOrDefault(m => m.AltContactReferenceId == contactIdentifier.ContactIdentifierId);
                 bool altcontactexists = false;
@@ -208,7 +214,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 else
                 {
                     Attributes = !string.IsNullOrEmpty(attributes)
-                                    ? attributes    
+                                    ? attributes
                                     : "{" + "\"In\"" + ":" + "\"Office\"" + "," + "\"ContractorType\"" + ":" + "\"" + attributes + "\"" + " }";
                 }
 
@@ -268,7 +274,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     IsDeleted = false,
                     CreatedBy = userName,
                     CreatedOn = DateTime.Now
-                   
+
 
                 };
                 var contactOrganization = contactIdentifier.AssnOrganizationContacts.FirstOrDefault(x => x.Organization.Name == model.Company && x.IsDeleted == false && x.Organization.IsDeleted == false);
@@ -276,15 +282,15 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 {
                     if (contactOrganization == null || model.OrganizationID == 0)
                     {
-                        
-                            List<AssnOrganizationContact> lstOrgContact = _context.AssnOrganizationContacts.Where(o => o.IsDeleted != true && o.ContactIdentifierId == contactIdentifier.ContactIdentifierId).ToList();
-                            foreach (var orgContact in lstOrgContact)
-                            {
-                                orgContact.IsDeleted = true;
-                                _context.Entry(orgContact).State = EntityState.Modified;
-                                _context.SaveChanges(userName);
-                            }
-                        
+
+                        List<AssnOrganizationContact> lstOrgContact = _context.AssnOrganizationContacts.Where(o => o.IsDeleted != true && o.ContactIdentifierId == contactIdentifier.ContactIdentifierId).ToList();
+                        foreach (var orgContact in lstOrgContact)
+                        {
+                            orgContact.IsDeleted = true;
+                            _context.Entry(orgContact).State = EntityState.Modified;
+                            _context.SaveChanges(userName);
+                        }
+
 
                         var organization = _context.Organizations.FirstOrDefault(x => x.Name == model.Company && x.IsDeleted == false);
                         if (organization == null)
@@ -360,14 +366,14 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             catch (Exception ex)
             {
-               
+
                 Console.WriteLine("Error saving ContactIdentifier: " + ex.Message);
                 Console.WriteLine("StackTrace: " + ex.StackTrace);
-                throw; 
+                throw;
             }
         }
 
-        
+
 
 
         public async Task<List<Project>> GetProjectDetailByFileNumberAsync(String FileNumber)
@@ -378,9 +384,41 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
 
 
+        public async Task<List<APNSearchSiteAddress>> GetAPNProjectName(String APNNumber)
+        {
+            try
+            {
+                var parameters = new[]
+                {
+                    new SqlParameter("APN", APNNumber)
+                };
+
+                // Execute the stored procedure and get the result, which is a List of Lists.
+                var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<APNSearchSiteAddress>(
+                    StoredProcedureNames.SP_uspGetSiteAddressByAPN,
+                    parameters
+                );
+
+                // Check if the result is not null and contains at least one list.
+                if (result != null && result.Count > 0)
+                {
+                    // Return the first list from the result.
+                    return result;
+                }
+
+                // Return an empty list if no results are found.
+                return new List<APNSearchSiteAddress>();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Return an empty list in case of an exception.
+                return new List<APNSearchSiteAddress>();
+            }
+        }
         public async Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContactAsync(List<string> projects, HttpContext httpContext)
         {
-            var userName =  UserSession.GetUserSession(httpContext).UserName;
+            var userName = UserSession.GetUserSession(httpContext).UserName;
             var savedProjects = new List<int>();
             var notSavedProjects = new List<int>();
 
@@ -413,7 +451,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             notSavedProjects.Add(projectId);
                     }
                 }
-                
+
             }
             return (savedProjects, notSavedProjects);
         }
@@ -423,6 +461,95 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             var data = await _accountRepository.GetUSerRole(ApplicationID);
             return data;
         }
+
+
+        public async Task<bool> CreateProject(ProjectModel projectModel,  HttpContext httpContext)
+        {
+            try
+            {
+                var userName = UserSession.GetUserSession(httpContext).UserName;
+                var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                var parameters = new[]
+                {
+                    new SqlParameter("APN", projectModel.APN),
+                    new SqlParameter("ProjectAddress", projectModel.ProjectAddress),
+                    new SqlParameter("SiteAddressID", projectModel.SiteAddressID),
+                    new SqlParameter("UserName", userName),
+                    new SqlParameter("ProjectName", projectModel.ProjectName),
+                    new SqlParameter("PropertyName", projectModel.PropertyNameInput),
+                };
+
+                // Execute the stored procedure and get the result, which is a List of Lists.
+                var result = await _storedProcedureExecutor.ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
+                    StoredProcedureNames.SP_uspCreateNewProjectandSite,
+                    parameters
+                );
+
+               
+
+
+                // Check if the result is not null and contains at least one list.
+                if (result != null)
+                {
+                    List<string> projects = new List<string>();
+                    projects.Add(result.ProjectID.ToString());
+                    //var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                    var (saved, notSaved) = await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+                    
+                }
+
+                // Return an empty list if no results are found.
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                // Return an empty list in case of an exception.
+                return false;
+            }
+        }
+
+        public async Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContact(List<string> projects, HttpContext httpContext, int contactIdentifierID )
+        {
+            var userName = UserSession.GetUserSession(httpContext).UserName;
+            var savedProjects = new List<int>();
+            var notSavedProjects = new List<int>();
+
+            if (!string.IsNullOrEmpty(userName))
+            {
+                
+                var lutContactType = await _accountRepository.GetLutPropContactAssnTypes(ConstAssnPropContact.Role);
+
+                if (contactIdentifierID != null)
+                {
+                    foreach (var item in projects)
+                    {
+                        int projectId = int.Parse(item);
+
+                        var popContact = new AssnPropContact
+                        {
+                            IdentifierType = ConstAssnPropContact.Project,
+                            ContactIdentifierId = contactIdentifierID,
+                            LutContactTypeId = lutContactType.LutContactTypeId,
+                            Status = ConstAssnPropContact.Status,
+                            Source = ConstAssnPropContact.Source,
+                            ProjectId = projectId
+                        };
+
+                        bool isSaved = await _accountRepository.AddPropContactIfNotExistsAsync(popContact, userName);
+
+                        if (isSaved)
+                            savedProjects.Add(projectId);
+                        else
+                            notSavedProjects.Add(projectId);
+                    }
+                }
+
+            }
+            return (savedProjects, notSavedProjects);
+        }
+
+
     }
 }
 

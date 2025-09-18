@@ -57,6 +57,10 @@ public partial class SiteAddress
 
     public DateTime? ModifiedOn { get; set; }
 
+    public int? HouseId { get; set; }
+
+    public string? Apn { get; set; }
+
     public virtual ICollection<PmpprojectSiteSnap> PmpprojectSiteSnaps { get; set; } = new List<PmpprojectSiteSnap>();
 
     public virtual ICollection<PmpunitSnap> PmpunitSnaps { get; set; } = new List<PmpunitSnap>();
