@@ -306,7 +306,7 @@ window.DMS = class DMS {
             window.dmsManager.destroy();
         }
 
-        $.get('/DMS/GetFilesById', { caseId, controlViewModelId })
+        $.get(APPURL +  '/DMS/GetFilesById', { caseId, controlViewModelId })
             .done((html) => {
                 $(`#${targetDiv}`).html(html);
                 if ($("#dmsDataTable").length > 0) {
