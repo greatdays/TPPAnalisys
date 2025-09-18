@@ -9,6 +9,17 @@
 
             $(this).closest('div.row').remove();
         });
+
+        $('#tblMyProjects').DataTable({
+            "bPaginate": true,
+            "bSort": true,
+            "pageLength": 10,
+            "bInfo": true,
+            "bRetrieve": true,
+            "bFilter": true,
+            "bLengthChange": true,
+            "LengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
+        });
     },
 
     handleSubmit: function (e) {
@@ -144,11 +155,7 @@
                 dataType: 'json',
                 dataSrc: ''
             },
-            sorting: true,
-            searching: true,
-            paging: true,
-            info: true,
-            header: true,
+           
             columns: [
                 {
                     data: 'acHPFileProjectNumber',
@@ -210,11 +217,6 @@
                 dataType: 'json',
                 dataSrc: ''
             },
-            sorting: false,
-            searching: false,
-            paging: false,
-            info: false,
-            header: false,
             columns: [
                 {
                     data: 'projectName',
