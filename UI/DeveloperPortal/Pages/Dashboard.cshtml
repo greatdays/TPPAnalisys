@@ -182,8 +182,8 @@
 										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
 									</div>
 
-									
-									
+
+
 								</form>
 							</div>
 							<!-- End AcHP number search content -->
@@ -255,7 +255,7 @@
 			Dashboard.init();
 			Dashboard.PopulateMyProjectData();
 
-			  
+
 
 			$(".tab").click(function() {
 				var tabId = $(this).data("tab");
@@ -272,5 +272,16 @@
 
 
 	</script>
+	<style>
+		#tblMyProjects_wrapper .disabled {
+			background: #808080 !important;
+			cursor: not-allowed !important;
+		}
+
+			#tblMyProjects_wrapper .disabled:hover {
+				background: #808080 !important;
+				cursor: not-allowed !important;
+			}
+	</style>
 
 }
