@@ -6,6 +6,53 @@
 <div class="page-content">
 	<div class="container-lahd">
 		<h3 class="title text-primary m-0">My Dashboard</h3>
+		<!-- Notification Window -->
+		<aside id="sidebar" class="notification-sidebar open" role="region" aria-label="Notifications panel">
+			<div style="padding: 15px 10px; text-align: center;">
+				<h4 class="m-0 mb-2 p-0 text-white">Notifications</h4>
+				<p class="m-0 p-0 text-white">You have new comments on the following project(s)</p>
+			</div>
+			<div class="notifications" id="list">
+				<!-- sample items -->
+				<article class="notif unread" data-id="1" tabindex="0">
+					<div class="icon">A</div>
+					<div class="content">
+						<div class="title">A3834</div>
+						<div class="meta">Your housing application was approved. Tap to view details.</div>
+					</div>
+					<div class="actions">
+						<button class="btn-ghost small markRead">Read More</button>
+					</div>
+				</article>
+
+				<article class="notif unread" data-id="2" tabindex="0">
+					<div class="icon">F</div>
+					<div class="content">
+						<div class="title">F0611</div>
+						<div class="meta">Privacy policy has changed. Please review the updated terms.</div>
+					</div>
+					<div class="actions">
+						<button class="btn-ghost small markRead">Read More</button>
+					</div>
+				</article>
+
+				<article class="notif unread" data-id="3" tabindex="0">
+					<div class="icon">S</div>
+					<div class="content">
+						<div class="title">System Maintenance</div>
+						<div class="meta">Scheduled maintenance on Sep 20, 2025 at 02:00 AM IST.</div>
+					</div>
+					<div class="actions">
+						<button class="btn-ghost small markRead">Read More</button>
+					</div>
+				</article>
+			</div>
+			<div class="bottom-bar text-center">
+				<div class="small">Showing latest notifications</div>
+			</div>
+		</aside>
+
+		<!-- End Notification Window -->
 
 		<!-- Project Notification -->
 		<div class="project-notifications mt-3 mb-4" style="display:none">
@@ -242,7 +289,9 @@
 		<!--End Table Content-->
 	</div>
 
-
+	<button class="toggle-btn notification-icon">
+		<svg width="34" class="bell" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a6 6 0 0 0-6 6v3.5L4 14v1h16v-1l-2-2.5V8a6 6 0 0 0-6-6zM8 21a4 4 0 0 0 8 0H8z" /></svg>
+	</button>
 </div>
 
 @section Scripts {
@@ -270,6 +319,11 @@
 
 		});
 
+		$(document).ready(function () {
+		  $(".toggle-btn").click(function () {
+			$(".notification-sidebar").toggleClass("open");
+		  });
+		});
 
 	</script>
 	<style>
