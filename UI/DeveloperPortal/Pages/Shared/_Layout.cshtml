@@ -95,7 +95,7 @@
             $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
             $("#global_nav_la_4324422-rightwrap > a").each(function () {
                 var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
-                $(this).append('<img class="navbar-new-window-icon" src="' + imgSrc + '" alt="Opens in new window">');
+                $(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
             });
         });
     </script>
@@ -115,6 +115,40 @@
                         <span class="navBarTitle"> ACHP Construction Portal</span>
                     </div>
                     <div class="navBar-decor"></div>
+                    <!-- User dropdown -->
+                    <ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+                        <li class="nav-item dropdown">
+                            <button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                PP
+                            </button>
+                            <div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
+                                <div class="bg-white  rounded-2 py-2">
+                                    <a class="dropdown-item font-weight-bold text-primary" href="#">
+                                        Param S
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-primary" href="#">My Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-primary" href="#">Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <script>
+                        $(document).ready(function() {
+                          $(".user-btn").click(function(e) {
+                            e.stopPropagation();
+                            $(".dropdown-menu").toggle();
+                          });
+
+                          // Hide dropdown when clicking outside
+                          $(document).click(function() {
+                            $(".dropdown-menu").hide();
+                          });
+                        });
+                    </script>
+
+                    <!-- End User dropdown -->
                 </div>
             </div>
         </div>
@@ -145,7 +179,7 @@
                         @if (usr.UserID == 0)
                         {
                             <ul class="nav navbar-nav navbar-right">
-                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                            <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success" })</li>
                                 <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                               @*   <li>
                                     @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
