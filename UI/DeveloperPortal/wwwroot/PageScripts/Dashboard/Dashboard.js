@@ -40,10 +40,6 @@
             return;
         }
 
-        console.log("Submitting projects:", projects);
-        debugger;
-        //var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
-        // Send to backend
         $.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
             if (response.success) {
                 $('#ActionModal').modal('hide');
@@ -56,6 +52,7 @@
 
 
     handleSubmitANP: function (e) {
+
         $('.validation-error').remove();
 
         var isValid = true;
@@ -109,7 +106,7 @@
                 success: function (response) {
                     if (response.success) {
                         $('#ActionModal').modal('hide');
-                        Dashboard.clearAPNForm();
+                       
                         Dashboard.PopulateMyProjectData();
                     } else {
                         $('#validationMessage').text(response.message || "Submission failed.").show();
@@ -120,22 +117,6 @@
                 }
             });
         }
-    },
-
-    clearAPNForm: function () {
-        // Clear the value of the APN input field
-        $('#APNInput').val('');
-
-        // Clear the dropdown list, resetting it to the default option
-        $('#SiteAddressControlSelect').empty().append('<option value="" disabled selected>Please Select a Site Address</option>');
-
-        // Clear the project and property name input fields
-        $('#projectNameInput').val('');
-        $('#propertyNameInput').val('');
-
-        // Remove any validation error messages that might be visible
-        $('.validation-error').remove();
-        $('#validationMessage').hide(); // Hide the main validation message if it's visible
     },
 
 
@@ -155,7 +136,7 @@
                 dataType: 'json',
                 dataSrc: ''
             },
-           
+
             columns: [
                 {
                     data: 'acHPFileProjectNumber',
@@ -237,12 +218,48 @@
         });
     },
 
+    showTab1: function () {
+        // Deactivate all tabs and their content
+        document.querySelectorAll('.tab, .tab-content').forEach(el => {
+            el.classList.remove('active', 'show');
+        });
+
+        // Activate tab-1
+        document.querySelector('.tab[data-tab="1"]').classList.add('active');
+
+        // Activate tab-1 content
+        document.getElementById('tab-1').classList.add('active', 'show');
+    },
+
     DisplayModal: function () {
+        setTimeout(Dashboard.showTab1, 300);
+
         $('#ActionModal').modal('show');
+        // $('#ActionModal').modal('show');
         document.getElementById('acHpError').style.display = 'none';
         document.getElementById('noData').style.display = 'none';
         document.getElementById("acHpInput").value = '';
         document.getElementById('divProjects').innerHTML = '';
+
+        document.getElementById('noAPNData').style.display = 'none';
+        document.getElementById('APNError').style.display = 'none';
+
+        $('#APNInput').val('');
+
+        // Clear the dropdown list, resetting it to the default option
+        $('#SiteAddressControlSelect').empty().append('<option value="" disabled selected>Please Select a Site Address</option>');
+
+        // Clear the project and property name input fields
+        $('#projectNameInput').val('');
+        $('#propertyNameInput').val('');
+
+        // Remove any validation error messages that might be visible
+        $('.validation-error').remove();
+        $('#validationMessage').hide(); // Hide the main validation message if it's visible
+        var tableBody = $("#tblExistingProjectDetails tbody");
+        tableBody.empty();
+        document.getElementById("ExistingProjectNameId").style.display = "none";
+        document.getElementById("CreateNewProjectId").style.display = "none";
     },
 
 
@@ -261,7 +278,7 @@
     },
 
     GetAPNProject: function () {
-        debugger;
+
         const input = document.getElementById("APNInput");
         const value = input.value.trim();
         document.getElementById("noAPNData").style.display = "none";
@@ -277,10 +294,10 @@
 
     AddClick: function () {
         var ctlIndex = GetControlIndex();
-        console.log('ProjCount: ' + ctlIndex);
+        /*        console.log('ProjCount: ' + ctlIndex);*/
         const input = document.getElementById("acHpInput");
         const achpNumber = input.value.trim();
-        debugger;
+
 
         Dashboard.GetACHPDetail(achpNumber, function (streetName, retAchp, projectId, found) {
             var achpNumbers = new Set();
@@ -335,10 +352,10 @@
     SerachAPNClick: function () {
         var token = $('input[name="__RequestVerificationToken"]').val();
         var ctlIndex = GetControlIndex();
-        console.log('ProjCount: ' + ctlIndex);
+        //console.log('ProjCount: ' + ctlIndex);
         const input = document.getElementById("APNInput");
         const APNNumber = input.value.trim();
-        debugger;
+
         document.getElementById("noAPNData").style.display = "none";
         $.ajax({
             url: APPURL + 'Dashboard?handler=GetAPNProjectName',
@@ -349,22 +366,69 @@
             },
             data: { APNNumber: APNNumber },
             success: function (response) {
+
+                if (response.apnSearchSiteAddresslst == null && response.apnSearchProjectInfolst == null) {
+                    document.getElementById("noAPNData").style.display = "block";
+                    document.getElementById("CreateNewProjectId").style.display = "none";
+                    document.getElementById("ExistingProjectNameId").style.display = "none";
+                    return;
+                }
+
+                if (response.apnSearchSiteAddresslst != null) {
+                    var projectList = response.apnSearchSiteAddresslst.map(p => ({
+                        id: p.siteAddressID,
+                        fullAddress: p.fullAddress
+                    }));
+                }
                 var dropdown = $('#SiteAddressControlSelect');
                 dropdown.empty().append('<option value="" disabled selected>Please Select a Site Address</option>');
 
+
                 // Check if the response is valid and has data
-                if (response && response.length > 0) {
+                if (response.apnSearchSiteAddresslst != null && projectList && projectList.length > 0) {
+
+                    document.getElementById("CreateNewProjectId").style.display = "block";
                     // Loop through the data and add options to the dropdown
-                    $.each(response, function (i, item) {
+                    $.each(projectList, function (i, item) {
                         dropdown.append($('<option>', {
                             value: item.id,      // Assuming the C# object has a 'id' property
                             text: item.fullAddress // Assuming the C# object has a 'projectName' property
                         }));
                     });
-                } else {
-                    document.getElementById("noAPNData").style.display = "block";
+                }
+                else {
+                    document.getElementById("CreateNewProjectId").style.display = "none";
+                }
+
+                var gridData = response.apnSearchProjectInfolst;
+
+                var tableBody = $("#tblExistingProjectDetails tbody");
+                tableBody.empty();
+                if (gridData != null && gridData.length > 0) {
+
+                    document.getElementById("ExistingProjectNameId").style.display = "block";
+
+
+                    gridData.forEach(function (project) {
+                        tableBody.append
+                            (`
+                        <tr>
+                            <td>${project.achpNumber}</td>
+                            <td>${project.projectName}</td>
+                            <td>
+                                <button class="btn btn-link" type="button" onclick="Dashboard.LinkProject(event, '${project.projectID}')">
+                                    Link Project
+                                </button>
+                            </td>
+                        </tr>
+        `           );
+                    });
 
                 }
+                else {
+                    document.getElementById("ExistingProjectNameId").style.display = "none";
+                }
+
             },
             error: function (xhr) {
                 console.error("Error:", xhr.status, xhr.responseText);
@@ -373,8 +437,33 @@
         });
     },
 
+    LinkProject: function (event, projectId) {
+        $('#validationMessage').hide().text('');
+        var projects = [];
+        if (projectId > 0) {
+            projects.push(projectId);
+            if (projects.length === 0) {
+                $('#validationMessage').text("Please add at least one project before submitting.").show();
+                return;
+            }
+
+            $.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+                if (response.success) {
+                    $('#ActionModal').modal('hide');
+                    Dashboard.PopulateMyProjectData();
+                } else {
+                    $('#validationMessage').text(response.message || "Submission failed.").show();
+                }
+            });
+        }
+        else {
+            alert("Project Not found");
+        }
+
+    },
+
     GetACHPDetail: function (achpNumber, callback) {
-        debugger;
+
         var token = $('input[name="__RequestVerificationToken"]').val();
         //var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
         $.ajax({
@@ -407,6 +496,5 @@
         });
     },
 
-
-
+   
 }

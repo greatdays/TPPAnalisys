@@ -15,7 +15,7 @@
 
 
     DeleteFundingSource: function (id) {
-        debugger;
+        
         const data = { id: id };
         const url = APPURL + 'FundingSource/DeleteFundingSource';
 
@@ -36,7 +36,7 @@
   
 
     EditFundingSource: function (id) {
-        debugger;
+        
         $('#editFundingSourceModal .modal-body').empty();
         const data = { id: id };
         const url = APPURL + 'FundingSource/EditFundingSource';

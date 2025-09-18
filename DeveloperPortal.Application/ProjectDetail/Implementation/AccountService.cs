@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Data;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Reflection.Metadata;
 using DeveloperPortal.Application.Common;
@@ -384,38 +385,79 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
 
 
-        public async Task<List<APNSearchSiteAddress>> GetAPNProjectName(String APNNumber)
+        public async Task<APNSearch> GetAPNProjectName(String APNNumber)
         {
             try
             {
+                APNSearch APNSearch = new APNSearch();
+
+
                 var parameters = new[]
                 {
                     new SqlParameter("APN", APNNumber)
                 };
 
-                // Execute the stored procedure and get the result, which is a List of Lists.
-                var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<APNSearchSiteAddress>(
-                    StoredProcedureNames.SP_uspGetSiteAddressByAPN,
-                    parameters
-                );
+                var ds = await _storedProcedureExecutor.ExecuteStoredProcedureWithDataSetAsync(StoredProcedureNames.SP_uspGetSiteAddressByAPN,parameters);
 
-                // Check if the result is not null and contains at least one list.
-                if (result != null && result.Count > 0)
+
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        APNSearch.APNSearchSiteAddresslst = ConvertToList<APNSearchSiteAddress>(ds.Tables[0]);
+                    }
+
+                    if (ds.Tables[1].Rows.Count > 0)
+                    {
+                        APNSearch.APNSearchProjectInfolst = ConvertToList<APNSearchProjectInfo>(ds.Tables[1]);
+                    }
+                }
+               
+             
+                if (APNSearch != null)
                 {
                     // Return the first list from the result.
-                    return result;
+                    return APNSearch;
                 }
 
                 // Return an empty list if no results are found.
-                return new List<APNSearchSiteAddress>();
+                return new APNSearch();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 // Return an empty list in case of an exception.
-                return new List<APNSearchSiteAddress>();
+                return new APNSearch();
             }
         }
+
+
+        private static List<T> ConvertToList<T>(DataTable table) where T : new()
+        {
+            var list = new List<T>();
+
+            if (table == null || table.Rows.Count == 0)
+                return list;
+
+            var properties = typeof(T).GetProperties();
+
+            foreach (DataRow row in table.Rows)
+            {
+                T obj = new T();
+                foreach (var prop in properties)
+                {
+                    if (table.Columns.Contains(prop.Name) && row[prop.Name] != DBNull.Value)
+                    {
+                        prop.SetValue(obj, Convert.ChangeType(row[prop.Name], prop.PropertyType));
+                    }
+                }
+                list.Add(obj);
+            }
+
+            return list;
+        }
+
         public async Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContactAsync(List<string> projects, HttpContext httpContext)
         {
             var userName = UserSession.GetUserSession(httpContext).UserName;
