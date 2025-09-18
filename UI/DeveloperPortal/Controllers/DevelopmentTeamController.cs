@@ -1,0 +1,91 @@
+﻿
+using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Application.PropertySnapshot;
+using DeveloperPortal.Constants;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Extensions;
+using DeveloperPortal.Models.Common;
+using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Mvc;
+
+
+using ContactRenderModel = DeveloperPortal.Domain.ProjectDetail.ContactRenderModel;
+
+namespace DeveloperPortal.Controllers
+{
+    public class DevelopmentTeamController : Controller
+    {
+        private IDevelopmentTeamService _developmentTeamService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly string UserName;
+        public DevelopmentTeamController(IDevelopmentTeamService developmentTeamService, IHttpContextAccessor httpContextAccessor)
+        {
+            _developmentTeamService = developmentTeamService;
+            _httpContextAccessor = httpContextAccessor;
+            UserName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+        }
+
+        #region public method
+        /// <summary>
+        /// DevelopmentTeamList
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="caseId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<JsonResult> List(int projectId, int caseId)
+        {
+            var data = await _developmentTeamService.DevelopmentTeamList(projectId, caseId, "");
+            string html = this.RenderViewAsync("../DevelopmentTeam/DevelopmentTeamList", data, true).Result;
+            return Json(html);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddContact(int contactId)
+        {
+            var contactRenderModel = new ContactRenderModel();
+            contactRenderModel = await _developmentTeamService.GetContactDetail(contactId);
+            string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
+            return Json(html);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditContact(int contactId)
+        {
+            var contactRenderModel = new ContactRenderModel();
+            contactRenderModel = await _developmentTeamService.GetContactDetail(contactId);
+            string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
+            return Json(html);
+
+        }
+
+        /// <summary>
+        /// Delete Contact
+        /// </summary>
+        /// <param name="contactId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<JsonResult> DeleteContact(int contactId, int contactIdentifierId, int refProjectId = 0, int refProjectSiteId = 0)
+        {
+            var response = await _developmentTeamService.DeleteContact(contactId, contactIdentifierId, UserName, refProjectId, refProjectSiteId);
+            return Json(response);
+        }
+
+        /// <summary>
+        /// SaveContact
+        /// </summary>
+        /// <param name="renderModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<JsonResult> SaveContact(ContactRenderModel renderModel)
+        {
+            var response = await _developmentTeamService.SaveContact(renderModel);
+            return Json(response);
+        }
+
+        #endregion
+    }
+
+
+}

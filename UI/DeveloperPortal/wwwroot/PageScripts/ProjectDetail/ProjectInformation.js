@@ -48,6 +48,9 @@
                 //     url = '@Url.Action("RenderContactById", "Render", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
                 //     LoadTabData(url, "divPolicyContacts");
                 //     break;
+                case "tabDevelopmentTeamList":
+                    DevelopmentTeam.LoadParticipants();
+                    break;
                 case "tabDocuments":
                     //debugger;
                     if (window.DMS) {
@@ -67,11 +70,6 @@
                         console.error("FundingSource class not loaded yet");
                     }
                     break;
-                    break;
-                // case "tabLogs":
-                //     url = '@Url.Action("RenderActivityLogsById", "ActivityLogsComponent", new { area = "ComCon" })?Id=' + Id + '&projectId=' + ProjectId + '&controlViewModelId=' + ProjectId;
-                //     LoadTabData(url, "divLogs");
-                //     break;
                 default:
             }
         },

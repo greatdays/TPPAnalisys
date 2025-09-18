@@ -48,7 +48,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
         }
 
-        public async Task<DataTable> ExecuteStoredProcedureWithDataTableAsync(string storedProcName, params SqlParameter[] parameters)
+        public async Task<DataTable> ExecuteStoredProcedureWithDataTableAsync(string storedProcName, List<SqlParameter> parameters)
         {
             var dataTable = new DataTable();
 
@@ -58,9 +58,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 {
                     command.CommandType = CommandType.StoredProcedure;
 
-                    if (parameters != null && parameters.Length > 0)
+                    if (parameters != null && parameters.Count > 0)
                     {
-                        command.Parameters.AddRange(parameters);
+                        command.Parameters.AddRange(parameters.ToArray());
                     }
 
                     using (var adapter = new SqlDataAdapter(command))

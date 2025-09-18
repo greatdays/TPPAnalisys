@@ -159,6 +159,7 @@ a.paginate_button { float: left !important; }
 <script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 <script src="~/pagescripts/ProjectDetail/DMS.js"></script>
 <script src="~/pagescripts/ProjectDetail/FundingSource.js"></script>
+<script src="~/PageScripts/DevelopmentTeam/DevelopmentTeam.js"></script>
 <div class="page-content">
     <div class="container-fluid">
     <!-- Project Notification -->
@@ -208,7 +209,7 @@ a.paginate_button { float: left !important; }
 					<button class="tablink-plain"  >Project Documents</button>
 			
 			  </li>
-					<li class="tpp-step step" data-step="team" onclick="ProjectInformation.openTab(event, 'tabProjectParticipants')">
+					<li class="tpp-step step" data-step="team" onclick="ProjectInformation.openTab(event, 'tabDevelopmentTeamList')">
 				<span class="tpp-step-idx idx">2</span>
 					<button class="tablink-plain" >Project Team Information</button>
 				
@@ -269,8 +270,9 @@ a.paginate_button { float: left !important; }
 		<div id="tabImportantDates" class="tabcontent">
 			<div id="divImportantDates"></div>
 		</div>
-		<div id="tabProjectParticipants" class="tabcontent">
-			<div id="divProjectParticipants"></div>
+		<div id="tabDevelopmentTeamList" class="tabcontent">
+			<div id="divDevelopmentTeamList">
+			</div>
 		</div>
 		<div id="tabPolicyContacts" class="tabcontent">
 			<div id="divPolicyContacts"></div>
