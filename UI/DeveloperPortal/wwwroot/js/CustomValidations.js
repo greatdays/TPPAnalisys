@@ -304,7 +304,7 @@ function InitializeContactMethods() {
             //console.log('success: ' + data);
             var json = JSON.parse(data);
             console.log('json: ' + json);
-            //debugger;
+
             for (var index = 0; index < json.length; index++) {
                 var stateName = json[index].StateName;
                 var stateId = json[index].StateId;
@@ -330,7 +330,7 @@ function InitializeContactMethods() {
             //console.log('success: ' + data);
             var json = JSON.parse(data);
             console.log('PhoneType json: ' + json);
-            //debugger;
+            //
             for (var index = 0; index < json.length; index++) {
                 var phoneTypeText = json[index].PhoneTypeText;
                 var phoneTypeValue = json[index].PhoneTypeValue;
@@ -356,7 +356,7 @@ function InitializeContactMethods() {
             //console.log('success: ' + data);
             var json = JSON.parse(data);
             console.log('Direction json: ' + json);
-            //debugger;
+            //
             for (var index = 0; index < json.length; index++) {
                 var directionText = json[index].DirectionText;
                 var directionValue = json[index].DirectionValue;
@@ -383,7 +383,7 @@ function InitializeContactMethods() {
             //console.log('success: ' + data);
             var json = JSON.parse(data);
             console.log('Street Type json: ' + json);
-            //debugger;
+            //
             for (var index = 0; index < json.length; index++) {
                 var streetTypeText = json[index].StreetTypeText;
                 var streetTypeValue = json[index].StreetTypeValue;

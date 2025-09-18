@@ -43,13 +43,24 @@
         </div>
 
 
-        <div class="form-group mb-3">
+        @* <div class="form-group mb-3">
             <label for="fileuploader" class="form-label">Upload File</label>
             <span class="text-danger">*</span>
             <input type="file" id="fileuploader" name="File" class="form-control"
                    accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
             <div class="invalid-feedback">Please upload a valid file.</div>
+        </div> *@
+
+        <div class="mb-3">
+            <label for="addFileUploader" class="form-label">Upload File</label> <span class="text-danger">*</span>
+            <input type="file" id="addFileUploader" name="File" class="form-control"
+               accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" required />
+        <div class="form-text">
+            Supported formats: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF (Max 10MB)
         </div>
+            <div class="invalid-feedback">Please upload a valid file.</div>
+    </div>
+
 
        
 
