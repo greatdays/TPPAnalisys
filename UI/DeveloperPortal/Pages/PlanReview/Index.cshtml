@@ -401,7 +401,6 @@
             var url = "/api/PlanReview/CreateFolder?folderName=" + $("#txtfolderName").val() + "&parentFolderName=ARLT Arleta Park";
             $.ajax({
                 url: url, success: function (result) {
-                    //debugger;
                     $("#div1").html(result);
                 }
             });
@@ -410,7 +409,7 @@
         $("#uploadFile").click(function () {
 
             var input = document.getElementById('upload-File');
-            debugger;
+            
             var files = $("#fileuploader").get(0).files;
             var formData = new FormData();
             formData.append("files", files[0]);
@@ -433,7 +432,7 @@
 
         //    //$.ajax({
         //    //    url: url, success: function (result) {
-        //    //        debugger;
+        //    //        
         //    //        $("#div1").html(result);
         //    //    }
         //    //});

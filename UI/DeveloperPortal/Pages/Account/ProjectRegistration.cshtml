@@ -77,9 +77,9 @@
 		function AddClick() {
 		$('#cm_loader').removeAttr("hidden");
 		var achpNumber = $('#AcHPNumber').val();
-		debugger;
+		
 		GetACHPDetail(achpNumber, function (retAchp, streetName, found) {
-			debugger;
+			
 			if (!found) {
 				$('#divAdd').next('.text-danger-custom').remove();
 				$('#divAdd').after("<span class='text-danger-custom' style='float:left' id='ctlAdd'>No data found</span>");

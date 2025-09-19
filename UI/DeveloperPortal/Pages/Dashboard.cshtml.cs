@@ -81,20 +81,13 @@ namespace DeveloperPortal.Pages
             // 1. Call your service to get the results
             var results = _accountService.GetAPNProjectName(APNNumber).Result;
 
-            if (results == null || !results.Any())
+            if (results == null)
             {
                 return new JsonResult(new List<object>()); // Return an empty list if no results are found
             }
 
-            // 2. Project the results into a new format for the dropdown
-            var projectList = results.Select(p => new
-            {
-                id = p.SiteAddressID, // The 'id' property for the dropdown value
-                fullAddress = p.FullAddress // The 'fullAddress' property for the dropdown text
-            }).ToList();
-
-            // 3. Return the data as a JSON response
-            return new JsonResult(projectList);
+           
+            return new JsonResult(results);
         }
 
 

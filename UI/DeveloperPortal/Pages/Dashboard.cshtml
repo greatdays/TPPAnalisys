@@ -249,6 +249,26 @@
 									<div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
 
 
+									<div id="ExistingProjectNameId" style="display: none;">
+										<div class="table-container">
+											<p>We found one or more projects with this APN. Select an existing project to link to your account, or enter the project address, project name, and primary site (property) name.</p>
+
+											<table id="tblExistingProjectDetails" class="table table-bordered align-middle">
+												<thead>
+													<tr>
+														<th scope="col">ACHP #</th>
+														<th scope="col">Project Name</th>
+														<th scope="col">Action</th>
+													</tr>
+												</thead>
+												<tbody>
+													
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+									<div id="CreateNewProjectId" style="display: none;">
 									<div class="form-group mb-3">
 										<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
 										<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
@@ -263,7 +283,7 @@
 										<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
 										<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
 									</div>
-
+									</div>
 									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
 										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitANP()">Submit</button>
 										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>

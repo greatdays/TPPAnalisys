@@ -164,7 +164,7 @@
 
 	 function downloadFileWithProgress(url, fileName) {
 		   LoadingOverlay.show();
-		   debugger;
+		   
 		fetch(url)
 			.then(response => {
 				if (!response.ok) {
@@ -184,12 +184,12 @@
 				// Cleanup
 				document.body.removeChild(a);
 				window.URL.revokeObjectURL(downloadUrl);
-				 debugger;
+				 
 				// Hide loading overlay
 				LoadingOverlay.hide();
 			})
 			.catch(error => {
-				 debugger;
+				 
 				console.error('Download error:', error);
 				LoadingOverlay.hide();
 				alert('Download failed');
@@ -223,7 +223,7 @@
 
 	$('#uploadFundingSourceBtn').on('click', function () {
 		//var id = $(this).data('id'
-		debugger;
+		
 		var id = $('#CaseId').val();
 		$('#editFundingSourceModal .modal-body').empty();
 		const url = APPURL + 'FundingSource/AddFundingSource';
@@ -289,10 +289,11 @@
 		debugger;
 		var form = $(this)[0];
 		var fundingSource = $('#FundingSource').val().trim();
-		var fileInput = $('#fileuploader')[0].files.length; // new file
+			var fileInput = $('#addFileUploader')[0].files.length;
 		var existingFileName = $('#FileName').val().trim(); // old file
 		var isValid = true;
 		var firstInvalid = null;
+
 		var notes = $('#Notes').val().trim();
 		var mu = document.getElementById('MU_Unit');
 		var hv = document.getElementById('HV_Unit');
@@ -312,39 +313,40 @@
 
 		// Reset previous errors
 		$('#FundingSource').removeClass('is-invalid');
-		$('#fileuploader').removeClass('is-invalid');
+		$('#addFileUploader').removeClass('is-invalid');
 
 		// Validate FundingSource
 		if (fundingSource === "") {
 			$('#FundingSource').addClass('is-invalid');
-			if (!firstInvalidField) firstInvalidField = $('#FundingSource');
+			if (!firstInvalid) firstInvalid = $('#FundingSource');
 			isValid = false;
 		}
 
 		// Validate file: either new file OR existing file required
 		if (fileInput === 0 && existingFileName === "") {
-			$('#fileuploader').addClass('is-invalid');
-			if (!firstInvalidField) firstInvalidField = $('#fileuploader');
+			$('#addFileUploader').addClass('is-invalid');
+			if (!firstInvalid) firstInvalid = $('#addFileUploader');
 			isValid = false;
 		}
-		debugger;
+		
 		if (notes.length > 250) {
 			$('#Notes').addClass('is-invalid')
 				.after('<small id="notesError" class="text-danger">Maximum 250 characters allowed.</small>');
-			if (!firstInvalidField) firstInvalidField = $('#Notes');
+			if (!firstInvalid) firstInvalid = $('#Notes');
 			isValid = false;
 		}
 
+
 		// Focus first invalid field if any
 		if (!isValid) {
-			firstInvalidField.focus();
+			firstInvalid.focus();
 			return;
 		}
 
 		var form = $('#editFundingSourceForm')[0];
 		var formData = new FormData(form);
 		$('#editFundingSourceModal').modal('hide');
-		debugger;
+		
 		$.ajax({
 			url: form.action,
 			type: "POST",

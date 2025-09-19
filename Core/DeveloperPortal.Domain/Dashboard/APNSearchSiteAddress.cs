@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace DeveloperPortal.Domain.Dashboard
 {
+    public class APNSearch
+    {
+        public List<APNSearchSiteAddress> APNSearchSiteAddresslst { get; set; }
+        public List<APNSearchProjectInfo> APNSearchProjectInfolst { get; set; }
+    }
+
     public class APNSearchSiteAddress
     {
-        
+
         public int SiteAddressID { get; set; }
         public string? HouseNum { get; set; }
         public string? HouseFracNum { get; set; }
@@ -27,5 +33,14 @@ namespace DeveloperPortal.Domain.Dashboard
         public string? APN { get; set; }
 
 
+    }
+
+
+    public class APNSearchProjectInfo
+    {
+        public int ProjectID { get; set; }
+        public string? ACHPNumber { get; set; }
+        public string? ProjectName { get; set; }
+        public string? ProjectAddress { get; set; }
     }
 }

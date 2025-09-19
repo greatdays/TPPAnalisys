@@ -74,7 +74,34 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return dataTable;
         }
 
+        public async Task<DataSet> ExecuteStoredProcedureWithDataSetAsync(string storedProcName, params SqlParameter[] parameters)
+        {
+            var dataSet = new DataSet();
 
+            using (var connection = new SqlConnection(_contextData.Database.GetConnectionString()))
+            {
+                using (var command = new SqlCommand(storedProcName, connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    if (parameters != null && parameters.Length > 0)
+                    {
+                        command.Parameters.AddRange(parameters);
+                    }
+
+                    using (var adapter = new SqlDataAdapter(command))
+                    {
+                        await connection.OpenAsync();
+                        adapter.Fill(dataSet);  // This will load all tables
+                    }
+                }
+            }
+
+            return dataSet;
+        }
+
+
+       
         private static string BuildSqlCommand(string storedProcName, SqlParameter[] parameters)
         {
             var paramNames = parameters != null && parameters.Length > 0
