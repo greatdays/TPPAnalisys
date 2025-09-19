@@ -210,7 +210,7 @@
 					<div class="modal-header comcom-header">
 						<h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
 
-						<button type="button" class="close " data-bs-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
+						<button type="button" class="close " data-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
 
 					</div>
 					<div class="modal-body comcom-body" style="padding:0">
@@ -240,7 +240,7 @@
 		</div>
 
 	<!-- START USER ACCOUNT ACTIVATE -->
-	<div id="divUserAccountActivity" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+	<div id="divUserAccountActivity" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
 
 		<div class="modal-dialog">
 			<!-- Modal content-->
@@ -331,10 +331,6 @@
 		});
 	});
 
-
-	
-		console.log("Debug → UserID: @usr.UserID, Status: @Html.Raw(Json.Serialize(TempData["Status"]))");
-		 
 		   window.LoadingOverlay = {
 		show: function() {
 			const overlay = document.getElementById("loadingOverlay");
@@ -389,16 +385,15 @@
 			}
 		});
 
-	@if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
-	{
-
-			<script type="text/javascript">
-				$(function () {
-					$("#divUserAccountActivity").modal("show");
-					TempData["Status"] = null;
-				});
-			</script>
-	}
+	  $(function () {
+		var userId = @usr.UserID;   // Razor will inject number
+		var status = '@TempData["Status"]'; // Razor injects string
+		console.log("UserID:", userId);
+		console.log("TempData[Status]:", status);
+		if (userId === 0 && status && status.trim() !== "") {
+			$("#divUserAccountActivity").modal("show");
+		}
+	});
 		// Optional: Show for all AJAX calls (jQuery)
 		$(document).ajaxStart(function () {
 			LoadingOverlay.show();
