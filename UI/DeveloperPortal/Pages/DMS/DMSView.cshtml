@@ -19,7 +19,7 @@
                     <th>Category</th>
                     <th>Comment</th> @* Corrected header *@
                     <th>Uploader</th>
-                    <th>Comment</th>
+                   @*  <th>Comment</th> *@
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -36,7 +36,7 @@
                             <td>@file.Comment</td> @* Added Comment from model *@
                             <td>@file.UploadedBy</td>
                       @*       <td>@file.Roles</td> *@
-                            <td></td>
+                            
                             <td>
                                 @if (!string.IsNullOrWhiteSpace(file.Link))
                                 {
@@ -87,10 +87,12 @@
 
 <script>
     // Configure DMS with server-side values
-    window.dmsConfig = {
+     window.dmsConfig = {
         uploadUrl: '@Url.Action("UploadFile", "DMS")',
-        deleteUrl: '@Url.Action("DeleteDocument", "DMS")', @* Added delete URL *@
+        deleteUrl: '@Url.Action("DeleteDocument", "DMS")',
         reloadUrl: '@Url.Action("GetFilesById", "DMS")',
+        // Add the URL for GetCategories here
+        getCategoriesUrl: '@Url.Action("GetCategories", "DMS")',
         projectId: '@projectIdFromName',
         folderName: '@(Model.FolderModel?.Name ?? "")',
         folderId: '@(Model.FolderModel?.Id ?? "")'

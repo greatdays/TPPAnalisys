@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace DeveloperPortal.Application.DMS.Interface
 {
@@ -18,6 +19,7 @@ namespace DeveloperPortal.Application.DMS.Interface
         Task<List<FolderModel>> GetSubFolderDetails(int projectId, int parentFolderId);
         Task<int> GetRecentFolderId();
         Task<bool> DeleteDocument(int id);
+        List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null);
         //Task<List<FolderTree>> GetFolderTree(int projectId);
     }
 }

@@ -19,8 +19,8 @@
                     @Html.Hidden("FolderName")
                     @Html.Hidden("FolderId")
 
-                    <div class="form-group mb-3">
-                        <label for="category">Category*</label>
+                   @*  <div class="form-group mb-3">
+                        <label for="category">Category <span class="text-danger">*</span></label>
                         <select class="form-control" id="category" name="Category" required>
                             <option value="">-- Select Category --</option>
                             <option value="Category 1">Category 1</option>
@@ -32,23 +32,35 @@
                         <div class="invalid-feedback" id="categoryError">
                             Please select a category.
                         </div>
+                    </div> *@
+                    <div class="form-group mb-3">
+                        <label for="category">Category <span class="text-danger">*</span></label>
+                        <select class="form-control" id="category" name="Category" required>
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <div class="invalid-feedback" id="categoryError">
+                            Please select a category.
+                        </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="fileuploader">Upload File(s)*</label>
+                        <label for="fileuploader">Upload File(s) <span class="text-danger">*</span></label>
                         <input type="file" id="fileuploader" name="Files" class="form-control" multiple
                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif" />
-
+                        <small class="text-danger">
+                            Supported types: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, JPG, JPEG, PNG, GIF
+                        </small>
                         <div class="invalid-feedback" id="fileError">
                             Please select one or more valid file(s).
                         </div>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="comments">Comments</label>
+                        <label for="comments">Comments <small class="text-muted">(Optional)</small></label>
                         <textarea class="form-control" id="comments" name="Comments"
-                                                   rows="3" placeholder="Optional comments for the document"></textarea>
+                              rows="3" placeholder="Optional comments for the document"></textarea>
                     </div>
+
                 </div>
 
                 <div class="modal-footer">
