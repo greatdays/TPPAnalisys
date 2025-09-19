@@ -370,7 +370,7 @@
         // Show on link clicks
            document.addEventListener("click", function (e) {
             const link = e.target.closest("a");
-
+            debugger;
             if (link) {
                 const href = link.getAttribute("href") || "";
                 const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
@@ -386,11 +386,13 @@
             }
         });
 
-   @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
+  @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
     {
+        
+
         <text>
                     $(function () {
-                       // $("#divUserAccountActivity").modal("show");
+                        $("#divUserAccountActivity").modal("show")
                     });
         </text>
     }
