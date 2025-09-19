@@ -101,12 +101,23 @@ window.DMSManager = class DMSManager {
             this.handleFormSubmission();
         });
 
+        $('#addFileModal').on('show.bs.modal', () => {
+            this.loadCategories();
+        });
+
         $(document).on("click.dms", ".btn-delete-file", (e) => {
             e.preventDefault();
             const documentId = $(e.target).closest("button").data("id");
             if (documentId) {
                 this.handleDelete(documentId);
             }
+        });
+
+        $(document).on("click.dms", "#cancelUpload", (e) => {
+            const form = $('#uploadForm');
+            form[0].reset();
+            form.find('.is-invalid').removeClass('is-invalid');
+            form.find('.invalid-feedback').hide();  // hide validation messages
         });
     }
 
@@ -115,6 +126,7 @@ window.DMSManager = class DMSManager {
             const form = $('#uploadForm');
             form[0].reset();
             form.find('.is-invalid').removeClass('is-invalid');
+           // this.loadCategories();
             this.modal.show();
         }
     }
@@ -241,6 +253,42 @@ window.DMSManager = class DMSManager {
             }
         });
     }
+    loadCategories() {
+        const dropdown = $("#category");
+
+        $.ajax({
+            url: window.dmsConfig.getCategoriesUrl,
+            type: "GET",
+            success: (data) => {
+                dropdown.empty();
+                dropdown.append('<option value="">-- Select Category --</option>');
+
+                // Corrected part: Iterate over the object's properties
+                // The data is the JSON object returned from the server
+                // not a simple array.
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        const item = data[key];
+                        if (item.group && item.group.name) {
+                            let group = dropdown.find("optgroup[label='" + item.group.name + "']");
+                            if (group.length === 0) {
+                                group = $("<optgroup>", { label: item.group.name }).appendTo(dropdown);
+                            }
+                            $("<option>", { value: item.value, text: item.text }).appendTo(group);
+                        } else {
+                            $("<option>", { value: item.value, text: item.text }).appendTo(dropdown);
+                        }
+                    }
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error("Failed to load categories:", error);
+                dropdown.empty();
+                dropdown.append('<option value="">-- Failed to load categories --</option>');
+            }
+        });
+    }
+
 
 
     // New method for handling the delete action

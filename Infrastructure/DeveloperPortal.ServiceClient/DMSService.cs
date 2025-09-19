@@ -1,22 +1,33 @@
 ﻿using DeveloperPortal.Domain.Helper;
+using DeveloperPortal.Models.Common;
 using HCIDLA.ServiceClient.DMS;
 using HCIDLA.ServiceClient.LaserFiche;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System.IO.Compression;
+using System.Net;
 using System.ServiceModel;
+using System.Text;
+using static DeveloperPortal.ServiceClient.ServiceClient;
 
 namespace DeveloperPortal.ServiceClient
 {
     public class DMSService
     {
+
+       
         public IConfiguration _config;
 
-        public DMSService(IConfiguration config)
+        public DMSService(IConfiguration config) 
         {
             _config = config;
+    
         }
+
+
         [HttpPost]
         public async Task<List<UploadResponse>> SubmitUploadedDocument(List<IFormFile> files, int caseId, string category, string fileSubCategory, string createdBy)
         {
@@ -312,8 +323,6 @@ namespace DeveloperPortal.ServiceClient
                 return outputStream.ToArray();
             }
         }
-
-
 
     }
 }

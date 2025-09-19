@@ -6,6 +6,7 @@ using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.StaticFiles;
 using System.Net.Mime;
 
@@ -252,6 +253,17 @@ namespace DeveloperPortal.Controllers
             }
 
             return contentType;
+        }
+        [HttpGet]
+        [Route("GetCategories")]
+        public IActionResult GetCategories()
+        {
+            string[] categories = { "Project", "Property" };
+            string[] referenceKey = { "ConstructionRetrofitProject", "ConstructionRetrofitProperty" };
+
+            var result = _documentService.GetCategories(categories, referenceKey);
+
+            return Ok(result); // returns JSON array
         }
         /*public ActionResult GetFilesByIdNew(int controlViewModelId)
         {
