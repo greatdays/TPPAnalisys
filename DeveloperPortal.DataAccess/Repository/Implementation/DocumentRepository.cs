@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using DeveloperPortal.DataAccess.Common;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
@@ -213,10 +214,45 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 return folderId;
            
         }
+        public List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null)
+        {
+            var items = new List<SelectListItem>();
 
+            var query = _context.LutDocumentCategories
+                .Where(d => categories.Contains(d.Category) && !d.IsDeleted);
 
+            if (referenceKeys != null && referenceKeys.Length > 0)
+            {
+                query = query.Where(d => referenceKeys.Contains(d.ReferenceKey));
+            }
 
+            var docCategories = query
+                .OrderBy(d => d.Category)
+                .ThenBy(d => d.SubCategory)
+                .ToList();
 
+            if (docCategories.Any())
+            {
+                SelectListGroup currentGroup = new();
+                foreach (var dc in docCategories)
+                {
+                    string categoryTrim = dc.Category.Trim();
+                    string subCategoryTrim = dc.SubCategory.Trim();
+
+                    if (!string.Equals(currentGroup.Name, categoryTrim, StringComparison.OrdinalIgnoreCase))
+                        currentGroup = new SelectListGroup { Name = categoryTrim };
+
+                    items.Add(new SelectListItem
+                    {
+                        Value = dc.LutDocumentCategoryId.ToString(), // ✅ use ID here
+                        Text = subCategoryTrim,                      // show SubCategory as label
+                        Group = currentGroup
+                    });
+                }
+            }
+
+            return items;
+        }
 
 
     }

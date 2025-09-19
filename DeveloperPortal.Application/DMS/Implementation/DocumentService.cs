@@ -9,6 +9,7 @@ using DeveloperPortal.Models.PlanReview;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Web.Mvc;
 using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 using static DeveloperPortal.DataAccess.Entity.ViewModels.CommentModel;
 
@@ -118,9 +119,18 @@ namespace DeveloperPortal.Application.DMS.Implementation
             return folderList;
 
         }
+
+
         public async Task<int> GetRecentFolderId()
         {
             return await _documentRepository.GetRecentFolderId();
         }
+
+        public List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null)
+        {
+            return _documentRepository.GetCategories(categories, referenceKeys);
+        }
+
+
     }
 }
