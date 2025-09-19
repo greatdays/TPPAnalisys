@@ -388,7 +388,8 @@
 	  $(function () {
 		var userId = @usr.UserID;   // Razor will inject number
 		var status = '@TempData["Status"]'; // Razor injects string
-
+		console.log("UserID:", userId);
+		console.log("TempData[Status]:", status);
 		if (userId === 0 && status && status.trim() !== "") {
 			$("#divUserAccountActivity").modal("show");
 		}
