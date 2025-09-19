@@ -2,317 +2,403 @@
 @inject IConfiguration Configuration
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-	DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+    DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-	<title>@ViewData["Title"] - DeveloperPortal</title>
-	<link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
-	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
-	<link href="~/content/font-awesome.css" rel="stylesheet" />
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
-	<link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
-	<link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
-	<link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
-	<link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <title>@ViewData["Title"] - DeveloperPortal</title>
+    <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
+    <link href="~/content/font-awesome.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
+    <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
+    <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
+    <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
+    <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery-block-ui/blockuicollection.js"></script>
+    <script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
+    <script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
+    <script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <script src="~/"></script>
+    <script src="~/js/kendojs/kendo.all.min.js"></script>
+    <script src="~/js/kendojs/kendo.timezones.min.js"></script>
+    <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
+    <script src="~/js/customcommon.js"></script>
+    <script src="//navbar.lacity.org/global_nav.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
+        //CurrentScroll();
+        NewScroll();
+
+        function CurrentScroll(){
+        document.addEventListener('scroll', function (e) {
+        var developerPortalNavBar = document.getElementById('developerPortalNavBar');
+        lastKnownScrollPosition = window.scrollY;
+        if (lastKnownScrollPosition > 98) {
+        developerPortalNavBar.style.top = "0px";
+        } else {
+        developerPortalNavBar.style.top = "55px";
+        }
+        });
+        }
+
+        function NewScroll(){
+        $(window).scroll(function(){
+        var navBar = $('#developerPortalNavBar');
+        var lastKnownScrollPosition = $(window).scrollTop();
+
+        if (lastKnownScrollPosition > 98) {
+        $(navBar).css('top', "0px");
+        } else {
+        var scrollPos = 101 - lastKnownScrollPosition;
+        $(navBar).css('top', scrollPos + "px");
+        }
+        });
+        }
+        function showMessage(title,message, type)
+        {
+        $("#cMatrixMessageTitle").html(title);
+        $("#cMatrixMessageBody").html(message);
+        $("#complienceMatrixMessage").modal('show');
+        }
+    </script>
+    @* ADA *@
+    <script>
+        // correct lacity global navbar
+        $(document).ready(function () {
+            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+            $("#global_nav_la_4324422-rightwrap > a").each(function () {
+                var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
+                $(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
+            });
+        });
+    </script>
+
+
 </head>
 <body>
-	<header id="header-navs">
-		<div class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow topNavBar">
-			<div class="navbarContainer topNavBar-container">
-				<div class="navbar-header">
-					<div class="navBarIdentity">
-						<a class="navBarIdentityHome navbar-brand" href="/">
-							<img src="~/logo.png" />
-						</a>
-						<span class="navBarTitle"> ACHP Construction Portal</span>
-					</div>
-					<div class="navBar-decor"></div>
-					<ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-						<li class="nav-item dropdown">
-							<button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-								PP
-							</button>
-							<div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
-								<div class="bg-white rounded-2 py-2">
-									<a class="dropdown-item font-weight-bold text-primary" href="#">
-										Param S
-									</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item text-primary" href="#">My Profile</a>
-									<div class="dropdown-divider"></div>
-									<a class="dropdown-item text-primary" href="#">Logout</a>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
-			@if (usr.UserID != 0)
-			{
-					<div id="leftMenu collapse navbar-collapse">
-						<ul class="navbar-nav botNav-left-hide">
-							<li class="nav-item navItem-decor">
-								<a class="nav-link nav-link-basic" href='~/dashboard'>
-									My Dashboard
-								</a>
-							</li>
-						</ul>
-					</div>
-			}
-			<div id="rightMenu">
-				<div>
-					<a class="nav-link nav-link-basic" id="navbar-help" href="~/Help">Help</a>
-				</div>
-				<div class="SignInContatiner">
-					<partial name="_LoginPartial" />
-					@if (usr.UserID == 0)
-					{
-							<ul class="nav navbar-nav navbar-right">
-								<li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success" })</li>
-								<li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-							</ul>
-					}
-				</div>
-			</div>
-		</div>
-	</header>
-	<div class=" body-content">
-		<main role="main" class="">
-			@RenderBody()
-		</main>
-	</div>
-	<footer class="border-top footer text-muted">
-		<div class="container" style="max-width: 100%; padding: 0px;">
-			<partial name="_StandardAppFooter" />
-		</div>
-	</footer>
-	<div class="modal" id="ActioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header comcom-header">
-					<h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
-					<button type="button" class="close " data-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
-				</div>
-				<div class="modal-body comcom-body" style="padding:0">
-					<div class="ActioModalBody">
-					</div>
-					</div>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="complienceMatrixMessage" tabindex="-1" role="dialog" aria-labelledby="cMatrixMessageTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog modal-dialog-centered imp-date-dialog" style="width: 450px">
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h5 class="modal-title" id="cMatrixMessageTitle"></h5>
-				</div>
-				<div class="modal-body" id="cMatrixMessageBody">
-				</div>
-				<div class="modal-footer singal-button">
-					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" title="Ok">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div id="divUserAccountActivity" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title" id="AccountActivationTitle">
-						Account Activation
-					</h1>
-				</div>
-				<div class="modal-body text-center">
-					<div class="h5">
-						@if (TempData["Status"] != null)
-						{
-							switch (TempData["Status"].ToString())
-							{
-								case "Expired":
-									{
-														<span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
-										break;
-									}
-								case "NotActivated":
-									{
-														<span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
-										break;
-									}
-								case "AlreadyActivated":
-									{
-														<span>Your account is already activated. You may now log in with your email and password.</span>
-										break;
-									}
-								case "Success":
-									{
-														<span>Your account is activated successfully. You may now log in with your email and password.</span>
-										break;
-									}
-								case "SystemError":
-									{
-														<span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
-										break;
-									}
-								case "DomainDifferent":
-									{
-														<span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
-										break;
-									}
-								default:
-									{
-										@TempData["message"]
-										break;
-									}
-							}
-						}
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button id="btnUserActivityOK" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	@Html.Partial("_LoadingOverlay")
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
-	<script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
-	<script src="~/js/CustomValidations.js" asp-append-version="true"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
-	<script src="~/js/jquery-block-ui/blockuicollection.js"></script>
-	<script src="~/js/jquery-block-ui/jquery.blockui.js"></script>
-	<script src="~/js/jquery-block-ui/web.mvc.ajax.js"></script>
-	<script src="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
-	<script src="~/js/kendojs/kendo.all.min.js"></script>
-	<script src="~/js/kendojs/kendo.timezones.min.js"></script>
-	<script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
-	<script src="~/js/customcommon.js"></script>
-	<script src="//navbar.lacity.org/global_nav.js"></script>
-	@await RenderSectionAsync("Scripts", required: false)
-	<script>
-		var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
-		NewScroll();
-		function CurrentScroll(){
-			document.addEventListener('scroll', function (e) {
-				var developerPortalNavBar = document.getElementById('developerPortalNavBar');
-				lastKnownScrollPosition = window.scrollY;
-				if (lastKnownScrollPosition > 98) {
-					developerPortalNavBar.style.top = "0px";
-				} else {
-					developerPortalNavBar.style.top = "55px";
-				}
-			});
-		}
-		function NewScroll(){
-			$(window).scroll(function(){
-				var navBar = $('#developerPortalNavBar');
-				var lastKnownScrollPosition = $(window).scrollTop();
-				if (lastKnownScrollPosition > 98) {
-					$(navBar).css('top', "0px");
-				} else {
-					var scrollPos = 101 - lastKnownScrollPosition;
-					$(navBar).css('top', scrollPos + "px");
-				}
-			});
-		}
-		function showMessage(title,message, type) {
-			$("#cMatrixMessageTitle").html(title);
-			$("#cMatrixMessageBody").html(message);
-			$("#complienceMatrixMessage").modal('show');
-		}
-		$(document).ready(function () {
-			$('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-			$('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-			$('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-			$('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-			$('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-			$("#global_nav_la_4324422-rightwrap > a").each(function () {
-				var imgSrc = APPURL + "Images/icons8-external-link-30.png";
-				$(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
-			});
-			$(".user-btn").click(function(e) {
-				e.stopPropagation();
-				$(".dropdown-menu").toggle();
-			});
-			$(document).click(function() {
-				$(".dropdown-menu").hide();
-			});
-			$('.setup-content').each(function () {
-				let step = $(this);
-				let nextBtn = step.find('.nextBtn');
-				step.on('change keyup', '[data-required="true"]', function () {
-					if (validateStep(step)) {
-						nextBtn.prop('disabled', false).removeClass('disabled-btn');
-					} else {
-						nextBtn.prop('disabled', true).addClass('disabled-btn');
-					}
-				});
-			});
-			window.LoadingOverlay = {
-				show: function() {
-					const overlay = document.getElementById("loadingOverlay");
-					if (overlay) {
-						overlay.style.display = "block";
-					} else {
-						console.warn("Loading overlay element not found");
-					}
-				},
-				hide: function() {
-					const overlay = document.getElementById("loadingOverlay");
-					if (overlay) {
-						overlay.style.display = "none";
-					}
-				},
-				toggle: function() {
-					const overlay = document.getElementById("loadingOverlay");
-					if (overlay) {
-						overlay.style.display = overlay.style.display === "none" ? "block" : "none";
-					}
-				}
-			};
-			document.addEventListener("submit", function (e) {
-				const form = e.target;
-				if (form.tagName === "FORM") {
-					LoadingOverlay.show();
-				}
-			}, true);
-			document.addEventListener("click", function (e) {
-				const link = e.target.closest("a");
-				if (link) {
-					const href = link.getAttribute("href") || "";
-					const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
-					if (link.href && !link.target && !link.href.startsWith("javascript:") && !isSamePageAnchor) {
-						LoadingOverlay.show();
-					}
-				}
-			});
-			$(document).ajaxStart(function () {
-				LoadingOverlay.show();
-			}).ajaxStop(function () {
-				LoadingOverlay.hide();
-			});
-		});
-		$(function () {
-			var userId = @usr.UserID;
-			var status = '@TempData["Status"]';
-			console.log("UserID:", userId);
-			console.log("TempData[Status]:", status);
-			if (userId === 0 && status && status.trim() !== "") {
-				$("#divUserAccountActivity").modal("show");
-			}
-		});
-	</script>
-</body>
-</html>
+    @* <script src="//navbar.lacity.org/global_nav.js"></script> *@
+    <header id="header-navs">
+        <div class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow topNavBar">
+            <div class="navbarContainer topNavBar-container">
+                <div class="navbar-header">
+                    <div class="navBarIdentity">
+                        <a class="navBarIdentityHome navbar-brand" href="/">
+                            <img src="~/logo.png" />
+                        </a>
+                        <span class="navBarTitle"> ACHP Construction Portal</span>
+                    </div>
+                    <div class="navBar-decor"></div>
+                    <!-- User dropdown -->
+                    <ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+                        <li class="nav-item dropdown">
+                            <button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                PP
+                            </button>
+                            <div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
+                                <div class="bg-white  rounded-2 py-2">
+                                    <a class="dropdown-item font-weight-bold text-primary" href="#">
+                                        Param S
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-primary" href="#">My Profile</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item text-primary" href="#">Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <script>
+                        $(document).ready(function() {
+                          $(".user-btn").click(function(e) {
+                            e.stopPropagation();
+                            $(".dropdown-menu").toggle();
+                          });
+
+                          // Hide dropdown when clicking outside
+                          $(document).click(function() {
+                            $(".dropdown-menu").hide();
+                          });
+                        });
+                    </script>
+
+                    <!-- End User dropdown -->
+                </div>
+            </div>
+        </div>
+        <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
+            @if (usr.UserID != 0)
+            {
+                    <div id="leftMenu collapse navbar-collapse">
+                        <ul class="navbar-nav botNav-left-hide">
+                            <li class="nav-item navItem-decor">
+                                <a class="nav-link nav-link-basic" href='~/dashboard'>
+                                    My Dashboard
+                                </a>
+                            </li>
+                        @* <li class="nav-item navItem-decor">
+                            <a class="nav-link nav-link-basic" href='~/PlanReview'>
+                                PlanReview
+                            </a>
+                        </li> *@
+                        </ul>
+                    </div>
+            }
+            <div id="rightMenu">
+                    <div>
+                        <a class="nav-link nav-link-basic" id="navbar-help" href="~/Help">Help</a>
+                    </div>
+                    <div class="SignInContatiner">
+                        <partial name="_LoginPartial" />
+                    @if (usr.UserID == 0)
+                    {
+                                <ul class="nav navbar-nav navbar-right">
+                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success" })</li>
+                                    <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                            @*   <li>
+                                    @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
+                                </li> *@
+                                </ul>
+                    }
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class=" body-content">
+            <main role="main" class="">
+            @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container" style="max-width: 100%; padding: 0px;">
+                <partial name="_StandardAppFooter" />
+            </div>
+        </footer>
+
+
+        <!-- Modal Popup Start-->
+        <div class="modal" id="ActioModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header comcom-header">
+                        <h1 class="modal-title ActioModalTitle popup-title" id="myModalLabel"></h1>
+
+                        <button type="button" class="close " data-bs-dismiss="modal hide" aria-label="Close"><i class="far fa-times-circle"></i></button>
+
+                    </div>
+                    <div class="modal-body comcom-body" style="padding:0">
+                        <div class="ActioModalBody">
+                        </div>
+                        <!-- Render Action Partial -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="complienceMatrixMessage" tabindex="-1" role="dialog" aria-labelledby="cMatrixMessageTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered imp-date-dialog" style="width: 450px">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cMatrixMessageTitle"></h5>
+                    </div>
+                    <div class="modal-body" id="cMatrixMessageBody">
+                    </div>
+                    <div class="modal-footer singal-button">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" title="Ok">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- START USER ACCOUNT ACTIVATE -->
+    <div id="divUserAccountActivity" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="true">
+
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="AccountActivationTitle">
+                        Account Activation
+                    </h1>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="h5">
+                        @if (TempData["Status"] != null)
+                        {
+                            switch (TempData["Status"].ToString())
+                            {
+                                case "Expired":
+                                    {
+                                                        <span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
+                                        break;
+                                    }
+                                case "NotActivated":
+                                    {
+                                                        <span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
+                                        break;
+                                    }
+                                case "AlreadyActivated":
+                                    {
+                                                        <span>Your account is already activated. You may now log in with your email and password.</span>
+                                        break;
+                                    }
+                                case "Success":
+                                    {
+                                                        <span>Your account is activated successfully. You may now log in with your email and password.</span>
+
+                                        break;
+                                    }
+                                case "SystemError":
+                                    {
+                                                        <span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
+                                        break;
+                                    }
+                                case "DomainDifferent":
+                                    {
+                                                        <span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        @TempData["message"]
+                                        break;
+                                    }
+                            }
+                        }
+                    </div>
+
+                </div>
+                 <div class="modal-footer">
+                <button id="btnUserActivityOK" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ok</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- END USER ACCOUNT ACTIVATE -->
+        <!-- Modal PopUp End -->
+    @Html.Partial("_LoadingOverlay")
+    </body>
+
+<script>
+        $(document).ready(function () {
+        $('.setup-content').each(function () {
+            let step = $(this);
+            let nextBtn = step.find('.nextBtn');
+            // nextBtn.prop('disabled', true);
+
+            step.on('change keyup', '[data-required="true"]', function () {
+                if (validateStep(step)) {
+                    nextBtn.prop('disabled', false).removeClass('disabled-btn');
+                } else {
+                    nextBtn.prop('disabled', true).addClass('disabled-btn');
+                }
+            });
+        });
+    });
+
+          //my Account
+      // document.getElementById("btnMyAccount").addEventListener("click", async function(evt) {
+      //     console.log("Clikced");
+      //    window.location.href = 'Account/MyAccount';
+      //
+           window.LoadingOverlay = {
+        show: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "block";
+            } else {
+                console.warn("Loading overlay element not found");
+            }
+        },
+
+        hide: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = "none";
+            }
+        },
+
+        toggle: function() {
+            const overlay = document.getElementById("loadingOverlay");
+            if (overlay) {
+                overlay.style.display = overlay.style.display === "none" ? "block" : "none";
+            }
+        }
+    };
+
+    // Usage: LoadingOverlay.show(), LoadingOverlay.hide()
+
+        // Show on form submission
+        document.addEventListener("submit", function (e) {
+            const form = e.target;
+            if (form.tagName === "FORM") {
+                 LoadingOverlay.show();
+            }
+        }, true);
+
+        // Show on link clicks
+           document.addEventListener("click", function (e) {
+            const link = e.target.closest("a");
+
+            if (link) {
+                const href = link.getAttribute("href") || "";
+                const isSamePageAnchor = href.startsWith("#") || (link.href && link.href.includes(location.pathname + "#"));
+
+                if (
+                    link.href &&
+                    !link.target &&
+                    !link.href.startsWith("javascript:") &&
+                    !isSamePageAnchor
+                ) {
+                   LoadingOverlay.show();
+                }
+            }
+        });
+
+    @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
+    {
+        <text>
+                        $(function () {
+                           // $("#divUserAccountActivity").modal("show");
+                        });
+        </text>
+    }
+        // Optional: Show for all AJAX calls (jQuery)
+        $(document).ajaxStart(function () {
+            LoadingOverlay.show();
+        }).ajaxStop(function () {
+            LoadingOverlay.hide();
+        });
+    </script>
+    </html>
