@@ -14,7 +14,7 @@
     <title>@ViewData["Title"] - DeveloperPortal</title>
     <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-   
+
     <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
     <link href="~/content/font-awesome.css" rel="stylesheet" />
 
@@ -155,20 +155,20 @@
         <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
             @if (usr.UserID != 0)
             {
-                <div id="leftMenu collapse navbar-collapse">
-                    <ul class="navbar-nav botNav-left-hide">
-                        <li class="nav-item navItem-decor">
-                            <a class="nav-link nav-link-basic" href='~/dashboard'>
-                                My Dashboard
-                            </a>
-                        </li>
+                    <div id="leftMenu collapse navbar-collapse">
+                        <ul class="navbar-nav botNav-left-hide">
+                            <li class="nav-item navItem-decor">
+                                <a class="nav-link nav-link-basic" href='~/dashboard'>
+                                    My Dashboard
+                                </a>
+                            </li>
                         @* <li class="nav-item navItem-decor">
                             <a class="nav-link nav-link-basic" href='~/PlanReview'>
                                 PlanReview
                             </a>
                         </li> *@
-                    </ul>
-                </div>
+                        </ul>
+                    </div>
             }
             <div id="rightMenu">
                     <div>
@@ -176,23 +176,23 @@
                     </div>
                     <div class="SignInContatiner">
                         <partial name="_LoginPartial" />
-                        @if (usr.UserID == 0)
-                        {
-                            <ul class="nav navbar-nav navbar-right">
-                            <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success" })</li>
-                                <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                              @*   <li>
+                    @if (usr.UserID == 0)
+                    {
+                                <ul class="nav navbar-nav navbar-right">
+                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-success" })</li>
+                                    <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                            @*   <li>
                                     @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
                                 </li> *@
-                            </ul>
-                        }
+                                </ul>
+                    }
                     </div>
                 </div>
             </div>
         </header>
         <div class=" body-content">
             <main role="main" class="">
-                        @RenderBody()
+            @RenderBody()
             </main>
         </div>
 
@@ -258,33 +258,33 @@
                             {
                                 case "Expired":
                                     {
-                                        <span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
+                                                        <span>Could not activate your account because your activation code is expired. Please register again to our application.</span>
                                         break;
                                     }
                                 case "NotActivated":
                                     {
-                                        <span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
+                                                        <span>Could not activate your account because your activation code is either expired or invalid. please contact AcHP team at lahd.achp@lacity.org for futher assistance.</span>
                                         break;
                                     }
                                 case "AlreadyActivated":
                                     {
-                                        <span>Your account is already activated. You may now log in with your email and password.</span>
+                                                        <span>Your account is already activated. You may now log in with your email and password.</span>
                                         break;
                                     }
                                 case "Success":
                                     {
-                                        <span>Your account is activated successfully. You may now log in with your email and password.</span>
+                                                        <span>Your account is activated successfully. You may now log in with your email and password.</span>
 
                                         break;
                                     }
                                 case "SystemError":
                                     {
-                                        <span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
+                                                        <span>You account is not activated due a system error. Please contact our AcHP Support Team for further assitance.</span>
                                         break;
                                     }
                                 case "DomainDifferent":
                                     {
-                                        <span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
+                                                        <span>Your account is currently on hold. Please wait until LAHD staff approves your account. You will be notified upon approval.</span>
                                         break;
                                     }
                                 default:
@@ -307,7 +307,7 @@
 
     <!-- END USER ACCOUNT ACTIVATE -->
         <!-- Modal PopUp End -->
-                @Html.Partial("_LoadingOverlay")
+    @Html.Partial("_LoadingOverlay")
     </body>
 
 <script>
@@ -386,12 +386,12 @@
             }
         });
 
-   @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
+    @if (usr.UserID == 0 && TempData["Status"] != null && !string.IsNullOrEmpty(TempData["Status"].ToString()))
     {
         <text>
-                    $(function () {
-                       // $("#divUserAccountActivity").modal("show");
-                    });
+                        $(function () {
+                           // $("#divUserAccountActivity").modal("show");
+                        });
         </text>
     }
         // Optional: Show for all AJAX calls (jQuery)
