@@ -137,7 +137,7 @@ window.DMSManager = class DMSManager {
         const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
 
         if (!allowedExtensions.includes(extension)) {
-            return { isValid: false, message: `File type not allowed: ${file.name}.` };
+            return { isValid: false, message: `File type not allowed. Please select valid file format: ${file.name}.` };
         }
 
         return { isValid: true };

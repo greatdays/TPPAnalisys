@@ -33,7 +33,7 @@ namespace DeveloperPortal.Application.DMS.Implementation
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
             FolderDetails folderDetails = null;
-            var projectIdParam = new SqlParameter("SiteAddressID", caseId);
+            var projectIdParam = new SqlParameter("ProjectID", caseId);
 
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
                                                     StoredProcedureNames.SP_uspGetDMSDocumentDetails,
@@ -47,11 +47,13 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 {
                     fileModel = new Domain.DMS.FileModel();
                     fileModel.DocumentId = document.DocumentId;
-                    fileModel.Roles = "NAC";
+                  //  fileModel.Roles = "NAC";
                     fileModel.UploadedDate = document.CreatedOn;
                     fileModel.Name = document.Name;
                     fileModel.UploadedBy = document.CreatedBy;
-                    fileModel.Category = document.OtherDocumentType;
+                    // fileModel.Category = document.OtherDocumentType;
+                    fileModel.Category = document.Category;
+                    fileModel.SubCategory = document.SubCategory;
                     fileModel.Link = document.Link;
                     fileModel.Comment = document.Comment;
 
