@@ -21,6 +21,8 @@ namespace DeveloperPortal.Domain.DMS
         public string FileSize { get; set; } = null!;
 
         public string? OtherDocumentType { get; set; }
+        public string? Category { get; set; }
+        public string? SubCategory { get; set; }
 
         public DateTime? ExpDate { get; set; }
 

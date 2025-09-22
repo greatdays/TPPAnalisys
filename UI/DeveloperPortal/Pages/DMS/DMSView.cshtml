@@ -17,6 +17,7 @@
                     <th>Date</th>
                     <th>Filename</th>
                     <th>Category</th>
+                    <th>SubCategory</th>
                     <th>Comment</th> @* Corrected header *@
                     <th>Uploader</th>
                    @*  <th>Comment</th> *@
@@ -33,6 +34,7 @@
                             <td>@file.UploadedDate.ToString("MM/dd/yyyy")</td>
                             <td><span title="@file.Name">@file.Name</span></td>
                             <td>@file.Category</td>
+                            <td>@file.SubCategory</td>
                             <td>@file.Comment</td> @* Added Comment from model *@
                             <td>@file.UploadedBy</td>
                       @*       <td>@file.Roles</td> *@

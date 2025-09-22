@@ -14,6 +14,7 @@ namespace DeveloperPortal.Domain.DMS
        // public string? FileType { get; set; }
 
         public string? Category { get; set; }
+        public string? SubCategory { get; set; }
         /// <summary>
         /// UploadedDate
         /// </summary>
