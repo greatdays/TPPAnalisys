@@ -10,10 +10,7 @@
 @if (usr.UserID != 0)    
 {
     <li class="nav-item">
-            Welcome <a class="Accountbtn" aria-label="My Account" href="#">@usr.FullName</a>
-    </li>
-    <li class="nav-item">
-            &nbsp;<a class="Accountbtn" aria-label="My Account" href="@Url.Action("LogOff", "Login")">Logout</a>
+           <a class="Accountbtn" aria-label="My Account" href="@Url.Action("LogOff", "Login")">Logout</a>
     </li>  
     <li class="nav-item">
             @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount", @class = "btn btn-info" })

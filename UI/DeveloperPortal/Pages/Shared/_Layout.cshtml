@@ -88,15 +88,15 @@
     <script>
         // correct lacity global navbar
         $(document).ready(function () {
-            $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-            $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-            $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-            $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-            $("#global_nav_la_4324422-rightwrap > a").each(function () {
-                var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
-                $(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
-            });
+        $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
+        $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
+        $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
+        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
+        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
+        $("#global_nav_la_4324422-rightwrap > a").each(function () {
+        var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
+        $(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
+        });
         });
     </script>
 
@@ -116,37 +116,44 @@
                     </div>
                     <div class="navBar-decor"></div>
                     <!-- User dropdown -->
-                    <ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
-                        <li class="nav-item dropdown">
-                            <button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                PP
-                            </button>
-                            <div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
-                                <div class="bg-white  rounded-2 py-2">
-                                    <a class="dropdown-item font-weight-bold text-primary" href="#">
-                                        Param S
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-primary" href="#">My Profile</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item text-primary" href="#">Logout</a>
+                    @if (usr.UserID != 0)
+                    {
+                        var firstInitial = !string.IsNullOrEmpty(usr.FirstName) ? usr.FirstName[0].ToString().ToUpper() : "";
+                        var lastInitial  = !string.IsNullOrEmpty(usr.LastName) ? usr.LastName[0].ToString().ToUpper() : "";
+                        var initials = firstInitial + lastInitial;
+                         
+                        <ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+                            <li class="nav-item dropdown">
+                                <button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    @initials
+                                </button>
+                                <div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
+                                    <div class="bg-white  rounded-2 py-2">
+                                        <a class="dropdown-item font-weight-bold text-primary" href="#">
+                                            @usr.FullName
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-primary" href="#">My Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item text-primary" href="#">Logout</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <script>
-                        $(document).ready(function() {
-                          $(".user-btn").click(function(e) {
+                            </li>
+                        </ul>
+                        <script>
+                            $(document).ready(function() {
+                            $(".user-btn").click(function(e) {
                             e.stopPropagation();
                             $(".dropdown-menu").toggle();
-                          });
+                            });
 
-                          // Hide dropdown when clicking outside
-                          $(document).click(function() {
+                            // Hide dropdown when clicking outside
+                            $(document).click(function() {
                             $(".dropdown-menu").hide();
-                          });
-                        });
-                    </script>
+                            });
+                            });
+                        </script>
+                    }
 
                     <!-- End User dropdown -->
                 </div>
