@@ -121,25 +121,52 @@
                         var firstInitial = !string.IsNullOrEmpty(usr.FirstName) ? usr.FirstName[0].ToString().ToUpper() : "";
                         var lastInitial  = !string.IsNullOrEmpty(usr.LastName) ? usr.LastName[0].ToString().ToUpper() : "";
                         var initials = firstInitial + lastInitial;
-                         
-                        <ul class="ttp-user-dropdown navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
+
+                        <ul class="ttp-user-dropdown navbar-nav ms-auto flex-row align-items-center">
                             <li class="nav-item dropdown">
-                                <button class="user-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                <!-- Initials Button -->
+                                <button class="user-btn dropdown-toggle rounded-circle bg-primary text-white border-0"
+                                        type="button" data-toggle="dropdown" aria-expanded="false">
                                     @initials
                                 </button>
-                                <div class="dropdown-menu dropdown-caret dropdown-menu-end py-0" aria-labelledby="navbarDropdownUser">
-                                    <div class="bg-white  rounded-2 py-2">
+
+                                <!-- Dropdown Menu -->
+                                <div class="dropdown-menu dropdown-menu-end py-0 rounded-4" aria-labelledby="navbarDropdownUser">
+                                    <div class="bg-light rounded-3 py-3">
+
+                                        <!-- Full Name -->
                                         <a class="dropdown-item font-weight-bold text-primary" href="#">
                                             @usr.FullName
                                         </a>
+
+                                        <!-- Email -->
+                                        <a class="dropdown-item d-flex align-items-center text-muted small" href="#">
+                                            @usr.Email 
+                                        </a>
+
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-primary" href="#">My Profile</a>
+
+                                        <!-- Account Profile -->
+                                        <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("MyAccount", "Account")">
+                                            <i class="fa fa-user me-2 account-dropdown"></i>
+                                            <span>Account Profile</span>
+                                        </a>
+
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item text-primary" href="#">Logout</a>
+
+                                        <!-- Logout -->
+                                        <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("LogOff", "Login")">
+                                            <i class="fas fa-sign-out-alt me-2 account-dropdown"></i>
+                                            <span>Logout</span>
+                                        </a>
+
                                     </div>
                                 </div>
                             </li>
                         </ul>
+
+
+                     
                         <script>
                             $(document).ready(function() {
                             $(".user-btn").click(function(e) {
