@@ -25,7 +25,7 @@
                 <div class="col-md-4">
                     @Html.DropDownList("PhoneType", new List<SelectListItem>{
                     new SelectListItem(text:"Select a Phone Type", value:"0")
-                    }, null, new { @class = "form-control" })
+                    }, null, new { @class = "form-control", data_required = "true" })
                 </div>
                 <div class="col-md-4">
                     @Html.TextBox("PhoneNumber", "", new { @class = "form-control", data_required = "true" })
