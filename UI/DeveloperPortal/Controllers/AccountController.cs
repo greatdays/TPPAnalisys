@@ -368,50 +368,35 @@ namespace DeveloperPortal.Controllers
 
             return Json(data);
         }
-       
+
         [HttpGet("Activate")]
-        public ActionResult ActivateAAHRUser(string activationcode, string User)
+        public IActionResult ActivateAAHRUser(string activationcode, string User)
         {
             IDMAuthenticate authenticate = new IDMAuthenticate(_config);
-            IDMUser idmuser = new IDMUser();
-            SignupModel signupModel = new SignupModel();
-            idmuser = authenticate.ActivateAAHRUser(activationcode);
+            IDMUser idmuser = authenticate.ActivateAAHRUser(activationcode);
+            // Determine status/message
+            string status = "SystemError";
+            string message = "Activation failed";
             if (idmuser.Status != null)
             {
-                ViewBag.Message = idmuser.Status.Remove(0, 8);
-                if (idmuser.Status.Contains("IDM110"))
-                {
-                    TempData["Status"] = "NotActivated";
-                }
-                else if (idmuser.Status.Contains("IDM119"))
-                {
-                    TempData["Status"] = "Expired";
-                }
-                else if (idmuser.Status.Contains("IDM111"))
-                {
-                    TempData["Status"] = "AlreadyActivated";
-                }
-                else
-                {
-                    TempData["Status"] = "Success";
-                }
-                TempData["message"] = idmuser.Status.Remove(0, 8);
-
+                message = idmuser.Status.Substring(8); // remove code
+                if (idmuser.Status.Contains("IDM110")) status = "NotActivated";
+                else if (idmuser.Status.Contains("IDM119")) status = "Expired";
+                else if (idmuser.Status.Contains("IDM111")) status = "AlreadyActivated";
+                else status = "Success";
             }
-            else
-            {
-                string LogMessage = "IDM Error: Account activation. \n Activation Code: " + activationcode + "\n IDM Error Message: "
-                                     + idmuser.ErrorMessage;
 
-                TempData["Status"] = "SystemError";
-            }
-            
-            return Redirect($"{_config["AppSettings:ApplicationURL"]}");
-
+            // Pass to view via ViewData or ViewBag
+            ViewData["Status"] = status;
+            ViewData["Message"] = message;
+          
+            return View("ActivationResult"); // new dedicated view
         }
+
+
         #endregion
         //[HttpPost]
-  
+
         //public IActionResult UpdateAccount()
         //{
         //    if (!ModelState.IsValid)
