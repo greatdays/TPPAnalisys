@@ -175,7 +175,7 @@ var BuildingInformation =
 
 function addBuildingInfo() {
     /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-    var url = APPURL + "BuildingIntake/AddBuilding"
+    var url = APPURL + "ProjectDetail/AddBuilding"
     var model = { SiteInformationData: SiteInformationData, caseId: Id };
     AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
         function (response) {
