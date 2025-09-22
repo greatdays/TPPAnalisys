@@ -2014,4 +2014,7 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
         border-radius: 12px
     }
 }
+.account-dropdown{
+    margin-right:7px !important;
+}
 /* UI Developer Bootstrap override classes  */
