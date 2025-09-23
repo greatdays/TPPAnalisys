@@ -11613,3 +11613,7 @@ label.control-label.required-label:after {
         margin-right: 15px;
         margin-bottom: 8px;
     }
+
+.multiselect-container > li > a > label {
+    padding :0px;
+}
