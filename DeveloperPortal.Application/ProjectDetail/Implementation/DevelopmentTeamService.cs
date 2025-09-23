@@ -90,9 +90,21 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
         public async Task<ContactRenderModel> GetContactDetail(int contactId)
         {
+            string apn = "";
+            int caseId= 25662; 
+            int projectId = 697; 
+            int projectSiteId = 0;  
             ContactRenderModel contactRenderModel = new ContactRenderModel();
-            contactRenderModel.ContactTypeList = new List<string>() { "testt,testsss" };
-            contactRenderModel.Type = "testt";
+
+            contactRenderModel.ContactTypeList = new List<string>() { "Owner", "Property Manager", "CASP", "Developer", "Chief NAC", "NAC", "Contractor", "Project Manager", "Developer Architect" };
+            //contactRenderModel.StreetPrefixes = new StreetPrefixService().GetStreetPrefix().Select(x => new StreetPrefixModel { PreDirCd = x.PreDirCd }).ToList();
+            //contactRenderModel.StreetSuffixes = new StreetSuffixService().GetStreetSuffix().Select(x => new StreetSuffixModel { PostDirCd = x.PostDirCd }).ToList();
+            contactRenderModel.CaseID = caseId;
+            contactRenderModel.APN = apn;
+            contactRenderModel.ProjectId = projectId;
+            contactRenderModel.ProjectSiteId = projectSiteId;
+            contactRenderModel.AddContactType = "Simple";
+            contactRenderModel.Source = "TPP";
             var LutStateCDList = await _lutRepository.LutStates();
             foreach (var item in LutStateCDList)
             {

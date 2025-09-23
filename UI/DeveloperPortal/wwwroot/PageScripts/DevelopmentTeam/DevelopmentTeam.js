@@ -3,10 +3,66 @@ var DevelopmentTeam =
 {
     Init: function () {
 
-        $("#PrimaryAssociationTypes").multiselect('rebuild');
-        $("#AssociationTypes").multiselect('rebuild');
-        $("#frmAddNewContact").on("submit", function (e) {
+        $('select#AssociationTypes,select#PrimaryAssociationTypes').multiselect({
+            maxHeight: '300',
+            buttonWidth: '250',
+        });
+
+        $('#divAssociationTypes .multiselect').on('click', function () {
+            setTimeout(function () {
+                $("#divAssociationTypes .multiselect-container").show()
+            }, 200); // 2000 ms = 2 seconds
+        });
+
+        $('#divPrimaryAssociationTypes .multiselect').on('click', function () {
+            setTimeout(function () {
+                $("#divPrimaryAssociationTypes .multiselect-container").show()
+            }, 200); // 2000 ms = 2 seconds
+        });
+
+        $("#AssociationTypes").change(function () {
             debugger;
+            /*fill PrimaryAssociationTypes on the basis of AssociationTypes*/
+            var selectedV = DevelopmentTeam.MultipleSelectedValues("#AssociationTypes");
+            var selectedA = DevelopmentTeam.MultipleSelectedValues("#PrimaryAssociationTypes");
+            DevelopmentTeam.ClearSelection("#PrimaryAssociationTypes");
+            var spltV = selectedV.split(",");
+            var spltA = selectedA.split(",");
+
+            /*hide sohw contractor type*/
+            if (selectedV.indexOf("Contractor") != -1) {
+                $('#divContractorType').show();
+            }
+            else {
+                $('#divContractorType').hide();
+                $("#ContractorType").val("");
+            }
+
+            /*hide sohw CASP number*/
+            if (selectedV.indexOf("CASP") != -1) {
+                $("#divCASP").css('display', 'block');
+            }
+            else {
+                $("#divCASP").css('display', 'none');
+                $("#CASpNumber").val("");
+            }
+
+            if ($.trim(selectedV) != "") {
+                for (var i = 0; i < spltV.length; i++) {
+                    if (spltA.indexOf(spltV[i]) >= 0) {
+                        $("#PrimaryAssociationTypes").append(new Option(spltV[i], spltV[i], null, true));
+                    }
+                    else {
+                        $("#PrimaryAssociationTypes").append(new Option(spltV[i], spltV[i]));
+                    }
+                }
+            }
+
+            $("#PrimaryAssociationTypes").multiselect('rebuild');
+        });
+
+        $("#frmAddNewContact").on("submit", function (e) {
+            debugger;   
             if (!DevelopmentTeam.OnBegin()) { // custom function
                 e.preventDefault(); // cancel submit if OnBegin returns false
                 return;
@@ -26,6 +82,7 @@ var DevelopmentTeam =
                 }
             });
         });
+
 
     },
     LoadParticipants: function () {
@@ -153,5 +210,21 @@ var DevelopmentTeam =
             $('#ContactPopup').modal("hide");
             $('#Error').modal("show");
         }
+    },
+    ClearSelection : function (name) {
+        $(name).find("option").detach();
+        $(name).multiselect('rebuild');
+
+    },
+    MultipleSelectedValues : function (name) {
+        var selectedA = $(name + " option:selected");    /*Current Selected Value*/
+        var selected = "";
+        selectedA.each(function () {
+            if (selected != "")
+                selected += "," + $(this).text();
+            else
+                selected += $(this).text();
+        });
+        return selected;
     }
 }

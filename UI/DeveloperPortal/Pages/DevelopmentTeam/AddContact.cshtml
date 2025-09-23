@@ -68,10 +68,11 @@
                 <br />
                 <div class="clearfix"></div>
                 @Html.ValidationMessageFor(e => e.IdentifierType, "", new { @class = "text-danger" })
-            </div>
-            <div class="related-information identifierDropdown" style="margin-bottom:5px;">
-                <select class="form-control" id="identifierDropdown" name="IdentifierValue"></select>
-                @Html.ValidationMessageFor(e => e.IdentifierValue, "", new { @class = "text-danger" })
+
+                <div class="related-information identifierDropdown" style="margin-bottom:5px;">
+                    <select class="form-control" id="identifierDropdown" name="IdentifierValue"></select>
+                    @Html.ValidationMessageFor(e => e.IdentifierValue, "", new { @class = "text-danger" })
+                </div>
             </div>
             @Html.HiddenFor(m => m.IdentifierValue, new { @id = "identifierHiddenText" })
         }
@@ -91,16 +92,14 @@
             <div class="row">
 
                 <div class="col-md-6">
-                    <div class="form-group required">
+                    <div class="form-group required" id="divAssociationTypes">
                         @Html.Label("Association", "Association", new { @class = "control-label" })
-                        <select asp-for="AssociationTypes" asp-items="associationList" multiple="multiple" class="form-control">
-                        </select>
-                        @* @Html.DropDownListFor(e => e.AssociationTypes, associationList, new { @class = "form-control", @multiple = "multiple" }) *@
+                         @Html.DropDownListFor(e => e.AssociationTypes, associationList, new { @class = "form-control", @multiple = "multiple" }) 
                         @Html.ValidationMessageFor(e => e.AssociationTypes, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group" id="divPrimaryAssociationTypes">
                         @Html.Label("Primary", "Primary", new { @class = "control-label" })
                         <select asp-for="PrimaryAssociationTypes" asp-items="pAssociationList" multiple="multiple" class="form-control">
                         </select>
