@@ -83,7 +83,10 @@ var BuildingInformation =
 
                 $('#divApplicableCodesDL .multiselect').on('click', function () {
                     setTimeout(function () {
-                        $("#divApplicableCodesDL .multiselect-container").show()
+                        if ($("#divApplicableCodesDL .multiselect-container").is(":visible")) { $("#divApplicableCodesDL .multiselect-container").hide() }
+                        else {
+                            $("#divApplicableCodesDL .multiselect-container").show()
+                        }
                     }, 200); // 2000 ms = 2 seconds
                 });
                 //Address
