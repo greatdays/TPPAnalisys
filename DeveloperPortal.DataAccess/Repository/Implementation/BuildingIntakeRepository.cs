@@ -85,7 +85,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                         structureAttribute.BuildingDescription = buildingModel.BuildingDescription;
                         structureAttribute.NonResidental = buildingModel.NonResidental;
                         structureAttribute.LutApplicableAccessibilityStandardId = "";
-                        if (buildingModel.LutApplicableAccessibilityStandardIdList.Any())
+                        if (buildingModel.LutApplicableAccessibilityStandardIdList!=null && buildingModel.LutApplicableAccessibilityStandardIdList.Any())
                         {
                             structureAttribute.LutApplicableAccessibilityStandardId = string.Join(",", buildingModel.LutApplicableAccessibilityStandardIdList);
                         }
@@ -161,21 +161,6 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
 
 
-        /// <summary>
-        /// GetApns
-        /// </summary>
-        /// <param name="projectSiteIds"></param>
-        /// <returns></returns>
-        public async Task<List<Apn>> GetApns(List<int> projectSiteIds)
-        {
-            List<Apn> apns = new List<Apn>();
-            var primaryAPNList = await _context.ProjectSites.Where(x => projectSiteIds.Contains(x.ProjectSiteId)).Select(x => x.PrimaryApn).ToListAsync();
-            if (primaryAPNList != null && primaryAPNList.Any())
-            {
-                 apns=_context.Apns.Include(u=>u.SiteAddresses).Where(m => primaryAPNList.Contains(m.Apn1)).ToList();
-            }
-            return apns;
-        }
 
         /// <summary>
         /// PropSnapshots
