@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using ComCon.DataAccess.Attributes;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Constants;
@@ -70,13 +71,27 @@ namespace DeveloperPortal.Pages.Account
                     Account.IDMUserID= applicantsignupModel.IDMUserID;
                     Account.IsAccountTypeSelected =applicantsignupModel.IsAccountTypeSelected;
                     Account.IsPostBox = applicantsignupModel.IsPostBox;
+                    Account.PostBoxNum = applicantsignupModel.PostBoxNum;
 
            }
         }
 
         public IActionResult OnPostUpdate([FromForm] MyAccountInput signupModel)
         {
-            
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState
+                    .Where(ms => ms.Value.Errors.Any())
+                    .Select(ms => new {
+                        Field = ms.Key,
+                        Errors = ms.Value.Errors.Select(e => e.ErrorMessage)
+                    })
+                    .ToList();
+
+                return new JsonResult(new { success = false, error = "Model binding failed", details = errors });
+            }
+
+            bool IsRoleSelected = false;
             var userSession = UserSession.GetUserSession(HttpContext);
             if (userSession == null)
             {
@@ -95,18 +110,23 @@ namespace DeveloperPortal.Pages.Account
                 {
                     case "Property Developer":
                         selectedLookupRole = UserRoles.PropertyDeveloper;
+                        IsRoleSelected = true;
                         break;
                     case "Architect":
                         selectedLookupRole = UserRoles.Architect;
+                        IsRoleSelected = true;
                         break;
                     case "CASp":
                         selectedLookupRole = UserRoles.CASp;
+                        IsRoleSelected = true;
                         break;
                     case "General Contractor":
                         selectedLookupRole = UserRoles.GeneralContractor;
+                        IsRoleSelected = true;
                         break;
                     case "NAC":
                         selectedLookupRole = UserRoles.NAC;
+                        IsRoleSelected = true;
                         break;
                     default:
                         break;
@@ -117,7 +137,7 @@ namespace DeveloperPortal.Pages.Account
 
             // reload the latest model from DB/service
             applicantsignupModel = UserServiceClient.GetMyAccountDetail_P2(userSession.UserName, _config).Result;
-
+            applicantsignupModel.IsAccountTypeSelected = IsRoleSelected;
             // Update only if provided, otherwise keep existing
             applicantsignupModel.FirstName = !string.IsNullOrWhiteSpace(signupModel.FirstName)
                 ? signupModel.FirstName
@@ -227,39 +247,101 @@ namespace DeveloperPortal.Pages.Account
 
     }
 
-    public class MyAccountInput
-    {
-        [Display(Name = "First Name")]
-        [Required(ErrorMessage = "First Name is required.")]
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string EmailId { get; set; }
-        public string LutPhoneTypeCd { get; set; }
-        public string PhoneNumber { get; set; }
-        public string PhoneExtension { get; set; }
-        public string Extn { get; set; }
-        public string Company { get; set; }
-        public string Title { get; set; }
-        public bool IsPostBox { get; set; }
-        public int? StreetNum { get; set; }
-        public string StreetName { get; set; }
-        public string City { get; set; }
-        public string LutStateCD { get; set; }
-     
-        public string Zipcode { get; set; }
-        public string LutPreDirCd { get; set; }
-        public string LutStreetTypeCd { get; set; }
-        public string UnitNumber { get; set; }
-        public string Unit { get; set; }
+  
 
-        public string PostBoxNum { get; set; }
+public class MyAccountInput
+    {
+        [Required(ErrorMessage = "First Name is required.")]
+        [StringLength(100, ErrorMessage = "First Name cannot exceed 100 characters.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "First Name must contain only letters and spaces.")]
+        public string FirstName { get; set; }
+
+       
+        public string MiddleName { get; set; }
+
+        [Required(ErrorMessage = "Last Name is required.")]
+        [StringLength(100, ErrorMessage = "Last Name cannot exceed 100 characters.")]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Last Name must contain only letters and spaces.")]
+        public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid Email format.")]
+        public string EmailId { get; set; }
+
+        [Required(ErrorMessage = "Phone type is required.")]
+        public string LutPhoneTypeCd { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required.")]
+        [Phone(ErrorMessage = "Invalid phone number.")]
+        [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Phone extension is required.")]
+        [RegularExpression(@"^\d+$", ErrorMessage = "Extension must be numeric.")]
+        public string PhoneExtension { get; set; }
+
+        [RegularExpression(@"^\d*$", ErrorMessage = "Extn must be numeric.")]
+        public string? Extn { get; set; }
+
+        [Required(ErrorMessage = "Company is required.")]
+        [StringLength(200, ErrorMessage = "Company name cannot exceed 200 characters.")]
+        public string Company { get; set; }
+
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(50, ErrorMessage = "Title cannot exceed 50 characters.")]
+        public string Title { get; set; }
+
+        public bool IsPostBox { get; set; }
+
+        // Only required when IsPostBox == false
+        [Range(1, int.MaxValue, ErrorMessage = "Street number must be a positive number.")]
+        public int? StreetNum { get; set; }
+
+ 
+        [StringLength(200, ErrorMessage = "Street Name cannot exceed 200 characters.")]
+        public string? StreetName { get; set; }
+
+        [Required(ErrorMessage = "City is required.")]
+        [StringLength(100, ErrorMessage = "City name cannot exceed 100 characters.")]
+        public string City { get; set; }
+
+        [Required(ErrorMessage = "State is required.")]
+        public string LutStateCD { get; set; }
+
+        [Required(ErrorMessage = "Zip Code is required.")]
+        [RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid Zip Code format.")]
+        public string Zipcode { get; set; }
+
+        [Required(ErrorMessage = "Pre-direction is required.")]
+        public string LutPreDirCd { get; set; }
+
+        [Required(ErrorMessage = "Street type is required.")]
+        public string LutStreetTypeCd { get; set; }
+
+        [StringLength(20, ErrorMessage = "Unit Number cannot exceed 20 characters.")]
+        public string? UnitNumber { get; set; }
+
+        [StringLength(20, ErrorMessage = "Unit cannot exceed 20 characters.")]
+        public string? Unit { get; set; }
+
+     
+        [StringLength(20, ErrorMessage = "Post Box Number cannot exceed 20 characters.")]
+        public string? PostBoxNum { get; set; }
+
         public int ContactID { get; set; }
+
         public int ContactIdentifierID { get; set; }
+
         public int? IDMUserID { get; set; }
+
         public bool IsAccountTypeSelected { get; set; }
+
         public bool IsLocked { get; set; }
+
+        [Required(ErrorMessage = "Role is required.")]
         public string SelectedRole { get; set; }
+
+        // Lists for dropdowns
         public List<LutPhoneType> LutPhoneTypeCdList { get; set; } = new();
         public List<LutPreDir> LutPreDirCdList { get; set; } = new();
         public List<LutStreetType> LutStreetTypeList { get; set; } = new();
