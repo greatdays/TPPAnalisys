@@ -15,5 +15,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId);
         Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel);
         Task<bool> DeleteFundingSource(int id);
+        int? getLuDocumentCategoryId(string category, string subCategory);
     }
 }

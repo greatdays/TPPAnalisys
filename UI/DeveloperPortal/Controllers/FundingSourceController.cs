@@ -37,7 +37,7 @@ public class FundingSourceController : Controller
     }
 
     // GET: /FundingSource/GetFundingSourcesById
-    public IActionResult GetFundingSourcesById(string caseId)
+    public IActionResult GetFundingSourcesById(string caseId,string projectId)
     {
         lock (_lock)
         {
@@ -49,6 +49,7 @@ public class FundingSourceController : Controller
             var model = new FundingSourcePageViewModel
             {
                 CaseId = caseId,
+                ProjectId= projectId,
                // ControlViewModelId = controlViewModelId,
                 FundingSources = fundingsource.Result
             };
@@ -121,10 +122,11 @@ public class FundingSourceController : Controller
     /// <summary>
     /// Add Funding source
     /// </summary>
-    public ActionResult AddFundingSource(string id)
+    public ActionResult AddFundingSource(string id,string projectId)
     {
         FundingSourceViewModel fundingSourceViewModel = new FundingSourceViewModel();
         fundingSourceViewModel.CaseId = id;
+        fundingSourceViewModel.ProjectId= projectId;
         return PartialView("~/Pages/FundingSource/FundingSourcePopUp.cshtml", fundingSourceViewModel);
     }
 
@@ -137,7 +139,7 @@ public class FundingSourceController : Controller
     {
 
         var fileCategory = "Project";
-        var fileSubCategory = "FundingSource";
+        var fileSubCategory = "Funding Source";
         viewModel.CreatedBy = viewModel.ModifiedBy = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
         viewModel.CreatedDate = DateTime.Now;
         viewModel.ModifiedDate = DateTime.Now;
@@ -146,10 +148,11 @@ public class FundingSourceController : Controller
         // Your logic to find and update the funding source
         if (viewModel.File != null && viewModel.File[0].Length > 0)
         {
-            UploadResponse up = await SubmitUploadedDocument(File, Convert.ToInt32(viewModel.CaseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
+            UploadResponse up = await SubmitUploadedDocument(File, Convert.ToInt32(viewModel.ProjectId), Convert.ToInt32(viewModel.CaseId), fileCategory, fileSubCategory, viewModel.Notes, viewModel);
             viewModel.Link = up.UniqueId.ToString();
             viewModel.FileSize = File[0].Length.ToString();
             viewModel.FileName =  File[0].FileName;
+            viewModel.LuDocumentCategoryId = _fundingSourceService.getLuDocumentCategoryId(fileCategory, fileSubCategory);
             bool val  = await  _fundingSourceService.SaveDocumentForFundingSource(viewModel);
         }
         else
@@ -167,7 +170,7 @@ public class FundingSourceController : Controller
     /// </summary>
    
 
-    private async Task<UploadResponse> SubmitUploadedDocument(List<IFormFile> file,  int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
+    private async Task<UploadResponse> SubmitUploadedDocument(List<IFormFile> file,int ProjectId,  int caseId, string fileCategory, string fileSubCategory, string description, FundingSourceViewModel viewModel)
     {
         try
         {
@@ -186,10 +189,10 @@ public class FundingSourceController : Controller
             {
                 FileUploadResult =new FileUploadResult { Success = false, ErrorMessage = "File type not supported." };
             }
-
+            var projReferenceId = _documentService.GetProjectReference(ProjectId);
             // Upload to DMS
             var uploadResponse = await new DMSService(_config)
-                .SubmitUploadedDocument(file, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
+                .SubmitUploadedDocument(file, projReferenceId, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
 
             var response = uploadResponse;
 

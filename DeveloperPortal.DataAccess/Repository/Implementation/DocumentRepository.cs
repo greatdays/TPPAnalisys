@@ -39,7 +39,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     document.Name = documentModel.Name;
                     document.Link = documentModel.Link;
                     document.FileSize = documentModel.FileSize;
-                    document.OtherDocumentType = documentModel.OtherDocumentType;
+                    document.DocumentCategoryId = documentModel.DocumentCategoryId;
                     document.Comment = documentModel.Comment;
                     document.Attributes = documentModel.Attributes;
                     document.CreatedBy = documentModel.CreatedBy;
@@ -59,7 +59,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     FileSize = documentModel.FileSize,
                     Comment = documentModel.Comment,
                     Attributes = documentModel.Attributes,
-                    OtherDocumentType = documentModel.OtherDocumentType,
+                    DocumentCategoryId = documentModel.DocumentCategoryId,
                     CreatedBy = documentModel.CreatedBy,
                     CreatedOn = DateTime.Now,
                     ModifiedBy = documentModel.CreatedBy,
@@ -252,6 +252,11 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
 
             return items;
+        }
+
+        public int GetProjectReference(int projectId)
+        {
+            return _context.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault().RefProjectId;
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using DeveloperPortal.Domain.Notification;
+using DeveloperPortal.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace DeveloperPortal.Application.Notification.Interface
         List<NotificationInfoModel> GetNotificationInfo(string TemplateName, Dictionary<string, string> notificationData, string MailId, string MailCC = null, string MailBCC = null);
 
         NotificationCredential GetNotificationCrdential(string appName);
+        List<ContactIdentifierModel> TPPProjectContactList(int? projectId);
     }
 }

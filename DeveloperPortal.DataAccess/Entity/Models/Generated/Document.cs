@@ -53,9 +53,13 @@ public partial class Document
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
 
+    public int? DocumentCategoryId { get; set; }
+
     public virtual ICollection<AssnDocument> AssnDocuments { get; set; } = new List<AssnDocument>();
 
     public virtual ICollection<AssnFolderDocument> AssnFolderDocuments { get; set; } = new List<AssnFolderDocument>();
+
+    public virtual LutDocumentCategory? DocumentCategory { get; set; }
 
     public virtual DocumentTemplate? DocumentTemplate { get; set; }
 

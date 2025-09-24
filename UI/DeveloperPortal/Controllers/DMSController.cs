@@ -1,13 +1,15 @@
-﻿using DeveloperPortal.Application.DMS.Interface;
+﻿
+using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.Notification.Interface;
-using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Domain.Notification;
+using DeveloperPortal.Domain.Resources;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.StaticFiles;
+using NetTopologySuite.Index.HPRtree;
 using System.Net.Mime;
 
 namespace DeveloperPortal.Controllers
@@ -18,7 +20,7 @@ namespace DeveloperPortal.Controllers
         private readonly IDocumentService _documentService;
         private IProjectDetailService _projectDetailService;
         private ISendNotificationEmail sendNotificationEmail;
-        private string _BaseURL = "", _GoogleDriveId = "", _AAHP_Google_UName = "", AAHP_Google_Pwd = "";
+        private string _BaseURL = "", _GoogleDriveId = "", _AAHP_Google_UName = "", AAHP_Google_Pwd = "",GroupEmail="";
         private bool _IsCreatedGoogleDriveFolder = false;
         private readonly IWebHostEnvironment _webHostEnvironment;
         // Inject IHttpContextAccessor instead of HttpContext
@@ -36,26 +38,22 @@ namespace DeveloperPortal.Controllers
             this.sendNotificationEmail = _sendNotificationEmail;
             this._AAHP_Google_UName = _config["LAHD:username"].ToString();
             this.AAHP_Google_Pwd = _config["LAHD:password"].ToString();
+            this.GroupEmail = _config["NotificationCredentialConfig:GroupEmail"].ToString();
             this._webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFilesById(int caseId, int controlViewModelId)
+        public async Task<IActionResult> GetFilesById(int caseId,int projectId, int controlViewModelId)
         {
-            /* NotificationCredential notificationCredential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
-
-             List<NotificationInfoModel> notificationInfoModels =  sendNotificationEmail.GetNotificationInfo("email to applicant signing up",null, "ananthakrishnan.mohandas@lacity.org", "", "");
-
-
-             await sendNotificationEmail.SendMail(notificationInfoModels, notificationCredential, "SignUp");*/
-            //sendNotification.SendMail(this.notificationInfoList, new NotificationCredential(), emailAction);
+           
 
 
             var model = new DMSModel
             {
-                FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId),
-                ProjectId = caseId
+                FolderModel = await _documentService.GetAllDocumentsBasedOnProjectId(caseId, projectId),
+                CaseId = caseId,
+                ProjectId= projectId
             };
 
             return PartialView("~/Pages/DMS/DMSView.cshtml", model);
@@ -73,7 +71,11 @@ namespace DeveloperPortal.Controllers
         public async Task<JsonResult> UploadFile(
                                           List<IFormFile> files,
                                           [FromForm] int projectId,
+                                          [FromForm] int caseId,
                                           [FromForm] string category,
+                                          [FromForm] string projectName,
+                                          [FromForm] string categoryName,
+                                          [FromForm] string categoryGroup,
                                           [FromForm] string comments = "" // Corrected parameter name
                                          )
         {
@@ -119,17 +121,17 @@ namespace DeveloperPortal.Controllers
                 }
 
                
-
-                var caseId = projectId;
                 // Use the 'comments' parameter directly
                 var comment = comments ?? string.Empty;
                 var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor)?.UserName ?? "System";
 
-                string fileCategory = "Project";
-                string fileSubCategory = "Document";
+                string fileCategory = categoryGroup; //"Project";
+                string fileSubCategory = categoryName;//"Document";
+
+                var projectRefernceId = _documentService.GetProjectReference(projectId);
 
                 // Upload documents to DMS
-                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, caseId, fileCategory, fileSubCategory, createdBy);
+                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, projectRefernceId, caseId, fileCategory, fileSubCategory, createdBy);
 
                 if (responses == null || responses.Count == 0)
                 {
@@ -174,7 +176,7 @@ namespace DeveloperPortal.Controllers
                             FileSize = file.Length.ToString(),
                             CaseId = caseId,
                             Comment = comment, // Correctly using the 'comment' variable
-                            OtherDocumentType = category,
+                            DocumentCategoryId  = Convert.ToInt32(category),
                             CreatedBy = createdBy,
                             CreatedOn = DateTime.Now,
                             IsDeleted = false
@@ -191,9 +193,13 @@ namespace DeveloperPortal.Controllers
                     }
                 }
 
+                await SendEmailNotifyUploadDocument(savedDocuments, projectId, projectName);
+
                 var successMessage = savedDocuments.Count == 1
                     ? "1 document uploaded successfully."
                     : $"{savedDocuments.Count} documents uploaded successfully.";
+
+
 
                 return Json(new
                 {
@@ -265,6 +271,104 @@ namespace DeveloperPortal.Controllers
 
             return Ok(result); // returns JSON array
         }
+        public async Task SendEmailNotifyUploadDocument(List<DocumentModel> documentList, int projectId, string projectName)
+        {
+            if (documentList == null || documentList.Count == 0)
+                return; // nothing to send
+
+            // Common file info
+            string createdBy = documentList.First().CreatedBy;
+            string fileNames = (documentList.Count > 1)
+                ? string.Join(", ", documentList.Select(d => d.Name))
+                : documentList.First().Name;
+
+            var recipients = sendNotificationEmail.TPPProjectContactList(projectId);
+
+            if (recipients != null && recipients.Count > 0)
+            {
+                foreach (var item in recipients)
+                {
+                    var notificationData = BuildNotificationData(projectName, createdBy, fileNames,
+                        string.Join(" ", new[] { item.FirstName, item.MiddleName, item.LastName }
+                            .Where(s => !string.IsNullOrWhiteSpace(s))));
+
+                    var notificationInfo = sendNotificationEmail.GetNotificationInfo(
+                        EmailTemplate.ET_SendEmailUploadFile,
+                        notificationData,
+                        item.Email);
+
+                    var notificationCredential = sendNotificationEmail.GetNotificationCrdential("ACHP");
+
+                    await sendNotificationEmail.SendMail(notificationInfo, notificationCredential, EmailAction.EA_Signup);
+                }
+            }
+            else
+            {
+                var notificationData = BuildNotificationData(projectName, createdBy, fileNames, "Users");
+
+                var notificationInfo = sendNotificationEmail.GetNotificationInfo(
+                    EmailTemplate.ET_SendEmailUploadFile,
+                    notificationData,
+                    GroupEmail);
+
+                var notificationCredential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
+
+                await sendNotificationEmail.SendMail(notificationInfo, notificationCredential, "EA_SendEmailUploadFile");
+            }
+        }
+        private Dictionary<string, string> BuildNotificationData(string projectName, string createdBy, string fileNames, string userName)
+        {
+            return new Dictionary<string, string>
+            {
+                ["ProjectName"] = projectName,
+                ["CreatedBy"] = createdBy,
+                ["FileName"] = fileNames,
+                ["UserName"] = userName
+            };
+        }
+        //public async Task SendEmailNotifyUploadDocument(List<DocumentModel> documentList,int projectId,string projectName)
+        //{
+        //    Dictionary<string, string> NotificationData = null;
+        //    var getAssignedProjectContactEmails = sendNotificationEmail.TPPProjectContactList(projectId);
+        //    if (getAssignedProjectContactEmails != null && getAssignedProjectContactEmails.Count > 0)
+        //    {
+        //        foreach (var item in getAssignedProjectContactEmails)
+        //        {
+        //            NotificationData = new Dictionary<string, string>();
+
+        //            NotificationData.Add("ProjectName", projectName);
+        //            NotificationData.Add("CreatedBy", documentList[0].CreatedBy);
+        //            NotificationData.Add("FileName", (documentList?.Count > 1)
+        //                                                ? string.Join(", ", documentList.Select(d => d.Name))
+        //                                                : documentList?.FirstOrDefault()?.Name);
+
+        //            NotificationData.Add("UserName",
+        //                                 string.Join(" ", new[] { item.FirstName, item.MiddleName, item.LastName }
+        //                                     .Where(s => !string.IsNullOrWhiteSpace(s))));
+                    
+        //            var notificationInfo = sendNotificationEmail.GetNotificationInfo(EmailTemplate.ET_SendEmailUploadFile, NotificationData, item.Email);
+        //            var notificationCrdential = sendNotificationEmail.GetNotificationCrdential("ACHP");
+        //            await sendNotificationEmail.SendMail(notificationInfo, notificationCrdential, EmailAction.EA_Signup);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NotificationData = new Dictionary<string, string>();
+                
+        //        NotificationData.Add("ProjectName", projectName);
+        //        NotificationData.Add("CreatedBy", documentList[0].CreatedBy);
+        //        NotificationData.Add("FileName", (documentList?.Count > 1)
+        //                                            ? string.Join(", ", documentList.Select(d => d.Name))
+        //                                            : documentList?.FirstOrDefault()?.Name);
+
+        //        NotificationData.Add("UserName", "Users");
+        //        var notificationInfo = sendNotificationEmail.GetNotificationInfo(EmailTemplate.ET_SendEmailUploadFile, NotificationData, GroupEmail);
+        //        var notificationCrdential = sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
+        //        await sendNotificationEmail.SendMail(notificationInfo, notificationCrdential, "EA_SendEmailUploadFile");
+
+        //    }
+         
+        //}
         /*public ActionResult GetFilesByIdNew(int controlViewModelId)
         {
             // Normally you'd call a real method here

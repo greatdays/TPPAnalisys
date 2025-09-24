@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using DeveloperPortal.DataAccess.Common;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+
 namespace DeveloperPortal.DataAccess.Entity.Data;
 
 public partial class AAHREntities : DbContext
 {
-    private readonly IConfiguration _configuration;
     public AAHREntities()
     {
     }
 
-    public AAHREntities(DbContextOptions<AAHREntities> options, IConfiguration configuration)
-     : base(options)
+    public AAHREntities(DbContextOptions<AAHREntities> options)
+        : base(options)
     {
-        _configuration = configuration;
     }
 
     public virtual DbSet<AcHpapn> AcHpapns { get; set; }
@@ -1214,14 +1209,8 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<WsviewWstype> WsviewWstypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-    }
-
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=43devdb10;Initial Catalog=AAHRlocal;Integrated Security=true;User Id=appACHP;Password=BDpwD7@cHP;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -5775,6 +5764,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.CreatedOn)
                 .HasComment("Created On")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DocumentCategoryId).HasColumnName("DocumentCategoryID");
             entity.Property(e => e.DocumentNum)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -5796,6 +5786,10 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ServiceTrackingId)
                 .HasMaxLength(100)
                 .HasColumnName("ServiceTrackingID");
+
+            entity.HasOne(d => d.DocumentCategory).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.DocumentCategoryId)
+                .HasConstraintName("FK_LUDocumentCategory_Document");
 
             entity.HasOne(d => d.DocumentTemplate).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.DocumentTemplateId)
