@@ -12,7 +12,7 @@ namespace DeveloperPortal.Application.DMS.Interface
 {
     public interface IDocumentService
     {
-        Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId);
+        Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId,int projectId);
         Task<DocumentModel> SaveDocument(DocumentModel documentModel);
         Task<FolderModel> SaveFolder(FolderModel folderModel);
         Task<List<FolderModel>> GetFolderDetails(int projectId);
@@ -20,6 +20,7 @@ namespace DeveloperPortal.Application.DMS.Interface
         Task<int> GetRecentFolderId();
         Task<bool> DeleteDocument(int id);
         List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null);
+        int GetProjectReference(int categoryId);
         //Task<List<FolderTree>> GetFolderTree(int projectId);
     }
 }

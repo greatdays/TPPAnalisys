@@ -3,6 +3,7 @@ using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Notification;
+using DeveloperPortal.Models.Common;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Identity.Client;
 using System;
@@ -68,6 +69,27 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             notificationCredential.EnableSsl = notificationSource.EnableSsl.HasValue ? notificationSource.EnableSsl.Value : false;
 
             return notificationCredential;
+        }
+        public List<ContactIdentifierModel> TPPProjectContactList(int? projectId)
+        {
+            List<ContactIdentifierModel> contactIdentifierModelList = new List<ContactIdentifierModel>();
+            ContactIdentifierModel contactIdentifierModel = null;
+
+            var listTPPContacts = _context.AssnPropContacts.Where(x => x.ProjectId == projectId && x.Source == "AAHRDeveloperPortal")?.ToList();
+            if (listTPPContacts.Count > 0)
+            {
+                foreach (var item in listTPPContacts)
+                {
+                    contactIdentifierModel = new ContactIdentifierModel();
+
+                    contactIdentifierModel.FirstName = item.ContactIdentifier?.FirstName;
+                    contactIdentifierModel.LastName = item.ContactIdentifier?.LastName;
+                    contactIdentifierModel.Email = item.ContactIdentifier?.Email;
+
+                    contactIdentifierModelList.Add(contactIdentifierModel);
+                }
+            }
+            return contactIdentifierModelList;
         }
         public string PrepareSubject(string emailSubject)
         {

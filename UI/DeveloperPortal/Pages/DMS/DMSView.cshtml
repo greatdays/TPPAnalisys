@@ -68,20 +68,24 @@
 </div>
 
 @{
-    string projectIdFromName = "";
+    string caseIdFromName = "", projectName = "";
 
     if (Model?.FolderModel?.Name != null)
     {
         var folderNameParts = Model.FolderModel.Name.Split('_');
-        projectIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : Convert.ToString(Model.ProjectId);
+        caseIdFromName = folderNameParts.Length > 1 ? folderNameParts[^1] : Convert.ToString(Model.CaseId);
+        projectName = folderNameParts.Length > 1 ? folderNameParts[0] : Convert.ToString(Model.CaseId);
     }
     else
     {
-        projectIdFromName = Convert.ToString(Model.ProjectId);
+        caseIdFromName = Convert.ToString(Model.CaseId);
+        projectName = "";
     }
 }
 
-<input type="hidden" id="ProjectId" value="@projectIdFromName" />
+<input type="hidden" id="CaseId" value="@Model.CaseId" />
+<input type="hidden" id="ProjecId" value="@Model.ProjectId" />
+<input type="hidden" id="ProjectName" value="@projectName" />
 <input type="hidden" id="FolderName" value="@Model.FolderModel?.Name" />
 <input type="hidden" id="FolderId" value="@Model.FolderModel?.Id" />
 
@@ -95,7 +99,9 @@
         reloadUrl: '@Url.Action("GetFilesById", "DMS")',
         // Add the URL for GetCategories here
         getCategoriesUrl: '@Url.Action("GetCategories", "DMS")',
-        projectId: '@projectIdFromName',
+        caseId:'@(Model.CaseId)',
+        projectId: '@(Model.ProjectId)',
+        projectName:'@(projectName)',
         folderName: '@(Model.FolderModel?.Name ?? "")',
         folderId: '@(Model.FolderModel?.Id ?? "")'
     };

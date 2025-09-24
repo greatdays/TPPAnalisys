@@ -2,6 +2,7 @@
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Notification;
+using DeveloperPortal.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,6 +157,10 @@ namespace DeveloperPortal.Application.Notification.Implementation
         public NotificationCredential GetNotificationCrdential(string appName)
         {
             return notificationRepository.GetNotificationCredential(appName);
+        }
+        public List<ContactIdentifierModel> TPPProjectContactList(int? projectId)
+        {
+            return notificationRepository.TPPProjectContactList(projectId);
         }
         public bool IsValidEmail(string email)
         {

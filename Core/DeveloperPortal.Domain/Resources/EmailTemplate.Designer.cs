@@ -394,6 +394,15 @@ namespace DeveloperPortal.Domain.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SendEmailUploadFile.
+        /// </summary>
+        public static string ET_SendEmailUploadFile {
+            get {
+                return ResourceManager.GetString("ET_SendEmailUploadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Staff Correction Requested for Quarterly Reports.
         /// </summary>
         public static string ET_StaffCorrectionRequestedForQuarter {

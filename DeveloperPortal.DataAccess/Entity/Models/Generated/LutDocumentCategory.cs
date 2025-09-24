@@ -70,4 +70,6 @@ public partial class LutDocumentCategory
     public virtual ICollection<AssnDocumentSubCategoryStatus> AssnDocumentSubCategoryStatusDocumentStatuses { get; set; } = new List<AssnDocumentSubCategoryStatus>();
 
     public virtual ICollection<AssnDocumentSubCategoryStatus> AssnDocumentSubCategoryStatusSubCategories { get; set; } = new List<AssnDocumentSubCategoryStatus>();
+
+    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 }

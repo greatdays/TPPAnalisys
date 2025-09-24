@@ -17,6 +17,7 @@ namespace DeveloperPortal.Domain.DMS
         public ControlViewModel ControlViewModel { get; set; }
         public List<DMSResult> SearchResults { get; set; } = new List<DMSResult>();
         public int ProjectId { get; set; }
+        public int CaseId { get; set; }
         public string ProjectName { get; set; }
         public string ProjectFolderName { get; set; }
         public List<string> RenderErrors { get; set; }

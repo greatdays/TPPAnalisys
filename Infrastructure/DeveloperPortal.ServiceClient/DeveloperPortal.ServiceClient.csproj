@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\DeveloperPortal.Domain\DeveloperPortal.Domain.csproj" />
     <ProjectReference Include="..\..\Core\HCIDLA.ServiceClient\HCIDLA.ServiceClient.csproj" />
+    <ProjectReference Include="..\..\DeveloperPortal.DataAccess\DeveloperPortal.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

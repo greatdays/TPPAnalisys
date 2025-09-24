@@ -54,7 +54,7 @@
                 case "tabDocuments":
                    
                     if (window.DMS) {
-                        DMS.LoadDocuments(Id);
+                        DMS.LoadDocuments(Id, ProjectId);
                     }
                     else {
                         console.error("DMS class not loaded yet");
@@ -65,7 +65,7 @@
 
                 case "tabFundingSource":
                     if (window.FundingSource) {
-                        FundingSource.LoadFundingSources(Id);
+                        FundingSource.LoadFundingSources(Id, ProjectId);
                     } else {
                         console.error("FundingSource class not loaded yet");
                     }

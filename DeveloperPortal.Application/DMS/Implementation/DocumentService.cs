@@ -27,13 +27,13 @@ namespace DeveloperPortal.Application.DMS.Implementation
             _documentRepository = documentRepository;
         }
 
-        public async Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId)
+        public async Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId,int projectId)
         {
             List<DocumentModel> resultDocuments = new List<DocumentModel>();
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
             FolderDetails folderDetails = null;
-            var projectIdParam = new SqlParameter("ProjectID", caseId);
+            var projectIdParam = new SqlParameter("CaseID", caseId);
 
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
                                                     StoredProcedureNames.SP_uspGetDMSDocumentDetails,
@@ -47,6 +47,8 @@ namespace DeveloperPortal.Application.DMS.Implementation
                 {
                     fileModel = new Domain.DMS.FileModel();
                     fileModel.DocumentId = document.DocumentId;
+                    fileModel.ProjectId = projectId;
+                    fileModel.CaseId = caseId;
                   //  fileModel.Roles = "NAC";
                     fileModel.UploadedDate = document.CreatedOn;
                     fileModel.Name = document.Name;
@@ -131,6 +133,10 @@ namespace DeveloperPortal.Application.DMS.Implementation
         public List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null)
         {
             return _documentRepository.GetCategories(categories, referenceKeys);
+        }
+        public int GetProjectReference(int projectId)
+        {
+            return _documentRepository.GetProjectReference(projectId);
         }
 
 

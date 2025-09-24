@@ -71,6 +71,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
 
         }
+        public int? getLuDocumentCategoryId(string category, string subCategory)
+        {
+            return _fundingSourceRepository.getLuDocumentCategoryId(category, subCategory);
+        }
 
 
         public async Task<bool> DeleteFundingSource(int id)

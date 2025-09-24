@@ -1,12 +1,12 @@
 ﻿var FundingSource = {
 
-    LoadFundingSources: function (caseId, controlViewModelId = 0, targetDiv = 'divFundingSource') {
+    LoadFundingSources: function (caseId, projectId, controlViewModelId = 0, targetDiv = 'divFundingSource') {
         if (!caseId) {
             console.error('CaseId is required');
             return;
         }
 
-        $.get(APPURL + 'FundingSource/GetFundingSourcesById', { caseId, controlViewModelId })
+        $.get(APPURL + 'FundingSource/GetFundingSourcesById', { caseId, projectId, controlViewModelId })
             .done((html) => {
                 $(`#divFundingSource`).html(html);
 
@@ -22,8 +22,9 @@
         AjaxCommunication.CreateRequest(this.window, "POST", url, "html", data,
             function (result) {
                 var CaseID = $('#CaseId').val();
+                var ProjectID = $('#ProjectId').val();
                 const url = APPURL + 'FundingSource/GetFundingSourcesById';
-                const data = { caseId: CaseID };
+                const data = { caseId: CaseID, projectId: ProjectID };
                 AjaxCommunication.CreateRequest(this.window, "GET", url, "html", data,
                     function (result) {
                         $("#divFundingSource").html(result);

@@ -11,6 +11,7 @@ namespace DeveloperPortal.Domain.FundingSource
     public class FundingSourcePageViewModel
     {
         public string CaseId { get; set; }
+        public string ProjectId { get; set; }
         public int ControlViewModelId { get; set; }
         public IEnumerable<FundingSourceViewModel> FundingSources { get; set; }
     }
@@ -42,7 +43,8 @@ namespace DeveloperPortal.Domain.FundingSource
         public string ModifiedBy { get; set; }
 
         public string? CaseId { get; set; }
-       
+        public string? ProjectId { get; set; }
+
 
         public IFormFileCollection? File { get; set; } // For file upload
 
@@ -50,6 +52,7 @@ namespace DeveloperPortal.Domain.FundingSource
 
         public string? Link { get; set; }
         public string? FileSize { get; set; }
+        public int? LuDocumentCategoryId { get; set; }
 
     }
 }
