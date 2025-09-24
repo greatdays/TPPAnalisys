@@ -61,6 +61,7 @@ var BuildingInformation =
     initBuildingSummary:function ()  {
         $("#buildingSummaryForm").submit(function (event) {
             event.preventDefault(); // Prevent normal form submission
+            $('#BuildingAddressId').val($('#BuildingAddressDL').val());
             BuildingInformation.submitBuildingSummary($(this).serialize());
         });
         BuildingInformation.resetBulidingSummary();
@@ -78,6 +79,16 @@ var BuildingInformation =
                 });
                 $('#BuildingDescriptionDL').val($('#lblBuildingDescription').text().trim()).change();
 
+                $('select#ApplicableCodesDL').multiselect({});
+
+                $('#divApplicableCodesDL .multiselect').on('click', function () {
+                    setTimeout(function () {
+                        if ($("#divApplicableCodesDL .multiselect-container").is(":visible")) { $("#divApplicableCodesDL .multiselect-container").hide() }
+                        else {
+                            $("#divApplicableCodesDL .multiselect-container").show()
+                        }
+                    }, 200); // 2000 ms = 2 seconds
+                });
                 //Address
                 $dropdown = $('#BuildingAddressDL');
                 $dropdown.empty(); // Clear existing options
@@ -133,14 +144,14 @@ var BuildingInformation =
                 $('.btn.btn-primary').attr("disabled", false);
                 BuildingInformationData = [];
                 BuildingInformation.resetBulidingSummary();
-                ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingDt();
                 showMessage("Success", "Building Informantion Updated Successfully.");
             },
             error: function (xhr) {
                 $('#cm_loader').attr("hidden", true);
                 $('.btn.btn-primary').attr("disabled", false);
                 BuildingInformation.resetBulidingSummary();
-                ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingDt();
                 showMessage("Error", "Error occurred, please try again.");
             }
         });
@@ -158,98 +169,83 @@ var BuildingInformation =
     },
     cancelBuildingSummary: function () {
         BuildingInformation.resetBulidingSummary();
-        ReloadBuildingDt();
-    }
-};
-
-
-//Building Summary
-
-
-
-
-
-
-//Building Summary
-
-
-function addBuildingInfo() {
-    /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-    var url = APPURL + "BuildingIntake/AddBuilding"
-    var model = { SiteInformationData: SiteInformationData, caseId: Id };
-    AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
+        BuildingInformation.ReloadBuildingDt();
+    },
+    AddBuildingInfo:function () {
+        /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
+        var url = APPURL + "BuildingIntake/AddBuilding"
+        var model = { SiteInformationData: SiteInformationData, caseId: Id };
+        AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
         function (response) {
             $("#modal-building-add").empty().html(response).modal('show');
             return false;
         },
         null, true, null, false);
-}
+    },
+    SaveAddBuilding: function () {
+        debugger
+        var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
+        if (selectedSite != null) {
+            $("#SelectedSiteId").val(selectedSite.caseID);
+        }
+        //event.preventDefault(); // Prevent normal form submission
+        if (BuildingInformation.BeginSaveAddBuilding()) {
+            //AjaxCommunication.CreateRequest(this.window, "POST", "/Construction/BuildingIntake/SaveBuilding", '', $(form).serialize(),
+            //    function (response) {
+            //        SuccessSaveAddBuilding(response);
+            //    },
+            //    null, true, null, false);
+            var form = $("#frmSaveAddBuilding");
+            $.ajax({
+                url: APPURL + "BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+                type: "POST",
+                data: $(form).serialize(),
+                success: function (data) {
+                    if (data.result.status) {
+                        reloadParkingGrid = true;
+                        BuildingInformation.ReloadBuildingDt();
+                        $("#modal-building-add").modal('hide');
+                    }
+                    else {
+                        alert('error occured...');
+                    }
+                }
+            });
+        }
+    }  ,
+    HideShowAddressPanel: function () {
+        var addAddress = document.getElementById('AddAddress');
+        if (addAddress.checked == true) {
+            $("#IsAddAddress").val("True");
+            $("#BuildingAddressID").prop("disabled", true);
+            $("#divAddressDetails").show();
+            $('span[data-valmsg-for="BuildingAddressID"]').empty();
+            $("#BuildingAddressID").val("");
+        }
+        else {
+            $("#IsAddAddress").val("False");
+            $("#BuildingAddressID").prop("disabled", false);
+            $("#divAddressDetails").hide();
+        }
+    },
+    BeginSaveAddBuilding:function () {
+        var form = $("#frmSaveAddBuilding");
+        $(form).removeData("validator").removeData("unobtrusiveValidation");
+        if ($.validator.unobtrusive != undefined) {
+            $.validator.unobtrusive.parse($(form));
+            var validator = $(form).validate();
+            var isModelValid = $(form).valid();
 
-$("#frmSaveAddBuilding").submit(function (event) {
-    var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
-    if (selectedSite != null) {
-        $("#SelectedSiteId").val(selectedSite.caseID);
-    }
-    event.preventDefault(); // Prevent normal form submission
-    if (BeginSaveAddBuilding()) {
-        //AjaxCommunication.CreateRequest(this.window, "POST", "/Construction/BuildingIntake/SaveBuilding", '', $(this).serialize(),
-        //    function (response) {
-        //        SuccessSaveAddBuilding(response);
-        //    },
-        //    null, true, null, false);
-        $.ajax({
-            url: APPURL + "BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
-            type: "POST",
-            data: $(this).serialize(),
-            success: function (data) {
-                if (data.result.status) {
-                    reloadParkingGrid = true;
-                    ReloadBuildingDt();
-                    $("#modal-building-add").modal('hide');
-                }
-                else {
-                    alert('error occured...');
-                }
+            if (false == isModelValid) {
+                validator.focusInvalid();
+                return false;
             }
-        });
-    }
-});
-
-// form begin.
-function BeginSaveAddBuilding() {
-    var form = $("#frmSaveAddBuilding");
-    $(form).removeData("validator").removeData("unobtrusiveValidation");
-    $.validator.unobtrusive.parse($(form));
-    var validator = $(form).validate();
-    var isModelValid = $(form).valid();
-
-    if (false == isModelValid) {
-        validator.focusInvalid();
-        return false;
-    }
-    return true;
-}
-function SaveAddBuilding() {
-    $('#frmSaveAddBuilding').submit();
-}
-function HideShowAddressPanel() {
-    var addAddress = document.getElementById('AddAddress');
-    if (addAddress.checked == true) {
-        $("#IsAddAddress").val("True");
-        $("#BuildingAddressID").prop("disabled", true);
-        $("#divAddressDetails").show();
-        $('span[data-valmsg-for="BuildingAddressID"]').empty();
-        $("#BuildingAddressID").val("");
-    }
-    else {
-        $("#IsAddAddress").val("False");
-        $("#BuildingAddressID").prop("disabled", false);
-        $("#divAddressDetails").hide();
-    }
-}
-
-function ReloadBuildingDt() {
-    if (dtBuildingDataTable)
+        }
+        return true;
+    },
+    ReloadBuildingDt:function () {
+        if (dtBuildingDataTable)
         dtBuildingDataTable.api().ajax.reload();
-}
+        }
 
+};

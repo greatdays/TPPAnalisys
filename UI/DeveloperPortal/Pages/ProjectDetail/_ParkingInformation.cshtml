@@ -182,6 +182,9 @@
          border: 1px solid #fff; 
     }
 
+    #buildingSummaryForm .form-control {
+        border: 1px solid #fff;
+    }
 
 
 </style>
@@ -320,7 +323,7 @@
                                         <spam class="radio-building-summary-lable">
                                             @Model.ApplicableCodes
                                         </spam>
-                                        <div class="radio-building-summary-edit" style="width:400px;">
+                                        <div class="radio-building-summary-edit" style="width:400px;" id="divApplicableCodesDL">
                                             @Html.DropDownListFor(model => model.LutApplicableAccessibilityStandardIdList, Model.LutApplicableAccessibilityList, "Select", new { @id = "ApplicableCodesDL", @multiple = "multiple", @class = "form-control input-building-summary " })
                                         </div>
                                     </td>
@@ -344,13 +347,13 @@
                                         # of Mobility Units
                                     </td>
                                     <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfMobilityUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "5" })
+                                        @Html.TextBoxFor(x => x.NumberOfMobilityUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "50" })
                                     </td>
                                     <td class="row-title lelf-border">
                                         # of Communication Units
                                     </td>
                                     <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfCommunicationUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "5" })
+                                        @Html.TextBoxFor(x => x.NumberOfCommunicationUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "50" })
                                     </td>
                                     <td class="row-title lelf-border"> # of Adaptable Units </td>
                                     <td class="row-text">

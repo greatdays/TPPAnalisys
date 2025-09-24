@@ -1,9 +1,11 @@
-﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+﻿using DeveloperPortal.Application.Common;
+using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
+
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
@@ -11,12 +13,14 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
     public class BuildingIntakeService : IBuildingIntakeService
     {
         #region Constructor
-        
-        private readonly IBuildingIntakeRepository _buildingIntakeRepository;
 
-        public BuildingIntakeService(IBuildingIntakeRepository buildingIntakeRepository)
+        private readonly IBuildingIntakeRepository _buildingIntakeRepository;
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
+
+        public BuildingIntakeService(IBuildingIntakeRepository buildingIntakeRepository, IStoredProcedureExecutor storedProcedureExecutor)
         {
             _buildingIntakeRepository = buildingIntakeRepository;
+            _storedProcedureExecutor = storedProcedureExecutor;
         }
 
         #endregion
@@ -166,31 +170,29 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// <returns></returns>
         public async Task<List<SelectListItem>> GetBuildingAddressDetails(List<int> projectSiteIds)
         {
-            List<SelectListItem> lstAddress = [];
-            var apnList = await _buildingIntakeRepository.GetApns(projectSiteIds);
-            if (apnList != null && apnList.Any())
-            {
-                foreach (var apn in apnList)
+            var parameters = new List<SqlParameter>()
                 {
-                    var lstSiteAddress = apn.SiteAddresses.ToList();
-                    if (lstSiteAddress != null && lstSiteAddress.Count > 0)
-                    {
-                        lstAddress.AddRange(lstSiteAddress
-                                    .GroupBy(p => p.FullAddress)
-                                    .Select(g => g.First())
-                                    .Select(sa => new SelectListItem
-                                    {
-                                        Text = sa.FullAddress,
-                                        Value = sa.SiteAddressId.ToString()
-                                    })
-                        );
-                    }
+                    new SqlParameter() { ParameterName = "@ProjecIds", Value = string.Join(",", projectSiteIds) },
+                };
 
+            using (var siteAddress = _storedProcedureExecutor.ExecuteStoreProcedure(StoredProcedureNames.SP_uspGetSiteAddressByProject, parameters))
+            {
+                List<SelectListItem> lstAddress = new List<SelectListItem>();
+                if (siteAddress != null && siteAddress.Rows.Count > 0)
+                {
+                    for (int i = 0; i < siteAddress.Rows.Count; i++)
+                    {
+                        lstAddress.Add(new SelectListItem
+                        {
+                            Text = Convert.ToString(siteAddress.Rows[i]["FullAddress"]),
+                            Value = Convert.ToString(siteAddress.Rows[i]["SiteAddressID"])
+                        });
+
+                    }
                 }
+                return lstAddress.Distinct().ToList();
             }
 
-
-            return lstAddress.Distinct().ToList();
         }
 
         /// <summary>

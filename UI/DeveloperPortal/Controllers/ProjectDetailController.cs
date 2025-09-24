@@ -3,29 +3,32 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
 namespace DeveloperPortal.Controllers
-{   
+{
     public class ProjectDetailController : Controller
     {
         #region Construtor
 
         private IProjectDetailService _projectDetailService;
+        private IBuildingIntakeService _buildingIntakeService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService)
         {
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
             _env = env;
             //Username = UserSession.GetUserSession().UserName
             UserName = "jhirpara";
+            _buildingIntakeService = buildingIntakeService;
         }
 
         #endregion
@@ -450,7 +453,7 @@ namespace DeveloperPortal.Controllers
                 return Json(false);
             }
         }
-
+        
         #endregion
 
         #region Project Site Information

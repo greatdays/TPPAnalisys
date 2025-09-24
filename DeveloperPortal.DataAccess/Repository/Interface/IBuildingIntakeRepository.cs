@@ -52,12 +52,6 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// <returns></returns>
         Task SetBuildingModelData(BuildingModel model);
 
-        /// <summary>
-        /// GetApns
-        /// </summary>
-        /// <param name="projectSiteIds"></param>
-        /// <returns></returns>
-        Task<List<Apn>> GetApns(List<int> projectSiteIds);
 
         /// <summary>
         /// PropSnapshots

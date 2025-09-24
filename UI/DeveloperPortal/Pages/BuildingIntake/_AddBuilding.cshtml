@@ -1,8 +1,8 @@
 ﻿@using DeveloperPortal.Domain.ProjectDetail
 <!-- jQuery Validation -->
-@* <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 <!-- jQuery Validation Unobtrusive -->
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script> *@
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script> 
 @model BuildingModel
 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
     <div class="modal-content">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="col-md-6 mb-1" style="padding-top:35px;">
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="ChkbxBedrooms custom-control-input" value="0" id="AddAddress" onclick="HideShowAddressPanel();">
+                                <input type="checkbox" class="ChkbxBedrooms custom-control-input" value="0" id="AddAddress" onclick="BuildingInformation.HideShowAddressPanel();">
                                 <label class="custom-control-label" for="AddAddress">Add AddressInfo</label>
                             </div>
                         </div>
@@ -152,7 +152,7 @@
         </div>
         <div class="modal-footer multi-button comcom-fotter">
             <button type="button" class="btn btn-light" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-            <button class="btn btn-primary" type="submit" title="Save" onclick="SaveAddBuilding()">Save</button>
+            <button class="btn btn-primary" type="button" title="Save" onclick="BuildingInformation.SaveAddBuilding()">Save</button>
         </div>
     </div>
 </div>

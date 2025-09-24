@@ -6,8 +6,9 @@
 <div class="page-content">
 	<div class="container-lahd">
 		<h3 class="title text-primary m-0">My Dashboard</h3>
+		<!-- THIS IS NOTIFICATION POPUP FOR NOW WE ARE HIDING IT AS PER requirement we will work on this-->
 		<!-- Notification Window -->
-		<aside id="sidebar" class="notification-sidebar open" role="region" aria-label="Notifications panel">
+	@* 	<aside id="sidebar" class="notification-sidebar open" role="region" aria-label="Notifications panel">
 			<div style="padding: 15px 10px; text-align: center;">
 				<h4 class="m-0 mb-2 p-0 text-white">Notifications</h4>
 				<p class="m-0 p-0 text-white">You have new comments on the following project(s)</p>
@@ -51,7 +52,7 @@
 				<div class="small">Showing latest notifications</div>
 			</div>
 		</aside>
-
+ *@
 		<!-- End Notification Window -->
 
 		<!-- Project Notification -->
@@ -339,11 +340,12 @@
 
 		});
 
-		$(document).ready(function () {
-		  $(".toggle-btn").click(function () {
-			$(".notification-sidebar").toggleClass("open");
-		  });
-		});
+		//// Notification button
+		// $(document).ready(function () {
+		//   $(".toggle-btn").click(function () {
+		// 	$(".notification-sidebar").toggleClass("open");
+		//   });
+		// });
 
 	</script>
 	<style>
