@@ -126,7 +126,7 @@
                             <li class="nav-item dropdown">
                                 <!-- Initials Button -->
                                 <button class="user-btn dropdown-toggle rounded-circle bg-primary text-white border-0"
-                                        type="button" data-toggle="dropdown" aria-expanded="false">
+                                type="button" data-toggle="dropdown" aria-expanded="false">
                                     @initials
                                 </button>
 
@@ -145,14 +145,16 @@
                                         </a>
 
                                         <div class="dropdown-divider"></div>
+                                        @if (usr.Roles?.Contains("Property Developer") == true)
+                                        {
+                                            <!-- Account Profile -->
+                                            <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("MyAccount", "Account")">
+                                                <i class="fa fa-user me-2 account-dropdown"></i>
+                                                <span>Account Profile</span>
+                                            </a>
 
-                                        <!-- Account Profile -->
-                                        <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("MyAccount", "Account")">
-                                            <i class="fa fa-user me-2 account-dropdown"></i>
-                                            <span>Account Profile</span>
-                                        </a>
-
-                                        <div class="dropdown-divider"></div>
+                                            <div class="dropdown-divider"></div>
+                                        }
 
                                         <!-- Logout -->
                                         <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("LogOff", "Login")">
