@@ -12,6 +12,7 @@ using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.Dashboard;
 using DeveloperPortal.Models.Common;
 using DeveloperPortal.Models.IDM;
+using DeveloperPortal.Models.PlanReview;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -391,33 +392,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             {
                 APNSearch APNSearch = new APNSearch();
 
+                var projectIdParam = new SqlParameter("APN", APNNumber);
+                APNSearch.APNSearchSiteAddresslst = await _storedProcedureExecutor.ExecuteStoredProcAsync<APNSearchSiteAddress>(StoredProcedureNames.SP_uspGetSiteAddressByAPN, projectIdParam);
 
-                var parameters = new[]
-                {
-                    new SqlParameter("APN", APNNumber)
-                };
-
-                var ds = await _storedProcedureExecutor.ExecuteStoredProcedureWithDataSetAsync(StoredProcedureNames.SP_uspGetSiteAddressByAPN,parameters);
-
-
-
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        APNSearch.APNSearchSiteAddresslst = ConvertToList<APNSearchSiteAddress>(ds.Tables[0]);
-                    }
-
-                    if (ds.Tables[1].Rows.Count > 0)
-                    {
-                        APNSearch.APNSearchProjectInfolst = ConvertToList<APNSearchProjectInfo>(ds.Tables[1]);
-                    }
-                }
-               
-             
                 if (APNSearch != null)
                 {
-                    // Return the first list from the result.
                     return APNSearch;
                 }
 
@@ -432,31 +411,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
         }
 
-
-        private static List<T> ConvertToList<T>(DataTable table) where T : new()
-        {
-            var list = new List<T>();
-
-            if (table == null || table.Rows.Count == 0)
-                return list;
-
-            var properties = typeof(T).GetProperties();
-
-            foreach (DataRow row in table.Rows)
-            {
-                T obj = new T();
-                foreach (var prop in properties)
-                {
-                    if (table.Columns.Contains(prop.Name) && row[prop.Name] != DBNull.Value)
-                    {
-                        prop.SetValue(obj, Convert.ChangeType(row[prop.Name], prop.PropertyType));
-                    }
-                }
-                list.Add(obj);
-            }
-
-            return list;
-        }
 
         public async Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContactAsync(List<string> projects, HttpContext httpContext)
         {

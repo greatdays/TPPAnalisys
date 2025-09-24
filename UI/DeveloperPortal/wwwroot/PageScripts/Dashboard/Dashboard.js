@@ -94,7 +94,8 @@
                 ProjectName: projectName,
                 PropertyNameInput: propertyName,
                 APN: $('#APNInput').val().trim()
-            };
+            }
+            
 
             // Use $.ajax for full control over the request
             $.ajax({
@@ -106,7 +107,7 @@
                 success: function (response) {
                     if (response.success) {
                         $('#ActionModal').modal('hide');
-                       
+
                         Dashboard.PopulateMyProjectData();
                     } else {
                         $('#validationMessage').text(response.message || "Submission failed.").show();
@@ -256,14 +257,14 @@
         // Remove any validation error messages that might be visible
         $('.validation-error').remove();
         $('#validationMessage').hide(); // Hide the main validation message if it's visible
-        var tableBody = $("#tblExistingProjectDetails tbody");
-        tableBody.empty();
-        document.getElementById("ExistingProjectNameId").style.display = "none";
+   
+        /* document.getElementById("ExistingProjectNameId").style.display = "none";*/
         document.getElementById("CreateNewProjectId").style.display = "none";
     },
 
 
     addProject: function () {
+        debugger;
         const input = document.getElementById("acHpInput");
         const value = input.value.trim();
         document.getElementById("noData").style.display = "none";
@@ -293,6 +294,7 @@
     },
 
     AddClick: function () {
+        debugger;
         var ctlIndex = GetControlIndex();
         /*        console.log('ProjCount: ' + ctlIndex);*/
         const input = document.getElementById("acHpInput");
@@ -370,7 +372,7 @@
                 if (response.apnSearchSiteAddresslst == null && response.apnSearchProjectInfolst == null) {
                     document.getElementById("noAPNData").style.display = "block";
                     document.getElementById("CreateNewProjectId").style.display = "none";
-                    document.getElementById("ExistingProjectNameId").style.display = "none";
+                    //document.getElementById("ExistingProjectNameId").style.display = "none";
                     return;
                 }
 
@@ -400,101 +402,46 @@
                     document.getElementById("CreateNewProjectId").style.display = "none";
                 }
 
-                var gridData = response.apnSearchProjectInfolst;
 
-                var tableBody = $("#tblExistingProjectDetails tbody");
-                tableBody.empty();
-                if (gridData != null && gridData.length > 0) {
-
-                    document.getElementById("ExistingProjectNameId").style.display = "block";
-
-
-                    gridData.forEach(function (project) {
-                        tableBody.append
-                            (`
-                        <tr>
-                            <td>${project.achpNumber}</td>
-                            <td>${project.projectName}</td>
-                            <td>
-                                <button class="btn btn-link" type="button" onclick="Dashboard.LinkProject(event, '${project.projectID}')">
-                                    Link Project
-                                </button>
-                            </td>
-                        </tr>
-        `           );
-                    });
-
-                }
-                else {
-                    document.getElementById("ExistingProjectNameId").style.display = "none";
-                }
 
             },
-            error: function (xhr) {
-                console.error("Error:", xhr.status, xhr.responseText);
-                callback(null, null, false);
-            }
-        });
+
+        })
     },
 
-    LinkProject: function (event, projectId) {
-        $('#validationMessage').hide().text('');
-        var projects = [];
-        if (projectId > 0) {
-            projects.push(projectId);
-            if (projects.length === 0) {
-                $('#validationMessage').text("Please add at least one project before submitting.").show();
-                return;
-            }
+            GetACHPDetail: function (achpNumber, callback) {
 
-            $.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
-                if (response.success) {
-                    $('#ActionModal').modal('hide');
-                    Dashboard.PopulateMyProjectData();
-                } else {
-                    $('#validationMessage').text(response.message || "Submission failed.").show();
-                }
-            });
-        }
-        else {
-            alert("Project Not found");
-        }
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                //var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+                $.ajax({
+                    url: APPURL + 'Dashboard?handler=GetACHPDetails',
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    data: { achpNumber: achpNumber },
+                    success: function (data) {
+                        var retJson = data;
 
-    },
+                        var respCode = data.responseCode;
+                        var retAchp = data.achpNumber;
+                        var streetName = data.streetName;
+                        var projectId = data.projectId
+                        var response = data.response;
 
-    GetACHPDetail: function (achpNumber, callback) {
-
-        var token = $('input[name="__RequestVerificationToken"]').val();
-        //var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
-        $.ajax({
-            url: APPURL + 'Dashboard?handler=GetACHPDetails',
-            type: 'POST',
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            headers: {
-                'RequestVerificationToken': token
+                        if (response && response !== '[]') {
+                            callback(streetName, retAchp, projectId, true);
+                        } else {
+                            callback(null, null, null, false);
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.status, xhr.responseText);
+                        callback(null, null, false);
+                    }
+                });
             },
-            data: { achpNumber: achpNumber },
-            success: function (data) {
-                var retJson = data;
 
-                var respCode = data.responseCode;
-                var retAchp = data.achpNumber;
-                var streetName = data.streetName;
-                var projectId = data.projectId
-                var response = data.response;
 
-                if (response && response !== '[]') {
-                    callback(streetName, retAchp, projectId, true);
-                } else {
-                    callback(null, null, null, false);
-                }
-            },
-            error: function (xhr) {
-                console.error("Error:", xhr.status, xhr.responseText);
-                callback(null, null, false);
-            }
-        });
-    },
-
-   
-}
+ }
