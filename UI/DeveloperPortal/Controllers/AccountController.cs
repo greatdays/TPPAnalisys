@@ -29,6 +29,7 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.Resources;
 using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using System.Web.Helpers;
 
 namespace DeveloperPortal.Controllers
 {
@@ -517,135 +518,81 @@ namespace DeveloperPortal.Controllers
             var roleData = await _accountService.GetUSerRole(null);
             return roleData;
         }
-        [HttpGet("GetLookUpData")]
-        public async Task<JsonResult> GetLookupData()
-        {
-            string lookup = Request.Query["lookup"].FirstOrDefault();
-            List<State> statesList = new List<State>();
-            List<PhoneType> phoneTypeList = new List<PhoneType>();
-            List<Directions> directionsList = new List<Directions>();
-            List<StreetType> StreetTypeList = new List<StreetType>();
-            List<userRoleType> UserRole = new List<userRoleType>();
 
+        [HttpGet("GetUserRoleLookupData")]
+        public async Task<JsonResult> GeUserRoleLookupData()
+        {
+            List<userRoleType> UserRole = new List<userRoleType>();
+            var data = await getUSerRole();
+            foreach (var item in data)
+            {
+                userRoleType userRoleType = new userRoleType();
+                userRoleType.RoleID = item.RoleId;
+                userRoleType.RoleName = item.Name;
+                UserRole.Add(userRoleType);
+            }
+
+           string  json = JsonConvert.SerializeObject(UserRole, Formatting.Indented);
+            return new JsonResult(json);
+
+        }
+
+        [HttpGet("GetAllLookupData")]
+        public async Task<JsonResult> GetAllLookupData()
+        {
             string Baseurl = GetConfigValue("AAHRApiSettings:ApiURL");
             var response = string.Empty;
-            string json = string.Empty;
 
-            //if (TempData != null && TempData.ContainsKey("LookupData"))
-            //TODO: Use data persistence. Using TempData interferes with page refresh 
-            if(false)
+            using (var client = new HttpClient())
             {
-                response = TempData["LookupData"] as string;
-            }
-            else
-            {
-                using (var client = new HttpClient())
+                client.BaseAddress = new Uri(Baseurl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage Res = await client.GetAsync("api/user/lookuplist");
+
+                if (Res.IsSuccessStatusCode)
                 {
-                    client.BaseAddress = new Uri(Baseurl);
-                    client.DefaultRequestHeaders.Clear();
-                    //Define request data format
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient
-                    HttpResponseMessage Res = await client.GetAsync("api/user/lookuplist");
-
-                    if (Res.IsSuccessStatusCode)
-                    {
-                        //Storing the response details recieved from web api
-                        response = Res.Content.ReadAsStringAsync().Result;
-                        //TempData["LookupData"] = response
-                    }
+                    response = await Res.Content.ReadAsStringAsync();
                 }
             }
 
             JObject keyValuePairs = JObject.Parse(JsonConvert.DeserializeObject(response).ToString());
 
-            switch (lookup)
+            var result = new
             {
-                case "State":
-                    JArray states = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStateCDList").ToString());
+                State = JArray.Parse(keyValuePairs["Response"]["LutStateCDList"].ToString())
+                    .Select(state => new {
+                        StateId = state["LutStateCd"].ToString(),
+                        StateName = state["Description"].ToString()
+                    }).ToList(),
 
-                    foreach (JToken state in states)
-                    {
-                        State state1 = new State();
-                        string stateId = state["LutStateCd"].ToString();
-                        string stateName = state["Description"].ToString();
+                PhoneType = JArray.Parse(keyValuePairs["Response"]["LutPhoneTypeCdList"].ToString())
+                    .Select(ph => new {
+                        PhoneTypeValue = ph["LutPhoneTypeCd"].ToString(),
+                        PhoneTypeText = ph["PhoneType"].ToString()
+                    }).ToList(),
 
-                        state1.StateName = stateName;
-                        state1.StateId = stateId;
+                Direction = JArray.Parse(keyValuePairs["Response"]["LutPreDirCdList"].ToString())
+                    .Select(dir => new {
+                        DirectionValue = dir["LutPreDirCD"].ToString(),
+                        DirectionText = dir["LutPreDirCD"].ToString()
+                    }).ToList(),
 
-                        statesList.Add(state1);
-                    }
-                    json = JsonConvert.SerializeObject(statesList, Formatting.Indented);
-                    break;
-                case "PhoneType":
-                    JArray phoneTypes = JArray.Parse(keyValuePairs["Response"].SelectToken("LutPhoneTypeCdList").ToString());
+                StreetType = JArray.Parse(keyValuePairs["Response"]["LutStreetTypeList"].ToString())
+                    .Select(st => new {
+                        StreetTypeValue = st["LutStreetTypeCd"].ToString(),
+                        StreetTypeText = st["LutStreetTypeCd"].ToString()
+                    }).ToList(),
 
-                    foreach (JToken phType in phoneTypes)
-                    {
-                        PhoneType phoneType = new PhoneType();
-                        string phoneTypeText = phType["PhoneType"].ToString();
-                        string phoneTypeValue = phType["LutPhoneTypeCd"].ToString();
+                //UserRole = (await getUSerRole())
+                //    .Select(role => new {
+                //        RoleID = role.RoleId,
+                //        RoleName = role.Name
+                //    }).ToList()
+            };
 
-                        phoneType.PhoneTypeText = phoneTypeText;
-                        phoneType.PhoneTypeValue = phoneTypeValue;
-
-                        phoneTypeList.Add(phoneType);
-                    }
-                    json = JsonConvert.SerializeObject(phoneTypeList, Formatting.Indented);
-                    break;
-                case "Direction":
-                    JArray directions = JArray.Parse(keyValuePairs["Response"].SelectToken("LutPreDirCdList").ToString());
-
-                    foreach (JToken direction in directions)
-                    {
-                        Directions AllDirections = new Directions();
-                        string directionText = direction["LutPreDirCD"].ToString();
-                        string directionValue = direction["LutPreDirCD"].ToString();
-
-                        AllDirections.DirectionText = directionText;
-                        AllDirections.DirectionValue = directionValue;
-
-                        directionsList.Add(AllDirections);
-                    }
-                    json = JsonConvert.SerializeObject(directionsList, Formatting.Indented);
-                    break;
-                case "StreetType":
-                    
-                    JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
-
-                    foreach (JToken streetType in streetTypeArr)
-                    {
-                        StreetType stType = new StreetType();
-                        string streetTypeText = streetType["LutStreetTypeCd"].ToString();
-                        string streetTypeValue = streetType["LutStreetTypeCd"].ToString();
-
-                        stType.StreetTypeText = streetTypeText;
-                        stType.StreetTypeValue = streetTypeValue;
-
-                        StreetTypeList.Add(stType);
-                    }
-                    json = JsonConvert.SerializeObject(StreetTypeList, Formatting.Indented);
-                    break;
-                case "UserRole":
-                    // JArray streetTypeArr = JArray.Parse(keyValuePairs["Response"].SelectToken("LutStreetTypeList").ToString());
-                    var data = await getUSerRole();
-                    foreach (var item in data)
-                    {
-                        userRoleType userRoleType = new userRoleType();
-                        userRoleType.RoleID = item.RoleId;
-                        userRoleType.RoleName = item.Name;
-                        UserRole.Add(userRoleType);
-                    }
-
-                    json = JsonConvert.SerializeObject(UserRole, Formatting.Indented);
-                    break;
-                default:
-                    break;
-            }
-            
-            //var json = JavascriptSerializer.Serialize(statesList);
-            
-            return new JsonResult(json);
+            return new JsonResult(result);
         }
 
         private async Task<Models.IDM.SignupModel> GetData()
