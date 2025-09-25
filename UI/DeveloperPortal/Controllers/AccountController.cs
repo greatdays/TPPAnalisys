@@ -595,6 +595,12 @@ namespace DeveloperPortal.Controllers
             return new JsonResult(result);
         }
 
+        [HttpGet("GetRoleError")]
+        public IActionResult RoleError()
+        {
+            return View("RoleError");
+        }
+
         private async Task<Models.IDM.SignupModel> GetData()
         {
             HttpClient client = new HttpClient();
