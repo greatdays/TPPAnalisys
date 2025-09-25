@@ -142,7 +142,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
         public List<FloorPlanInformation> GetFloorPlanInformationCompliance(int CaseID)
         {
-            var lutFloorPlanTypes =  _floorPlanTypeRepository.GetFloorPlanInformationCompliance(CaseID);
+            var lutFloorPlanTypes = _floorPlanTypeRepository.GetFloorPlanInformationCompliance(CaseID);
+            if (lutFloorPlanTypes == null || !lutFloorPlanTypes.Any())
+            {
+                return new List<FloorPlanInformation>();
+            }
             var LutFloorPlanTypes = lutFloorPlanTypes.Select(a => new FloorPlanInformation
             {
                 FloorPlanTypeID = a.FloorPlanTypeID,
