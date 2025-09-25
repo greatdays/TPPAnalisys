@@ -430,8 +430,12 @@
                 $.ajax({
                     url:APPURL+ 'Account/MyAccount?handler=Update',
                     type: 'POST',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     data: formData,
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    headers: {
+                        'RequestVerificationToken': token, 
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     success: function (res) {
                         console.log("Success", res);
                         $("#successMsg").text("Account updated successfully!").removeClass("d-none");

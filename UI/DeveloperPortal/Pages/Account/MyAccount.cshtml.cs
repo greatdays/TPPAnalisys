@@ -76,6 +76,7 @@ namespace DeveloperPortal.Pages.Account
            }
         }
 
+        [ValidateAntiForgeryToken]
         public IActionResult OnPostUpdate([FromForm] MyAccountInput signupModel)
         {
             if (!ModelState.IsValid)
