@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using DeveloperPortal.DataAccess.Common;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 namespace DeveloperPortal.DataAccess.Entity.Data;
 
 public partial class AAHREntities : DbContext
 {
+    private readonly IConfiguration _configuration;
     public AAHREntities()
     {
     }
 
-    public AAHREntities(DbContextOptions<AAHREntities> options)
-        : base(options)
+    public AAHREntities(DbContextOptions<AAHREntities> options, IConfiguration configuration)
+     : base(options)
     {
+        _configuration = configuration;
     }
 
     public virtual DbSet<AcHpapn> AcHpapns { get; set; }
@@ -1209,8 +1214,13 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<WsviewWstype> WsviewWstypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=43devdb10;Initial Catalog=AAHRlocal;Integrated Security=true;User Id=appACHP;Password=BDpwD7@cHP;TrustServerCertificate=true");
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            optionsBuilder.UseSqlServer(connectionString);
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

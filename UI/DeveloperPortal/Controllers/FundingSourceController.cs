@@ -9,11 +9,12 @@ using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
 using HCIDLA.ServiceClient.LaserFiche;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-//[Authorize]
+[Authorize]
 public class FundingSourceController : Controller
 {
     private readonly IConfiguration _config;
