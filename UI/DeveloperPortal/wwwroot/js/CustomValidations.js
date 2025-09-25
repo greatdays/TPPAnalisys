@@ -288,113 +288,46 @@ function InitializeContactMethods() {
         ValidatePhoneType('PhoneType');
     });
 
-    //fetch data to initialize PhoneType
-    /*http://43svc/AAHRDev.Api/api/user/lookuplist"*/
     $.ajax({
-        url: APPURL + "Account/GetLookupData?lookup=State", 
+        url: APPURL + "Account/GetAllLookupData",
         type: 'GET',
-        async: false,
         dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        data: "",
         success: function (data) {
-            //console.log('success: ' + data);
-            var json = JSON.parse(data);
-            console.log('json: ' + json);
-
-            for (var index = 0; index < json.length; index++) {
-                var stateName = json[index].StateName;
-                var stateId = json[index].StateId;
-
-                $('#State').append($('<option>').text(stateName).attr('value', stateId));
-            }
+            // State
+            $.each(data.state, function (i, item) {
+                $('#State').append($('<option>').text(item.stateName).attr('value', item.stateId));
+            });
             $('#State').val(0);
-        },
-        error: function (xhr) { }
-    });
-    //console.log('about to call phonetype');
-    $.ajax({
-        url: APPURL + "Account/GetLookupData?lookup=PhoneType",
-        type: 'GET',
-        async: false,
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        data: "",
-        success: function (data) {
-            //console.log('success: ' + data);
-            var json = JSON.parse(data);
-            console.log('PhoneType json: ' + json);
-            //
-            for (var index = 0; index < json.length; index++) {
-                var phoneTypeText = json[index].PhoneTypeText;
-                var phoneTypeValue = json[index].PhoneTypeValue;
 
-                $('#PhoneType').append($('<option>').text(phoneTypeText).attr('value', phoneTypeValue));
-            }
+            // PhoneType
+            $.each(data.phoneType, function (i, item) {
+                $('#PhoneType').append($('<option>').text(item.phoneTypeText).attr('value', item.phoneTypeValue));
+            });
             $('#PhoneType').val(0);
-        },
-        error: function (xhr) { }
-    });
-    //console.log('about to call directions');
-    $.ajax({
-        url: APPURL + "Account/GetLookupData?lookup=Direction",
-        type: 'GET',
-        async: false,
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        data: "",
-        success: function (data) {
-            //console.log('success: ' + data);
-            var json = JSON.parse(data);
-            console.log('Direction json: ' + json);
-            //
-            for (var index = 0; index < json.length; index++) {
-                var directionText = json[index].DirectionText;
-                var directionValue = json[index].DirectionValue;
 
-                $('#StreetDirection').append($('<option>').text(directionText).attr('value', directionValue));
-            }
+            // Direction
+            $.each(data.direction, function (i, item) {
+                $('#StreetDirection').append($('<option>').text(item.directionText).attr('value', item.directionValue));
+            });
             $('#StreetDirection').val(0);
-        },
-        error: function (xhr) { }
-    });
 
-    //StreetType
-    $.ajax({
-        url: APPURL + "Account/GetLookupData?lookup=StreetType",
-        type: 'GET',
-        async: false,
-        dataType: 'json',
-        contentType: 'application/json',
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        data: "",
-        success: function (data) {
-            //console.log('success: ' + data);
-            var json = JSON.parse(data);
-            console.log('Street Type json: ' + json);
-            //
-            for (var index = 0; index < json.length; index++) {
-                var streetTypeText = json[index].StreetTypeText;
-                var streetTypeValue = json[index].StreetTypeValue;
-
-                $('#StreetType').append($('<option>').text(streetTypeText).attr('value', streetTypeValue));
-            }
+            // StreetType
+            $.each(data.streetType, function (i, item) {
+                $('#StreetType').append($('<option>').text(item.streetTypeText).attr('value', item.streetTypeValue));
+            });
             $('#StreetType').val(0);
+
+            //// UserRole
+            //$.each(data.userRole, function (i, item) {
+            //    $('#UserRole').append($('<option>').text(item.roleName).attr('value', item.roleID));
+            //});
+            //$('#UserRole').val(0);
         },
-        error: function (xhr) { }
+        error: function (xhr) {
+            console.error("Error fetching lookup data", xhr);
+        }
     });
-    
+   
 }
 
 function ValidatePhone(ctlId) {

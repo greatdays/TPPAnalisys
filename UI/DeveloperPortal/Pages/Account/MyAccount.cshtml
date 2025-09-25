@@ -372,7 +372,7 @@
             //Get the Roles
             function FetchingRoles(){
                  $.ajax({
-                    url: APPURL + "Account/GetLookupData?lookup=UserRole",
+                    url: APPURL + "Account/GetUserRoleLookupData",
                     type: 'GET',
                     async: false,
                     dataType: 'json',

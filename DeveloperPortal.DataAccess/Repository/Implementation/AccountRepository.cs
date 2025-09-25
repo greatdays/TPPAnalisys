@@ -119,7 +119,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             if (VwApplications.Any())
             {
                 var VwAspNetRoles = await _context.VwAspNetRoles
-                                .Where(x => x.ApplicationId == VwApplications.FirstOrDefault().ApplicationId)
+                                .Where(x => x.ApplicationId == VwApplications.FirstOrDefault().ApplicationId && x.Name == "Property Developer")
                                 // 👈 this loads the related APN navigation property
                                 .ToListAsync();
                 return VwAspNetRoles;
