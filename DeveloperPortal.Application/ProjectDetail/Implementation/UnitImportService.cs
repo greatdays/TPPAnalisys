@@ -229,13 +229,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             {
                 Row item = rows[rowId];
                 // Stop if the row is completely blank
-                if (item[0] == "" && item[1] == "Total Number of Units")
+                if (item[0]?.ToString().Trim() == "Total Number of Units")
                 {
                     break;
                 }
                 else
                 {
-                    int colInd = 1;
+                    int colInd = 0;
                     DataRow dr = dtUnit.NewRow();
                     dr["NumberofUnits"] = Convert.ToString(rowId);
                     var ACHPNo = Convert.ToString(item[colInd++]);
@@ -249,6 +249,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     }
                     dr["ACHPNo"] = siteNumber;
                     dr["Bldg"] = bldg;
+                    colInd = colInd + 1;
                     dr["UnitNum"] = Convert.ToString(item[colInd++]);
                     var managersUnit = Convert.ToString(item[colInd++]);
                     dr["UnitType"] = Convert.ToString(item[colInd++]);
