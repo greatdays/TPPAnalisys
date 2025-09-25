@@ -1,20 +1,13 @@
-﻿using System.Collections.Specialized;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail.Interface;
-using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
-using DeveloperPortal.Domain.Helper;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
-using HCIDLA.ServiceClient.LaserFiche;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize]
+
 public class FundingSourceController : Controller
 {
     private readonly IConfiguration _config;
