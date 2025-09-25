@@ -140,6 +140,16 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }).ToList();
             return LutTotalBathRooms;
         }
+        public List<FloorPlanInformation> GetFloorPlanInformationCompliance(int CaseID)
+        {
+            var lutFloorPlanTypes =  _floorPlanTypeRepository.GetFloorPlanInformationCompliance(CaseID);
+            var LutFloorPlanTypes = lutFloorPlanTypes.Select(a => new FloorPlanInformation
+            {
+                FloorPlanTypeID = a.FloorPlanTypeID,
+                Name = a.Name
+            }).ToList();
+            return LutFloorPlanTypes;
+        }
         public async Task<List<LutBathroomTypes>> GetLutBathroomType()
         {
             var lutBathroomTypes = await _floorPlanTypeRepository.GetLutBathroomType();

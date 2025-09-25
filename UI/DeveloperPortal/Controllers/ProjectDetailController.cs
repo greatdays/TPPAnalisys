@@ -14,15 +14,16 @@ namespace DeveloperPortal.Controllers
     public class ProjectDetailController : Controller
     {
         #region Construtor
-
+        private IFloorPlanTypeService _floorPlanTypeService;
         private IProjectDetailService _projectDetailService;
         private IBuildingIntakeService _buildingIntakeService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService, IFloorPlanTypeService floorPlanTypeService)
         {
+            _floorPlanTypeService = floorPlanTypeService;
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
             _env = env;
@@ -79,11 +80,13 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<JsonResult> GetUnitModalData()
+        public async Task<JsonResult> GetUnitModalData(int caseId)
         {
             var lutUnitType = await _projectDetailService.GetLutUnitType();
             var lutTotalBedrooms = await _projectDetailService.GetLutTotalBedrooms();
-            return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms });
+            var floorPlanType = _floorPlanTypeService.GetFloorPlanInformationCompliance(caseId);
+            return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms, LutFloorPlanType = floorPlanType });
+
         }
 
 

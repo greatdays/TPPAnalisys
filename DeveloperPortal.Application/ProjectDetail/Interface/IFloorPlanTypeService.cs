@@ -21,6 +21,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId);
         bool EditFloorPlanType(FloorPlanTypeModel floorPlanTypeModel);
         bool DeleteFloorPlantype(int floorPlanId, string userName);
+        List<FloorPlanInformation> GetFloorPlanInformationCompliance(int CaseID);
 
     }
 }

@@ -33,5 +33,6 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         List<LutBathroomTypeOption> GetLutBathroomTypeOptionEdit();
         int UpdateUnitAttribute(UnitAttribute unit);
         int DeleteFloorPlanType(FloorPlanType floorPlanType);
+        List<FloorPlanInformation> GetFloorPlanInformationCompliance(int caseId);
     }
 }
