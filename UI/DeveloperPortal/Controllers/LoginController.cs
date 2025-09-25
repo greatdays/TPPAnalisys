@@ -263,6 +263,10 @@ namespace DeveloperPortal.Controllers
                     var userDetail = authenticateResponse.ApplicationDetail.FirstOrDefault(a => a.AppKey.Equals(applicationName));
                     if (userDetail != null)
                     {
+                        if (!userDetail.Roles.Contains("Property Developer"))
+                        {
+                            return RedirectToAction("RoleError", "Account");
+                        }
                         //Create the identity for the user  
                         var identity = new ClaimsIdentity(new[] {
                                         new Claim(ClaimTypes.Name, authenticateResponse.Username),
@@ -281,7 +285,7 @@ namespace DeveloperPortal.Controllers
                             HttpContext.Session.SetString("ProfileComplete", "true");
                             return RedirectToPage("/Dashboard");
                         }
-                        else
+                        else 
                         {
                             HttpContext.Session.SetString("ProfileComplete", "false");
                             return RedirectToPage("/Account/MyAccount");
