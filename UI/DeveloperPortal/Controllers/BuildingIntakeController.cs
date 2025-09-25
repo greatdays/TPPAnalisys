@@ -2,10 +2,12 @@
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace DeveloperPortal.Controllers
 {
+    [Authorize]
     public class BuildingIntakeController : Controller
     {
         #region Construtor
@@ -60,6 +62,7 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddBuilding(SiteInformationParamModel paramModel, int caseId)
         {
             int projectSiteId = 0;
