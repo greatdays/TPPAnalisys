@@ -171,16 +171,39 @@ var BuildingInformation =
         BuildingInformation.resetBulidingSummary();
         BuildingInformation.ReloadBuildingDt();
     },
-    AddBuildingInfo:function () {
-        /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-        var url = APPURL + "BuildingIntake/AddBuilding"
+    AddBuildingInfo: function () {
         var model = { SiteInformationData: SiteInformationData, caseId: Id };
-        AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
-        function (response) {
-            $("#modal-building-add").empty().html(response).modal('show');
-            return false;
-        },
-        null, true, null, false);
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        model.__RequestVerificationToken = token;
+        $.ajax({
+            url: APPURL + 'BuildingIntake/AddBuilding',
+            type: 'POST',
+            data: model,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            headers: {
+                'RequestVerificationToken': token,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (response) {
+                $("#modal-building-add").empty().html(response).modal('show');
+               // console.log("Success", response);
+               // $("#successMsg").text("Account updated successfully!").removeClass("d-none");
+            },
+            error: function (xhr) {
+                console.error("❌ Error", xhr.status, xhr.responseText);
+            }
+        });
+
+
+        /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
+        //var url = APPURL + "BuildingIntake/AddBuilding"
+        //var model = { SiteInformationData: SiteInformationData, caseId: Id };
+        //AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
+        //function (response) {
+        //    $("#modal-building-add").empty().html(response).modal('show');
+        //    return false;
+        //},
+        //null, true, null, false);
     },
     SaveAddBuilding: function () {
         debugger
