@@ -280,18 +280,18 @@ var UnitMatrixInformation =
             });
     },
     FloorPlanDropDownEditor: function (container, options) {
-        $('<input required name="floorPlanTypeID"/>')   // 👈 must match schema
+        $('<input required name="floorPlanTypeID"/>')   
             .appendTo(container)
             .kendoDropDownList({
                 autoBind: true,
                 dataTextField: "name",
                 dataValueField: "floorPlanTypeID",
                 dataSource: kgridEditModelData.lutFloorPlanType,
-                value: options.model.floorPlanTypeID,   // 👈 pre-select saved ID
+                value: options.model.floorPlanTypeID,   
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
                     options.model.set("floorPlanTypeID", dataItem.floorPlanTypeID);
-                    options.model.set("floorPlanType", dataItem.name);  // keep readable name
+                    options.model.set("floorPlanType", dataItem.name);  
                 }
             });
     },
