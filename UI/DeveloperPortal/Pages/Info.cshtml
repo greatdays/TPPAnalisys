@@ -1,0 +1,347 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "LAHD Systems Repository";
+    Layout = null; // No layout, standalone page
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <style>
+        :root {
+            --brand: #004080;
+            --brand-ink: #0a4aa1;
+            --bg: #f7f8fb;
+            --card: #ffffff;
+            --border: #e6e8ee;
+            --muted: #4d5968;
+            --accent-bg: #eef6ff;
+            --accent-ink: #093a74;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background: var(--bg);
+            color: #222;
+        }
+
+        a {
+            color: #0b66d0;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            a:focus-visible {
+                outline: 3px solid #99c2ff;
+                outline-offset: 2px;
+                border-radius: 4px;
+            }
+
+        header {
+            background: linear-gradient(180deg, var(--brand) 0%, #024b95 100%);
+            color: #fff;
+            padding: 32px 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.12);
+        }
+
+            header h1 {
+                margin: 0 0 8px;
+                font-size: clamp(1.6rem, 2.2vw + 1rem, 2.2rem);
+                letter-spacing: .2px;
+            }
+
+            header p {
+                margin: 4px 0;
+                color: #e9f1ff;
+            }
+
+                header p strong {
+                    color: #fff;
+                }
+
+        main {
+            max-width: 1200px;
+            margin: 24px auto 72px;
+            padding: 0 20px;
+        }
+
+        #status {
+            background: var(--accent-bg);
+            border: 1px solid #cce;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin: 8px 0 16px;
+            color: var(--accent-ink);
+        }
+
+        #content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
+            overflow: hidden;
+            transition: box-shadow .2s ease, transform .2s ease;
+        }
+
+            .card:hover {
+                box-shadow: 0 6px 18px rgba(0,0,0,.08);
+                transform: translateY(-1px);
+            }
+
+        details {
+            border: none;
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 16px 18px;
+            font-weight: 700;
+            color: var(--brand-ink);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            list-style: none;
+        }
+
+            summary::-webkit-details-marker {
+                display: none;
+            }
+
+        .chev {
+            transition: transform .2s ease;
+        }
+
+        details[open] > summary .chev {
+            transform: rotate(90deg);
+        }
+
+        summary:focus-visible {
+            outline: 3px solid #9fd0ff;
+            outline-offset: 4px;
+            border-radius: 8px;
+        }
+
+        .section-content {
+            padding: 8px 20px 16px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px 16px;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        .row-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .row-link a {
+                font-weight: 600;
+            }
+
+        .badge {
+            background: var(--accent-bg);
+            border: 1px solid #cce;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: .78rem;
+            margin-left: 6px;
+            color: #0a3b75;
+        }
+
+        .warn {
+            margin-left: 8px;
+        }
+
+        .error {
+            color: #b00;
+            padding: 10px 0;
+        }
+
+        .feedback {
+            margin-top: 22px;
+            background: #f1f6ff;
+            border: 1px solid #d6e6ff;
+            color: #0c3673;
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+            .feedback strong {
+                font-weight: 700;
+            }
+
+            .feedback .actions {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 999px;
+            padding: 8px 14px;
+            border: 1px solid #9fc4ff;
+            background: #e7f0ff;
+            color: #0a3b75;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .btn:hover {
+                background: #dbeaff;
+            }
+
+            .btn:focus-visible {
+                outline: 3px solid #99c2ff;
+                outline-offset: 2px;
+            }
+
+        footer {
+            max-width: 1200px;
+            margin: 32px auto 48px;
+            padding: 0 20px;
+            color: #5c6775;
+            font-size: .95rem;
+        }
+
+            footer .note {
+                border-top: 1px solid var(--border);
+                padding-top: 14px;
+            }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>LAHD Systems Repository</h1>
+        <p>Central Index For Documentation, Records, And Miscellaneous Resources.</p>
+        <p><strong>Owner:</strong> Eric Kim, Information Systems Manager</p>
+    </header>
+
+    <main id="app">
+        <div id="status" class="info">Loading…</div>
+        <div id="content"></div>
+
+        <!-- Feedback callout -->
+        <div class="feedback">
+            <div>
+                <strong>We Value Your Input!</strong> — Please share your feedback or suggestions with
+                <a href="mailto:Eric.kim@lacity.org">Eric Kim, Information Systems Manager</a>.
+            </div>
+        </div>
+    </main>
+
+    <footer></footer>
+
+    <script>
+        const WEB_APP_URL = "https://script.google.com/a/macros/lacity.org/s/AKfycbwxBUu9ZsaLx7oFwK5n2PjWk-PzzpJ2dHtn7ysYYPhLx9twCxClwoLnYRVxP-B3N3fctQ/exec";
+
+        function loadJSONP(url) {
+            return new Promise((resolve, reject) => {
+                const cb = "cb_" + Math.random().toString(36).slice(2);
+                const cleanup = () => { delete window[cb]; if (script && script.remove) script.remove(); };
+                window[cb] = (data) => { resolve(data); cleanup(); };
+                const script = document.createElement("script");
+                script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+                script.onerror = () => { reject(new Error("JSONP network error")); cleanup(); };
+                document.head.appendChild(script);
+            });
+        }
+
+        function groupBy(items, key) {
+            return items.reduce((result, item) => {
+                const group = item[key] || "Misc";
+                if (!result[group]) result[group] = [];
+                result[group].push(item);
+                return result;
+            }, {});
+        }
+
+        function buildList(items) {
+            const ul = document.createElement("ul");
+            items.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `<span class="row-link"><a href="${item.url}" target="_blank">${item.name}</a></span>`;
+                ul.appendChild(li);
+            });
+            return ul;
+        }
+
+        function buildSection(title, items) {
+            const card = document.createElement("div");
+            card.className = "card";
+            const details = document.createElement("details");
+            const summary = document.createElement("summary");
+            summary.innerHTML = `<span class="chev">▶</span> ${title}`;
+            details.appendChild(summary);
+            const content = document.createElement("div");
+            content.className = "section-content";
+            content.appendChild(buildList(items));
+            details.appendChild(content);
+            card.appendChild(details);
+            return card;
+        }
+
+        function render(data) {
+            const content = document.getElementById("content");
+            const status = document.getElementById("status");
+            status.style.display = "none";
+            content.innerHTML = "";
+            const grouped = groupBy(data, "category");
+            for (const [cat, items] of Object.entries(grouped)) {
+                content.appendChild(buildSection(cat, items));
+            }
+        }
+
+        async function init() {
+            try {
+                const data = await loadJSONP(WEB_APP_URL);
+                render(data);
+            } catch (err) {
+                document.getElementById("status").textContent = "Failed to load data.";
+                console.error(err);
+            }
+        }
+
+        init();
+    </script>
+
+</body>
+</html>

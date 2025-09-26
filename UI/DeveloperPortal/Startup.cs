@@ -24,6 +24,7 @@ using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.Application.Notification.Implementation;
 using DeveloperPortal.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace DeveloperPortal
 {
@@ -40,7 +41,7 @@ namespace DeveloperPortal
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             services.AddDistributedMemoryCache();
-            services.AddControllersWithViews().AddNewtonsoftJson();
+            services.AddControllersWithViews();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(45);
@@ -132,7 +133,8 @@ namespace DeveloperPortal
 
             app.UseRouting();
             app.UseSession();
-            app.UseMiddleware<ProfileCompleteMiddleware>();
+            //app.UseMiddleware<ProfileCompleteMiddleware>();
+            app.UseMiddleware<AuthCookieMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
