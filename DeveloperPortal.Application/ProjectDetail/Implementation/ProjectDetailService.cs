@@ -271,6 +271,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 unitAtt.LutTotalBedroomId = unitModel.LutTotalBedroomID;
                 unitAtt.LutUnitTypeId = unitModel.LutUnitTypeID;
                 unitAtt.FloorPlanType = unitModel.FloorPlanType;
+                unitAtt.FloorPlanTypeId = unitModel.FloorPlanTypeID;
                 unitAtt.AccessibleFeatureType = unitModel.AdditionalAccecibility;
                 unitAtt.IsManagersUnit = unitModel.ManagersUnit.HasValue ? unitModel.ManagersUnit.HasValue : false;
                 unitAtt.IsCompliant = unitModel.IsCompliant;

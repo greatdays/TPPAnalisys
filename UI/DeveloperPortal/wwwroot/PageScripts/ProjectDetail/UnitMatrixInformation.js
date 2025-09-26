@@ -109,6 +109,7 @@ var UnitMatrixInformation =
                         managersUnit: { type: "boolean" },
                         totalBedroom: { type: "string", validation: { required: true } },
                         floorPlanType: { type: "string", },
+                        floorPlanTypeID: { type: "number" }, 
                         unitType: { type: "string", defaultValue: { Value: 0, Text: "Select" } },
                         additionalAccecibility: { type: "string" },
                         isCompliant: { type: "boolean" },
@@ -198,11 +199,11 @@ var UnitMatrixInformation =
                 { field: "managersUnit", title: "Managers Unit", width: "80px", template: UnitMatrixInformation.ManagersUnitTemplate },
                 { field: "totalBedroom", title: "Unit Type", width: "110px", editor: UnitMatrixInformation.TotalBedroomDropDownEditor, template: UnitMatrixInformation.TotalBedroomTemplate },
                 {
-                    field: "floorPlanType",
+                    field: "floorPlanTypeID",                // 👈 bind to ID
                     title: "Floor Plan Type",
                     width: "150px",
                     editor: UnitMatrixInformation.FloorPlanDropDownEditor,
-                    template: UnitMatrixInformation.FloorPlanTemplate
+                    template: "#= floorPlanType ? floorPlanType : '' #"   // show readable text
                 },
                 { field: "unitType", title: "Unit Designation Mobility, Communication, FHA / 11A / 11B)", editor: UnitMatrixInformation.UnitTypeDropDownEditor, template: UnitMatrixInformation.UnitTypeTemplate, width: "150px" },
                 { field: "additionalAccecibility", title: "Additional Accessibility Requirement: Universal Design, EAP, Unruh", width: "150px" },
@@ -279,17 +280,18 @@ var UnitMatrixInformation =
             });
     },
     FloorPlanDropDownEditor: function (container, options) {
-        $('<input required name="' + options.field + '"/>')
+        $('<input required name="floorPlanTypeID"/>')   // 👈 must match schema
             .appendTo(container)
             .kendoDropDownList({
-                autoBind: false,
-                dataTextField: "name",   
-                dataValueField: "floorPlanTypeID",  
-                dataSource: kgridEditModelData.lutFloorPlanType, 
+                autoBind: true,
+                dataTextField: "name",
+                dataValueField: "floorPlanTypeID",
+                dataSource: kgridEditModelData.lutFloorPlanType,
+                value: options.model.floorPlanTypeID,   // 👈 pre-select saved ID
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
-                    options.model.set("FloorPlanTypeID", dataItem.floorPlanTypeID);
-                    options.model.set("FloorPlanType", dataItem.name);
+                    options.model.set("floorPlanTypeID", dataItem.floorPlanTypeID);
+                    options.model.set("floorPlanType", dataItem.name);  // keep readable name
                 }
             });
     },
