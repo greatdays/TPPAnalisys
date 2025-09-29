@@ -4,7 +4,7 @@
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title"> Development Team List</span>
-            <button id="AddNewContact" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="DevelopmentTeam.Add()" disabled="disabled">Add</button>
+            <button id="AddNewContact" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="DevelopmentTeam.Add()">Add</button>
         </div>
     </div>
     <div class=" k-box-body" style="padding-top:20px;">
@@ -35,8 +35,8 @@
                                 <td>@participant.Email</td>
                                 <td style="width:180px">
                                     <div style="float:right">
-                                        <button role="button" disabled="disabled" data-toggle="tooltip" data-placement="top" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactId)"><i class="fas fa-pen editcontent"></i></button>
-                                        <button role="button" disabled="disabled" data-toggle="tooltip" data-placement="top" class="deletebtn btn k-button k-button-icontext k-grid-Delete" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierID)"><i class="fas fa-trash-alt deletecontent"></i></button>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactIdentifierId,'@participant.CompanyName')"><i class="fas fa-pen editcontent"></i></button>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="deletebtn btn k-button k-button-icontext k-grid-Delete" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierId)"><i class="fas fa-trash-alt deletecontent"></i></button>
 
 
                                     </div>
@@ -59,56 +59,56 @@
     <div class="modal" id="ContactPopup" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content" id="AddContact">
-        </div>
-    </div>
-</div>
-
-<div class="modal" id="DeleteContactPopup" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">Delete Confirmation</h4>
-                <button type="button" class="close" data-bs-dismiss="modal"><i class="far fa-times-circle"></i></button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-                <input type="hidden" class="deleteContactId" />
-                <input type="hidden" class="deleteContactIdentifierId" />
-                <p>
-                    Are you sure you want to delete contact '<span class="contactName"></span>'?
-                </p>
-
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer multi-button">
-                <button type="button" data-bs-dismiss="modal" class="btn btn-light">No</button>
-                <button type="button" class="btn btn-primary" onclick="deleteContact()">Yes</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="modal show" id="cnt_SuccessErrorPopup" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" style="width:40% !important;">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body text-center">
-                <p id="cnt_SuccessErrorMsg">
-                    Error occurred while Saving Contact.
-                </p>
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer singal-button">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="modal" id="DeleteContactPopup" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><i class="far fa-times-circle"></i></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <input type="hidden" class="deleteContactId" />
+                    <input type="hidden" class="deleteContactIdentifierId" />
+                    <p>
+                        Are you sure you want to delete contact '<span class="contactName"></span>'?
+                    </p>
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer multi-button">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-light">No</button>
+                    <button type="button" class="btn btn-primary" onclick="DevelopmentTeam.DeleteContact()">Yes</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal show" id="cnt_SuccessErrorPopup" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" style="width:40% !important;">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body text-center">
+                    <p id="cnt_SuccessErrorMsg">
+                        Error occurred while Saving Contact.
+                    </p>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer singal-button">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 

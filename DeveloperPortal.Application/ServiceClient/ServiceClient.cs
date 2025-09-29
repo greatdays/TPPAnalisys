@@ -94,7 +94,7 @@ namespace DeveloperPortal.Application.ServiceClient
                     }
                     URL = string.IsNullOrEmpty(updatedUrl) ? previousURL : updatedUrl;
                 }
-
+               
 
                 using HttpClient httpClient = new HttpClient();
 
@@ -131,6 +131,7 @@ namespace DeveloperPortal.Application.ServiceClient
                     httpClient.Timeout = tsTimeout;
                 }
                 requestMessage.RequestUri = new Uri(URL);
+                requestMessage.Content = content;
 
                 //theRequest.ContentType = "application/json";
                 //theRequest.ContentLength = serializeqObject.Length;

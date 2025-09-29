@@ -42,19 +42,20 @@ namespace DeveloperPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> AddContact(int contactId)
+        public async Task<JsonResult> AddContact(string apn, int caseId, int projectId = 0, int projectSiteId = 0)
         {
             var contactRenderModel = new ContactRenderModel();
-            contactRenderModel = await _developmentTeamService.GetContactDetail(contactId);
+            contactRenderModel = await _developmentTeamService.GetContactDetail(0, apn, caseId, projectId, projectSiteId);
             string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
             return Json(html);
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditContact(int contactId)
+        public async Task<JsonResult> EditContact(int contactIdentifierId, string apn, int caseId, string companyName, int projectId = 0, int projectSiteId = 0)
         {
             var contactRenderModel = new ContactRenderModel();
-            contactRenderModel = await _developmentTeamService.GetContactDetail(contactId);
+            contactRenderModel = await _developmentTeamService.GetContactDetail(contactIdentifierId, apn, caseId, projectId, projectSiteId);
+            contactRenderModel.Company = companyName;
             string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
             return Json(html);
 
@@ -80,6 +81,7 @@ namespace DeveloperPortal.Controllers
         [HttpPost]
         public async Task<JsonResult> SaveContact(ContactRenderModel renderModel)
         {
+            renderModel.UserName = UserName;
             var response = await _developmentTeamService.SaveContact(renderModel);
             return Json(response);
         }
