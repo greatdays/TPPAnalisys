@@ -17,5 +17,12 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// </summary>
         /// <returns></returns>
         Task<List<LutState>> LutStates();
+
+        /// <summary>
+        /// LutContactTypes
+        /// </summary>
+        /// <param name="contactTypes"></param>
+        /// <returns></returns>
+         Task<List<LutContactType>> LutContactTypes(string[] contactTypes);
     }
 }

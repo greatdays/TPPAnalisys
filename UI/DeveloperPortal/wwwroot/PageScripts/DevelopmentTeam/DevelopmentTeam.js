@@ -1,34 +1,53 @@
 ﻿var IsLoadDevelopmentTeamTab = false;
 var DevelopmentTeam =
 {
-    Init: function () {
-
+    Init: function (type, PrimaryTypes) {
         $('select#AssociationTypes,select#PrimaryAssociationTypes').multiselect({
-            maxHeight: '300',
-            buttonWidth: '250',
+            maxHeight: '300'
         });
 
         $('#divAssociationTypes .multiselect').on('click', function () {
             setTimeout(function () {
-                $("#divAssociationTypes .multiselect-container").show()
+                if ($("#divAssociationTypes .multiselect-container").is(":visible")) { $("#divAssociationTypes .multiselect-container").hide() }
+                else {
+                    $("#divAssociationTypes .multiselect-container").show()
+                }
             }, 200); // 2000 ms = 2 seconds
         });
 
         $('#divPrimaryAssociationTypes .multiselect').on('click', function () {
             setTimeout(function () {
-                $("#divPrimaryAssociationTypes .multiselect-container").show()
+                if ($("#divPrimaryAssociationTypes .multiselect-container").is(":visible")) { $("#divPrimaryAssociationTypes .multiselect-container").hide() }
+                else {
+                    $("#divPrimaryAssociationTypes .multiselect-container").show()
+                }
+
             }, 200); // 2000 ms = 2 seconds
         });
+       
+
+        // validate CASp number
+        var regx = /^[A-Za-z0-9]+$/;
+        $('#CASpNumber').keyup(function () {
+            if (!regx.test(this.value) && $("#CASpNumber").val() != "") {
+                $("span[data-valmsg-for='CASpNumber']").html('CASP number only accept alphanumeric value.');
+            }
+            else {
+                $("span[data-valmsg-for='CASpNumber']").html('');
+            }
+        });
+
+        DevelopmentTeam.SetMultipleSelection("#AssociationTypes", type);
+        DevelopmentTeam.SetMultipleSelection("#PrimaryAssociationTypes", PrimaryTypes);
 
         $("#AssociationTypes").change(function () {
-            debugger;
             /*fill PrimaryAssociationTypes on the basis of AssociationTypes*/
             var selectedV = DevelopmentTeam.MultipleSelectedValues("#AssociationTypes");
             var selectedA = DevelopmentTeam.MultipleSelectedValues("#PrimaryAssociationTypes");
             DevelopmentTeam.ClearSelection("#PrimaryAssociationTypes");
             var spltV = selectedV.split(",");
             var spltA = selectedA.split(",");
-
+          
             /*hide sohw contractor type*/
             if (selectedV.indexOf("Contractor") != -1) {
                 $('#divContractorType').show();
@@ -61,8 +80,22 @@ var DevelopmentTeam =
             $("#PrimaryAssociationTypes").multiselect('rebuild');
         });
 
+        $("#PrimaryAssociationTypes").change(function () {
+            var selectedV = DevelopmentTeam.MultipleSelectedValues("#Type");
+        });
+
+        $('#ContactTypeListId').on('change', function () {
+
+            if ($(this).val() == "Contractor") {
+                $('#divContractorType').show();
+            }
+            else {
+                $('#divContractorType').hide();
+                $("#ContractorType").val("");
+            }
+        });
+
         $("#frmAddNewContact").on("submit", function (e) {
-            debugger;   
             if (!DevelopmentTeam.OnBegin()) { // custom function
                 e.preventDefault(); // cancel submit if OnBegin returns false
                 return;
@@ -86,58 +119,25 @@ var DevelopmentTeam =
 
     },
     LoadParticipants: function () {
-        if (IsLoadDevelopmentTeamTab == false) {
-            if ($.fn.DataTable.isDataTable('#dtDevelopmentTeamList')) {
-                $('#dtDevelopmentTeamList').DataTable().destroy();
-            }
-            var url = 'DevelopmentTeam/List?projectId=' + ProjectId + '&caseId=' + Id;
-            AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
-                function (result) {
-                    $('#divDevelopmentTeamList').html(result);
-                    DevelopmentTeam.LoadDataTable();
-                }, null, true, null, false);
-
-            IsLoadDevelopmentTeamTab = false;
+        if ($.fn.DataTable.isDataTable('#dtDevelopmentTeamList')) {
+            $('#dtDevelopmentTeamList').DataTable().destroy();
         }
+        var url = 'DevelopmentTeam/List?projectId=' + ProjectId + '&caseId=' + Id;
+        AjaxCommunication.CreateRequest(this.window, "GET", url, "", null,
+            function (result) {
+                $('#divDevelopmentTeamList').html(result);
+                DevelopmentTeam.LoadDataTable();
+            }, null, true, null, false);
+
     },
     LoadDataTable: function (result) {
-        //var columns =
-        //    [
-        //        { data: 'contactName', title: "Name" },
-        //        { data: 'email', title: "Email" },
-        //        { data: 'phone', title: "Phone" },
-        //        { data: 'fullAddress', title: "Full Address" },
-        //        { data: 'contactType', title: "Type" },
-        //        { data: 'source', title: "Source" },
-        //        { data: 'status', title: "Status" },
-        //        {
-        //            data: null, title: "Actions",
-        //            orderable: false, searchable: false,
-        //            render: function (data, type, row) {
-        //                return '<button role="button" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit"  data-id="' + data.contactId + '"><i class="fas fa-pen editcontent"></i></button>&nbsp;'
-        //                    + '<button role="button" class="deletebtn btn k-button k-button-icontext k-grid-Delete" title="Delete" data-id="' + data.contactId + '" onclick = "confirmDeleteContact(' + data.contactId + ',' + data.Name + ',' + data.ContactIdentifierID +')"><i class="fas fa - trash - alt deletecontent"></i></button>';
-
-        //            }
-
-        //        }
-        //    ];
-
         $('#dtDevelopmentTeamList').dataTable({
-            //data: result,
-            //"columns": columns,
             processing: true,
             pageLength: 10,
             "paging": true,
             "searching": true,
             "ordering": false
         });
-        //$('#dtDevelopmentTeamList tbody').on('click', '.deletebtn', function () {
-        //    const id = $(this).data('id');
-        //});
-        //$('#dtDevelopmentTeamList tbody').on('click', '.editbtn', function () {
-        //    const id = $(this).data('id');
-
-        //});
     },
     Delete: function (contactId, contactName, contactIdentifierId) {
         $('#DeleteContactPopup .deleteContactId').val(contactId);
@@ -145,9 +145,35 @@ var DevelopmentTeam =
         $('#DeleteContactPopup .contactName').html(contactName);
         $('#DeleteContactPopup').modal('show');
     },
-    Edit: function (ContactId) {
-        var url = 'DevelopmentTeam/EditContact';
-        AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', { controlViewId: ContactId, renderModel: null },
+    DeleteContact: function () {
+        var contactId = $('#DeleteContactPopup .deleteContactId').val();
+        var contactIdentifierId = $('#DeleteContactPopup .deleteContactIdentifierId').val();
+        var url = APPURL + 'DevelopmentTeam/DeleteContact';
+        AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', { contactId: contactId, contactIdentifierId: contactIdentifierId, refProjectId: ProjectId, refProjectSiteId: 0 },
+            function (data) {
+                if (data) {
+                    $('#DeleteContactPopup').modal("hide");
+                    DevelopmentTeam.LoadParticipants();
+                    showMessage("Success", "Contact deleted Successfully.");
+                }
+                else {
+                    $('#DeleteContactPopup').modal("hide");
+                    $("#cnt_SuccessErrorMsg").html();
+                    showMessage("Error", "Error occured while deleting contact.");
+
+                }
+            }, null, true, null, false);
+    },
+    Edit: function (contactIdentifierId, companyName) {
+        var url = APPURL + 'DevelopmentTeam/EditContact';
+        var para = {
+            ContactIdentifierId: contactIdentifierId,
+            companyName: companyName,
+            apn: "",
+            caseId: Id,
+            projectId: ProjectId,
+        };
+        AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', para,
             function (data) {
                 $('#AddContact').html(data);
                 $('#ContactPopup').modal('show');
@@ -155,9 +181,16 @@ var DevelopmentTeam =
             }, null, true, null, false);
 
     },
-    Add: function (ContactId) {
-        var url = 'DevelopmentTeam/AddContact';
-        AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', { controlViewId: 0, renderModel: null },
+    Add: function (contactId) {
+
+        var url = APPURL + 'DevelopmentTeam/AddContact';
+        var para = {
+            contactId: contactId,
+            apn: "",
+            caseId: Id,
+            projectId: ProjectId,
+        };
+        AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', para,
             function (data) {
                 $('#AddContact').html(data);
                 $('#ContactPopup').modal('show');
@@ -168,7 +201,17 @@ var DevelopmentTeam =
         $('#frmAddNewContact').submit();
     },
     OnBegin: function () {
-        debugger;
+        $("#loadingOverlay").hide();
+        $("#Company").attr("data-val", 'false');
+        $("#AddressLine1").attr("data-val", 'false');
+        $("#AddressLine2").attr("data-val", 'false');
+        $("#PhoneExtension").attr("data-val", 'false');
+        $("#MiddleName").attr("data-val", 'false');
+        $("#PrimaryAssociationTypes").attr("data-val", 'false');
+        $("#PhoneHome").attr("data-val", 'false');
+        $("#PhoneCell").attr("data-val", 'false');
+        $("#Email").attr("data-val", 'false');
+        $("#IsMarkedForMailing").attr("data-val", 'false');
         var isVAlid = true;
         var identifierType = $('input[name="IdentifierType"]:checked').val();
         if (identifierType == "Structure" || identifierType == "Unit" || identifierType == "Address") {
@@ -195,28 +238,45 @@ var DevelopmentTeam =
                 }
             }
         });
+        
+        if (isVAlid) {
+            var form = $("#frmAddNewContact");
+            $(form).removeData("validator").removeData("unobtrusiveValidation");
+
+            if ($.validator.unobtrusive) {
+                $.validator.unobtrusive.parse($(form));
+            }
+            else { false }
+
+            var validator = $(form).validate();
+            var isModelValid = $(form).valid();
+
+            if (false == isModelValid) {
+                validator.focusInvalid();
+                isVAlid = false;
+            }
+            $("#loadingOverlay").hide()
+        }
+
         return isVAlid;
     },
     OnSuccess: function (data) {
-        debugger;
-        if (data==true) {
-            
-
-                $('#ContactPopup').modal("hide");
-                if (contactRenderCallback) { contactRenderCallback(); }
-            
+        if (data == true) {
+            $('#ContactPopup').modal("hide");
+            IsLoadDevelopmentTeamTab = true;
+            DevelopmentTeam.LoadParticipants()
         }
         else {
             $('#ContactPopup').modal("hide");
             $('#Error').modal("show");
         }
     },
-    ClearSelection : function (name) {
+    ClearSelection: function (name) {
         $(name).find("option").detach();
         $(name).multiselect('rebuild');
 
     },
-    MultipleSelectedValues : function (name) {
+    MultipleSelectedValues: function (name) {
         var selectedA = $(name + " option:selected");    /*Current Selected Value*/
         var selected = "";
         selectedA.each(function () {
@@ -226,5 +286,26 @@ var DevelopmentTeam =
                 selected += $(this).text();
         });
         return selected;
+    },
+    SetMultipleSelection: function (name, values) {
+        if (values) {
+            var spltV = values.split(",").map(function (item) {
+                return item.trim();
+            });
+
+            $(name).find("option").each(function () {
+                if (spltV.indexOf($(this).text()) >= 0) {
+                    $(this).attr("selected", "selected");
+                    if ($(this).text() == 'CASP') {
+                        $("#divCASP").css('display', 'block');
+                    }
+                    else if ($(this).text() == "Contractor") {
+                        $('#divContractorType').show();
+                    }
+                  
+                }
+            });
+            $(name).multiselect('rebuild');
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace DeveloperPortal.DataAccess.Repository
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IFundingSourceRepository, FundingSourceRepository>();
             services.AddScoped<ILutRepository, LutRepository>();
+            services.AddScoped<IContactIdentifierRepository, ContactIdentifierRepository>();
             
             return services;
         }

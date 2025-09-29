@@ -1,21 +1,16 @@
 ﻿using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Application.PropertySnapshot;
-using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
-using DeveloperPortal.DataAccess.Repository.Implementation;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Web.Helpers;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
@@ -75,6 +70,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             ContactType = row.Field<string>("ContactType"),
                             Source = row.Field<string>("Source"),
                             Status = row.Field<string>("Status"),
+                            CompanyName = row.Field<string>("CompanyName"),
                         })
                         .ToList();
                     }
@@ -88,17 +84,23 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
         }
 
-        public async Task<ContactRenderModel> GetContactDetail(int contactId)
+        /// <summary>
+        /// GetContactDetail
+        /// </summary>
+        /// <param name="apn"></param>
+        /// <param name="caseId"></param>
+        /// <param name="projectId"></param>
+        /// <param name="projectSiteId"></param>
+        /// <returns></returns>
+        public async Task<ContactRenderModel> GetContactDetail(int contactIdentifierId, string apn, int caseId, int projectId = 0, int projectSiteId = 0)
         {
-            string apn = "";
-            int caseId= 25662; 
-            int projectId = 697; 
-            int projectSiteId = 0;  
             ContactRenderModel contactRenderModel = new ContactRenderModel();
 
+            if (contactIdentifierId > 0)
+            {
+                contactRenderModel = await _contactIdentifiersService.ContactIdentifier(contactIdentifierId);
+            }
             contactRenderModel.ContactTypeList = new List<string>() { "Owner", "Property Manager", "CASP", "Developer", "Chief NAC", "NAC", "Contractor", "Project Manager", "Developer Architect" };
-            //contactRenderModel.StreetPrefixes = new StreetPrefixService().GetStreetPrefix().Select(x => new StreetPrefixModel { PreDirCd = x.PreDirCd }).ToList();
-            //contactRenderModel.StreetSuffixes = new StreetSuffixService().GetStreetSuffix().Select(x => new StreetSuffixModel { PostDirCd = x.PostDirCd }).ToList();
             contactRenderModel.CaseID = caseId;
             contactRenderModel.APN = apn;
             contactRenderModel.ProjectId = projectId;
@@ -128,10 +130,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             BaseResponse baseResponse = serviceClient.CreateRequest<BaseResponse>(null, _config["AreaMgmtAPIURL:PropertyApiURL"] + string.Format(WebApiConstant.DeleteContact, contactId, userName, refProjectId, refProjectSiteId), Application.ServiceClient.ServiceClient.ActionType.DELETE);
             if (Convert.ToInt32(baseResponse.Response) > 0)
             {
-                //if (contactIdentifierId > 0)
-                //{
-                //    new _contactIdentifiersService.DeleteContact(contactIdentifierId, userName, refProjectId, refProjectSiteId);
-                //}
+                if (contactIdentifierId > 0)
+                {
+                    await _contactIdentifiersService.DeleteContact(contactIdentifierId, userName, refProjectId, refProjectSiteId);
+                }
                 return true;
             }
             return false;
@@ -145,18 +147,52 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// <returns></returns>
         public async Task<bool> SaveContact(ContactRenderModel renderModel)
         {
+            renderModel.Type = renderModel.AssociationTypes != null ? string.Join(",", renderModel.AssociationTypes) : "";
+            renderModel.PrimaryTypes = renderModel.PrimaryAssociationTypes != null ? string.Join(",", renderModel.PrimaryAssociationTypes) : "";
             ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
             BaseResponse baseResponse = serviceClient.CreateRequest<BaseResponse>(renderModel, _config["AreaMgmtAPIURL:PropertyApiURL"] + WebApiConstant.PostContact, Application.ServiceClient.ServiceClient.ActionType.POST);
             if (Convert.ToInt32(baseResponse.Response) > 0)
             {
-                if (renderModel.ContactIdentifierID <= 0)
+                var sr = await _contactIdentifiersService.GetServiceRequestByCaseId(renderModel.CaseID);
+                var contactIdentifierModel = new ContactIdentifierModel
                 {
-                    var contactIdentifierId = await _contactIdentifiersService.SaveContact(new ContactIdentifierModel());
-                }
-                else if (renderModel.ContactIdentifierID > 0)
-                {
-                    //Update
-                }
+                    ContactIdentifierID = renderModel.ContactIdentifierID,
+                    ContactID = Convert.ToInt32(baseResponse.Response),
+                    FirstName = renderModel.FirstName,
+                    LastName = renderModel.LastName,
+                    MiddleName = renderModel.MiddleName,
+                    Email = renderModel.Email,
+                    HouseNum = renderModel.HouseNum,
+                    HouseFracNum = renderModel.HouseFracNum,
+                    PreDirCd = renderModel.PreDirection,
+                    StreetName = renderModel.StreetName ?? renderModel.AddressLine1,
+                    PostDirCd = renderModel.PostDirection,
+                    City = renderModel.City,
+                    State = renderModel.State,
+                    Zip = renderModel.Zip,
+                    Unit = renderModel.Unit ?? renderModel.AddressLine2,
+                    APN = renderModel.APN,
+                    ServiceRequestID = sr.ServiceRequestId,
+                    ContactTypeName = renderModel.Type,
+                    UserName = renderModel.UserName,
+                    ContractorType = renderModel.ContractorType,
+                    Source = renderModel.Source,
+                    IsPrimary = renderModel.IsPrimary,
+                    ProjectId = renderModel.ProjectId,
+                    ProjectSiteID = renderModel.ProjectSiteId,
+                    IdentifierValue = renderModel.IdentifierValue,
+                    IdentifierType = renderModel.IdentifierType,
+                    Company = renderModel.Company,
+                    PrimaryTypes = renderModel.PrimaryTypes,
+                    HomePhoneNumber = renderModel.PhoneHome,
+                    BusinessPhoneNumber = renderModel.PhoneBusiness,
+                    PhoneExtension = renderModel.PhoneExtension,
+                    MobilePhoneNumber = renderModel.PhoneCell,
+                    IsMarkedForMailing = renderModel.IsMarkedForMailing,
+                    CASpNumber = renderModel.CASpNumber,
+                    IsContactPublic = renderModel.IsContactPublic
+                };
+                var contactIdentifierId = await _contactIdentifiersService.SaveContact(contactIdentifierModel);
                 return true;
             }
             return false;

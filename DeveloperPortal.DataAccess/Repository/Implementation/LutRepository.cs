@@ -2,6 +2,7 @@
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using static DeveloperPortal.Domain.PropertySnapshot.Constants;
 
 namespace DeveloperPortal.DataAccess.Repository.Implementation
 {
@@ -31,6 +32,21 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         public async Task<List<LutState>> LutStates()
         {
             return  await _context.LutStates.Where(x => x.IsDeleted == false).ToListAsync(); 
+        }
+
+        /// <summary>
+        /// LutContactTypes
+        /// </summary>
+        /// <param name="contactTypes"></param>
+        /// <returns></returns>
+        public async Task<List<LutContactType>> LutContactTypes(string[]? contactTypes)
+        {
+            if(contactTypes!= null && contactTypes.Any())
+            {
+                return _context.LutContactTypes.Where(x => contactTypes.Contains(x.ContactType) && x.IsObsolete == false).ToList();
+            }
+            return  _context.LutContactTypes.Where(x => x.IsObsolete == false).ToList();
+
         }
     }
 }

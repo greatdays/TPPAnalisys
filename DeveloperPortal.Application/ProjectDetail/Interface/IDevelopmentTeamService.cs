@@ -24,7 +24,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// </summary>
         /// <param name="contactId"></param>
         /// <returns></returns>
-        Task<ContactRenderModel> GetContactDetail(int contactId);
+        Task<ContactRenderModel> GetContactDetail(int contactId, string apn, int caseId, int projectId = 0, int projectSiteId = 0);
 
 
         /// <summary>
