@@ -92,13 +92,13 @@
     padding-left: 0;
 }
 
-#landing-signin {
+/*#landing-signin {
     display: flex;
     flex-direction: column;
     margin: auto;
-    width: 600px;
+    width: 600px;*/
     /*    height: 575px;*/
-    padding: 3em 4em 2em;
+    /*padding: 3em 4em 2em;
     color: black;
     background-color: white;
     border-radius: 8px;
@@ -112,7 +112,7 @@
         font-size: 25px;
         font-weight: 600;
         color: black;
-    }
+    }*/
 
 .landing-signin-field {
     margin-bottom: 1em;
@@ -140,7 +140,7 @@
     margin-bottom: 2em;
 }
 
-.landing-signup-button {
+/*.landing-signup-button {
     width: 100%;
     padding: 0.75rem 1rem;
     background-color: #d50028;
@@ -150,9 +150,9 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-}
+}*/
 
-.landing-signin-button {
+/*.landing-signin-button {
     width: 100%;
     padding: 0.75rem 1rem;
     background-color: #004aad;
@@ -162,7 +162,7 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-}
+}*/
 
 #btnSignIn {
     margin-bottom: 1em;
