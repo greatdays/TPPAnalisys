@@ -73,7 +73,7 @@ namespace DeveloperPortal
             services.AddScoped<IFundingSourceService, FundingSourceService>();
             services.AddScoped<IDevelopmentTeamService, DevelopmentTeamService>();
             services.AddScoped<IContactIdentifiersService, ContactIdentifiersService>();
-            
+
 
 
             services.AddSingleton<JwtGenerator>();
@@ -81,19 +81,24 @@ namespace DeveloperPortal
             services.AddScoped<ISignInServices, SignInServices>();
             services.AddDbContext<TPPDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
 
+
+
+            var loginUrl = $"{_configuration["IDMSettings:CentralIDMURL"]}&returnUrl={_configuration["AppSettings:ApplicationURL"]}";
             services.AddAuthentication(options =>
             {
-                // These defaults will be used unless you override per‑attribute or per‑call
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;   
+                // Use JWT Bearer as the default
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie(options =>
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                options.LoginPath = "/Account/Login";
+                options.LoginPath = loginUrl;
                 options.Cookie.Name = ".AAHRDeveloperPortal.Auth";
                 options.Cookie.Path = "/";                     
                 options.Cookie.HttpOnly = true;
+                options.Cookie.Path = "/";
+                //options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Lax;
             })
@@ -107,12 +112,36 @@ namespace DeveloperPortal
                     ValidAudience = _configuration["JwtSettings:Audience"],
                     ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                                                 Convert.FromBase64String(
-                                                   _configuration["JwtSettings:Secret"])),
+                        Convert.FromBase64String(_configuration["JwtSettings:Secret"])),
                     ValidateIssuerSigningKey = true
                 };
+
+                // IMPORTANT: Extract JWT from HttpOnly cookie
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Read token from cookie named "AuthToken"
+                        var token = context.Request.Cookies["AuthToken"];
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            context.Token = token;
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnChallenge = context =>
+                    {
+                        // Prevent the default 401 response
+                        context.HandleResponse();
+                        context.Response.Redirect(loginUrl);
+                        return Task.CompletedTask;
+                    }
+                };
             });
-         
+
+
+
+            services.AddAuthorization();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

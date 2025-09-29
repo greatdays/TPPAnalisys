@@ -7,6 +7,7 @@ using DeveloperPortal.Domain.Notification;
 using DeveloperPortal.Domain.Resources;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using NetTopologySuite.Index.HPRtree;
@@ -14,6 +15,7 @@ using System.Net.Mime;
 
 namespace DeveloperPortal.Controllers
 {
+    [Authorize]
     public class DMSController : Controller
     {
         private readonly IConfiguration _config;
