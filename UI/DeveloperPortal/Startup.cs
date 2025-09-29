@@ -162,7 +162,7 @@ namespace DeveloperPortal
 
             app.UseRouting();
             app.UseSession();
-            app.UseMiddleware<ProfileCompleteMiddleware>();
+            //app.UseMiddleware<ProfileCompleteMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
