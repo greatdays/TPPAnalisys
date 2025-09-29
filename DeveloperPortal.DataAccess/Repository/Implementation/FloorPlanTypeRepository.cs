@@ -162,6 +162,30 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         {
             return _context.SaveChanges(unit.FirstName);
         }
+        public List<FloorPlanInformation> GetFloorPlanInformationCompliance(int caseId)
+        {
+            var floorPlanInformations = new List<FloorPlanInformation>();
+            var sqlParameters = new List<SqlParameter>
+                {
+                    new SqlParameter() { ParameterName = "@CaseId", Value = caseId }
+                };
+            using (var dataTableUnits = _storedProcedureExecutor.ExecuteStoreProcedure("AAHPCC.uspGetFloorPlansForComplianceMetrix", sqlParameters))
+            {
+                foreach (DataRow row in dataTableUnits.Rows)
+                {
+                    var info = new FloorPlanInformation
+                    {
+                        FloorPlanTypeID = row["FloorPlanTypeID"] != DBNull.Value ? Convert.ToInt32(row["FloorPlanTypeID"]) : 0,
+                        Name = row["Name"]?.ToString(),
+                        // map other columns as needed
+                    };
+
+                    floorPlanInformations.Add(info);
+                }
+            }
+
+            return floorPlanInformations;
+        }
 
     }
 }

@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "_Layout";
+}
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@{
+    
+    string appUrl = Configuration["AppSettings:ApplicationURL"];
+}
+
+<div id="roleErrorModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Access Restricted</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="h5">
+                    <p>Please signup or login with a <strong>Property Developer</strong> to continue.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnRoleErrorOK" type="button" class="btn btn-primary">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+          // Show modal automatically when page loads
+          $('#roleErrorModal').modal('show');
+
+          // Redirect on OK button click
+          $('#btnRoleErrorOK').click(function () {
+              window.location.href = "@appUrl";
+          });
+      });
+</script>

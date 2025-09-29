@@ -20,14 +20,14 @@ var ParkingInformation=
                 $('.btn.btn-primary').attr("disabled", false);
                 BuildingInformationData = [];
                 ParkingInformation.reset();
-                ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingDt();
                 showMessage("Success", "Record Updated Successfully.");
             },
             error: function (xhr) {
                 $('#cm_loader').attr("hidden", true);
                 $('.btn.btn-primary').attr("disabled", false);
                 ParkingInformation.reset();
-                ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingDt();
                 showMessage("Error", "Error occurred, please try again.");
             }
             });
@@ -88,7 +88,7 @@ var ParkingInformation=
     },
     cancel: function () {
         ParkingInformation.resetData();
-        ReloadBuildingDt();
+        BuildingInformation.ReloadBuildingDt();
     }
    
 }

@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.Domain.Helper;
+﻿using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.Domain.Helper;
 using DeveloperPortal.Models.Common;
 using HCIDLA.ServiceClient.DMS;
 using HCIDLA.ServiceClient.LaserFiche;
@@ -19,23 +20,22 @@ namespace DeveloperPortal.ServiceClient
     {
 
        
-        public IConfiguration _config;
+        private IConfiguration _config;
+
 
         public DMSService(IConfiguration config) 
         {
             _config = config;
-    
         }
 
 
         [HttpPost]
-        public async Task<List<UploadResponse>> SubmitUploadedDocument(List<IFormFile> files, int caseId, string category, string fileSubCategory, string createdBy)
+        public async Task<List<UploadResponse>> SubmitUploadedDocument(List<IFormFile> files,int projectReferenceId, int caseId, string category, string fileSubCategory, string createdBy)
         {
             if (files == null || !files.Any())
             {
                 return new List<UploadResponse> { new UploadResponse { ReturnStatus = Status.Failed, ErrorMessages = new[] { "No files were provided." } } };
             }
-
             // Prepare base upload info
             var baseInfo = new FileUploadInfo
             {
@@ -43,9 +43,10 @@ namespace DeveloperPortal.ServiceClient
                 DocumentType = DocType.AcHP,
                 MetaData = new Dictionary<FieldType, string[]>
             {
-                { FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString() } },
+                { FieldType.PrimaryKey, new string[] { projectReferenceId.ToString()} },
                 { FieldType.Category, new string[] { category } },
-                { FieldType.SubCategory, new string[] { fileSubCategory } }
+                { FieldType.SubCategory, new string[] { fileSubCategory } },
+                { FieldType.CaseId, new string[] { caseId.ToString() } },
             },
                 SysData = new Dictionary<SysFieldType, string>
             {
@@ -60,6 +61,7 @@ namespace DeveloperPortal.ServiceClient
 
             return responses;
         }
+
         private async Task<List<UploadResponse>> ProcessFiles(List<IFormFile> files, FileUploadInfo baseInfo)
         {
             var uploadTasks = new List<Task<UploadResponse>>();

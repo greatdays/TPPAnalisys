@@ -14,15 +14,16 @@ namespace DeveloperPortal.Controllers
     public class ProjectDetailController : Controller
     {
         #region Construtor
-
+        private IFloorPlanTypeService _floorPlanTypeService;
         private IProjectDetailService _projectDetailService;
         private IBuildingIntakeService _buildingIntakeService;
         private IUnitImportService _unitImportService;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService, IFloorPlanTypeService floorPlanTypeService)
         {
+            _floorPlanTypeService = floorPlanTypeService;
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
             _env = env;
@@ -79,11 +80,13 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<JsonResult> GetUnitModalData()
+        public async Task<JsonResult> GetUnitModalData(int caseId)
         {
             var lutUnitType = await _projectDetailService.GetLutUnitType();
             var lutTotalBedrooms = await _projectDetailService.GetLutTotalBedrooms();
-            return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms });
+            var floorPlanType = _floorPlanTypeService.GetFloorPlanInformationCompliance(caseId);
+            return Json(new { LutUnitType = lutUnitType, LutTotalBedrooms = lutTotalBedrooms, LutFloorPlanType = floorPlanType });
+
         }
 
 
@@ -453,40 +456,7 @@ namespace DeveloperPortal.Controllers
                 return Json(false);
             }
         }
-
-        // <summary>
-        /// Post - AddBuildingFromNewCompliance
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult> AddBuilding(SiteInformationParamModel paramModel, int caseId)
-        {
-            int projectSiteId = 0;
-            BuildingModel buildingModel = new BuildingModel();
-            buildingModel.SiteList = new List<SelectListItem>();
-            if (paramModel.SiteInformationData != null && paramModel.SiteInformationData.Count > 0)
-            {
-                projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
-                buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
-                // If show all addresses then uncomment below code
-                var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
-                buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
-                buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.FileNumber,
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-                buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.CaseID.ToString(),
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-
-            }
-            buildingModel.CaseId = caseId;
-            var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
-            return Json(data);
-        }
+        
         #endregion
 
         #region Project Site Information

@@ -92,6 +92,7 @@ namespace DeveloperPortal
             {
                 options.LoginPath = "/Account/Login";
                 options.Cookie.Name = ".AAHRDeveloperPortal.Auth";
+                options.Cookie.Path = "/";                     
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Lax;
@@ -124,7 +125,7 @@ namespace DeveloperPortal
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            app.UsePathBase("/AcHP.API");
+            //app.UsePathBase("/AcHP.API");
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();

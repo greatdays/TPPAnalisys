@@ -170,7 +170,7 @@
 
                     if (fileNumber && fileNumber.trim() !== "") {
                         $(".project-notifications p").html(
-                            "You have new comments on the following project(s): <b>" + fileNumber.trim() + "</b>"
+                            "<b> Action Required.</b> New comments on your project(s): <b>" + fileNumber.trim() + "</b>"
                         );
                         $(".project-notifications").show();
                     } else {

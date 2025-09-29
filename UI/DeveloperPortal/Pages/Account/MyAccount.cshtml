@@ -132,7 +132,7 @@
                     <!-- If POBox = Yes -->
                     <div id="divPOBoxYes" class="form-group col-md-11 d-none mt-3">
                         <label>P.O.Box Number <span class="text-danger">*</span></label>
-                        <input id="POBoxNumber" name="POBoxNumber" class="form-control" value="@Model.Account.PostBoxNum" />
+                        <input id="POBoxNumber" name="PostBoxNum" class="form-control" value="@Model.Account.PostBoxNum" />
                         <span class="text-danger small d-none" id="errPOBoxNumber">PO Box number is required.</span>
                     </div>
 
@@ -156,7 +156,7 @@
 
                     <div class="form-group col-md-3">
                         <label>Zip Code <span class="text-danger">*</span></label>
-                        <input id="ZipCode" name="ZipCode" class="form-control" value="@Model.Account.Zipcode" />
+                    <input id="ZipCode" name="Zipcode" class="form-control" value="@Model.Account.Zipcode" />
                         <span class="text-danger small d-none" id="errZipCode">Zip code is required.</span>
                     </div>
 
@@ -172,11 +172,38 @@
 
 @section Scripts {
     <script>
-          function togglePOBoxSection() {
-            const isPOBoxYes = document.getElementById("POBoxYes").checked;
-            document.getElementById("divPOBoxYes").classList.toggle("d-none", !isPOBoxYes);
-            document.getElementById("divPOBoxNo").classList.toggle("d-none", isPOBoxYes);
-            }
+        
+            function togglePOBoxSection() {
+                    const isPOBoxYes = document.getElementById("POBoxYes").checked;
+
+                    const divPOBoxYes = document.getElementById("divPOBoxYes");
+                    const divPOBoxNo = document.getElementById("divPOBoxNo");
+
+                    const poBoxInput = document.getElementById("POBoxNumber");
+
+                    // Physical address fields
+                    const streetNum = document.getElementById("StreetNumber");
+                    const preDir = document.getElementById("LutPreDirCd");
+                    const streetName = document.getElementById("StreetName");
+                    const streetType = document.getElementById("LutStreetTypeCd");
+                    const unitNumber = document.getElementById("UnitNumber");
+
+                    // Toggle sections
+                    divPOBoxYes.classList.toggle("d-none", !isPOBoxYes);
+                    divPOBoxNo.classList.toggle("d-none", isPOBoxYes);
+
+                    if (isPOBoxYes) {
+                        // PO Box selected — clear physical address fields
+                        streetNum.value = "";
+                        preDir.selectedIndex = 0; // Reset dropdown to first option
+                        streetName.value = "";
+                        streetType.selectedIndex = 0;
+                        unitNumber.value = "";
+                    } else {
+                        // Physical address selected — clear PO Box field
+                        poBoxInput.value = "";
+                    }
+                }
             function BindValidationEvents() {
             SetMaxLength('FirstName', 100);
             SetMaxLength('MiddleName', 100);
@@ -345,7 +372,7 @@
             //Get the Roles
             function FetchingRoles(){
                  $.ajax({
-                    url: APPURL + "Account/GetLookupData?lookup=UserRole",
+                    url: APPURL + "Account/GetUserRoleLookupData",
                     type: 'GET',
                     async: false,
                     dataType: 'json',
@@ -403,8 +430,12 @@
                 $.ajax({
                     url:APPURL+ 'Account/MyAccount?handler=Update',
                     type: 'POST',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                     data: formData,
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    headers: {
+                        'RequestVerificationToken': token, 
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
                     success: function (res) {
                         console.log("Success", res);
                         $("#successMsg").text("Account updated successfully!").removeClass("d-none");

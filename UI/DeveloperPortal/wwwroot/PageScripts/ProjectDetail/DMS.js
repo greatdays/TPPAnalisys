@@ -188,11 +188,21 @@ window.DMSManager = class DMSManager {
             formData.append("Files", files[i]);
         }
 
+        //const categoryName = $("#category option:selected").text();
+
+        const $selectedOption = $("#category option:selected");
+        const categoryName = $selectedOption.text();
+        const categoryGroup = $selectedOption.parent("optgroup").attr("label"); 
+
         formData.append("Category", $('#category').val());
         formData.append("Comments", $('#comments').val());
-        formData.append("ProjectId", $("#ProjectId").val());
+        formData.append("ProjectId", window.dmsConfig.projectId);
+        formData.append("CaseId", window.dmsConfig.caseId);
         formData.append("FolderName", $("#FolderName").val());
         formData.append("FolderId", $("#FolderId").val());
+        formData.append("projectName", window.dmsConfig.projectName);
+        formData.append("categoryName", categoryName);
+        formData.append("categoryGroup", categoryGroup);
 
         const url = window.dmsConfig.uploadUrl;
         this.performAjaxSubmission(formData, url);
@@ -330,8 +340,9 @@ window.DMSManager = class DMSManager {
 
     // Method to reload the entire grid
     reloadGrid() {
-        const caseId = $("#ProjectId").val();
+        const caseId = window.dmsConfig.caseId;
         const folderId = $("#FolderId").val();
+        const ProjectId = window.dmsConfig.projectId;
         const targetDiv = "divDocument";
 
         if (!caseId) {
@@ -340,12 +351,12 @@ window.DMSManager = class DMSManager {
         }
 
         // Pass the required IDs to the static LoadDocuments method
-        DMS.LoadDocuments(caseId, folderId, targetDiv);
+        DMS.LoadDocuments(caseId, ProjectId, folderId, targetDiv);
     }
 };
 
 window.DMS = class DMS {
-    static LoadDocuments(caseId, controlViewModelId = 0, targetDiv = "divDocument") {
+    static LoadDocuments(caseId, projectId, controlViewModelId = 0, targetDiv = "divDocument") {
         if (!caseId) {
             console.error("DMS: CaseId required");
             return;
@@ -354,7 +365,7 @@ window.DMS = class DMS {
             window.dmsManager.destroy();
         }
 
-        $.get(APPURL +  'DMS/GetFilesById', { caseId, controlViewModelId })
+        $.get(APPURL + 'DMS/GetFilesById', { caseId, projectId, controlViewModelId })
             .done((html) => {
                 $(`#${targetDiv}`).html(html);
                 if ($("#dmsDataTable").length > 0) {

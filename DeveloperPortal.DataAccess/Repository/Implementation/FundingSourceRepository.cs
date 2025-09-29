@@ -92,9 +92,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     {
                         document.DocumentId = viewModel.DocumentID ?? 0;
                         document.Name = viewModel.FileName;
-                        document.OtherDocumentType = "FundingSource";
+                      //  document.OtherDocumentType = "FundingSource";
                         document.Comment = viewModel.Notes;
-                       
+                        document.DocumentCategoryId = viewModel.LuDocumentCategoryId;
                         _context.Documents.Update(document);
                         _context.SaveChanges();
                         if (document.DocumentId != null)
@@ -134,12 +134,13 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                             FileSize = viewModel.FileSize,
                             Comment = viewModel.Notes,
                             Attributes = "",
-                            OtherDocumentType = "FundingSource",
+                          //  OtherDocumentType = "FundingSource",
                             CreatedBy = viewModel.CreatedBy,
                             CreatedOn = DateTime.Now,
                             ModifiedBy = viewModel.CreatedBy,
                             ModifiedOn = DateTime.Now,
                             IsDeleted = false,
+                            DocumentCategoryId=viewModel.LuDocumentCategoryId,
                             AssnDocuments =
                                 {
                                     new AssnDocument
@@ -167,7 +168,10 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
             return true;
         }
-
+        public int? getLuDocumentCategoryId(string category,string subCategory)
+        {
+            return _context.LutDocumentCategories.Where(x => x.Category == category && x.SubCategory == subCategory).FirstOrDefault()?.LutDocumentCategoryId;
+        }
         public async Task<Document> GetDocument(FundingSourceViewModel viewModel)
         {
             using (var context = new AAHREntities()) // Creates and disposes of a context manually

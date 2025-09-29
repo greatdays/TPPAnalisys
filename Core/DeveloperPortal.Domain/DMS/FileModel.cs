@@ -9,6 +9,8 @@ namespace DeveloperPortal.Domain.DMS
     public class FileModel
     {
         public int DocumentId { get; set; }
+        public int CaseId { get; set; }
+        public int ProjectId { get; set; }
         public string? Name { get; set; }
         public string? Link { get; set; }
        // public string? FileType { get; set; }

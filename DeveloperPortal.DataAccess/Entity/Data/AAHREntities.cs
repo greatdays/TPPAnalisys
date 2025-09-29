@@ -1222,7 +1222,6 @@ public partial class AAHREntities : DbContext
         }
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_CI_AI");
@@ -5775,6 +5774,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.CreatedOn)
                 .HasComment("Created On")
                 .HasColumnType("datetime");
+            entity.Property(e => e.DocumentCategoryId).HasColumnName("DocumentCategoryID");
             entity.Property(e => e.DocumentNum)
                 .HasMaxLength(50)
                 .IsUnicode(false);
@@ -5796,6 +5796,10 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ServiceTrackingId)
                 .HasMaxLength(100)
                 .HasColumnName("ServiceTrackingID");
+
+            entity.HasOne(d => d.DocumentCategory).WithMany(p => p.Documents)
+                .HasForeignKey(d => d.DocumentCategoryId)
+                .HasConstraintName("FK_LUDocumentCategory_Document");
 
             entity.HasOne(d => d.DocumentTemplate).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.DocumentTemplateId)

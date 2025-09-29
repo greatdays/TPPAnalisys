@@ -61,6 +61,8 @@ namespace DeveloperPortal.Domain.DMS
         /// Modified On
         /// </summary>
         public DateTime? ModifiedOn { get; set; }
+
+        public int? DocumentCategoryId { get; set; }
     }
     public static class FileStatus
     {
