@@ -1,31 +1,39 @@
 ﻿@page "/"
 @model DeveloperPortal.Pages.Account.SignUpModel
 
-<header class="landing-banner">
-    <div>
-        <h1>Welcome to the ACHP Construction Portal</h1>
-        <h2>Submit and track your Accessible Housing Program plan documents online.</h2>
-    </div>
-</header>
+<div class="bg-light-gray">
+    <div class="container landing-page-container pt-5 pb-5 d-flex align-items-center ">
+        <div class="h-100">
 
-<form id="landing-signin">
+            <div class="text-center mb-5">
+                <h1>Welcome to the ACHP Construction Portal</h1>
+                <h2>Submit and track your Accessible Housing Program plan documents online.</h2>
+            </div>
 
-    <div class="landing-signup-actions">
-        <button type="submit" class="landing-signin-button btn btn-primary btn-lg" id="btnSignIn">Sign In</button>
-        @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
-    </div>
+            <form id="landing-signin">
+                <div class="d-flex justify-content-center">
 
-    <p class="divider">Or</p>
-    
-    <div class="landing-signup-actions">
-        <button type="submit" class="landing-signup-button btn btn-success btn-lg" id="btnSignUp">Sign Up</button>
+                <div class="landing-signup-actions pr-2">
+                    <button type="submit" class="landing-signin-button btn btn-primary btn-lg" id="btnSignIn">Sign In</button>
+                    @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
+                </div>
+
+
+                <div class="landing-signup-actions pl-2">
+                        <button type="submit" class="landing-signup-button btn btn-outline-dark btn-lg" id="btnSignUp">Sign Up</button>
+                </div>
+                @*  <div class="landing-signup-actions">
+            <button type="submit" class="landing-signup-button" id="btnMyAccount">My Account</button>
+        </div> *@
+        </div>
+
+                <div id="loginError" style="color: red; margin-top: 1em; width:100%;"></div>
+            </form>
+        </div>
     </div>
-   @*  <div class="landing-signup-actions">
-        <button type="submit" class="landing-signup-button" id="btnMyAccount">My Account</button>
-    </div> *@
-    
-    <div id="loginError" style="color: red; margin-top: 1em;"></div>
-</form>
+</div>
+
+
 
 
 <script>
