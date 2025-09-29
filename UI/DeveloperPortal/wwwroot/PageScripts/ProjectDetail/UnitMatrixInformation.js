@@ -9,6 +9,7 @@ var kednoWindow = "";
 
 var UnitMatrixInformation =
 {
+
     init: function () {
         windowTemplate = kendo.template($("#windowTemplate").html());
         kednoWindow = $("#kednoWindow").kendoWindow({
@@ -35,6 +36,21 @@ var UnitMatrixInformation =
             });
             SetRoleAccess(accessType);
         });
+    },
+    downloadSampleExcel: function () {
+        const fileUrl = "/Document/ImportUnitMatrixSample.xlsx";
+
+        const link = document.createElement("a");
+        link.href = fileUrl;
+        link.download = "ImportUnitMatrixSample.xlsx";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        const overlay = document.getElementById("loadingOverlay");
+        if (overlay) {
+            overlay.style.display = "none";
+        }
     },
     LoadUnitMatrix: function () {
         dataSource = new kendo.data.DataSource({
@@ -109,7 +125,7 @@ var UnitMatrixInformation =
                         managersUnit: { type: "boolean" },
                         totalBedroom: { type: "string", validation: { required: true } },
                         floorPlanType: { type: "string", },
-                        floorPlanTypeID: { type: "number" }, 
+                        floorPlanTypeID: { type: "number" },
                         unitType: { type: "string", defaultValue: { Value: 0, Text: "Select" } },
                         additionalAccecibility: { type: "string" },
                         isCompliant: { type: "boolean" },
@@ -280,18 +296,18 @@ var UnitMatrixInformation =
             });
     },
     FloorPlanDropDownEditor: function (container, options) {
-        $('<input required name="floorPlanTypeID"/>')   
+        $('<input required name="floorPlanTypeID"/>')
             .appendTo(container)
             .kendoDropDownList({
                 autoBind: true,
                 dataTextField: "name",
                 dataValueField: "floorPlanTypeID",
                 dataSource: kgridEditModelData.lutFloorPlanType,
-                value: options.model.floorPlanTypeID,   
+                value: options.model.floorPlanTypeID,
                 change: function (e) {
                     var dataItem = e.sender.dataItem();
                     options.model.set("floorPlanTypeID", dataItem.floorPlanTypeID);
-                    options.model.set("floorPlanType", dataItem.name);  
+                    options.model.set("floorPlanType", dataItem.name);
                 }
             });
     },
