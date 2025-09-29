@@ -275,15 +275,7 @@ namespace DeveloperPortal.Controllers
 
                         var principal = new ClaimsPrincipal(identity);
 
-                       // var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                        var login  =HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            principal,
-            new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddMinutes(30)
-            });
+                        var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                         UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, null, applicationName));
                         var data = _dashboardService.GetUserContactIdentifierData();

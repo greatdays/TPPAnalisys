@@ -5,10 +5,9 @@ using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize]
+
 public class FundingSourceController : Controller
 {
     private readonly IConfiguration _config;

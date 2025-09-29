@@ -5,7 +5,6 @@ using DeveloperPortal.DataAccess;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.Dashboard;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis.Elfie.Diagnostics;
@@ -15,7 +14,7 @@ using System.Data;
 
 namespace DeveloperPortal.Pages
 {
-    [Authorize]
+    [IgnoreAntiforgeryToken]
     public class DashboardModel : PageModel
     {
         private readonly IAccountService _accountService;

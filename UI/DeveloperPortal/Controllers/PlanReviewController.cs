@@ -9,7 +9,6 @@ using System.Data;
 
 namespace DeveloperPortal.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PlanReviewController : Controller

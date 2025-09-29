@@ -3,7 +3,6 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.Dashboard;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
@@ -14,7 +13,6 @@ namespace DeveloperPortal.Controllers
 {
     //[Route("api/[controller]")]
     //[ApiController]
-    [Authorize]
     public class DashboardController : Controller
     {
         public IConfigurationRoot Configuration { get; set; }

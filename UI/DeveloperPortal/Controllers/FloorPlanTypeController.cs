@@ -4,12 +4,10 @@ using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.Pages.ProjectDetail;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeveloperPortal.Controllers
 {
-    [Authorize]
     public class FloorPlanTypeController : Controller
     {
 
