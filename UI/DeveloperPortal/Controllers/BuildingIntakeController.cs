@@ -13,6 +13,7 @@ namespace DeveloperPortal.Controllers
         #region Construtor
         private IProjectDetailService _projectDetailService;
         private IBuildingIntakeService _buildingIntakeService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly string UserName;
 
         /// <summary>
@@ -20,12 +21,14 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <param name="projectDetailService"></param>
         /// <param name="buildingIntakeService"></param>
-        public BuildingIntakeController( IProjectDetailService projectDetailService,IBuildingIntakeService buildingIntakeService)
+        public BuildingIntakeController( IProjectDetailService projectDetailService,IBuildingIntakeService buildingIntakeService, IHttpContextAccessor httpContextAccessor )
         {
             _projectDetailService = projectDetailService;
             _buildingIntakeService = buildingIntakeService;
-            //Username = UserSession.GetUserSession().UserName
-            UserName = "jhirpara";
+            _httpContextAccessor = httpContextAccessor;
+            UserName = Models.IDM.UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            UserName = string.IsNullOrEmpty(UserName) ? "" : UserName;
+
         }
 
         /// <summary>

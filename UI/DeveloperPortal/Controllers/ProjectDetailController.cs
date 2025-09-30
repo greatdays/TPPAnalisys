@@ -16,20 +16,21 @@ namespace DeveloperPortal.Controllers
         #region Construtor
         private IFloorPlanTypeService _floorPlanTypeService;
         private IProjectDetailService _projectDetailService;
-        private IBuildingIntakeService _buildingIntakeService;
         private IUnitImportService _unitImportService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IWebHostEnvironment _env;
         private readonly string UserName;
 
-        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IBuildingIntakeService buildingIntakeService, IFloorPlanTypeService floorPlanTypeService)
+        public ProjectDetailController(IProjectDetailService projectDetailService, IUnitImportService unitImportService, IWebHostEnvironment env, IFloorPlanTypeService floorPlanTypeService, IHttpContextAccessor httpContextAccessor)
         {
             _floorPlanTypeService = floorPlanTypeService;
             _projectDetailService = projectDetailService;
             _unitImportService = unitImportService;
+            _httpContextAccessor = httpContextAccessor;
             _env = env;
-            //Username = UserSession.GetUserSession().UserName
-            UserName = "jhirpara";
-            _buildingIntakeService = buildingIntakeService;
+            UserName = Models.IDM.UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            UserName = string.IsNullOrEmpty(UserName) ? "" : UserName;
+            
         }
 
         #endregion
