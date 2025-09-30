@@ -95,6 +95,71 @@ namespace DeveloperPortal.Controllers
             return Json(data);
         }
 
+        // <summary>
+        /// Post - AddBuildingFromNewCompliance
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddBuilding1(SiteInformationParamModel paramModel, int caseId)
+        {
+            //int projectSiteId = 0;
+            //BuildingModel buildingModel = new BuildingModel();
+            //buildingModel.SiteList = new List<SelectListItem>();
+            //if (paramModel.SiteInformationData != null && paramModel.SiteInformationData.Count > 0)
+            //{
+            //    projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
+            //    buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
+            //    // If show all addresses then uncomment below code
+            //    var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
+            //    buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
+            //    buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
+            //    {
+            //        Text = x.FileNumber,
+            //        Value = x.ProjectSiteID.ToString()
+            //    }).ToList();
+            //    buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
+            //    {
+            //        Text = x.CaseID.ToString(),
+            //        Value = x.ProjectSiteID.ToString()
+            //    }).ToList();
+
+            //}
+            //buildingModel.CaseId = caseId;
+            var data = "Test";// await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
+            return Json(data);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateBuilding(SiteInformationParamModel paramModel, int caseId)
+        {
+            int projectSiteId = 0;
+            BuildingModel buildingModel = new BuildingModel();
+            buildingModel.SiteList = new List<SelectListItem>();
+            if (paramModel.SiteInformationData != null && paramModel.SiteInformationData.Count > 0)
+            {
+                projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
+                buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
+                // If show all addresses then uncomment below code
+                var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
+                buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
+                buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
+                {
+                    Text = x.FileNumber,
+                    Value = x.ProjectSiteID.ToString()
+                }).ToList();
+                buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
+                {
+                    Text = x.CaseID.ToString(),
+                    Value = x.ProjectSiteID.ToString()
+                }).ToList();
+
+            }
+            buildingModel.CaseId = caseId;
+            var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
+            return Json(data);
+        }
+
 
         /// <summary>
         /// SaveBuildingSummary
