@@ -1,12 +1,8 @@
 ﻿
 using DeveloperPortal.Application.ProjectDetail.Interface;
-using DeveloperPortal.Application.PropertySnapshot;
-using DeveloperPortal.Constants;
-using DeveloperPortal.DataAccess.Entity.Models.Generated;
-using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
-using DeveloperPortal.Models.Common;
 using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -24,6 +20,7 @@ namespace DeveloperPortal.Controllers
             _developmentTeamService = developmentTeamService;
             _httpContextAccessor = httpContextAccessor;
             UserName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            UserName = string.IsNullOrEmpty(UserName) ? "" : UserName;
         }
 
         #region public method

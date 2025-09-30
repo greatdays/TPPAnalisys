@@ -90,7 +90,7 @@ namespace DeveloperPortal.Application.DMS.Implementation
         }
         public async Task<FolderModel> SaveFolder(FolderModel folderModel)
         {
-            var username = "jhirpara";
+            var username = "";
             bool isSuccess = true;
             if(folderModel==null)
                 return new FolderModel();
