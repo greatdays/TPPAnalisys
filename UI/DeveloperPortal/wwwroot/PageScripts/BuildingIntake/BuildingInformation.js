@@ -205,6 +205,31 @@ var BuildingInformation =
         //},
         //null, true, null, false);
     },
+    AddBuildingInfo1: function () {
+        var model = { SiteInformationData: SiteInformationData, caseId: Id };
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var url = APPURL + 'BuildingIntake/AddBuilding1';
+        model.__RequestVerificationToken = token;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: model,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            headers: {
+                'RequestVerificationToken': token,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (response) {
+                $("#modal-building-add").empty().html(response).modal('show');
+                // console.log("Success", response);
+                // $("#successMsg").text("Account updated successfully!").removeClass("d-none");
+            },
+            error: function (xhr) {
+                console.error("❌ Error", xhr.status, xhr.responseText);
+            }
+        });
+
+    },
     SaveAddBuilding: function () {
         debugger
         var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());

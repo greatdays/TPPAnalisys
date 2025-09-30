@@ -38,10 +38,10 @@ var UnitMatrixInformation =
         });
     },
     downloadSampleExcel: function () {
-        const fileUrl = "/Document/ImportUnitMatrixSample.xlsx";
+        const fileUrl = "Document/ImportUnitMatrixSample.xlsx";
 
         const link = document.createElement("a");
-        link.href = fileUrl;
+        link.href = APPURL + fileUrl;
         link.download = "ImportUnitMatrixSample.xlsx";
         document.body.appendChild(link);
         link.click();

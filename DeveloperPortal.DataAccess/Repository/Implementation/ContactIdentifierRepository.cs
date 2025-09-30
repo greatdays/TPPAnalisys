@@ -252,7 +252,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         /// <returns></returns>
         public async Task<bool> RemoveAssContactAndServiceReqContact(ContactIdentifier contact, List<AssnPropContact> popContacts, string[] contactTypes, string userName)
         {
-            var removedPC = popContacts.Where(x => !contactTypes.Contains(x.LutContactType.ContactType)).ToList();
+            var removedPC = popContacts.Where(x => x.LutContactType!=null && !contactTypes.Contains(x.LutContactType.ContactType)).ToList();
             var isModified = false;
             foreach (var pc in removedPC)
             {
