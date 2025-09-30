@@ -19,6 +19,7 @@ using UserSession = DeveloperPortal.Models.IDM.UserSession;
 
 namespace DeveloperPortal.Controllers
 {
+    [AllowAnonymous]
     public class LoginController : Controller
     {
         private IConfiguration _config;
@@ -241,7 +242,7 @@ namespace DeveloperPortal.Controllers
         /// Redirect to landing page if authentication success.
         /// </returns>
         /// 
-        public ActionResult ValidateToken(string jwtToken, string tabname)
+        public async Task<ActionResult> ValidateToken(string jwtToken, string tabname)
         {
             UserSession userSession = UserSession.GetUserSession(HttpContext);
 
@@ -267,15 +268,29 @@ namespace DeveloperPortal.Controllers
                         {
                             return RedirectToAction("RoleError", "Account");
                         }
-                        //Create the identity for the user  
-                        var identity = new ClaimsIdentity(new[] {
-                                        new Claim(ClaimTypes.Name, authenticateResponse.Username),
-                                        new Claim(ClaimTypes.Role,string.Join(",", userDetail.Roles))
-                                        }, CookieAuthenticationDefaults.AuthenticationScheme);
+                       
+                        var claims = new[]
+                            {
+                                new Claim("UserId", authenticateResponse.UserId.ToString()),
+                                //new Claim("UserName", authenticateResponse.Username.ToString()),
+                                new Claim(ClaimTypes.Name, authenticateResponse.Username),
+                                new Claim(ClaimTypes.Role, string.Join(",", userDetail.Roles))
+                            };
 
+                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                         var principal = new ClaimsPrincipal(identity);
 
-                        var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                        await HttpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            principal,
+                            new AuthenticationProperties
+                            {
+                                IsPersistent = true, // Session cookie: dies on browser close
+                                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(45)
+                            });
+
+
+
 
                         UserSession.SetUserInSession(HttpContext, UserSession.AssignValues(HttpContext, authenticateResponse, null, applicationName));
                         var data = _dashboardService.GetUserContactIdentifierData();

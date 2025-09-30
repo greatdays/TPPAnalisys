@@ -1,12 +1,15 @@
+using System.Web.Mvc;
 using DeveloperPortal.Application;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
+using AuthorizeAttribute = Microsoft.AspNetCore.Authorization.AuthorizeAttribute;
 
 namespace DeveloperPortal.Pages.ProjectDetails
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         public int ProjectSiteID { get; set; }

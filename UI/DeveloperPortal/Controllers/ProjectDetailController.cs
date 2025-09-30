@@ -8,9 +8,12 @@ using Newtonsoft.Json.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DeveloperPortal.Controllers
 {
+    [Authorize]
     public class ProjectDetailController : Controller
     {
         #region Construtor

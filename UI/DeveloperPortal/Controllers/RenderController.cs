@@ -15,10 +15,11 @@ using DeveloperPortal.Domain.PropertySnapshot;
 using DeveloperPortal.Constants;
 using DeveloperPortal.Application.ServiceClient;
 using DeveloperPortal.Application;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeveloperPortal.Controllers
 {
-
+    [Authorize]
     public class RenderController : Controller
     {
         

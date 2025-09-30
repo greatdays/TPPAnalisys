@@ -24,6 +24,8 @@ using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.Application.Notification.Implementation;
 using DeveloperPortal.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
+using DeveloperPortal.Models.IDM;
 
 namespace DeveloperPortal
 {
@@ -83,36 +85,83 @@ namespace DeveloperPortal
 
             services.AddAuthentication(options =>
             {
-                // These defaults will be used unless you override per‑attribute or per‑call
                 options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;   
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie(options =>
             {
-                options.LoginPath = "/Account/Login";
+                options.LoginPath = "/Account/account/Login"; // or your login page
                 options.Cookie.Name = ".AAHRDeveloperPortal.Auth";
-                options.Cookie.Path = "/";                     
+                options.Cookie.Path = "/";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Lax;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // or whatever session length
+
+                // ✅ Make cookie a session cookie (dies when browser closes)
+                options.Cookie.IsEssential = true;
+                options.Cookie.MaxAge = null; // null = session cookie
+                options.Cookie.Expiration = null;
+                options.SlidingExpiration = false;
+                // ✅ Revalidate principal on every request
+                options.Events = new CookieAuthenticationEvents
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = _configuration["JwtSettings:Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = _configuration["JwtSettings:Audience"],
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                                                 Convert.FromBase64String(
-                                                   _configuration["JwtSettings:Secret"])),
-                    ValidateIssuerSigningKey = true
+                    OnValidatePrincipal = async context =>
+                    {
+                        try
+                        {
+                            var user = context.Principal;
+                            var httpContext = context.HttpContext;
+
+                            // 1️⃣ Reject if no identity or not authenticated
+                            if (user?.Identity == null || !user.Identity.IsAuthenticated)
+                            {
+                                context.RejectPrincipal();
+                                await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                                return;
+                            }
+
+                            
+                            var sessionUser = UserSession.GetUserSession(httpContext);
+                            if (sessionUser == null || string.IsNullOrEmpty(sessionUser.UserName))
+                            {
+                                context.RejectPrincipal();
+                                await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                                return;
+                            }
+
+                            // 3️⃣ Validate required claims
+                            var userIdClaim = user.Claims.FirstOrDefault(c => c.Type == "UserId" && !string.IsNullOrEmpty(c.Value));
+                            if (userIdClaim == null || userIdClaim.Value == "0")
+                            {
+                                context.RejectPrincipal();
+                                await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                                return;
+                            }
+
+                            // 4️⃣ Validate cookie expiration
+                            var expiresUtc = context.Properties?.ExpiresUtc;
+                            if (expiresUtc != null && expiresUtc <= DateTimeOffset.UtcNow)
+                            {
+                                context.RejectPrincipal();
+                                await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                                return;
+                            }
+
+                            // ✅ All checks passed, keep the user authenticated
+                        }
+                        catch
+                        {
+                            // On any exception, reject principal and sign out
+                            context.RejectPrincipal();
+                            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        }
+                    }
                 };
             });
-         
+            
+
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

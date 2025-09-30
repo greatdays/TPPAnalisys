@@ -7,6 +7,7 @@ using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
 using DeveloperPortal.Models.Common;
 using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,6 +15,7 @@ using ContactRenderModel = DeveloperPortal.Domain.ProjectDetail.ContactRenderMod
 
 namespace DeveloperPortal.Controllers
 {
+    [Authorize]
     public class DevelopmentTeamController : Controller
     {
         private IDevelopmentTeamService _developmentTeamService;

@@ -125,7 +125,21 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         public async Task<List<DashboardDataModel>> GetAllConstructionCasesForUserByUserID()
         {
 
+            
+
             var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+
+
+            //if we require cooki bas authentication add code like this
+            //if (string.IsNullOrEmpty(userName))
+            //{
+            //    var cookieValue = _httpContextAccessor.HttpContext.Request?.Cookies[".AAHRDeveloperPortal.Auth"];
+            //    var user = _httpContextAccessor.HttpContext.User;
+            //    userName = user.Identities?.FirstOrDefault()?.Name; // user.Claims.FirstOrDefault(c => c.Type == "UserName")?.Value;
+
+
+            //}
+
             if (!string.IsNullOrEmpty(userName))
             {
                 var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
