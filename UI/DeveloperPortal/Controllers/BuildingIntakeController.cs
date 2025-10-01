@@ -100,7 +100,6 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddBuilding1(SiteInformationParamModel paramModel, int caseId)
         {
             //int projectSiteId = 0;
@@ -131,7 +130,7 @@ namespace DeveloperPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateBuilding(SiteInformationParamModel paramModel, int caseId)
+        public async Task<ActionResult> CreateBuilding(SiteInformationParamModel paramModel)
         {
             int projectSiteId = 0;
             BuildingModel buildingModel = new BuildingModel();
@@ -155,7 +154,7 @@ namespace DeveloperPortal.Controllers
                 }).ToList();
 
             }
-            buildingModel.CaseId = caseId;
+            buildingModel.CaseId = paramModel.CaseId;
             var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
             return Json(data);
         }
