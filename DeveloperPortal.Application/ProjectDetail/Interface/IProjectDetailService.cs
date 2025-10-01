@@ -152,5 +152,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <returns></returns>
         Task<BuildingModel> GetPropSnapshotDetails(int projectSiteId);
         List<string> GetReviewNote(int caseId);
+
+        Task<bool> CreateSite(SiteInformationModel siteInformationModel, string UserName);
     }
 }

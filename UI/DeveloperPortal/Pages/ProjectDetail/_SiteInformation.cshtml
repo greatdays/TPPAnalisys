@@ -1,4 +1,11 @@
 ﻿@model DeveloperPortal.Domain.ProjectDetail.SiteInformationModel
+@using DeveloperPortal.Domain.ProjectDetail;
+@* <!-- jQuery Validation -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+<!-- jQuery Validation Unobtrusive -->
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+ *@
+<script src="~/PageScripts/ProjectDetail/SiteInformation.js"></script>
 <style>
     .action-link a {
         display: flex;
@@ -41,6 +48,145 @@
                     @Html.Raw(Model.Actions)
                 </div>
             </div> *@
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-site-add" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Site</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><i class="far fa-times-circle"></i></button>
+            </div>  
+            <div class="modal-body">
+                <form id="frmSaveAddSite">
+
+                    @Html.HiddenFor(m => m.ProjectID)
+                    @Html.HiddenFor(m => m.IsAddAddress)
+                    @Html.HiddenFor(m => m.ProjectSiteID)
+                 
+                    <div class="form-group mb-3">
+                    @Html.LabelFor(model => model.APN, "Assessor's Parcel Number (APN)", new { @class = "form-label fw-bold" })
+                    <span class="text-danger">*</span>
+                    <div class="input-group">
+                        @Html.TextBoxFor(model => model.APN, new
+                            {
+                                @class = "form-control",
+                                @placeholder = "APN",
+                                @id = "APNInput",
+                                required = "required"
+                            })
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="searchAPNButton" onclick="SiteInformation.GetAPNProjectAddress()">Search</button>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.APN, "", new { @class = "text-danger" })
+            </div>
+
+                    @* <div class="form-text infotext">Enter the APN and click Search to load available site addresses.</div> *@
+                    <div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
+                    <div id="noAPNData" class="text-danger mt-1" style="display: none;">No data found.</div>
+                    <div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
+                    <div id="CreateNewProjectSiteId" style="display: none;">
+                        <div class="form-group mb-3">
+                           @Html.LabelFor(model => model.PropertyName, new { @class = "form-label fw-bold" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PropertyName, new { @class = "form-control", placeholder = "Property Name" })
+                            @Html.ValidationMessageFor(model => model.PropertyName, "", new { @class = "text-danger" })
+                        </div>
+                        @* <div class="form-text infotext">Public-friendly name for this site/property.</div> *@
+                        <div class="form-group mb-3">
+                            <label for="SiteAddressControlSelect" class="fw-bold">Project Address</label><span class="text-danger">*</span>
+                            <select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
+                                <option value="" disabled selected>Select Project Address</option>
+                            </select>
+                        </div>
+                       
+
+                        <div class="form-check mb-3">
+                            @Html.CheckBoxFor(model => model.IsAddAddress, new {
+                                    @class = "form-check-input", @id = "manualAddressCheck",onchange = "SiteInformation.toggleManualAddress()"
+                                })
+                            @Html.LabelFor(model => model.IsAddAddress,"I can’t find the site address — I’ll enter it manually",new { @class = "form-check-label", @for = "manualAddressCheck" })
+                        </div>
+
+
+                        <div id="manualAddressFields" style="display:none;">
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.HouseNum, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.HouseNum, new { @class = "form-control", placeholder = "House #" })
+                                   
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.HouseFracNum, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.HouseFracNum, new { @class = "form-control", placeholder = "House fraction" })
+                                   
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-2">
+                              
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.LutPreDirCd, new { @class = "form-label fw-bold" })
+                                    <span class="text-danger">*</span>
+                                    <select class="form-control" id="PreDirectionSelect" name="LutPreDirCd">
+                                        <option value="" disabled selected>Select Direction</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.LutPreDirCd, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.StreetName, new { @class = "form-label fw-bold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.StreetName, new { @class = "form-control", placeholder = "Street name" })
+                                    @Html.ValidationMessageFor(model => model.StreetName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-2">
+                              
+                            
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.LutStreetTypeCD, new { @class = "form-label fw-bold" })
+                                    <span class="text-danger">*</span>
+                                    <select class="form-control" id="StreetTypeSelect" name="LutStreetTypeCD">
+                                        <option value="" disabled selected>Select Street Type</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.LutStreetTypeCD, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.City, new { @class = "form-label fw-bold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "City" })
+                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-2">
+                                
+                                <div class="col-md-6">
+                                    @Html.LabelFor(model => model.Zip, new { @class = "form-label fw-bold" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.Zip, new { @class = "form-control", placeholder = "94103 or 94103-1234" })
+                                    @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-text mt-2">
+                                State is assumed CA. Full address will be computed server-side.
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer multi-button comcom-fotter">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal" title="Cancel">Cancel</button>
+                <button class="btn btn-primary" type="button" title="Save" onclick="SiteInformation.SaveAddSite()">Save</button>
+            </div>
         </div>
     </div>
 </div>

@@ -851,6 +851,46 @@ namespace DeveloperPortal.Application.ProjectDetail
             };
         }
 
+        public async Task<bool> CreateSite(SiteInformationModel siteInformationModel, string UserName)
+        {
+
+
+         
+
+            var sqlParameters = new List<SqlParameter>
+{
+    new SqlParameter() { ParameterName = "@ProjectID", Value = siteInformationModel.ProjectID },
+    new SqlParameter() { ParameterName = "@PropertyName", Value = siteInformationModel.PropertyName ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@PrimaryAPN", Value = siteInformationModel.APN ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@Existing_PnCSiteAddressID", Value = siteInformationModel.SiteAddress ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@HouseNum", Value = siteInformationModel.HouseNum ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@HouseFracNum", Value = siteInformationModel.HouseFracNum ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@PreDirCd", Value = siteInformationModel.LutPreDirCd ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@StreetName", Value = siteInformationModel.StreetName ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@StreetTypeCd", Value = siteInformationModel.LutStreetTypeCD ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@PostDirCd", Value = siteInformationModel.PostDirCd ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@City", Value = siteInformationModel.City ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@Zip", Value = siteInformationModel.Zip ?? (object)DBNull.Value },
+    new SqlParameter() { ParameterName = "@UserName", Value = UserName ?? (object)DBNull.Value },
+
+    // Optional SP parameters (override defaults)
+    new SqlParameter() { ParameterName = "@SiteCaseTypeId", Value = 18 },
+    new SqlParameter() { ParameterName = "@SiteCaseType", Value = "New Construction Site" },
+    new SqlParameter() { ParameterName = "@SiteCaseStatus", Value = "Under Design Review" },
+    new SqlParameter() { ParameterName = "@LutServiceRequestTypeID_SITE", Value = 18 }
+};
+
+            var dataTableAllSites = ExecuteStoreProcedure("[AAHPCC].[uspCreateProjectSite]", sqlParameters);
+           
+            // Check if the result is not null and contains at least one list.
+            if (true)
+            {
+
+
+            }
+
+            return true;
+        }
 
         #region Private Methods
 

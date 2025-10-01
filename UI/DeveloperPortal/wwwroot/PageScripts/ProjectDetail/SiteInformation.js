@@ -45,7 +45,7 @@ var SiteInformation=
         });
         dtSiteDataTable.on('draw.dt', function () {
              if ($("#dtSiteData_paginate .select-site-title").length == 0) {
-                $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:</div>")
+                $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:  </div> " )
             }
 
             $(".dataTables_length").hide();
@@ -180,5 +180,227 @@ var SiteInformation=
             }
         });
         SiteInformation.ShowActionPopup(title, "");
-    }
+    },
+    AddSiteInfo: function () {
+        var model = { SiteInformationData: SiteInformationData, caseId: Id };
+        //var token = $('input[name="__RequestVerificationToken"]').val();
+        //model.__RequestVerificationToken = token;
+        $.ajax({
+            url: APPURL + 'SiteDetail/AddSite',
+            type: 'POST',
+            data: model,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            headers: {
+                'RequestVerificationToken': token,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (response) {
+                $("#modal-site-add").empty().html(response).modal('show');
+                // console.log("Success", response);
+                // $("#successMsg").text("Account updated successfully!").removeClass("d-none");
+            },
+            error: function (xhr) {
+                console.error("❌ Error", xhr.status, xhr.responseText);
+            }
+        });
+    },
+   
+    DisplayModal: function () {
+        // Example:
+        var modal = document.getElementById("modal-site-add");
+        // Check if it prints null
+        modal.style.display = "block"; // <-- this will fail if modal is null
+
+
+        $('#modal-site-add').modal('show');
+        // $('#ActionModal').modal('show');
+       
+
+        document.getElementById('noAPNData').style.display = 'none';
+        document.getElementById('APNError').style.display = 'none';
+
+        $('#APNInput').val('');
+
+        //// Clear the dropdown list, resetting it to the default option
+        $('#SiteAddressControlSelect').empty().append('<option value="" disabled selected>Please Select a Site Address</option>');
+
+        //// Clear the project and property name input fields
+        $('#projectNameInput').val('');
+        $('#propertyNameInput').val('');
+
+        // Remove any validation error messages that might be visible
+        $('.validation-error').remove();
+        $('#validationMessage').hide(); // Hide the main validation message if it's visible
+       
+        
+        document.getElementById("CreateNewProjectSiteId").style.display = "none";
+
+        $.ajax({
+            url: APPURL + "Account/GetAllLookupData",
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+               
+
+                // Direction
+                $.each(data.direction, function (i, item) {
+                    $('#PreDirectionSelect').append($('<option>').text(item.directionText).attr('value', item.directionValue));
+                });
+                $('#PreDirectionSelect').val(0);
+
+                // StreetType
+                $.each(data.streetType, function (i, item) {
+                    $('#StreetTypeSelect').append($('<option>').text(item.streetTypeText).attr('value', item.streetTypeValue));
+                });
+                $('#StreetTypeSelect').val(0);
+
+                //// UserRole
+                //$.each(data.userRole, function (i, item) {
+                //    $('#UserRole').append($('<option>').text(item.roleName).attr('value', item.roleID));
+                //});
+                //$('#UserRole').val(0);
+            },
+            error: function (xhr) {
+                console.error("Error fetching lookup data", xhr);
+            }
+        });
+    },
+    GetAPNProjectAddress: function () {
+
+        const input = document.getElementById("APNInput");
+        const value = input.value.trim();
+        document.getElementById("noAPNData").style.display = "none";
+        if (value === '') {
+            document.getElementById("APNError").style.display = "block";
+            return;
+        }
+        else {
+            document.getElementById("APNError").style.display = "none";
+            setTimeout(SiteInformation.SerachOnAPNClick, 300);
+        }
+    },
+
+    SerachOnAPNClick: function () {
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var ctlIndex = GetControlIndex();
+        //console.log('ProjCount: ' + ctlIndex);
+        const input = document.getElementById("APNInput");
+        const APNNumber = input.value.trim();
+
+        document.getElementById("noAPNData").style.display = "none";
+        $.ajax({
+            url: APPURL + 'Dashboard?handler=GetAPNProjectName',
+            type: 'POST',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            headers: {
+                'RequestVerificationToken': token
+            },
+            data: { APNNumber: APNNumber },
+            success: function (response) {
+
+                if (response.apnSearchSiteAddresslst == null && response.apnSearchProjectInfolst == null) {
+                    document.getElementById("noAPNData").style.display = "block";
+                    document.getElementById("CreateNewProjectSiteId").style.display = "none";
+                    /*document.getElementById("saveBtn").style.display = "None";*/
+                    return;
+                }
+
+                if (response.apnSearchSiteAddresslst != null) {
+                    var projectList = response.apnSearchSiteAddresslst.map(p => ({
+                        id: p.siteAddressID,
+                        fullAddress: p.fullAddress
+                    }));
+                }
+                var dropdown = $('#SiteAddressControlSelect');
+                dropdown.empty().append('<option value="" disabled selected>Please Select a Site Address</option>');
+
+
+                // Check if the response is valid and has data
+                if (response.apnSearchSiteAddresslst != null && projectList && projectList.length > 0) {
+                  /*  document.getElementById("saveBtn").style.display = "inline-block";*/
+                    document.getElementById("CreateNewProjectSiteId").style.display = "block";
+                    // Loop through the data and add options to the dropdown
+                    $.each(projectList, function (i, item) {
+                        dropdown.append($('<option>', {
+                            value: item.id,      // Assuming the C# object has a 'id' property
+                            text: item.fullAddress // Assuming the C# object has a 'projectName' property
+                        }));
+                    });
+                }
+                else {
+                    document.getElementById("CreateNewProjectSiteId").style.display = "none";
+                }
+
+               
+
+            },
+            error: function (xhr) {
+                console.error("Error:", xhr.status, xhr.responseText);
+                callback(null, null, false);
+            }
+        });
+    },
+    toggleManualAddress: function () {
+        const checkbox = document.getElementById("manualAddressCheck");
+        const manualFields = document.getElementById("manualAddressFields");
+        if (checkbox.checked) {
+            $("#IsAddAddress").val("True");
+            manualFields.style.display = "block";   // show fields
+        } else
+        {
+            $("#IsAddAddress").val("True");
+            manualFields.style.display = "none";    // hide fields
+        }
+    },
+    SaveAddSite: function () {
+       
+        debugger
+        //var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
+        //if (selectedSite != null) {
+        //    $("#SelectedSiteId").val(selectedSite.caseID);
+        //}
+        //event.preventDefault(); // Prevent normal form submission
+        if (SiteInformation.BeginSaveAddSite()) {
+            //AjaxCommunication.CreateRequest(this.window, "POST", "/Construction/BuildingIntake/SaveBuilding", '', $(form).serialize(),
+            //    function (response) {
+            //        SuccessSaveAddBuilding(response);
+            //    },
+            //    null, true, null, false);
+            var form = $("#frmSaveAddSite");
+            $.ajax({
+                url: APPURL + "ProjectDetail/CreateSite",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+                type: "POST",
+                data: $(form).serialize(),
+                success: function (data) {
+                    if (data.result.status) {
+                        reloadParkingGrid = true;
+                        BuildingInformation.ReloadBuildingDt();
+                        $("#modal-building-add").modal('hide');
+                    }
+                    else {
+                        alert('error occured...');
+                    }
+                }
+            });
+        }
+    },
+    BeginSaveAddSite: function () {
+        var form = $("#frmSaveAddSite");
+        $(form).removeData("validator").removeData("unobtrusiveValidation");
+       
+        console.log("siteformdata");
+        console.log(form);
+        if ($.validator.unobtrusive != undefined) {
+            $.validator.unobtrusive.parse($(form));
+            var validator = $(form).validate();
+            var isModelValid = $(form).valid();
+
+            if (false == isModelValid) {
+                validator.focusInvalid();
+                return false;
+            }
+        }
+        return true;
+    },
+
 }
