@@ -11,53 +11,8 @@
 		<h3 class="title text-primary m-0">My Dashboard</h3>
 		<!-- THIS IS NOTIFICATION POPUP FOR NOW WE ARE HIDING IT AS PER requirement we will work on this-->
 		<!-- Notification Window -->
-		@* 	<aside id="sidebar" class="notification-sidebar open" role="region" aria-label="Notifications panel">
-			<div style="padding: 15px 10px; text-align: center;">
-				<h4 class="m-0 mb-2 p-0 text-white">Notifications</h4>
-				<p class="m-0 p-0 text-white">You have new comments on the following project(s)</p>
-			</div>
-			<div class="notifications" id="list">
-				<!-- sample items -->
-				<article class="notif unread" data-id="1" tabindex="0">
-					<div class="icon">A</div>
-					<div class="content">
-						<div class="title">A3834</div>
-						<div class="meta">Your housing application was approved. Tap to view details.</div>
-					</div>
-					<div class="actions">
-						<button class="btn-ghost small markRead">Read More</button>
-					</div>
-				</article>
-
-				<article class="notif unread" data-id="2" tabindex="0">
-					<div class="icon">F</div>
-					<div class="content">
-						<div class="title">F0611</div>
-						<div class="meta">Privacy policy has changed. Please review the updated terms.</div>
-					</div>
-					<div class="actions">
-						<button class="btn-ghost small markRead">Read More</button>
-					</div>
-				</article>
-
-				<article class="notif unread" data-id="3" tabindex="0">
-					<div class="icon">S</div>
-					<div class="content">
-						<div class="title">System Maintenance</div>
-						<div class="meta">Scheduled maintenance on Sep 20, 2025 at 02:00 AM IST.</div>
-					</div>
-					<div class="actions">
-						<button class="btn-ghost small markRead">Read More</button>
-					</div>
-				</article>
-			</div>
-			<div class="bottom-bar text-center">
-				<div class="small">Showing latest notifications</div>
-			</div>
-		</aside>
- *@
+		@Html.AntiForgeryToken()
 		<!-- End Notification Window -->
-
 		<!-- Project Notification -->
 		<div class="project-notifications mt-3 mb-4" style="display:none">
 			<div class="bg-warning1 p-3 text-center rounded position-relative">
@@ -269,27 +224,26 @@
 													</tr>
 												</thead>
 												<tbody>
-													
 												</tbody>
 											</table>
 										</div>
 
 									</div>
 									<div id="CreateNewProjectId" style="display: none;">
-									<div class="form-group mb-3">
-										<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
-										<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
-											<option value="" disabled selected>Select Project Address</option>
-										</select>
-									</div>
-									<div class="form-group mb-3">
-										<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
-										<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
-									</div>
-									<div class="form-group mb-3">
-										<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
-										<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
-									</div>
+										<div class="form-group mb-3">
+											<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
+											<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
+												<option value="" disabled selected>Select Project Address</option>
+											</select>
+										</div>
+										<div class="form-group mb-3">
+											<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
+											<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+										</div>
+										<div class="form-group mb-3">
+											<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
+											<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+										</div>
 									</div>
 									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
 										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitANP()">Submit</button>
