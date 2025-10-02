@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Serilog;
-using DeveloperPortal.Application.ProjectDetail.Implementation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,7 +15,6 @@ namespace DeveloperPortal.Controllers
     //[Route("api/[controller]")]
     //[ApiController]
     [Authorize]
-    [IgnoreAntiforgeryToken]
     public class DashboardController : Controller
     {
         public IConfigurationRoot Configuration { get; set; }
@@ -25,17 +23,15 @@ namespace DeveloperPortal.Controllers
         public IDashboardService _dashboardService;
         public IAppConfigService appConfigService;
         public IApnpinService _apnpinService;
-        private readonly IAccountService _accountService;
-
+        
 
         // Here we are using Dependency Injection to inject the Configuration object
-        public DashboardController(IConfiguration config, IHttpContextAccessor httpConfig, ILogger<DashboardController> logger, IDiagnosticContext diagnosticContext, IDashboardService dashboardService, IAppConfigService appConfigService, IApnpinService apnpinService, IAccountService accountService)
+        public DashboardController(IConfiguration config, IHttpContextAccessor httpConfig, ILogger<DashboardController> logger, IDiagnosticContext diagnosticContext, IDashboardService dashboardService, IAppConfigService appConfigService, IApnpinService apnpinService)
         {
             _logger = logger;
             _dashboardService = dashboardService;
             this.appConfigService = appConfigService;
             _apnpinService = apnpinService;
-            _accountService = accountService;
         }
 
         //Ananth commented for testing
@@ -70,7 +66,7 @@ namespace DeveloperPortal.Controllers
             else
             {
                 //dt = GetAllConstructionCases();
-                //Ananth commented for testing
+                     //Ananth commented for testing
                 List<DashboardDataModel> list = await _dashboardService.GetAllConstructionCases(); //Ananth commented for testing
                 //List<uspRoGetAllConstructionCasesResult> list = GetAllConstructionCasesEF().Result;
 
@@ -171,74 +167,33 @@ namespace DeveloperPortal.Controllers
         {
         }
 
-        public async Task<ActionResult> GetACHPDetails(string achpNumber)
+        /*private DataTable GetAllConstructionCases()
         {
-            var results = await _accountService.GetProjectDetailByFileNumberAsync(achpNumber);
+            var configBuilder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            Configuration = configBuilder.Build();
 
-            var project = results?.FirstOrDefault();
+            string? connString = Configuration.GetConnectionString("AAHR");
+            SqlConnection conn = new SqlConnection(connString);
+            conn.Open();
+            SqlCommand comm = conn.CreateCommand();
+            comm.CommandText = "[AAHPCC].[uspRoGetAllConstructionCases]";
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+            SqlDataReader dr = comm.ExecuteReader();
 
-            if (project != null)
-            {
-                var streetName = project.ProjectSites?.FirstOrDefault()?.SiteAddress?.Trim() ?? "";
+            DataTable dt = new DataTable();
+            dt.Load(dr);
 
-                return new JsonResult(new
-                {
-                    ResponseCode = "200",
-                    StreetName = streetName,
-                    AchpNumber = project.FileGroup?.Trim() ?? "",
-                    projectId = project.ProjectId.ToString(),
-                    Response = "OK"
-                });
-            }
-
-            return new JsonResult(new
-            {
-                ResponseCode = "404",
-                StreetName = "",
-                AchpNumber = "",
-                projectId = "",
-                Response = "[]"
-            });
+            conn.Close();
+            return dt;
         }
-
-
-        public async Task<JsonResult> SubmitProjects([FromForm] List<string> projects)
+        private async Task<List<uspRoGetAllConstructionCasesResult>> GetAllConstructionCasesEF()
         {
-            var achpSet = new HashSet<string>();
-            var (saved, notSaved) = await _accountService.SaveAssnPropContactAsync(projects, HttpContext);
-            return new JsonResult(new { success = true, message = "Projects submitted successfully." });
-        }
-
-
-        public async Task<ActionResult> GetAPNProjectName(string APNNumber)
-        {
-            if (string.IsNullOrEmpty(APNNumber))
-            {
-                return new JsonResult(new List<object>()); // Return an empty list for an empty APN
-            }
-
-            // 1. Call your service to get the results
-            var results = _accountService.GetAPNProjectName(APNNumber).Result;
-
-            if (results == null)
-            {
-                return new JsonResult(new List<object>()); // Return an empty list if no results are found
-            }
-
-
-            return new JsonResult(results);
-        }
-
-
-
-        public async Task<JsonResult> CreateProject([FromBody] ProjectModel projectModel)
-        {
-            bool result = await _accountService.CreateProject(projectModel, HttpContext);
-
-
-            return new JsonResult(new { success = true, message = "Projects submitted successfully." });
-        }
-
+            AahrdevContext context = new AahrdevContext();
+            List<uspRoGetAllConstructionCasesResult> result = await context.uspRoGetAllConstructionCases();
+            
+            return result;
+        }*/
     }
 
     internal class ResultSet
