@@ -110,41 +110,41 @@
 <script>
 
         function populateSummary() {
-        let applicantJson = localStorage.getItem("ApplicantJson");
-        if (!applicantJson) {
-            console.warn("No ApplicantJson found in localStorage. Redirecting back to step 1.");
-            window.location.href = "/Account/Signup"; // or wherever your first step is
-            return;
-        }
-        console.log("summaru page isbeingn called",applicantJson);
-        if (applicantJson) {
-            let data = JSON.parse(applicantJson);
+            let applicantJson = localStorage.getItem("ApplicantJson");
+            if (!applicantJson) {
+                console.warn("No ApplicantJson found in localStorage. Redirecting back to step 1.");
+                window.location.href = "/Account/Signup"; // or wherever your first step is
+                return;
+            }
+            // console.log("summaru page isbeingn called",applicantJson);
+            if (applicantJson) {
+                let data = JSON.parse(applicantJson);
 
-            let yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
-            $("#spnName").text(
-                (yourInfo.firstName || "") + " " + (yourInfo.middleName || "") + " " + (yourInfo.lastName || "")
-            );
-            $("#spnCompanyName").text(yourInfo.companyName || "");
-            $("#spnTitle").text(yourInfo.title || "");
-            $("#spnLoginId").text(yourInfo.email || "");
+                let yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
+                $("#spnName").text(
+                    (yourInfo.firstName || "") + " " + (yourInfo.middleName || "") + " " + (yourInfo.lastName || "")
+                );
+                $("#spnCompanyName").text(yourInfo.companyName || "");
+                $("#spnTitle").text(yourInfo.title || "");
+                $("#spnLoginId").text(yourInfo.email || "");
 
-            let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
-            $("#spnPhoneNumber").text(contactInfo.phoneNumber || "");
-            $("#spnExtn").text(contactInfo.extension || "");
-            $("#spnMailingAddress1").text(
-                (contactInfo.streetNumber || "") + " " +
-                (contactInfo.streetDirection || "") + " " +
-                (contactInfo.streetName || "") + " " +
-                (contactInfo.streetType || "")
-            );
-            $("#spnMailingAddress2").text(
-                (contactInfo.unitNumber || "") + " " +
-                (contactInfo.city || "") + " " +
-                (contactInfo.state || "") + " " +
-                (contactInfo.zipCode || "")
-            );
+                let contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
+                $("#spnPhoneNumber").text(contactInfo.phoneNumber || "");
+                $("#spnExtn").text(contactInfo.extension || "");
+                $("#spnMailingAddress1").text(
+                    (contactInfo.streetNumber || "") + " " +
+                    (contactInfo.streetDirection || "") + " " +
+                    (contactInfo.streetName || "") + " " +
+                    (contactInfo.streetType || "")
+                );
+                $("#spnMailingAddress2").text(
+                    (contactInfo.unitNumber || "") + " " +
+                    (contactInfo.city || "") + " " +
+                    (contactInfo.state || "") + " " +
+                    (contactInfo.zipCode || "")
+                );
+            }
         }
-    }
 
      $(document).ready(function(){ 
          // populateSummary();
@@ -154,8 +154,71 @@
          $('#btnEditProjectRegistration').on('click', function () { $('a[href="#step-3"]').click(); })
 
         $('#btnSubmit').on('click', function(){
-           var applicantJson = localStorage.getItem('ApplicantJson');
-           var _APPURL ='@Configuration["AppSettings:ApplicationURL"]';
+            var applicantJson = localStorage.getItem('ApplicantJson');
+            if(!applicantJson){
+             console.log("inside the loal ",applicantJson);
+                alert("No data found!");
+                return;
+            }  
+
+            var data = JSON.parse(applicantJson);
+
+            var accountInfo = data.Applicant.find(x => x.step === "AccountType")?.Data || {};
+            var yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
+            var contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
+
+            // simple validation
+            if(!yourInfo.firstName || !yourInfo.lastName || !yourInfo.companyName || !yourInfo.email){
+                alert("Please fill all required information in 'Your Information'");
+                return;
+            }
+
+             // --- validate Contact Info ---
+            if(!contactInfo.phoneNumber){
+                alert("Phone number is required");
+                return;
+            }
+
+             var poBoxFlag = contactInfo.poBox || "No";
+            console.log("poxbox value ",poBoxFlag);
+            if(poBoxFlag === "Yes"){
+                // Require POBoxNumber, City, State, Zip
+                if(!contactInfo.poBoxNumber || !contactInfo.city || !contactInfo.state || !contactInfo.zipCode){
+                    alert("Please fill all required fields for P.O. Box address.");
+                    return;
+                }
+            } else {
+                // Require Street fields, City, State, Zip
+                if(!contactInfo.streetNumber || !contactInfo.streetName || !contactInfo.streetType || !contactInfo.city || !contactInfo.state || !contactInfo.zipCode){
+                    alert("Please fill all required fields for Mailing Address.");
+                    return;
+                }
+            }
+             // --- Validate Account Type ---
+            if (!accountInfo.accountType) {
+                alert("Account Type is missing or incomplete.");
+                return;
+            }
+            // --- PASSWORD VALIDATION ---
+            var password = $('#Password').val();
+            var confirmPassword = $('#ConfirmPassword').val();
+
+            if (!password) {
+                alert("Please enter a password.");
+                return;
+            }
+
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert("Password and Confirm Password do not match.");
+                return;
+            }
+
+         var _APPURL ='@Configuration["AppSettings:ApplicationURL"]';
              $.ajax({
               url: APPURL + "Account/XDebugCreateAccount",
                 type: 'POST',

@@ -152,9 +152,9 @@ namespace DeveloperPortal.Pages.Account
                 ? signupModel.LastName
                 : applicantsignupModel.LastName;
 
-            applicantsignupModel.EmailId = !string.IsNullOrWhiteSpace(signupModel.EmailId)
-                ? signupModel.EmailId
-                : applicantsignupModel.EmailId;
+            //applicantsignupModel.EmailId = !string.IsNullOrWhiteSpace(signupModel.EmailId)
+            //    ? signupModel.EmailId
+            //    : applicantsignupModel.EmailId;
 
             applicantsignupModel.PhoneNumber = !string.IsNullOrWhiteSpace(signupModel.PhoneNumber)
                 ? signupModel.PhoneNumber
@@ -220,7 +220,7 @@ namespace DeveloperPortal.Pages.Account
                 MiddleName = !string.IsNullOrEmpty(applicantsignupModel.MiddleName) ? applicantsignupModel.MiddleName.Trim() : "",
                 LastName = applicantsignupModel.LastName.Trim(),
                 UserName =userSession.UserName.Trim(),
-                Email = applicantsignupModel.EmailId.Trim(),
+                //Email = applicantsignupModel.EmailId.Trim(),
                 ContactPhone = applicantsignupModel.PhoneNumber,
                 Provider = userSession.Provider.Trim()
             };
