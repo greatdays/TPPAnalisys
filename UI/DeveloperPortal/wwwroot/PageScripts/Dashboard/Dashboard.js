@@ -40,7 +40,7 @@
             return;
         }
 
-        $.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+        $.post(APPURL + "Dashboard/SubmitProjects", { projects: projects }, function (response) {
             if (response.success) {
                 $('#ActionModal').modal('hide');
                 Dashboard.PopulateMyProjectData();
@@ -99,7 +99,7 @@
             // Use $.ajax for full control over the request
             $.ajax({
                 type: "POST",
-                url: APPURL + "Dashboard?handler=CreateProject",
+                url: APPURL + "Dashboard/CreateProject",
                 data: JSON.stringify(projectModel), // Convert the object to a JSON string
                 contentType: "application/json; charset=utf-8", // Set the content type
                 dataType: "json",
@@ -358,7 +358,7 @@
 
         document.getElementById("noAPNData").style.display = "none";
         $.ajax({
-            url: APPURL + 'Dashboard?handler=GetAPNProjectName',
+            url: APPURL + 'Dashboard/GetAPNProjectName',
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             headers: {
@@ -447,7 +447,7 @@
                 return;
             }
 
-            $.post(APPURL + "Dashboard?handler=SubmitProjects", { projects: projects }, function (response) {
+            $.post(APPURL + "Dashboard/SubmitProjects", { projects: projects }, function (response) {
                 if (response.success) {
                     $('#ActionModal').modal('hide');
                     Dashboard.PopulateMyProjectData();
@@ -463,24 +463,22 @@
     },
 
     GetACHPDetail: function (achpNumber, callback) {
-
         var token = $('input[name="__RequestVerificationToken"]').val();
-        //var APPURL = '@Configuration["AppSettings:ApplicationURL"]';
+
         $.ajax({
-            url: APPURL + 'Dashboard?handler=GetACHPDetails',
+            url: APPURL + 'Dashboard/GetACHPDetails',
             type: 'POST',
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            dataType: 'json',
             headers: {
                 'RequestVerificationToken': token
             },
             data: { achpNumber: achpNumber },
             success: function (data) {
-                var retJson = data;
-
                 var respCode = data.responseCode;
                 var retAchp = data.achpNumber;
                 var streetName = data.streetName;
-                var projectId = data.projectId
+                var projectId = data.projectId;
                 var response = data.response;
 
                 if (response && response !== '[]') {
@@ -491,10 +489,11 @@
             },
             error: function (xhr) {
                 console.error("Error:", xhr.status, xhr.responseText);
-                callback(null, null, false);
+                callback(null, null, null, false);
             }
         });
-    },
+    }
+
 
    
 }

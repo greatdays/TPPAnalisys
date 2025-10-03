@@ -100,7 +100,7 @@ namespace DeveloperPortal.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> AddBuilding1(SiteInformationParamModel paramModel, int caseId)
+        public async Task<ActionResult> AddBuilding1([FromForm] SiteInformationParamModel paramModel)
         {
             //int projectSiteId = 0;
             //BuildingModel buildingModel = new BuildingModel();
