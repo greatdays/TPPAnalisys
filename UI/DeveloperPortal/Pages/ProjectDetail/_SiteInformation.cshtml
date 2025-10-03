@@ -82,7 +82,6 @@
                             <button class="btn btn-primary" type="button" id="searchAPNButton" onclick="SiteInformation.GetAPNProjectAddress()">Search</button>
                         </div>
                     </div>
-                    @Html.ValidationMessageFor(model => model.APN, "", new { @class = "text-danger" })
             </div>
 
                     @* <div class="form-text infotext">Enter the APN and click Search to load available site addresses.</div> *@
@@ -93,8 +92,7 @@
                         <div class="form-group mb-3">
                            @Html.LabelFor(model => model.PropertyName, new { @class = "form-label fw-bold" })
                             <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.PropertyName, new { @class = "form-control", placeholder = "Property Name" })
-                            @Html.ValidationMessageFor(model => model.PropertyName, "", new { @class = "text-danger" })
+                            @Html.TextBoxFor(model => model.PropertyName, new { @class = "form-control", @id = "propertyNameInput", placeholder = "Property Name" })                           
                         </div>
                         @* <div class="form-text infotext">Public-friendly name for this site/property.</div> *@
                         <div class="form-group mb-3">
@@ -136,13 +134,12 @@
                                     <select class="form-control" id="PreDirectionSelect" name="LutPreDirCd">
                                         <option value="" disabled selected>Select Direction</option>
                                     </select>
-                                    @Html.ValidationMessageFor(model => model.LutPreDirCd, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-6">
                                     @Html.LabelFor(model => model.StreetName, new { @class = "form-label fw-bold" })
                                     <span class="text-danger">*</span>
-                                    @Html.TextBoxFor(model => model.StreetName, new { @class = "form-control", placeholder = "Street name" })
-                                    @Html.ValidationMessageFor(model => model.StreetName, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(model => model.StreetName, new
+                                        {@class = "form-control", @id = "StreetNameInput",placeholder = "Street name" })
                                 </div>
                             </div>
 
@@ -155,13 +152,11 @@
                                     <select class="form-control" id="StreetTypeSelect" name="LutStreetTypeCD">
                                         <option value="" disabled selected>Select Street Type</option>
                                     </select>
-                                    @Html.ValidationMessageFor(model => model.LutStreetTypeCD, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-6">
                                     @Html.LabelFor(model => model.City, new { @class = "form-label fw-bold" })
                                     <span class="text-danger">*</span>
-                                    @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "City" })
-                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(model => model.City, new { @class = "form-control", @id = "CityInput", placeholder = "City" })
                                 </div>
                             </div>
 
@@ -170,8 +165,7 @@
                                 <div class="col-md-6">
                                     @Html.LabelFor(model => model.Zip, new { @class = "form-label fw-bold" })
                                     <span class="text-danger">*</span>
-                                    @Html.TextBoxFor(model => model.Zip, new { @class = "form-control", placeholder = "94103 or 94103-1234" })
-                                    @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+                                    @Html.TextBoxFor(model => model.Zip, new { @class = "form-control", @id = "ZipInput",  placeholder = "94103 or 94103-1234" })
                                 </div>
                             </div>
 
@@ -185,7 +179,7 @@
             </div>
             <div class="modal-footer multi-button comcom-fotter">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" title="Cancel">Cancel</button>
-                <button class="btn btn-primary" type="button" title="Save" onclick="SiteInformation.SaveAddSite()">Save</button>
+                <button class="btn btn-primary" type="button" title="Save" id="saveBtn" style="display:none" onclick="SiteInformation.SaveAddSite()">Save</button>
             </div>
         </div>
     </div>

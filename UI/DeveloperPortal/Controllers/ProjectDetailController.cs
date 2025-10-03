@@ -543,23 +543,10 @@ namespace DeveloperPortal.Controllers
             JsonData<JsonStatus> data = new JsonData<JsonStatus>(new JsonStatus());
 
             var a = await _projectDetailService.CreateSite(siteModel, UserName);
-            //buildingModel.Username = UserName;
-            ////Set Selected site CaseId 
-            //if (!string.IsNullOrWhiteSpace(buildingModel.SelectedSiteId))
-            //{
-            //    buildingModel.CaseId = Convert.ToInt32(buildingModel.SelectedSiteId);
-            //    var propSnapshotDetails = await _projectDetailService.GetPropSnapshotDetails(buildingModel.ProjectSiteId.Value);
-            //    //Set Selected site ProjectId  and APNId
-            //    if (propSnapshotDetails != null)
-            //    {
-            //        buildingModel.ProjectId = propSnapshotDetails.ProjectId;
-            //        buildingModel.APNId = propSnapshotDetails.APNId;
-            //    }
-            //    if (true == await _buildingIntakeService.SaveAddBuilding(buildingModel))
-            //    {
-            //        data.Result.Status = true;
-            //    }
-            //}
+
+            //Need to add code to checked data save or not
+            data.Result.Status = true;
+            
             return Json(data);
         }
         #endregion
