@@ -172,9 +172,11 @@ var BuildingInformation =
         BuildingInformation.ReloadBuildingDt();
     },
     AddBuildingInfo: function () {
-        var d = "";
-        if (d == "CREATE") { return BuildingInformation.AddBuildingInfo1() }
-        var model = { SiteInformationData: SiteInformationData, caseId: Id };
+        var siteData = SiteInformationData;
+        $.each(siteData, function (index, item) {
+            item.actions = "";
+        });
+      var model = { SiteInformationData: siteData, caseId: Id };
         var token = $('input[name="__RequestVerificationToken"]').val();
         model.__RequestVerificationToken = token;
         $.ajax({
@@ -195,17 +197,6 @@ var BuildingInformation =
                 console.error("❌ Error", xhr.status, xhr.responseText);
             }
         });
-
-
-        /*var url = '@Url.Action("AddBuilding", "BuildingIntake", new { area = "Construction" })'*/
-        //var url = APPURL + "BuildingIntake/AddBuilding"
-        //var model = { SiteInformationData: SiteInformationData, caseId: Id };
-        //AjaxCommunication.CreateRequest(this.window, "POST", url, 'html', model,
-        //function (response) {
-        //    $("#modal-building-add").empty().html(response).modal('show');
-        //    return false;
-        //},
-        //null, true, null, false);
     },
     AddBuildingInfo1 : function () {
         var model = { SiteInformationData: SiteInformationData   , CaseId: Id };
