@@ -187,6 +187,7 @@ namespace DeveloperPortal
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                  name: "areas",
@@ -198,7 +199,7 @@ namespace DeveloperPortal
             });
 
 
-            // app.MapRazorPages();
+            
 
             //app.MapControllerRoute(name: "default",
             //  pattern: "{controller=DashboardService}/{action=GetProjectData}");
