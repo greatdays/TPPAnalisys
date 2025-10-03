@@ -537,7 +537,18 @@ namespace DeveloperPortal.Controllers
 
             return Content(decodedActions);
         }
+        [HttpPost]
+        public async Task<ActionResult> CreateSite(SiteInformationModel siteModel)
+        {
+            JsonData<JsonStatus> data = new JsonData<JsonStatus>(new JsonStatus());
 
+            var a = await _projectDetailService.CreateSite(siteModel, UserName);
+
+            //Need to add code to checked data save or not
+            data.Result.Status = true;
+            
+            return Json(data);
+        }
         #endregion
 
 

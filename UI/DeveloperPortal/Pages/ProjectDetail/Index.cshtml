@@ -265,7 +265,13 @@ a.paginate_button { float: left !important; }
 			}
 		</div>
 		<div id="tabSiteInformation" class="tabcontent">
-			<table id="dtSiteData"></table>
+			<div class="k-header k-grid-toolbar">
+				<span class="k-grid-header-title">Site Information</span>
+				<a id="addSite" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" role="button" role-access="true" onclick="SiteInformation.DisplayModal()">Add Site</a>
+			</div>
+			<div class=" k-box-body">
+				<table id="dtSiteData"></table>
+			</div>
 		</div>
 		<div id="tabImportantDates" class="tabcontent">
 			<div id="divImportantDates"></div>
