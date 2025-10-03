@@ -6,7 +6,7 @@
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development"
         },
-        "applicationUrl": "https://lahousingdev.lacity.org/ConstTPP/"
+        "applicationUrl": "http://lahousingdev.lacity.org/ConstTPP/"
     },
     "https": {
         "commandName": "Project",
