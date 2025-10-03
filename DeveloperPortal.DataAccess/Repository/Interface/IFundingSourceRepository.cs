@@ -23,8 +23,9 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
         Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel);
 
-        Task<bool> DeleteFundingSource(int id);
+        Task<bool> DeleteFundingSource(int id , string modifiedBy);
         int? getLuDocumentCategoryId(string category, string subCategory);
 
+        Task<FundingSource> GetFundingSourcebyId(int id);
     }
 }

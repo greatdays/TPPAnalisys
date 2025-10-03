@@ -102,8 +102,8 @@ public class FundingSourceController : Controller
 
         try
         {
-
-            _fundingSourceService.DeleteFundingSource(id);
+            string modifiedBy = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            _fundingSourceService.DeleteFundingSource(id, modifiedBy);
             return Json(new { success = true, message = "Funding source saved successfully!" });
 
         }

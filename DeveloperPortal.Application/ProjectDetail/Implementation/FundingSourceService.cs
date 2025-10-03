@@ -1,8 +1,11 @@
 ﻿using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
+using DeveloperPortal.Models.IDM;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
@@ -77,10 +80,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         }
 
 
-        public async Task<bool> DeleteFundingSource(int id)
+        public async Task<bool> DeleteFundingSource(int id, string modifiedBy)
         {
+           
 
-            return await _fundingSourceRepository.DeleteFundingSource(id);
+            return await _fundingSourceRepository.DeleteFundingSource(id, modifiedBy);
         }
     }
 }

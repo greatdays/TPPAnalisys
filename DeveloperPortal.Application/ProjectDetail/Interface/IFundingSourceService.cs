@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
+using Microsoft.AspNetCore.Http;
 
 namespace DeveloperPortal.Application.ProjectDetail.Interface
 {
@@ -14,7 +15,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId);
         Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId);
         Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel);
-        Task<bool> DeleteFundingSource(int id);
+        Task<bool> DeleteFundingSource(int id, string modifiedBy);
         int? getLuDocumentCategoryId(string category, string subCategory);
     }
 }

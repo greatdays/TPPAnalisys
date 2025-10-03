@@ -191,22 +191,46 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
 
 
-        public async Task<bool> DeleteFundingSource(int id)
+        public async Task<FundingSource> GetFundingSourcebyId(int id)
+        {
+            using (var context = new AAHREntities()) // Creates and disposes of a context manually
+            {
+                return await _context.FundingSources.FirstOrDefaultAsync(fs => fs.DocumentId == id);
+            }
+
+        }
+
+
+        public async Task<bool> DeleteFundingSource(int id, string modifiedBy)
         {
 
             var fundingSource = _context.FundingSources.FirstOrDefault(fs => fs.FundingSourceId == id);
 
             if (fundingSource != null)
             {
-                fundingSource.IsDeleted = true;
 
-                fundingSource.ModifiedOn = DateTime.Now; // optional, if you have a DeletedDate column
+               
+                var document = _context.Documents.FirstOrDefault(x => x.DocumentId == fundingSource.DocumentId);
+                if (document != null && document.DocumentId > 0)
+                {
+                    document.IsDeleted =    true;
 
-                _context.FundingSources.Update(fundingSource);
-                _context.SaveChanges();
+                    document.ModifiedBy = modifiedBy;
+                    document.ModifiedOn = DateTime.Now;
+                    _context.Documents.Update(document);
+                    _context.SaveChanges();
+                    if (document.DocumentId != null)
+                    {
 
+                        fundingSource.IsDeleted = true;
+                        fundingSource.ModifiedBy = modifiedBy;
+                        fundingSource.ModifiedOn = DateTime.Now;    
+                    }
+                    _context.FundingSources.Update(fundingSource);
+                    _context.SaveChanges();
+                    return true;
+                }
                 return true;
-
             }
             else
             {
