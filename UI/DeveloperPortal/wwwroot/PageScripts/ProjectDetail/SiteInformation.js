@@ -213,9 +213,6 @@ var SiteInformation=
 
 
         $('#modal-site-add').modal('show');
-        // $('#ActionModal').modal('show');
-       
-
         document.getElementById('noAPNData').style.display = 'none';
         document.getElementById('APNError').style.display = 'none';
 
@@ -254,11 +251,6 @@ var SiteInformation=
                 });
                 $('#StreetTypeSelect').val(0);
 
-                //// UserRole
-                //$.each(data.userRole, function (i, item) {
-                //    $('#UserRole').append($('<option>').text(item.roleName).attr('value', item.roleID));
-                //});
-                //$('#UserRole').val(0);
             },
             error: function (xhr) {
                 console.error("Error fetching lookup data", xhr);
@@ -266,7 +258,7 @@ var SiteInformation=
         });
     },
     GetAPNProjectAddress: function () {
-
+        $('.validation-error').remove();
         const input = document.getElementById("APNInput");
         const value = input.value.trim();
         document.getElementById("noAPNData").style.display = "none";
@@ -283,7 +275,6 @@ var SiteInformation=
     SerachOnAPNClick: function () {
         var token = $('input[name="__RequestVerificationToken"]').val();
         var ctlIndex = GetControlIndex();
-        //console.log('ProjCount: ' + ctlIndex);
         const input = document.getElementById("APNInput");
         const APNNumber = input.value.trim();
 
@@ -301,7 +292,7 @@ var SiteInformation=
                 if (response.apnSearchSiteAddresslst == null && response.apnSearchProjectInfolst == null) {
                     document.getElementById("noAPNData").style.display = "block";
                     document.getElementById("CreateNewProjectSiteId").style.display = "none";
-                    /*document.getElementById("saveBtn").style.display = "None";*/
+                    document.getElementById("saveBtn").style.display = "None";
                     return;
                 }
 
@@ -317,7 +308,7 @@ var SiteInformation=
 
                 // Check if the response is valid and has data
                 if (response.apnSearchSiteAddresslst != null && projectList && projectList.length > 0) {
-                  /*  document.getElementById("saveBtn").style.display = "inline-block";*/
+                 document.getElementById("saveBtn").style.display = "block";
                     document.getElementById("CreateNewProjectSiteId").style.display = "block";
                     // Loop through the data and add options to the dropdown
                     $.each(projectList, function (i, item) {
@@ -348,59 +339,73 @@ var SiteInformation=
             manualFields.style.display = "block";   // show fields
         } else
         {
-            $("#IsAddAddress").val("True");
+            $("#IsAddAddress").val("false");
             manualFields.style.display = "none";    // hide fields
         }
     },
     SaveAddSite: function () {
-       
-        debugger
-        //var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
-        //if (selectedSite != null) {
-        //    $("#SelectedSiteId").val(selectedSite.caseID);
-        //}
-        //event.preventDefault(); // Prevent normal form submission
+      
         if (SiteInformation.BeginSaveAddSite()) {
-            //AjaxCommunication.CreateRequest(this.window, "POST", "/Construction/BuildingIntake/SaveBuilding", '', $(form).serialize(),
-            //    function (response) {
-            //        SuccessSaveAddBuilding(response);
-            //    },
-            //    null, true, null, false);
             var form = $("#frmSaveAddSite");
             $.ajax({
-                url: APPURL + "ProjectDetail/CreateSite",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+                url: APPURL + "ProjectDetail/CreateSite",
                 type: "POST",
                 data: $(form).serialize(),
                 success: function (data) {
                     if (data.result.status) {
-                        reloadParkingGrid = true;
-                        BuildingInformation.ReloadBuildingDt();
-                        $("#modal-building-add").modal('hide');
+                        $('#modal-site-add').modal('hide');
+                        // Reload Site Information table
+                        SiteInformation.LoadSiteInformation();
                     }
                     else {
-                        alert('error occured...');
+                        alert('Error occurred while saving.');
                     }
+                },
+                error: function (xhr) {
+                    console.error("Error:", xhr.status, xhr.responseText);
                 }
             });
         }
     },
     BeginSaveAddSite: function () {
-        var form = $("#frmSaveAddSite");
-        $(form).removeData("validator").removeData("unobtrusiveValidation");
-       
-        console.log("siteformdata");
-        console.log(form);
-        if ($.validator.unobtrusive != undefined) {
-            $.validator.unobtrusive.parse($(form));
-            var validator = $(form).validate();
-            var isModelValid = $(form).valid();
+        // clear previous errors
+        $('.validation-error').remove();
 
-            if (false == isModelValid) {
-                validator.focusInvalid();
-                return false;
+        var isValid = true;
+        var propertyName = $('#propertyNameInput').val().trim();
+        if (propertyName === '') {
+            $('#propertyNameInput').after('<span class="validation-error" style="color:red">Property Name is required</span>');
+            isValid = false;
+        }
+
+        var isAddAddress = $("#IsAddAddress").val() === "True";
+
+        if (isAddAddress) {
+            var street = $('#StreetNameInput').val().trim();
+            var city = $('#CityInput').val().trim();
+            var zip = $('#ZipInput').val().trim();
+
+            if (street === '') {
+                $('#StreetNameInput').after('<span class="validation-error" style="color:red">Street is required</span>');
+                isValid = false;
+            }
+            if (city === '') {
+                $('#CityInput').after('<span class="validation-error" style="color:red">City is required</span>');
+                isValid = false;
+            }
+            if (zip === '') {
+                $('#ZipInput').after('<span class="validation-error" style="color:red">Zip is required</span>');
+                isValid = false;
+            }
+        } else {
+            var siteAddress = $('#SiteAddressControlSelect').val();
+            if (!siteAddress) {
+                $('#SiteAddressControlSelect').after('<span class="validation-error" style="color:red">Site Address is required</span>');
+                isValid = false;
             }
         }
-        return true;
+
+        return isValid;
     },
 
 }
