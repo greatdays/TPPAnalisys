@@ -218,6 +218,33 @@ var BuildingInformation =
 
         
     },
+
+    AddBuildingInfo2: function () {
+        var url = APPURL + 'BuildingIntake/AddBuildingGet';
+        var model = JSON.stringify(SiteInformationData) ;
+        $.ajax({
+            url: url,
+            data: model ,
+            type: "POST",
+            contentType: "application/json",
+            success: function (result) {
+                alert(result)
+            },
+            error: function (error) {
+                console.log("There was an error in getting project actions.")
+                console.log(error);
+            }
+        });
+        url = APPURL + 'BuildingIntake/AddBuildingGet1';
+        AjaxCommunication.CreateRequest(this.window, "POST", url, "json", SiteInformationData,
+            function (response) {
+                $("#modal-building-add").empty().html(response).modal('show');
+            }, null, true, null, false);
+
+
+    },
+
+   
     SaveAddBuilding: function () {
         debugger
         var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
