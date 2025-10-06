@@ -90,7 +90,8 @@ namespace DeveloperPortal.Controllers
                         signupModel.LastName = GetApplicantDataByKey("lastName", tokens);
                         signupModel.MiddleName = GetApplicantDataByKey("middleName", tokens);
                         signupModel.EmailId = GetApplicantDataByKey("email", tokens);
-                        signupModel.CompanyName = GetApplicantDataByKey("companyName", tokens);
+                        //signupModel.CompanyName = GetApplicantDataByKey("companyName", tokens);
+                        signupModel.Company = GetApplicantDataByKey("companyName", tokens);
                         signupModel.Title = GetApplicantDataByKey("title", tokens);
                         signupModel.Password = GetApplicantDataByKey("password", tokens);
                         break;
@@ -106,14 +107,14 @@ namespace DeveloperPortal.Controllers
                         signupModel.PhoneExtension = GetApplicantDataByKey("extension", tokens);
 
                         if (int.TryParse(GetApplicantDataByKey("streetNumber", tokens), out var num))
-                            signupModel.StreetNum = num;
+                            signupModel.HouseNum = num;
 
                         signupModel.StreetDir = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.LutPreDirCd = GetApplicantDataByKey("streetDirection", tokens);
                         signupModel.StreetName = GetApplicantDataByKey("streetName", tokens);
                         signupModel.StreetType = GetApplicantDataByKey("streetType", tokens);
                         signupModel.LutStreetTypeCD = GetApplicantDataByKey("streetDirection", tokens);
-                        signupModel.UnitNumber = GetApplicantDataByKey("unitNumber", tokens);
+                        signupModel.Unit = GetApplicantDataByKey("unitNumber", tokens);
                         signupModel.PostBoxNum = GetApplicantDataByKey("poBoxNumber", tokens);
                         signupModel.IsPostBox = GetApplicantDataByKey("poBox", tokens)
                                                       .Equals("Yes", StringComparison.OrdinalIgnoreCase);
