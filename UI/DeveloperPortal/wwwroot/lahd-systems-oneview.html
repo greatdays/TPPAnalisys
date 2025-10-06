@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LAHD Systems Repository — Apps Script (JSONP, Ordered)</title>
+  <style>
+    :root{
+      --brand:#004080;
+      --brand-ink:#0a4aa1;
+      --bg:#f7f8fb;
+      --card:#ffffff;
+      --border:#e6e8ee;
+      --muted:#4d5968;
+      --accent-bg:#eef6ff;
+      --accent-ink:#093a74;
+    }
+    html,body{height:100%}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; line-height:1.6; margin:0; background:var(--bg); color:#222}
+    a{color:#0b66d0; text-decoration:none}
+    a:hover{text-decoration:underline}
+    a:focus-visible{outline:3px solid #99c2ff; outline-offset:2px; border-radius:4px}
+
+    /* Header */
+    header{
+      background:linear-gradient(180deg, var(--brand) 0%, #024b95 100%);
+      color:#fff;
+      padding:32px 24px;
+      box-shadow:0 2px 10px rgba(0,0,0,.12);
+    }
+    header h1{margin:0 0 8px; font-size:clamp(1.6rem, 2.2vw + 1rem, 2.2rem); letter-spacing:.2px}
+    header p{margin:4px 0; color:#e9f1ff}
+    header p strong{color:#fff}
+
+    /* Main layout */
+    main{max-width:1200px; margin:24px auto 72px; padding:0 20px}
+    #status{background:var(--accent-bg); border:1px solid #cce; padding:12px 14px; border-radius:10px; margin:8px 0 16px; color:var(--accent-ink)}
+
+    /* PARENT-LEVEL GRID: sections in two columns on >=860px */
+    #content{display:grid; grid-template-columns:1fr; gap:18px}
+    @media (min-width: 860px){
+      #content{grid-template-columns:1fr 1fr}
+    }
+
+    /* Cards / Sections */
+    .card{background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,.04); overflow:hidden; transition:box-shadow .2s ease, transform .2s ease}
+    .card:hover{box-shadow:0 6px 18px rgba(0,0,0,.08); transform:translateY(-1px)}
+
+    /* Disclosure styling */
+    details{border:none}
+    summary{cursor:pointer; padding:16px 18px; font-weight:700; color:var(--brand-ink); display:flex; align-items:center; gap:10px; list-style:none}
+    summary::-webkit-details-marker{display:none}
+    .chev{transition:transform .2s ease}
+    details[open] > summary .chev{transform:rotate(90deg)}
+    summary:focus-visible{outline:3px solid #9fd0ff; outline-offset:4px; border-radius:8px}
+
+    .section-content{padding:8px 20px 16px}
+
+    /* CHILD LEVELS: single-column lists inside subsections/items */
+    ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:8px 16px}
+    li{margin:4px 0}
+
+    .row-link{display:inline-flex; align-items:center; gap:8px}
+    .row-link a{font-weight:600}
+
+    .badge{background:var(--accent-bg); border:1px solid #cce; border-radius:999px; padding:2px 8px; font-size:.78rem; margin-left:6px; color:#0a3b75}
+    .warn{margin-left:8px}
+    .error{color:#b00; padding:10px 0}
+
+    /* Feedback callout */
+    .feedback{
+      margin-top:22px;
+      background:#f1f6ff;
+      border:1px solid #d6e6ff;
+      color:#0c3673;
+      border-radius:12px;
+      padding:14px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .feedback strong{font-weight:700}
+    .feedback .actions{display:flex; gap:10px; align-items:center}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      border-radius:999px; padding:8px 14px; border:1px solid #9fc4ff; background:#e7f0ff; color:#0a3b75; font-weight:600; text-decoration:none;
+    }
+    .btn:hover{background:#dbeaff}
+    .btn:focus-visible{outline:3px solid #99c2ff; outline-offset:2px}
+
+    footer{max-width:1200px; margin:32px auto 48px; padding:0 20px; color:#5c6775; font-size:.95rem}
+    footer .note{border-top:1px solid var(--border); padding-top:14px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>LAHD Systems Repository</h1>
+    <p>Central Index For Documentation, Records, And Miscellaneous Resources.</p>
+    <p><strong>Owner:</strong> Eric Kim, Information Systems Manager</p>
+  </header>
+
+  <main id="app">
+    <div id="status" class="info">Loading…</div>
+    <div id="content"></div>
+
+    <!-- Feedback callout -->
+    <div class="feedback">
+      <div><strong>We Value Your Input!</strong> — Please share your feedback or suggestions with <a href="mailto:Eric.kim@lacity.org">Eric Kim, Information Systems Manager</a>.</div>
+      
+    </div>
+  </main>
+
+  <footer>
+    
+
+  <script>
+    // Live JSONP URL (unchanged logic)
+    const WEB_APP_URL = "https://script.google.com/a/macros/lacity.org/s/AKfycbwxBUu9ZsaLx7oFwK5n2PjWk-PzzpJ2dHtn7ysYYPhLx9twCxClwoLnYRVxP-B3N3fctQ/exec";
+
+    function loadJSONP(url){
+      return new Promise((resolve, reject) => {
+        const cb = "cb_" + Math.random().toString(36).slice(2);
+        const cleanup = () => { delete window[cb]; if (script && script.remove) script.remove(); };
+        window[cb] = (data) => { resolve(data); cleanup(); };
+        const script = document.createElement("script");
+        script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+        script.onerror = () => { reject(new Error("JSONP network error")); cleanup(); };
+        document.head.appendChild(script);
+      });
+    }
+
+    function groupBy(arr, key){
+      return arr.reduce((acc, item) => {
+        const k = item[key] ? item[key] : "__root";
+        (acc[k] ||= []).push(item);
+        return acc;
+      }, {});
+    }
+
+    function buildList(items){
+      items.sort((a,b)=>
+        (parseInt(a.Order||"9999") - parseInt(b.Order||"9999")) ||
+        (a.Title||"").localeCompare(b.Title||"")
+      );
+      const ul = document.createElement("ul");
+      for (const it of items){
+        const li = document.createElement("li");
+        const status = (it.Status||"").toLowerCase();
+        if (!it.URL || status === "coming soon"){
+          li.textContent = (it.Title||"Untitled") + " – Coming Soon";
+        } else {
+          const wrap = document.createElement("span");
+          wrap.className = "row-link";
+          const a = document.createElement("a");
+          a.href = it.URL;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = it.Title || "Untitled";
+          wrap.appendChild(a);
+          li.appendChild(wrap);
+        }
+        if (it.ItemID){
+          const badge = document.createElement("span");
+          badge.className = "badge";
+          badge.textContent = it.ItemID;
+          li.appendChild(badge);
+        }
+        ul.appendChild(li);
+      }
+      return ul;
+    }
+
+    function buildSection(name, groups){
+      const section = document.createElement("section");
+      section.className = "card";
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      const chev = document.createElement("span");
+      chev.className = "chev";
+      chev.textContent = "▶";
+      summary.appendChild(chev);
+      summary.appendChild(document.createTextNode(name));
+
+      const content = document.createElement("div");
+      content.className = "section-content";
+
+      const rootItems = groups["__root"] || [];
+      if (rootItems.length){ content.appendChild(buildList(rootItems)); }
+
+      const subgroupNames = Object.keys(groups).filter(k => k !== "__root");
+      for (const sg of subgroupNames){
+        const nested = document.createElement("details");
+        const sum = document.createElement("summary");
+        const ch = document.createElement("span");
+        ch.className = "chev";
+        ch.textContent = "▶";
+        sum.appendChild(ch);
+        sum.appendChild(document.createTextNode(sg));
+        const inner = document.createElement("div");
+        inner.className = "section-content";
+        inner.appendChild(buildList(groups[sg]));
+        nested.appendChild(sum);
+        nested.appendChild(inner);
+        content.appendChild(nested);
+      }
+
+      details.appendChild(summary);
+      details.appendChild(content);
+      section.appendChild(details);
+      return section;
+    }
+
+    function render(rows){
+      const filtered = rows.filter(r => r.Section);
+      const bySection = groupBy(filtered, "Section");
+
+      const sectionOrder = {};
+      const sectionOrderSeen = {};
+      const subsectionOrder = {};
+      const subsectionOrderSeen = {};
+
+      for (const r of filtered){
+        const s  = (r.Section || "").trim();
+        const ss = (r.Subsection || "").trim();
+        const so  = r.SectionOrder !== undefined && r.SectionOrder !== "" ? Number(r.SectionOrder) : null;
+        const sso = r.SubsectionOrder !== undefined && r.SubsectionOrder !== "" ? Number(r.SubsectionOrder) : null;
+
+        if (s && so != null && !Number.isNaN(so)){
+          sectionOrder[s] = Math.min(sectionOrder[s] ?? so, so);
+          (sectionOrderSeen[s] ||= new Set()).add(so);
+        }
+        if (s && ss && sso != null && !Number.isNaN(sso)){
+          const key = s + "|" + ss;
+          subsectionOrder[key] = Math.min(subsectionOrder[key] ?? sso, sso);
+          (subsectionOrderSeen[key] ||= new Set()).add(sso);
+        }
+      }
+
+      const sections = Object.keys(bySection);
+      sections.sort((a,b) => {
+        const A = sectionOrder[a] ?? 9999;
+        const B = sectionOrder[b] ?? 9999;
+        return (A - B) || a.localeCompare(b);
+      });
+
+      const contentEl = document.getElementById("content");
+      const statusEl  = document.getElementById("status");
+      contentEl.innerHTML = "";
+
+      for (const sec of sections){
+        const groups = groupBy(bySection[sec], "Subsection");
+
+        const subNames = Object.keys(groups).filter(k => k !== "__root");
+        subNames.sort((a,b) => {
+          const A = subsectionOrder[sec + "|" + a] ?? 9999;
+          const B = subsectionOrder[sec + "|" + b] ?? 9999;
+          return (A - B) || a.localeCompare(b);
+        });
+
+        const orderedGroups = {};
+        if (groups["__root"]) orderedGroups["__root"] = groups["__root"];
+        for (const name of subNames) orderedGroups[name] = groups[name];
+
+        const sectionNode = buildSection(sec, orderedGroups);
+
+        const secSeen = sectionOrderSeen[sec];
+        if (secSeen && secSeen.size > 1){
+          const badge = document.createElement("span");
+          badge.className = "warn";
+          badge.textContent = "⚠️";
+          badge.title = "Conflicting SectionOrder values found for this section.";
+          sectionNode.querySelector("summary").appendChild(badge);
+          console.warn("SectionOrder conflict in section:", sec, "values:", Array.from(secSeen));
+        }
+
+        for (const name of subNames){
+          const key = sec + "|" + name;
+          const seen = subsectionOrderSeen[key];
+          if (seen && seen.size > 1){
+            const summaries = sectionNode.querySelectorAll("details > .section-content details > summary");
+            for (const sm of summaries){
+              if (sm.childNodes && Array.from(sm.childNodes).some(n => n.nodeType === 3 && n.nodeValue.trim() === name)){
+                const badge = document.createElement("span");
+                badge.className = "warn";
+                badge.textContent = "⚠️";
+                badge.title = "Conflicting SubsectionOrder values found for this subsection.";
+                sm.appendChild(badge);
+                break;
+              }
+            }
+            console.warn("SubsectionOrder conflict in", key, "values:", Array.from(seen));
+          }
+        }
+
+        contentEl.appendChild(sectionNode);
+      }
+
+      statusEl.textContent = "Loaded " + filtered.length + " rows.";
+    }
+
+    async function init(){
+      const statusEl = document.getElementById("status");
+      try{
+        const rows = await loadJSONP(WEB_APP_URL);
+        render(rows);
+      }catch(err){
+        statusEl.outerHTML = '<div class="error">Error loading data: ' + err.message + '</div>';
+      }
+    }
+    init();
+  </script>
+</body>
+</html>
