@@ -542,10 +542,10 @@ namespace DeveloperPortal.Controllers
         {
             JsonData<JsonStatus> data = new JsonData<JsonStatus>(new JsonStatus());
 
-            var a = await _projectDetailService.CreateSite(siteModel, UserName);
+            var isSiteCreated = await _projectDetailService.CreateSite(siteModel, UserName);
 
             //Need to add code to checked data save or not
-            data.Result.Status = true;
+            data.Result.Status = isSiteCreated;
             
             return Json(data);
         }

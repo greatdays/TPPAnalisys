@@ -853,6 +853,7 @@ namespace DeveloperPortal.Application.ProjectDetail
 
         public async Task<bool> CreateSite(SiteInformationModel siteInformationModel, string UserName)
         {
+            bool IsSiteCreated=false;
             var sqlParameters = new List<SqlParameter>
             {
                 new SqlParameter() { ParameterName = "@ProjectID", Value = siteInformationModel.ProjectID },
@@ -877,15 +878,12 @@ namespace DeveloperPortal.Application.ProjectDetail
             };
 
             var dataTableAllSites = ExecuteStoreProcedure("[AAHPCC].[uspCreateProjectSite]", sqlParameters);
-           
-            //note: need to add code to check data saved or not
-            if (true)
+            if (dataTableAllSites.Rows.Count > 0)
             {
-
-
+                IsSiteCreated = Convert.ToBoolean(dataTableAllSites.Rows[0]["Success"]);
             }
-
-            return true;
+            
+            return IsSiteCreated;
         }
 
         #region Private Methods
