@@ -336,7 +336,6 @@ var SiteInformation=
                 success: function (data) {
                     if (data.result.status) {
                         $('#modal-site-add').modal('hide');
-                        debugger;
                         IsLoadSiteInformationTab = false;
                         SiteInformationData=[]
                         SiteInformation.LoadSiteInformation(true);
