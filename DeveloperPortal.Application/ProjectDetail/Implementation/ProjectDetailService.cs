@@ -859,6 +859,7 @@ namespace DeveloperPortal.Application.ProjectDetail
                 new SqlParameter() { ParameterName = "@ProjectID", Value = siteInformationModel.ProjectID },
                 new SqlParameter() { ParameterName = "@PropertyName", Value = siteInformationModel.PropertyName ?? (object)DBNull.Value },
                 new SqlParameter() { ParameterName = "@PrimaryAPN", Value = siteInformationModel.APN ?? (object)DBNull.Value },
+                new SqlParameter() { ParameterName = "@ProjectCaseID", Value = siteInformationModel.CaseID },
                 new SqlParameter() { ParameterName = "@Existing_PnCSiteAddressID", Value = siteInformationModel.SiteAddress ?? (object)DBNull.Value },
                 new SqlParameter() { ParameterName = "@HouseNum", Value = siteInformationModel.HouseNum ?? (object)DBNull.Value },
                 new SqlParameter() { ParameterName = "@HouseFracNum", Value = siteInformationModel.HouseFracNum ?? (object)DBNull.Value },
