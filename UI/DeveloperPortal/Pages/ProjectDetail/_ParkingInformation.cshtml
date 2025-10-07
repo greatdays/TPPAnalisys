@@ -179,19 +179,17 @@
     }
 
     #buildingSummaryForm .form-control {
-         border: 1px solid #fff; 
+        border: 1px solid #fff;
     }
 
     #buildingSummaryForm .form-control {
         border: 1px solid #fff;
     }
 
-
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-ajax/4.0.20526/MicrosoftAjax.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-unobtrusive-ajax/3.2.5/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
 <div class="site-parking-summary" style="margin-top:15px;">
     <div class="row">
         <div class="col-sm-12">
@@ -222,12 +220,12 @@
                         }
                     </div>
                     <div class="col-sm-4">
-                        
+
                         <a id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access btn btn-primary btn-sm" style="background: #113F67;color: white;" role-access="true" onclick="BuildingInformation.editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</a>
                         <a id="cancelEditBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;margin-left :15px;" onclick="BuildingInformation.cancelBuildingSummary()">Cancel</a>
                         <button id="updateBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;" type="submit">Update</button>
                     </div>
-                   
+
                 </div>
                 <div class="row" style="margin-bottom:10px;">
                     <div class="col-sm-12">
@@ -434,9 +432,21 @@
         <div>
             <div class="d-flex justify-content-between">
                 <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em; max-width:470px;">
-                    <label for="LADBS_PermitNumber">Permit #:</label>
-                    <input id="LADBS_PermitNumber" class="form-group" />
-                    <button id="linkPermitNumber" class="btn btn btn-primary" style="margin-left: 1em;" onclick="LadbsInformation.linkPermitNumber()">Query Permit Number</button>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td style="border: 0px;">
+                                    <label for="LADBS_PermitNumber" style="width: 60px;">Permit #:</label>
+                                </td>
+                                <td style="border: 0px;">
+                                    <input id="LADBS_PermitNumber" class="input-number form-control" style="width: 200px;">
+                                </td>
+                                <td style="border: 0px;">
+                                    <button id="linkPermitNumber" class="btn btn btn-primary" style="/* margin-left: 1em; */width: 200px;" onclick="LadbsInformation.linkPermitNumber()">Query Permit Number</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <div id="invalid-permit-message" style="display: none; width:100%; padding-top:10px;"></div>
                     <div id="LADBSerror" class="text-danger" style="padding:10px 0 0 60px;" hidden> </div>
                 </div>
@@ -446,7 +456,7 @@
                 </div>
             </div>
 
-           
+
         </div>
 
         <table id="dtPermitNumberData"></table>
