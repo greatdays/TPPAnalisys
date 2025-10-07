@@ -63,7 +63,7 @@
                     @Html.HiddenFor(m => m.ProjectID)
                     @Html.HiddenFor(m => m.IsAddAddress)
                     @Html.HiddenFor(m => m.ProjectSiteID)
-                 
+                    @Html.HiddenFor(m => m.CaseID, new { @id = "CaseId" })
                     <div class="form-group mb-3">
                     @Html.LabelFor(model => model.APN, "Assessor's Parcel Number (APN)", new { @class = "form-label fw-bold" })
                     <span class="text-danger">*</span>

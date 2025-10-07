@@ -1,22 +1,27 @@
-﻿
+﻿var dtSiteDataTable;
 var SiteInformation=
 {   
     Init:function () 
     {
     },
    
-    LoadSiteInformation:function()
+    LoadSiteInformation:function(isLoad)
     {
         $.fn.dataTableExt.pager.numbers_length = 50;
         if (IsLoadSiteInformationTab) {
             return;
         }
-        var dtSiteDataTable = $('#dtSiteData').dataTable({
+        // Destroy existing table if it exists
+        if ($.fn.DataTable.isDataTable('#dtSiteData')) {
+            $('#dtSiteData').DataTable().clear().destroy();
+        }
+
+        dtSiteDataTable = $('#dtSiteData').dataTable({
             ajax: {
                 url: APPURL + 'ProjectDetail/GetSiteInformation',
                 type: 'POST',
                 data: function (d) {
-                    d.SiteInformationData = SiteInformationData,
+                    d.SiteInformationData = (!isLoad)? SiteInformationData:null,
                         d.caseId = Id
 
                 },
@@ -331,8 +336,9 @@ var SiteInformation=
                 success: function (data) {
                     if (data.result.status) {
                         $('#modal-site-add').modal('hide');
-                        // Reload Site Information table
-                        SiteInformation.LoadSiteInformation();
+                        IsLoadSiteInformationTab = false;
+                        SiteInformationData=[]
+                        SiteInformation.LoadSiteInformation(true);
                     }
                     else {
                         alert('Error occurred while saving.');
