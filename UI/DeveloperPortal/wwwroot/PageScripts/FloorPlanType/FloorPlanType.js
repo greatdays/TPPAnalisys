@@ -36,7 +36,7 @@ var FloorPlanType = {
         });
     },
 
-    loadFloorPlans: function () {
+    loadFloorPlans: function (isChanged) {
         const projectId = $('#hiddenProjectID').val();
 
         $.ajax({
@@ -46,6 +46,9 @@ var FloorPlanType = {
             cache: false,
             success: function (data) {
                 const table = $('#floorPlanTable');
+                if (isChanged) {
+                    kgridEditModelData.lutFloorPlanType = data;
+                }
 
                 // Destroy previous instance if exists
                 if ($.fn.DataTable.isDataTable('#floorPlanTable')) {
@@ -165,13 +168,14 @@ var FloorPlanType = {
                 data: formData,
                 contentType: "application/x-www-form-urlencoded",
                 success: function (response) {
-                    alert(response.message);
+                    
+                    showMessage("Success", response.message);
                     var modalEl = document.getElementById('editFloorPlanType');
                     var modalInstance = bootstrap.Modal.getInstance(modalEl); // get existing instance
                     if (modalInstance) {
                         modalInstance.hide(); // close the modal
                     }
-                    FloorPlanType.loadFloorPlans();
+                    FloorPlanType.loadFloorPlans(true);
                 },
                 error: function () {
                     $('#editFloorPlanMessage').html('<div class="alert alert-danger">An unexpected error occurred.</div>');
@@ -251,7 +255,7 @@ var FloorPlanType = {
                 data: formData,
                 success: function (response) {
                     if (response.success) {
-                        alert(response.message);
+                        showMessage("Success", response.message);
                         var modalEl = document.getElementById('addFloorPlanType');
                         var modalInstance = bootstrap.Modal.getInstance(modalEl); // get existing instance
                         if (modalInstance) {
@@ -260,9 +264,9 @@ var FloorPlanType = {
                         $('#floorPlanForm')[0].reset();
                         $('#bathroomTypeDiv').empty();
                         $('.text-danger').html('');
-                        FloorPlanType.loadFloorPlans();
+                        FloorPlanType.loadFloorPlans(true);
                     } else {
-                        alert('Something went wrong.');
+                        showMessage("Error", "Something went wrong.");
                     }
                 },
                 error: function (xhr) {
@@ -272,7 +276,8 @@ var FloorPlanType = {
                     } else if (xhr.responseText) {
                         message = xhr.responseText;
                     }
-                    alert("Error: " + message);
+                    showMessage("Error", "Error: " + message);
+
                 }
             });
 
@@ -401,7 +406,7 @@ var FloorPlanType = {
 
     deleteFloorPlan: function (id, name, isUsed) {
         if (isUsed === 'true') {
-            alert(`Cannot delete "${name}" because it is in use.`);
+            showMessage("Error", `Cannot delete "${name}" because it is in use.`);
             return;
         }
 
@@ -411,12 +416,11 @@ var FloorPlanType = {
                 type: 'POST',
                 data: { floorPlanTypeId: id },
                 success: function () {
-                    alert(`"${name}" deleted successfully.`);
-                    FloorPlanType.loadFloorPlans();
+                    showMessage("Success", `"${name}" deleted successfully.`);
+                    FloorPlanType.loadFloorPlans(true);
                 },
                 error: function (err) {
-                    alert(`Failed to delete "${name}".`);
-                    console.error(err);
+                    showMessage("Error", `Failed to delete "${name}".`);
                 }
             });
         }
