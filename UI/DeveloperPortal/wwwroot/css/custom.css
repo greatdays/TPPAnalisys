@@ -2043,4 +2043,12 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
     .landing-page-container .btn {
         min-width:160px;
     }
+#cantfindproject {
+    background-color: #e6f7ff; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    margin-bottom:10px;
+}
+
 /* UI Developer Bootstrap override classes  */
