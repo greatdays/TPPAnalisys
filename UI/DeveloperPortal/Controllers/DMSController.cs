@@ -242,8 +242,8 @@ namespace DeveloperPortal.Controllers
         }
         // GET: api/<DashboardController>
         [HttpGet]
-        [Route("GetFoderData")]
-        public JsonResult GetFoderData(string folderName)
+        [Route("GetFolderData")]
+        public JsonResult GetFolderData(string folderName)
         {
 
             var folderModel = AAHRServiceClient.GetFolderData(_BaseURL, _GoogleDriveId, folderName);
