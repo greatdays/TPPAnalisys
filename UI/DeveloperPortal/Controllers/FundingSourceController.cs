@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using DeveloperPortal.Application.DMS.Interface;
+﻿using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Models.IDM;
@@ -7,6 +6,8 @@ using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
+using System.Net.Mime;
 
 [Authorize]
 public class FundingSourceController : Controller
@@ -184,7 +185,14 @@ public class FundingSourceController : Controller
             {
                 FileUploadResult =new FileUploadResult { Success = false, ErrorMessage = "File type not supported." };
             }
-            var projReferenceId = _documentService.GetProjectReference(ProjectId);
+
+
+            // RefProjectID and AAHRProjectID concern ---------------------
+            // ProjectID - Assumes current projectid is RefProjectID
+            // // RefProjectID and AAHRProjectID concern ------------------
+            var projReferenceId = ProjectId;
+
+            //var projReferenceId = _documentService.GetProjectReference(ProjectId);
             // Upload to DMS
             var uploadResponse = await new DMSService(_config)
                 .SubmitUploadedDocument(file, projReferenceId, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
