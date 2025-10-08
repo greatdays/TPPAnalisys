@@ -130,7 +130,10 @@ namespace DeveloperPortal.Controllers
                 string fileCategory = categoryGroup; //"Project";
                 string fileSubCategory = categoryName;//"Document";
 
-                var projectRefernceId = _documentService.GetProjectReference(projectId);
+                // RefProjectID and AAHRProjectID concern ---------------------
+                // ProjectID - Assumes current projectid is RefProjectID
+                // // RefProjectID and AAHRProjectID concern ------------------
+                var projectRefernceId = projectId;
 
                 // Upload documents to DMS
                 var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, projectRefernceId, caseId, fileCategory, fileSubCategory, createdBy);
