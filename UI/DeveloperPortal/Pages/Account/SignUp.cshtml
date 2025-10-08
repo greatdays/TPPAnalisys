@@ -129,6 +129,32 @@
     </div>
 </div>
 
+<div id="errorModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-modal="true" aria-labelledby="divErrorModalTitle">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="divErrorModalTitle">Error</h1>
+            </div>
+            <div class="modal-body text-center">
+                <p class="text-center Succescheck-circle">
+                   
+                        <span class="sr-only">Error</span>
+                    
+                </p>
+                
+                <p id="ErrorMessage" class="Succes-text">
+                    <!-- backend error message will appear here -->
+                </p>
+
+                <div class="d-flex Succesbutton">
+                    <button id="btnErrorOk" class="btn btn-primary m-0" type="button">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(document).ready(function () {
         var applicantJson = '{"Applicant": [{"step": "YourInfo","Data": ""}, {"step": "ContactInfo", "Data": ""}, {"step": "AccountType","Data": ""}]}';

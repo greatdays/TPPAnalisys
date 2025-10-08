@@ -239,8 +239,12 @@
                         window.location.href = _APPURL;
                       });
                     } else if (data.result && data.result.status === false) {
-                        alert((data.result.data.errorMsg +' with username '+ data.result.data.currentEmailID)  || 'An error occurred.');
-                     
+                      var errMsg=(data.result.data.errorMsg +' with username '+ data.result.data.currentEmailID)  || 'An error occurred.';
+                      $('#ErrorMessage').text(errMsg);      // Set backend message
+                      $('#errorModal').modal('show');
+                      $('#btnErrorOk').off('click').on('click', function () {
+                          $('#errorModal').modal('hide');
+                      });
                     } else {
                       alert('Unexpected server response.');
                     }
