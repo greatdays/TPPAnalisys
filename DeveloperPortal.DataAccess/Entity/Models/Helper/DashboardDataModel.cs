@@ -22,6 +22,7 @@ namespace DeveloperPortal.DataAccess.Entity.Models
         public string? ModifiedOn { get; set; }
         public string? AcHPFileProjectNumber { get; set; }
         public string? ProblemProject { get; set; }
+        public string? refProjectID { get; set; }
 
     }
 }
