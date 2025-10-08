@@ -70,14 +70,14 @@ var FloorPlanType = {
                         orderable: false,
                         render: function (data, type, row) {
                             return `
-                            <button class="btn btn-sm btn-action constructionbtn edit-floorplan"
+                             <button class="editbtn btn k-button k-button-icontext k-grid-edit btn btn-sm btn-action constructionbtn edit-floorplan"
                                 data-id="${row.floorPlanTypeID}" data-used="${row.isUsed}" data-name="${row.name}">
                                 <span class="fa fa-pencil primary-font-color"></span>
                             </button>
-                            <button class="btn btn-sm btn-action constructionbtn delete-floorplan"
+                            <button class="deletebtn btn k-button btn btn-sm btn-action constructionbtn delete-floorplan"
                                 data-id="${row.floorPlanTypeID}" data-name="${row.name}" data-used="${row.isUsed}"
                                 onclick="FloorPlanType.deleteFloorPlan(${row.floorPlanTypeID}, '${row.name}', '${row.isUsed}')">
-                                <span class="fa fa-trash primary-font-color"></span>
+                               <i class="fas fa-trash-alt deletecontent"></i>
                             </button>
                         `;
                         }
@@ -168,7 +168,7 @@ var FloorPlanType = {
                 data: formData,
                 contentType: "application/x-www-form-urlencoded",
                 success: function (response) {
-                    
+
                     showMessage("Success", response.message);
                     var modalEl = document.getElementById('editFloorPlanType');
                     var modalInstance = bootstrap.Modal.getInstance(modalEl); // get existing instance
