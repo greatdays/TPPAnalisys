@@ -9,7 +9,7 @@ namespace DeveloperPortal.Application.Common
     public static class StoredProcedureNames
     {
         public const string SP_uspRoGetAllConstructionCases = "AAHPCC.uspRoGetAllConstructionCases";
-        public const string SP_uspRoGetAllConstructionCasesForDevelopmentPortal = "AAHPCC.uspRoGetAllConstructionCasesForDevelopmentPortal";
+        public const string SP_uspGetConstructionCasesByUser = "[TPP].[uspGetConstructionCasesByUser]";
         public const string SP_uspRoGetReviewNoteACHPFileNumber = "AAHPCC.uspRoGetReviewNoteACHPFileNumber";
         public const string SP_uspRoGetReviewNoteForProject = "AAHPCC.uspRoGetReviewNoteByProject";
 

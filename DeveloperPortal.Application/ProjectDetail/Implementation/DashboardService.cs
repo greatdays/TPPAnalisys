@@ -195,7 +195,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 };
 
                 var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(
-                    StoredProcedureNames.SP_uspRoGetAllConstructionCasesForDevelopmentPortal,
+                    StoredProcedureNames.SP_uspGetConstructionCasesByUser,
                     parameters
                 );
                 return result;
