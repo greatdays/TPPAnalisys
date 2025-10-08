@@ -146,8 +146,9 @@
                             if (row.caseId.match(/href="([^"]*)/)) {
                                 var a = '<a class="dashboard-anchor-plan-review" href="#">' + row.acHPFileProjectNumber + '</a>';
                                 var href = row.caseId.match(/href="([^"]*)/)[1];
-                                var queryString = href.split("?");
-                                var url = APPURL + "projectdetail?" + queryString[1];
+                                var queryString = href.split("?")[1] || ""; // Get query string safely
+                                var separator = queryString ? "&" : ""; // Add '&' only if query string exists
+                                var url = APPURL + "projectdetail?" + queryString + separator + "refProjectID=" + encodeURIComponent(row.refProjectID);
                                 a = '<a class="dashboard-anchor-plan-review" href="' + url + '">' + row.acHPFileProjectNumber + '</a>';
                                 return a;
                             }

@@ -125,26 +125,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="related-information">
-                    <fieldset>
-                        <legend class="wraping_label required-label" style="font-size: 0.9rem !important;"> @Html.LabelFor(model => model.IsContactPublic, htmlAttributes: new { @class = "control-label" })</legend>
-                        <div class="input-group yesno_radio" id="rdbtnCP" tabindex="-1">
-                            <div class="custom-control custom-radio">
-                                @Html.RadioButtonFor(x => x.IsContactPublic, true, new { @id = "rbtnCP_Yes", @class = "custom-control-input rbtn-cp" })
-                                <label class="custom-control-label rbtn-cp" for="rbtnCP_Yes" id="lblCP_Yes">Yes</label>
-
-                            </div>
-                            <div class="custom-control custom-radio">
-                                @Html.RadioButtonFor(x => x.IsContactPublic, false, new { @id = "rbtnCP_No", @class = "custom-control-input rbtn-cp" })
-                                <label class="custom-control-label rbtn-cp" for="rbtnCP_No" id="lblCP_No">No</label>
-                            </div>
-                            @Html.ValidationMessageFor(model => model.IsContactPublic, "", new { @class = "text-danger" })
-
-                        </div>
-                    </fieldset>
-                </div>
-            </div>
-            <div class="row">
 
                 <div class="col-md-4">
                     <div class="form-group required">
@@ -247,28 +227,15 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group">
+                    <div class="form-group required">
                         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="related-information checkboxdiv">
-            <div class="custom-control custom-checkbox">
-                @Html.CheckBoxFor(model => model.IsMarkedForMailing, new { @class = "custom-control-input" })
-                <label class="custom-control-label" for="IsMarkedForMailing">
-                    Please send mail to this address; it is not the primary address of this contact.
-                </label>
-            </div>
-            <div class="custom-control custom-checkbox" style="display:none;">
-                @Html.CheckBoxFor(model => model.IsPrimary, new { @class = "custom-control-input" })
-                <label class="custom-control-label" for="IsPrimary">
-                    This is the primary address for this contact; please send mail about the property to this address.
-                </label>
-            </div>
-        </div>
+        
     </div>
     <!-- Modal footer -->
     <div class="modal-footer multi-button">

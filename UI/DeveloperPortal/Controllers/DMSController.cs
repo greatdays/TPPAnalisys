@@ -299,7 +299,8 @@ namespace DeveloperPortal.Controllers
                         notificationData,
                         item.Email);
 
-                    var notificationCredential = sendNotificationEmail.GetNotificationCrdential("ACHP");
+                    // Need to update the application ID
+                    var notificationCredential = sendNotificationEmail.GetNotificationCrdential("AAHR");
 
                     await sendNotificationEmail.SendMail(notificationInfo, notificationCredential, EmailAction.EA_Signup);
                 }

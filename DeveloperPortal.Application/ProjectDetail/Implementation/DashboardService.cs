@@ -171,6 +171,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             ProjectAddress = x.ProjectAddress,
                             AcHPFileProjectNumber = x.AcHPFileProjectNumber,
                             ProblemProject = x.ProblemProject,
+                            refProjectID = x.refProjectID,
                             ReviewNoteAcHPFileProjectNumber = reviewNotACHPFileNumbers
                         }).ToList();
 
@@ -186,7 +187,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
         private async Task<List<AllConstructionData>> GetAllConstructionCasesDataByUser(int UserID)
         {
-            List<AllConstructionData> obj = new List<AllConstructionData>();
             try
             {
                 var parameters = new[]
@@ -195,7 +195,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 };
 
                 var result = await _storedProcedureExecutor.ExecuteStoredProcAsync<AllConstructionData>(
-                    StoredProcedureNames.SP_uspRoGetAllConstructionCasesForDevelopmentPortal,
+                    StoredProcedureNames.SP_uspGetConstructionCasesByUser,
                     parameters
                 );
                 return result;
