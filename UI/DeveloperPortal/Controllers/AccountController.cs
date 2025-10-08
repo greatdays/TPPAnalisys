@@ -356,7 +356,7 @@ namespace DeveloperPortal.Controllers
                     else
                     {
                         data.Result.Status = false;
-                        data.Result.Data = new { ErrorMsg = "User account already exists.", CurrentEmailID = signupModel.EmailId };
+                        data.Result.Data = new { ErrorMsg = "User account already exists", CurrentEmailID = signupModel.EmailId };
                     }
 
                 }

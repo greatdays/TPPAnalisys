@@ -166,39 +166,44 @@
             var accountInfo = data.Applicant.find(x => x.step === "AccountType")?.Data || {};
             var yourInfo = data.Applicant.find(x => x.step === "YourInfo")?.Data || {};
             var contactInfo = data.Applicant.find(x => x.step === "ContactInfo")?.Data || {};
-
+             if (!accountInfo.accountType) {
+                alert("Account Type is missing or incomplete.");
+                return;
+            }
             // simple validation
             if(!yourInfo.firstName || !yourInfo.lastName || !yourInfo.companyName || !yourInfo.email){
                 alert("Please fill all required information in 'Your Information'");
                 return;
             }
+            // --- Validate Contact Info ---
+        let missingFields = [];
 
-             // --- validate Contact Info ---
-            if(!contactInfo.phoneNumber){
-                alert("Phone number is required");
-                return;
-            }
+        if (!contactInfo.phoneNumber) missingFields.push("Phone Number");
 
-             var poBoxFlag = contactInfo.poBox || "No";
-            console.log("poxbox value ",poBoxFlag);
-            if(poBoxFlag === "Yes"){
-                // Require POBoxNumber, City, State, Zip
-                if(!contactInfo.poBoxNumber || !contactInfo.city || !contactInfo.state || !contactInfo.zipCode){
-                    alert("Please fill all required fields for P.O. Box address.");
-                    return;
-                }
-            } else {
-                // Require Street fields, City, State, Zip
-                if(!contactInfo.streetNumber || !contactInfo.streetName || !contactInfo.streetType || !contactInfo.city || !contactInfo.state || !contactInfo.zipCode){
-                    alert("Please fill all required fields for Mailing Address.");
-                    return;
-                }
-            }
+        var poBoxFlag = contactInfo.poBox || "No";
+        console.log("pobox value", poBoxFlag);
+
+        if (poBoxFlag === "Yes") {
+            if (!contactInfo.poBoxNumber) missingFields.push("P.O. Box Number");
+            if (!contactInfo.city) missingFields.push("City");
+            if (!contactInfo.state) missingFields.push("State");
+            if (!contactInfo.zipCode) missingFields.push("Zip Code");
+        } else {
+            if (!contactInfo.streetNumber) missingFields.push("Street Number");
+            if (!contactInfo.streetName) missingFields.push("Street Name");
+            if (!contactInfo.streetType) missingFields.push("Street Type");
+            if (!contactInfo.city) missingFields.push("City");
+            if (!contactInfo.state) missingFields.push("State");
+            if (!contactInfo.zipCode) missingFields.push("Zip Code");
+        }
+
+        if (missingFields.length > 0) {
+           alert("Please fill the required information in 'Contact Information'");
+            return;
+        }
+
              // --- Validate Account Type ---
-            if (!accountInfo.accountType) {
-                alert("Account Type is missing or incomplete.");
-                return;
-            }
+           
             // --- PASSWORD VALIDATION ---
             var password = $('#Password').val();
             var confirmPassword = $('#ConfirmPassword').val();
@@ -225,11 +230,20 @@
                 contentType: 'application/json',
                data: applicantJson,
                success: function (data) {
-                    localStorage.setItem('ApplicantJson', '');
-                    $('#successModal').modal('show');
-                    $('#btnOk').on('click', function () {
-                       window.location.href = _APPURL ;
-                    });
+               
+                   if (data.result && data.result.status === true) {
+                      // Success
+                      localStorage.setItem('ApplicantJson', '');
+                      $('#successModal').modal('show');
+                      $('#btnOk').on('click', function () {
+                        window.location.href = _APPURL;
+                      });
+                    } else if (data.result && data.result.status === false) {
+                        alert((data.result.data.errorMsg +' with username '+ data.result.data.currentEmailID)  || 'An error occurred.');
+                     
+                    } else {
+                      alert('Unexpected server response.');
+                    }
                 },
                error: function (xhr, status, error) {
                    console.error("AJAX error:", status, error);
