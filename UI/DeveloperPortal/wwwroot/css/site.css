@@ -11599,6 +11599,11 @@ label.control-label.required-label:after {
     color: white !important;
 }
 
+.deletebtn {
+    background: red !important;
+    color: white !important;
+}
+
 .related-information {
     display: flex;
     align-items: center;

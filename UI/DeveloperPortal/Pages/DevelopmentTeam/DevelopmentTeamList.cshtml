@@ -4,7 +4,7 @@
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title"> Development Team List</span>
-            <button id="AddNewContact" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="DevelopmentTeam.Add()">Add</button>
+            <button id="AddNewContact" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="DevelopmentTeam.Add()">Add Contact</button>
         </div>
     </div>
     <div class=" k-box-body" style="padding-top:20px;">
@@ -34,11 +34,9 @@
                                 <td>@participant.FullAddress</td>
                                 <td>@participant.Email</td>
                                 <td style="width:180px">
-                                    <div style="float:right">
-                                        <button role="button" data-toggle="tooltip" data-placement="top" class="editbtn btn k-button k-button-icontext k-grid-edit" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactIdentifierId,'@participant.CompanyName')"><i class="fas fa-pen editcontent"></i></button>
-                                        <button role="button" data-toggle="tooltip" data-placement="top" class="deletebtn btn k-button k-button-icontext k-grid-Delete" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierId)"><i class="fas fa-trash-alt deletecontent"></i></button>
-
-
+                                    <div>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="editbtn btn k-button k-button-icontext k-grid-edit  btn btn-sm btn-action" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactIdentifierId,'@participant.CompanyName')"><i class="fas fa-pen editcontent"></i></button>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="deletebtn btn k-button   btn btn-sm btn-action" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierId)"><i class="fas fa-trash-alt deletecontent"></i></button>
                                     </div>
                                 </td>
                             </tr>
