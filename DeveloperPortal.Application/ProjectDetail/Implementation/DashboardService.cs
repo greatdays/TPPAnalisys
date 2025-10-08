@@ -171,7 +171,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             ProjectAddress = x.ProjectAddress,
                             AcHPFileProjectNumber = x.AcHPFileProjectNumber,
                             ProblemProject = x.ProblemProject,
-                            refProjectID = x.refProjectID,
+                            AAHRProjectID = x.AAHRProjectID,
                             ReviewNoteAcHPFileProjectNumber = reviewNotACHPFileNumbers
                         }).ToList();
 
