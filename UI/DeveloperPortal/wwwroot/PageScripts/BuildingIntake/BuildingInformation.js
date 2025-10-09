@@ -144,14 +144,14 @@ var BuildingInformation =
                 $('.btn.btn-primary').attr("disabled", false);
                 BuildingInformationData = [];
                 BuildingInformation.resetBulidingSummary();
-                BuildingInformation.ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingCurrentPage();
                 showMessage("Success", "Building Informantion Updated Successfully.");
             },
             error: function (xhr) {
                 $('#cm_loader').attr("hidden", true);
                 $('.btn.btn-primary').attr("disabled", false);
                 BuildingInformation.resetBulidingSummary();
-                BuildingInformation.ReloadBuildingDt();
+                BuildingInformation.ReloadBuildingCurrentPage();
                 showMessage("Error", "Error occurred, please try again.");
             }
         });
@@ -169,7 +169,7 @@ var BuildingInformation =
     },
     cancelBuildingSummary: function () {
         BuildingInformation.resetBulidingSummary();
-        BuildingInformation.ReloadBuildingDt();
+        BuildingInformation.ReloadBuildingCurrentPage();
     },
     AddBuildingInfo: function () {
         var siteData = SiteInformationData;
@@ -198,46 +198,7 @@ var BuildingInformation =
             }
         });
     },
-    AddBuildingInfo1 : function () {
-        var model = { SiteInformationData: SiteInformationData   , CaseId: Id };
-        var url = APPURL + 'BuildingIntake/CreateBuilding';
-        AjaxCommunication.CreateRequest(this.window, "POST", url, "html", model,
-            function (response) {
-                $("#modal-building-add").empty().html(response).modal('show');
-            }, null, true, null, false);
-
-
-        
-    },
-
-    AddBuildingInfo2: function () {
-        var url = APPURL + 'BuildingIntake/AddBuildingGet';
-        var model = JSON.stringify(SiteInformationData) ;
-        $.ajax({
-            url: url,
-            data: model ,
-            type: "POST",
-            contentType: "application/json",
-            success: function (result) {
-                alert(result)
-            },
-            error: function (error) {
-                console.log("There was an error in getting project actions.")
-                console.log(error);
-            }
-        });
-        url = APPURL + 'BuildingIntake/AddBuildingGet1';
-        AjaxCommunication.CreateRequest(this.window, "POST", url, "json", SiteInformationData,
-            function (response) {
-                $("#modal-building-add").empty().html(response).modal('show');
-            }, null, true, null, false);
-
-
-    },
-
-   
     SaveAddBuilding: function () {
-        debugger
         var selectedSite = SiteInformationData.find(site => site.fileNumber === $('.ddlProjectSiteId option:selected').text());
         if (selectedSite != null) {
             $("#SelectedSiteId").val(selectedSite.caseID);
@@ -251,7 +212,7 @@ var BuildingInformation =
             //    null, true, null, false);
             var form = $("#frmSaveAddBuilding");
             $.ajax({
-                url: APPURL + "BuildingIntake/SaveBuilding",// "@Url.Action("SaveBuilding", new { controller = "BuildingIntake", area = "Construction" })",
+                url: APPURL + "BuildingIntake/SaveBuilding",
                 type: "POST",
                 data: $(form).serialize(),
                 success: function (data) {
@@ -300,6 +261,11 @@ var BuildingInformation =
     ReloadBuildingDt:function () {
         if (dtBuildingDataTable)
         dtBuildingDataTable.api().ajax.reload();
-        }
+    }
+    ,
+    ReloadBuildingCurrentPage: function () {
+        if (dtBuildingDataTable)
+            dtBuildingDataTable.api().ajax.reload(null, false); // refresh same page only
+    }
 
 };

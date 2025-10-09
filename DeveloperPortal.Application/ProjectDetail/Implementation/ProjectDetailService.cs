@@ -516,56 +516,6 @@ namespace DeveloperPortal.Application.ProjectDetail
         }
 
         /// <summary>
-        /// Save Building parking Attributes
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        public async Task<bool> SaveBuildingParkingAttributes(BuildingParkingInformationModal buildingModel, string userName)
-        {
-            try
-            {
-                StructureAttribute? structureAttribute = await _projectDetailRepository.StructureAttribute(buildingModel.PropSnapshotID);
-                if (structureAttribute != null)
-                {
-                    structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
-                    structureAttribute.ResindentialSpaces = buildingModel.ResindentialSpaces;
-                    structureAttribute.AccessibleSpaces = buildingModel.AccessibleSpaces;
-                    structureAttribute.VanAccessibleSpaces = buildingModel.VanAccessibleSpaces;
-                    structureAttribute.StandardCommercialSpaces = buildingModel.StandardCommercialSpaces;
-                    structureAttribute.CommercialAccessibleSpaces = buildingModel.CommercialAccessibleSpaces;
-                    structureAttribute.CommercialVanAccessibleSpaces = buildingModel.CommercialVanAccessibleSpaces;
-                    structureAttribute.ElectricVehicleChargingStations = buildingModel.ElectricVehicleChargingStations;
-                    structureAttribute.TotalResidentialParking = buildingModel.TotalResidentialParking;
-                    structureAttribute.TotalCommercialParking = buildingModel.TotalCommercialParking;
-                    structureAttribute.CommercialVehicleChargingStations = buildingModel.CommercialVehicleChargingStations;
-                    //structureAttribute.TotalNumberofElectricVehicleChargingStations = buildingModel.TotalNumberofElectricVehicleChargingStations;
-                    structureAttribute.StandardAccessibleChargingStations = buildingModel.StandardAccessibleChargingStations;
-                    structureAttribute.VanAccessibleChargingStations = buildingModel.VanAccessibleChargingStations;
-                    structureAttribute.AmbulatoryChargingStations = buildingModel.AmbulatoryChargingStations;
-                    structureAttribute.StandardVisitorSpaces = buildingModel.StandardVisitorSpaces;
-                    structureAttribute.VisitorAccessibleSpaces = buildingModel.VisitorAccessibleSpaces;
-                    structureAttribute.TotalVisitorParking = buildingModel.TotalVisitorParking;
-                    structureAttribute.VisitorVanAccessibleSpaces = buildingModel.VisitorVanAccessibleSpaces;
-                    structureAttribute.CommercialElectricVanAccessibleChargingStation = buildingModel.CommercialElectricVanAccessibleChargingStation;
-                    structureAttribute.CommercialElectricAmbulatoryChargingStation = buildingModel.CommercialElectricAmbulatoryChargingStation;
-                    structureAttribute.TotalNumberofCommercialElectricVehicleChargingStations = buildingModel.TotalNumberofCommercialElectricVehicleChargingStations;
-                    structureAttribute.CommercialElectricStandardAccessibleChargingStation = buildingModel.CommercialElectricStandardAccessibleChargingStation;
-                    structureAttribute.ModifiedOn = DateTime.Now;
-                    structureAttribute.ModifiedBy = userName;
-                    await _projectDetailRepository.UpdateStructureAttributesAsync(structureAttribute);
-                    return true;
-                }
-                return false;
-            }
-
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
         /// GetPropSnapshotDetails
         /// </summary>
         /// <param name="projectSiteId"></param>
