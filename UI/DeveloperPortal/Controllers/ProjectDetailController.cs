@@ -437,30 +437,7 @@ namespace DeveloperPortal.Controllers
             }
         }
 
-        /// <summary>
-        /// UpdateParkingDetail
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <returns></returns>
-        /// 
-        [HttpPost]
-        public async Task<ActionResult> UpdateParkingDetail([FromForm] BuildingParkingInformationModal buildingModel)
-        {
-            try
-            {
-                var result = false;
-                if (buildingModel != null && buildingModel.PropSnapshotID > 0)
-                {
-                    result = await _projectDetailService.SaveBuildingParkingAttributes(buildingModel, UserName);
-                }
-                return Json(result);
-            }
-            catch (Exception e)
-            {
-                return Json(false);
-            }
-        }
-        
+       
         #endregion
 
         #region Project Site Information
