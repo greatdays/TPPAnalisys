@@ -41,5 +41,12 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// <returns></returns>
         Task<BuildingModel> GetBuildingDetailForEdit(int projectSiteId);
 
+        /// <summary>
+        /// Save Building parking Attributes
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        Task<bool> SaveBuildingParkingAttributes(BuildingParkingInformationModal buildingModel, string userName);
     }
 }

@@ -89,13 +89,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         List<BuildingParkingInformationModal> GetBuildingInformation(int caseId);
 
         /// <summary>
-        /// Save Building parking Attributes
-        /// </summary>
-        /// <param name="buildingModel"></param>
-        /// <param name="userName"></param>
-        /// <returns></returns>
-        Task<bool> SaveBuildingParkingAttributes(BuildingParkingInformationModal buildingModel, string userName);
-        /// <summary>
         /// SaveLADBSData
         /// </summary>
         /// <param name="propSnapshotId"></param>

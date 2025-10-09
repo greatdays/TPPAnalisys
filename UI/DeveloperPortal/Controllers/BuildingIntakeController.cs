@@ -95,109 +95,6 @@ namespace DeveloperPortal.Controllers
             return Json(data);
         }
 
-        // <summary>
-        /// Post - AddBuildingFromNewCompliance
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<ActionResult> AddBuilding1([FromForm] SiteInformationParamModel paramModel)
-        {
-            //int projectSiteId = 0;
-            //BuildingModel buildingModel = new BuildingModel();
-            //buildingModel.SiteList = new List<SelectListItem>();
-            //if (paramModel.SiteInformationData != null && paramModel.SiteInformationData.Count > 0)
-            //{
-            //    projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
-            //    buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
-            //    // If show all addresses then uncomment below code
-            //    var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
-            //    buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
-            //    buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
-            //    {
-            //        Text = x.FileNumber,
-            //        Value = x.ProjectSiteID.ToString()
-            //    }).ToList();
-            //    buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
-            //    {
-            //        Text = x.CaseID.ToString(),
-            //        Value = x.ProjectSiteID.ToString()
-            //    }).ToList();
-
-            //}
-            //buildingModel.CaseId = caseId;
-            var data = "Test";// await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
-            return Json(data);
-        }
-
-
-        [HttpPost]
-        public async Task<ActionResult> AddBuildingGet([FromBody] List<SiteInformationModel> paramModel)
-        {
-            var data = "True";
-            return Json(data);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> AddBuildingGet1([FromBody] List<SiteInformationModel> paramModel)
-        {
-            int projectSiteId = 0;
-            BuildingModel buildingModel = new BuildingModel();
-            buildingModel.SiteList = new List<SelectListItem>();
-            if (paramModel != null && paramModel.Count > 0)
-            {
-                projectSiteId = paramModel[0].ProjectSiteID;
-                buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
-                // If show all addresses then uncomment below code
-                var projectSiteIdList = paramModel.Select(x => x.ProjectSiteID).ToList();
-                buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
-                buildingModel.SiteList = paramModel.Select(x => new SelectListItem
-                {
-                    Text = x.FileNumber,
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-                buildingModel.SiteCaseIdList = paramModel.Select(x => new SelectListItem
-                {
-                    Text = x.CaseID.ToString(),
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-                buildingModel.CaseId = paramModel[0].CaseID;
-
-            }
-            //buildingModel.CaseId = caseId;
-            var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
-            return Json(data);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> CreateBuilding(SiteInformationParamModel paramModel)
-        {
-            int projectSiteId = 0;
-            BuildingModel buildingModel = new BuildingModel();
-            buildingModel.SiteList = new List<SelectListItem>();
-            if (paramModel.SiteInformationData != null && paramModel.SiteInformationData.Count > 0)
-            {
-                projectSiteId = paramModel.SiteInformationData[0].ProjectSiteID;
-                buildingModel = await _buildingIntakeService.GetAddBuildingDetails(projectSiteId);
-                // If show all addresses then uncomment below code
-                var projectSiteIdList = paramModel.SiteInformationData.Select(x => x.ProjectSiteID).ToList();
-                buildingModel.BuildingAddressList = await _buildingIntakeService.GetBuildingAddressDetails(projectSiteIdList);
-                buildingModel.SiteList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.FileNumber,
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-                buildingModel.SiteCaseIdList = paramModel.SiteInformationData.Select(x => new SelectListItem
-                {
-                    Text = x.CaseID.ToString(),
-                    Value = x.ProjectSiteID.ToString()
-                }).ToList();
-
-            }
-            buildingModel.CaseId = paramModel.CaseId;
-            var data = await this.RenderViewAsync("../BuildingIntake/_AddBuilding", buildingModel, true);
-            return Json(data);
-        }
-
 
         /// <summary>
         /// SaveBuildingSummary
@@ -234,6 +131,32 @@ namespace DeveloperPortal.Controllers
             BuildingModel buildingModel = await _buildingIntakeService.GetBuildingDetailForEdit(projectSiteId);
             return Json(buildingModel);
         }
+
+
+        /// <summary>
+        /// UpdateParkingDetail
+        /// </summary>
+        /// <param name="buildingModel"></param>
+        /// <returns></returns>
+        /// 
+        [HttpPost]
+        public async Task<ActionResult> UpdateParkingDetail([FromForm] BuildingParkingInformationModal buildingModel)
+        {
+            try
+            {
+                var result = false;
+                if (buildingModel != null && buildingModel.PropSnapshotID > 0)
+                {
+                    result = await _buildingIntakeService.SaveBuildingParkingAttributes(buildingModel, UserName);
+                }
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+                return Json(false);
+            }
+        }
+
         #endregion
 
     }

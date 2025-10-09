@@ -59,5 +59,15 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// <param name="projectSiteId"></param>
         /// <returns></returns>
         Task<PropSnapshot?> PropSnapshots(int projectSiteId);
+
+
+        /// <summary>
+        /// StructureAttribute
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        Task<StructureAttribute?> StructureAttribute(int propSnapshotId);
+
+        Task<StructureAttribute> UpdateStructureAttributesAsync(StructureAttribute structureAttribute);
     }
 }

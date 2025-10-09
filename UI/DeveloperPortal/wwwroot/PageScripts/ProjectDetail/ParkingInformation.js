@@ -1,37 +1,9 @@
 ﻿var dtBuildingDataTable;
 
-var ParkingInformation=
-{   
-    init:function () 
-    {
-        $("#ParkingInfoForm").submit(function (event) {
-        event.preventDefault(); // Prevent normal form submission
-        $('#cm_loader').attr("hidden", false);
-        $('.blockUI').attr("hidden", true);
-        $('.btn.btn-primary').attr("disabled", true);
-        $.ajax({
-             //   url: "@Url.Action("UpdateParkingDetail", new { controller = "ProjectDetail", area = "Construction" })",
-            url: APPURL + "ProjectDetail/UpdateParkingDetail",
-            type: "POST",
-            data: $(this).serialize(),
-           
-            success: function (response) {
-                $('#cm_loader').attr("hidden", true);
-                $('.btn.btn-primary').attr("disabled", false);
-                BuildingInformationData = [];
-                ParkingInformation.reset();
-                BuildingInformation.ReloadBuildingDt();
-                showMessage("Success", "Record Updated Successfully.");
-            },
-            error: function (xhr) {
-                $('#cm_loader').attr("hidden", true);
-                $('.btn.btn-primary').attr("disabled", false);
-                ParkingInformation.reset();
-                BuildingInformation.ReloadBuildingDt();
-                showMessage("Error", "Error occurred, please try again.");
-            }
-            });
-        });
+var ParkingInformation =
+{
+    init: function () {
+       
         ParkingInformation.reset();
         ParkingInformation.CalculateTotal("chargingStations", "chargingStationsTotal");
 
@@ -53,8 +25,8 @@ var ParkingInformation=
             ParkingInformation.CalculateTotal("chargingStations", "chargingStationsTotal")
         });
     },
-   
-    CalculateTotal: function (sourceElement,totalElement) {
+
+    CalculateTotal: function (sourceElement, totalElement) {
         var total = 0;
         $("." + sourceElement).each(function (index, elem) {
             if (!isNaN($(elem).val()) && $(elem).val() !== '') {
@@ -63,11 +35,11 @@ var ParkingInformation=
         });
         $('.' + totalElement).val(total);
     },
-    reset:function () {
+    reset: function () {
         $(".input-parking-edit").addClass("input-parking");
         $(".input-parking").removeClass("input-parking-edit");
 
-        $(".radio-parking").attr("disabled",true);
+        $(".radio-parking").attr("disabled", true);
 
         $("#editParkingInfo").show();
         $("#updateBuildingParking").hide();
@@ -82,13 +54,36 @@ var ParkingInformation=
         $("#ResidentialSpaces").focus();
         $(".radio-parking").attr("disabled", false);
     },
-     update: function ()
-    {
-        $('#ParkingInfoForm').submit();
+    update: function () {
+        $('#cm_loader').attr("hidden", false);
+        $('.blockUI').attr("hidden", true);
+        $('.btn.btn-primary').attr("disabled", true);
+
+        AjaxCommunication.CreateRequest(this.window, "POST", APPURL + "BuildingIntake/UpdateParkingDetail", "html", $('#ParkingInfoForm').serialize(),
+            function (response) {
+                $('#cm_loader').attr("hidden", true);
+                $('.btn.btn-primary').attr("disabled", false);
+
+                if (response == true) {
+                    BuildingInformationData = [];
+                    ParkingInformation.reset();
+                    BuildingInformation.ReloadBuildingCurrentPage();
+                    showMessage("Success", "Record Updated Successfully.");
+                }
+                else {
+                    showMessage("Error", "Error occurred, please try again.");
+                }
+            }, function (xhr) {
+                $('#cm_loader').attr("hidden", true);
+                $('.btn.btn-primary').attr("disabled", false);
+                ParkingInformation.reset();
+                BuildingInformation.ReloadBuildingCurrentPage();
+                showMessage("Error", "Error occurred, please try again.");
+            }, true, null, false);
     },
     cancel: function () {
-        ParkingInformation.resetData();
+        ParkingInformation.reset();
         BuildingInformation.ReloadBuildingDt();
     }
-   
+
 }

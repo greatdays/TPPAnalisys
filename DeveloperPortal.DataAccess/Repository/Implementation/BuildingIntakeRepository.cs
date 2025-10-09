@@ -75,32 +75,38 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 {
                     propSnapshot.SiteAddressId = buildingModel.BuildingAddressId;
                     var structureAttribute = _context.StructureAttributes.FirstOrDefault(p => p.PropSnapshotId == buildingModel.PropSnapshotID);
-                    if (structureAttribute != null)
+                    if (structureAttribute == null)
                     {
-                        if (!string.IsNullOrWhiteSpace(buildingModel.BuildingPermitNumber))
-                        {
-                            structureAttribute.BuildingPermitNumber = Convert.ToInt32(buildingModel.BuildingPermitNumber);
-                        }
-
-                        structureAttribute.BuildingDescription = buildingModel.BuildingDescription;
-                        structureAttribute.NonResidental = buildingModel.NonResidental;
-                        structureAttribute.LutApplicableAccessibilityStandardId = "";
-                        if (buildingModel.LutApplicableAccessibilityStandardIdList!=null && buildingModel.LutApplicableAccessibilityStandardIdList.Any())
-                        {
-                            structureAttribute.LutApplicableAccessibilityStandardId = string.Join(",", buildingModel.LutApplicableAccessibilityStandardIdList);
-                        }
-
-                        structureAttribute.MobilityDesignatedUnitNumbers = buildingModel.NumberOfMobilityUnits;
-                        structureAttribute.HearingVisionDesignatedUnitNumbers = buildingModel.NumberOfCommunicationUnits;
-                        structureAttribute.UnitDesignationTotal = buildingModel.NumberOfAdaptableUnits;
-                        structureAttribute.NumberOfFloors = buildingModel.NumberOfFloors;
-                        structureAttribute.Elevator = buildingModel.IsElevator;
-                        structureAttribute.TotalResidentialParking = buildingModel.NumberOfParkings;
-                        structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
-                        structureAttribute.ModifiedBy = userName;
-                        structureAttribute.ModifiedOn = DateTime.Now;
-                        _context.StructureAttributes.Update(structureAttribute);
+                        structureAttribute = new StructureAttribute();
+                        structureAttribute.PropSnapshotId = buildingModel.PropSnapshotID;
+                        structureAttribute.CreatedOn = DateTime.Now;
+                        structureAttribute.CreatedBy = userName;
+                        structureAttribute = await UpdateStructureAttributesAsync(structureAttribute);
                     }
+                    if (!string.IsNullOrWhiteSpace(buildingModel.BuildingPermitNumber))
+                    {
+                        structureAttribute.BuildingPermitNumber = Convert.ToInt32(buildingModel.BuildingPermitNumber);
+                    }
+
+                    structureAttribute.BuildingDescription = buildingModel.BuildingDescription;
+                    structureAttribute.NonResidental = buildingModel.NonResidental;
+                    structureAttribute.LutApplicableAccessibilityStandardId = "";
+                    if (buildingModel.LutApplicableAccessibilityStandardIdList != null && buildingModel.LutApplicableAccessibilityStandardIdList.Any())
+                    {
+                        structureAttribute.LutApplicableAccessibilityStandardId = string.Join(",", buildingModel.LutApplicableAccessibilityStandardIdList);
+                    }
+
+                    structureAttribute.MobilityDesignatedUnitNumbers = buildingModel.NumberOfMobilityUnits;
+                    structureAttribute.HearingVisionDesignatedUnitNumbers = buildingModel.NumberOfCommunicationUnits;
+                    structureAttribute.UnitDesignationTotal = buildingModel.NumberOfAdaptableUnits;
+                    structureAttribute.NumberOfFloors = buildingModel.NumberOfFloors;
+                    structureAttribute.Elevator = buildingModel.IsElevator;
+                    structureAttribute.TotalResidentialParking = buildingModel.NumberOfParkings;
+                    structureAttribute.ParkingAvailableAtbuildingLevel = buildingModel.ParkingAvailableAtbuildingLevel;
+                    structureAttribute.ModifiedBy = userName;
+                    structureAttribute.ModifiedOn = DateTime.Now;
+                    _context.StructureAttributes.Update(structureAttribute);
+
                     var structure = _context.Structures.FirstOrDefault(p => p.StructureId == buildingModel.BuildingId && p.Source == "Construction");
                     if (structure != null)
                     {
@@ -170,6 +176,32 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         public async Task<PropSnapshot?> PropSnapshots(int projectSiteId)
         {
             return await _context.PropSnapshots.Include(x => x.ProjectSite).FirstOrDefaultAsync(x => x.IdentifierType == "ProjectSite" && x.ProjectSiteId == projectSiteId);
+        }
+
+
+        /// <summary>
+        /// StructureAttribute
+        /// </summary>
+        /// <param name="propSnapshotId"></param>
+        /// <returns></returns>
+        public async Task<StructureAttribute?> StructureAttribute(int propSnapshotId)
+        {
+            return await _context.StructureAttributes.FirstOrDefaultAsync(p => p.PropSnapshotId == propSnapshotId);
+        }
+
+        /// <summary>
+        /// UpdateStructureAttributesAsync
+        /// </summary>
+        /// <param name="structureAttribute"></param>
+        /// <returns></returns>
+        public async Task<StructureAttribute> UpdateStructureAttributesAsync(StructureAttribute structureAttribute)
+        {
+            if (structureAttribute.StructureAttributeId == 0)
+            { _context.StructureAttributes.Add(structureAttribute); }
+            else { _context.StructureAttributes.Update(structureAttribute); }
+
+            await _context.SaveChangesAsync();
+            return structureAttribute;
         }
 
     }
