@@ -1,8 +1,12 @@
 ﻿@using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
+@using DeveloperPortal.Models.IDM
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
 @{
-    DeveloperPortal.Models.IDM.UserSession usr = DeveloperPortal.Models.IDM.UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+    var usr = UserSession.GetUserSession(HttpContextAccessor.HttpContext);
+    var appUrl = Configuration["AppSettings:ApplicationURL"];
+    var isLoggedIn = (usr != null && usr.UserID != 0).ToString().ToLower(); // "true" or "false"
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -157,10 +161,54 @@
                                         }
 
                                         <!-- Logout -->
-                                        <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("LogOff", "Login")">
+                                        <!-- Hidden logout form -->
+                                        <form id="logoutForm" method="post" action="@Url.Action("LogOff", "Login")" style="display:none;">
+                                            @Html.AntiForgeryToken()
+                                        </form>
+
+                                        <!-- Logout button -->
+                                        <a class="dropdown-item d-flex align-items-center text-primary" href="#" id="btnLogout">
                                             <i class="fas fa-sign-out-alt me-2 account-dropdown"></i>
                                             <span>Logout</span>
                                         </a>
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function(){
+
+                                                // Public landing page after logout
+                                                var logoutRedirectUrl = '@Configuration["AppSettings:ApplicationURL"]';
+
+                                                // Ensure trailing slash
+                                                if(!logoutRedirectUrl.endsWith("/")) logoutRedirectUrl += "/";
+
+                                                // Logout button
+                                                var btnLogout = document.getElementById("btnLogout");
+                                                if(btnLogout){
+                                                    btnLogout.addEventListener("click", function(e){
+                                                        e.preventDefault();
+
+                                                        // 1️⃣ Set cross-tab logout flags
+                                                        localStorage.setItem("isLoggedIn", "false");
+                                                        localStorage.setItem("logoutTimestamp", new Date().getTime());
+
+                                                        // 2️⃣ Submit the hidden POST logout form
+                                                        var form = document.getElementById("logoutForm");
+                                                        if(form) form.submit();
+                                                    });
+                                                }
+
+                                                // Cross-tab logout listener
+                                                window.addEventListener("storage", function(e){
+                                                    if( localStorage.getItem("isLoggedIn") === "false"){
+                                                        // Redirect to **public landing page** (not protected)
+                                                        window.location.href = logoutRedirectUrl;
+                                                    }
+                                                });
+                                            });
+                                        </script>
+
+
+
+
 
                                     </div>
                                 </div>
@@ -278,6 +326,19 @@
 
         <!-- Modal PopUp End -->
     @Html.Partial("_LoadingOverlay")
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var isLoggedIn = @Html.Raw(isLoggedIn); // true/false
+            var appUrl = '@appUrl';
+
+            // Redirect logged-in users hitting the root URL
+            if(isLoggedIn && window.location.pathname === "/") {
+                window.location.href = appUrl + "Dashboard";
+            }
+        });
+    </script>
+
     </body>
 
 <script>
