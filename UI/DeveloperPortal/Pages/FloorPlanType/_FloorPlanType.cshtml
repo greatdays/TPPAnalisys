@@ -14,7 +14,7 @@
 	</table>
 	</div>
 </div>
-<div class="modal fade discrepencyModal custModal" id="editFloorPlanType" tabindex="-1" role="dialog" aria-labelledby="editFloorPlanTypeTitle" aria-hidden="true">
+<div class="modal fade discrepencyModal custModal" id="editFloorPlanType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editFloorPlanTypeTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -33,7 +33,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade discrepencyModal custModal" id="addFloorPlanType" tabindex="-1" role="dialog" aria-labelledby="addFloorPlanTypeTitle" aria-hidden="true">
+<div class="modal fade discrepencyModal custModal" id="addFloorPlanType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addFloorPlanTypeTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 		<form id="floorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="AddFloorPlanType">
 			<input type="hidden" name="ProjectSiteID" value="@Model.ProjectSiteID" />
