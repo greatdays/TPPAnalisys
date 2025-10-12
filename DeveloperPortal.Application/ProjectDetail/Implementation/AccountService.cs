@@ -1,8 +1,4 @@
-﻿using System.Data;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Reflection.Metadata;
-using DeveloperPortal.Application.Common;
+﻿using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models;
@@ -18,6 +14,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Data;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Reflection.Metadata;
+using System.Text;
 using static DeveloperPortal.Domain.PropertySnapshot.Constants;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
@@ -551,6 +553,80 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
         }
 
+
+        public async Task<bool> CreateProjectWithNewAPNandSite(ProjectProvisionRequest provisionModel, HttpContext httpContext)
+        {
+            try
+            {
+                var userName = UserSession.GetUserSession(httpContext).UserName;
+                if (string.IsNullOrWhiteSpace(userName)) return false;
+
+                // 1) PCMS first (fund 8 = TEMP/no association yet)
+                provisionModel.UserName = userName;
+                provisionModel.LutProjectFundId = 8;
+
+                var pcms = await ProvisionProjectAndSiteforPCMS(provisionModel);
+                if (pcms == null || pcms.Status != ProvisionStatus.Success)
+                    return false;
+
+                // 2) AAHR PnC SP (same SP, mapped from provisionModel)
+                var siteAddressIdInt = TryParseInt(provisionModel.SiteAddressID) ?? TryParseInt(provisionModel.RefSiteAddressId);
+
+                var parameters = new[]
+                {
+            new SqlParameter("APN",            (object)provisionModel.APN ?? DBNull.Value),
+            new SqlParameter("ProjectAddress", (object)provisionModel.ProjectAddress ?? DBNull.Value),
+            new SqlParameter("SiteAddressID",  (object)siteAddressIdInt ?? DBNull.Value),
+            new SqlParameter("UserName",       userName),
+            new SqlParameter("ProjectName",    (object)provisionModel.ProjectName ?? DBNull.Value),
+            new SqlParameter("PropertyName",   (object)provisionModel.PropertyName ?? DBNull.Value),
+        };
+
+                var result = await _storedProcedureExecutor
+                    .ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
+                        StoredProcedureNames.SP_uspCreateNewProjectandSite,
+                        parameters);
+
+                if (result == null || result.ProjectID <= 0)
+                    return false;
+
+                // 3) Link PCMS IDs to AAHR
+                //Hide for now since not sure about the value
+                //try
+                //{
+                //    var linkModel = new ProjectSiteModel
+                //    {
+                //        ProjectSiteId = result.ProjectSiteID,          // from AAHR
+                //        RefProjectId = pcms.RefProjectId,             // from PCMS
+                //        RefProjectSiteId = pcms.RefProjectSiteId,         // from PCMS
+                //        RefSiteAddressId = TryParseInt(pcms.RefSiteAddressId) ?? 0, // PCMS class uses string
+                //        FileGroup = pcms.FileGroup
+                //    };
+
+                //    await _accountRepository.UpdatePnctoPCMSProjectSite(linkModel, userName);
+                //}
+                //catch
+                //{
+                //    // log if you want; do not fail whole flow
+                //}
+
+                // 4) Associate current user to the new AAHR project (existing flow)
+                var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                if (contactIdentifier != null)
+                {
+                    var projects = new List<string> { result.ProjectID.ToString() };
+                    await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
         public async Task<(List<int> Saved, List<int> NotSaved)> SaveAssnPropContact(List<string> projects, HttpContext httpContext, int contactIdentifierID )
         {
             var userName = UserSession.GetUserSession(httpContext).UserName;
@@ -589,6 +665,123 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
             }
             return (savedProjects, notSavedProjects);
+        }
+
+        public async Task<ProjectProvision> ProvisionProjectAndSiteforPCMS(
+     ProjectProvisionRequest request,
+     CancellationToken ct = default)
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(_config["AreaMgmtAPIURL:PropertyApiURL"]),
+                Timeout = TimeSpan.FromSeconds(60)
+            };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Convert string IDs → int? for API
+            int? refSiteAddressId = TryParseInt(request.RefSiteAddressId)
+                                    ?? TryParseInt(request.SiteAddressID);
+
+            // Build payload the PCMS API expects (AddressText/ZipCode)
+            var payload = new
+            {
+                ProjectName = Cap(request.ProjectName, 200),
+                PropertyName = Cap(request.PropertyName, 200),
+                APN = Cap(request.APN, 40),
+                AddressText = Cap(request.ProjectAddress, 500),
+                UserName = Cap(request.UserName, 100),
+                LutProjectFundId = request.LutProjectFundId,
+                RefSiteAddressId = refSiteAddressId,               // int? or null
+
+                HouseNum = Cap(request.HouseNum, 10),
+                HouseFracNum = Cap(request.HouseFracNum, 10),
+                PreDirCd = Cap(request.PreDirCd, 2),
+                StreetName = Cap(request.StreetName, 100),
+                StreetTypeCd = Cap(request.StreetTypeCd, 10),
+                PostDirCd = Cap(request.PostDirCd, 2),
+                City = Cap(request.City, 100),
+                ZipCode = Cap(request.Zip, 10)            // API uses ZipCode
+            };
+
+            var body = JsonConvert.SerializeObject(payload);
+            using var content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponse;
+            try
+            {
+                httpResponse = await client.PostAsync("AcHP/ProvisionProjectAndSite", content, ct).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException ex)
+            {
+                return new ProjectProvision { Status = ProvisionStatus.RetryableError, ErrorMessage = "Timed out or canceled: " + ex.Message };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ProjectProvision { Status = ProvisionStatus.UnknownError, ErrorMessage = "HTTP error: " + ex.Message };
+            }
+
+            var json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                return new ProjectProvision
+                {
+                    Status = ProvisionStatus.SqlError,
+                    ErrorCode = ((int)httpResponse.StatusCode).ToString(),
+                    ErrorMessage = string.IsNullOrWhiteSpace(json) ? "PCMS API failed." : json
+                };
+            }
+
+            // Prefer strongly-typed BaseResponse<ProjectProvision>
+            try
+            {
+                var loose = JsonConvert.DeserializeObject<BaseResponse>(json);
+                if (loose == null || loose.Response == null)
+                {
+                    return new ProjectProvision
+                    {
+                        Status = ProvisionStatus.UnknownError,
+                        ErrorMessage = "Empty BaseResponse."
+                    };
+                }
+
+                // Response may be a JToken/JObject or a raw string
+                ProjectProvision prov = null;
+                var token = loose.Response as JToken;
+                if (token != null)
+                {
+                    prov = token.ToObject<ProjectProvision>();
+                }
+                else
+                {
+                    var respString = loose.Response.ToString();
+                    prov = JsonConvert.DeserializeObject<ProjectProvision>(respString);
+                }
+
+                return prov ?? new ProjectProvision
+                {
+                    Status = ProvisionStatus.UnknownError,
+                    ErrorMessage = "Unable to parse provisioning result."
+                };
+            }
+            catch (Exception ex2)
+            {
+                return new ProjectProvision
+                {
+                    Status = ProvisionStatus.UnknownError,
+                    ErrorMessage = "Parsing error: " + ex2.Message
+                };
+            }
+        }
+
+        // helpers
+        private static int? TryParseInt(string s) { int v; return int.TryParse(s, out v) ? (int?)v : null; }
+        private static string Cap(string s, int max)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return null;
+            s = s.Trim();
+            return s.Length <= max ? s : s.Substring(0, max);
         }
 
 
