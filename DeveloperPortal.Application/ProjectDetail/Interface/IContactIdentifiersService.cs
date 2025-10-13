@@ -29,7 +29,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         /// </summary>
         /// <param name="contactIdentifierId"></param>
         /// <returns></returns>
-        Task<Domain.ProjectDetail.ContactRenderModel> ContactIdentifier(int contactIdentifierId);
+        Task<Domain.ProjectDetail.ContactRenderModel> ContactIdentifier(int contactIdentifierId, int assnPropContactId);
 
         /// <summary>
         /// DeleteContact

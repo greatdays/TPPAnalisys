@@ -1,5 +1,6 @@
 ﻿
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Extensions;
 using DeveloperPortal.Models.IDM;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ using ContactRenderModel = DeveloperPortal.Domain.ProjectDetail.ContactRenderMod
 
 namespace DeveloperPortal.Controllers
 {
-    [Authorize]
+   [Authorize]
     public class DevelopmentTeamController : Controller
     {
         private IDevelopmentTeamService _developmentTeamService;
@@ -40,20 +41,23 @@ namespace DeveloperPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> AddContact(string apn, int caseId, int projectId = 0, int projectSiteId = 0)
+        public async Task<JsonResult> AddContact(DevelopmentTeamModel developmentTeamModel)
         {
             var contactRenderModel = new ContactRenderModel();
-            contactRenderModel = await _developmentTeamService.GetContactDetail(0, apn, caseId, projectId, projectSiteId);
+            contactRenderModel = await _developmentTeamService.GetContactDetail(developmentTeamModel);
             string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
             return Json(html);
         }
 
         [HttpPost]
-        public async Task<JsonResult> EditContact(int contactIdentifierId, string apn, int caseId, string companyName, int projectId = 0, int projectSiteId = 0)
+        public async Task<JsonResult> EditContact(DevelopmentTeamModel developmentTeamModel)
         {
             var contactRenderModel = new ContactRenderModel();
-            contactRenderModel = await _developmentTeamService.GetContactDetail(contactIdentifierId, apn, caseId, projectId, projectSiteId);
-            contactRenderModel.Company = companyName;
+            contactRenderModel = await _developmentTeamService.GetContactDetail(developmentTeamModel);
+            contactRenderModel.PropContactId = developmentTeamModel.AssnPropContactID;
+            
+            contactRenderModel.Type = developmentTeamModel.ContactType;
+            contactRenderModel.Company = developmentTeamModel.CompanyName;
             string html = this.RenderViewAsync("../DevelopmentTeam/AddContact", contactRenderModel, true).Result;
             return Json(html);
 

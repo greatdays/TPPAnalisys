@@ -95,7 +95,7 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         /// <param name="popContacts"></param>
         /// <param name="contactTypes"></param>
         /// <returns></returns>
-        Task<bool> RemoveAssContactAndServiceReqContact(ContactIdentifier contact, List<AssnPropContact> popContacts, string[] contactTypes, string userName);
+        Task<bool> RemoveAssContactAndServiceReqContact(ContactIdentifier contact, List<AssnPropContact> popContacts, List<LutContactType> contactTypes, string userName);
 
         /// <summary>
         /// ServiceRequestContacts

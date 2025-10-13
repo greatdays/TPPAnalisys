@@ -250,9 +250,11 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         /// <param name="popContacts"></param>
         /// <param name="contactTypes"></param>
         /// <returns></returns>
-        public async Task<bool> RemoveAssContactAndServiceReqContact(ContactIdentifier contact, List<AssnPropContact> popContacts, string[] contactTypes, string userName)
+        public async Task<bool> RemoveAssContactAndServiceReqContact(ContactIdentifier contact, List<AssnPropContact> popContacts, List<LutContactType> contactTypes, string userName)
         {
-            var removedPC = popContacts.Where(x => x.LutContactType!=null && !contactTypes.Contains(x.LutContactType.ContactType)).ToList();
+            var contactTypeIds = contactTypes.Select(x => x.LutContactTypeId).ToList();
+            var PropcontactTypeIds = popContacts.Select(x => x.LutContactTypeId).ToList();
+            var removedPC = popContacts.Where(x => !contactTypeIds.Contains(x.LutContactTypeId)).ToList();
             var isModified = false;
             foreach (var pc in removedPC)
             {
@@ -260,11 +262,10 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 popContacts.Remove(pc);
                 isModified = true;
             }
-            var removedSC = _context.ServiceRequestContacts.Where(x => x.ContactIdentifierId == contact.ContactIdentifierId && !contactTypes.Any(ct => ct == x.LutContactType.ContactType)).ToList();
+            var removedSC = _context.ServiceRequestContacts.Where(x => x.ContactIdentifierId == contact.ContactIdentifierId && PropcontactTypeIds.Contains(x.LutContactTypeId) && !contactTypeIds.Contains(x.LutContactTypeId)).ToList();
 
             if (removedSC != null)
             {
-                long serviceRequestID = removedSC.Count > 0 ? removedSC.FirstOrDefault().ServiceRequestId : 0;
                 foreach (var sc in removedSC)
                 {
                     _context.ServiceRequestContacts.Remove(sc);

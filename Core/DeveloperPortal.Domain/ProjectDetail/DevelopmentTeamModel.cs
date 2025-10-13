@@ -13,10 +13,11 @@ namespace DeveloperPortal.Domain.ProjectDetail
     public class DevelopmentTeamModel
     {
         public int ProjectSiteId { get; set; }
+        public int CaseId { get; set; }
+        public string APN { get; set; }
         public int ProjectId { get; set; }
         public int ContactId { get; set; }
-        public int ContactIdentifierID { get; set; } = 0;
-        public int? ContactIdentifierId { get; set; }
+        public int ContactIdentifierId { get; set; }
         public string ContactName { get; set; }
         public string CompanyName { get; set; }
         public string TeamRole { get; set; }
@@ -27,7 +28,8 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string Source { get; set; }
         public string FullAddress { get; set; }
         public string Status { get; set; }
-
+        public int AssnPropContactID { get; set; }
+        public int LutContactTypeID { get; set; }
     }
 
     public class ContactRenderModel
@@ -74,6 +76,7 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string PostDirection { get; set; }
 
         [Display(Name = "Address Line 1")]
+        [Required(ErrorMessage = "Please enter  AddressLine1")]
         public string AddressLine1 { get; set; }
 
         [Display(Name = "Address Line 2")]
@@ -93,6 +96,8 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public string Unit { get; set; }
         public string Phone { get; set; }
         public string PhoneType { get; set; }
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "Please enter Email")]
         public string Email { get; set; }
         public bool IsMarkObsolete { get; set; }
         public string Status { get; set; }

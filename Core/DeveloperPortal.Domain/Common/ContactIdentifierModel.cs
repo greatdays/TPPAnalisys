@@ -114,5 +114,6 @@ namespace DeveloperPortal.Models.Common
         public DateTime? DateOfBirth { get; set; }
         public string SocialSecurityNumber { get; set; }
         public string AdditionalEmail { get; set; }
+        public int PropContactId { get; set; }
     }
 }

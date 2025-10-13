@@ -46,6 +46,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 contact = await _contactIdentifierRepository.ContactIdentifier(ContactIdentifierID);
                 contactOrganization = await _contactIdentifierRepository.AssnOrganizationContact(ContactIdentifierID, contactRenderModel.Company);
                 popContacts = await _contactIdentifierRepository.AssnPropContacts(ContactIdentifierID);
+                popContacts = popContacts.Where(x => x.AssnPropContactId == contactRenderModel.PropContactId).ToList();
                 if (contactOrganization == null)
                 {
                     contactOrganization = new AssnOrganizationContact();
@@ -66,6 +67,27 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             contact.BirthMonth = contactRenderModel.BirthMonth;
             contact.BirthYear = contactRenderModel.BirthYear;
             contact.IsPrimary = contactRenderModel.IsPrimary;
+
+
+            contact.LutPhoneTypeCd = contactRenderModel.LutPhoneTypeCd;
+            contact.PhoneHome = contactRenderModel.HomePhoneNumber;
+            contact.PhoneWork = contactRenderModel.BusinessPhoneNumber;
+            contact.PhoneMobile = contactRenderModel.MobilePhoneNumber;
+            contact.PhoneExtension = contactRenderModel.PhoneExtension?.Trim();
+            contact.HouseNum = contactRenderModel.HouseNum;
+            contact.HouseFracNum = contactRenderModel.HouseFracNum;
+            contact.PreDirCd = contactRenderModel.PreDirCd;
+            contact.StreetName = contactRenderModel.StreetName;
+            contact.StreetTypeCd = contactRenderModel.StreetTypeCd;
+            contact.PostDirCd = contactRenderModel.PostDirCd;
+            contact.City = contactRenderModel.City;
+            contact.State = contactRenderModel.State;
+            contact.Zip = contactRenderModel.Zip;
+            contact.UnitNo = contactRenderModel.Unit;
+            contact.IsMailingAddress = contactRenderModel.IsMarkedForMailing;
+            contact.Source = !string.IsNullOrEmpty(contactRenderModel.Source) ? contactRenderModel.Source : "Staff";
+            contact.ContactType = contactRenderModel.ContactTypeName;
+
 
             //To add Contractor Type in Attribute column
             if (contactRenderModel.ContractorType == "" || contactRenderModel.ContractorType == null)
@@ -102,24 +124,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             #endregion
 
 
-            contact.LutPhoneTypeCd = contactRenderModel.LutPhoneTypeCd;
-            contact.PhoneHome = contactRenderModel.HomePhoneNumber;
-            contact.PhoneWork = contactRenderModel.BusinessPhoneNumber;
-            contact.PhoneMobile = contactRenderModel.MobilePhoneNumber;
-            contact.PhoneExtension = contactRenderModel.PhoneExtension?.Trim();
-            contact.HouseNum = contactRenderModel.HouseNum;
-            contact.HouseFracNum = contactRenderModel.HouseFracNum;
-            contact.PreDirCd = contactRenderModel.PreDirCd;
-            contact.StreetName = contactRenderModel.StreetName;
-            contact.StreetTypeCd = contactRenderModel.StreetTypeCd;
-            contact.PostDirCd = contactRenderModel.PostDirCd;
-            contact.City = contactRenderModel.City;
-            contact.State = contactRenderModel.State;
-            contact.Zip = contactRenderModel.Zip;
-            contact.UnitNo = contactRenderModel.Unit;
-            contact.IsMailingAddress = contactRenderModel.IsMarkedForMailing;
-            contact.Source = !string.IsNullOrEmpty(contactRenderModel.Source) ? contactRenderModel.Source : "Staff";
-            contact.ContactType = contactRenderModel.ContactTypeName;
 
             /*If Company is blank/null then escape add/update for organisation*/
             if (!string.IsNullOrEmpty(contactRenderModel.Company))
@@ -157,7 +161,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             #region remove AssnPropContact ,ServiceRequestContact for edit
             if (contactRenderModel.ContactIdentifierID > 0)
             {
-                await _contactIdentifierRepository.RemoveAssContactAndServiceReqContact(contact, popContacts, contactTypes, contactRenderModel.UserName);
+               await _contactIdentifierRepository.RemoveAssContactAndServiceReqContact(contact, popContacts, lutPropContact, contactRenderModel.UserName);
             }
 
             #endregion remove AssnPropContact, ServiceRequestContact
@@ -177,9 +181,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 }
 
                 //Add Association
-                APC.IsPrimaryAssnType = primaryAssociations.Contains(lpc.ContactType);
+                APC.IsPrimaryAssnType = true;
                 APC.LutContactTypeId = lpc.LutContactTypeId;
                 APC.Source = contactRenderModel.Source;
+                APC.CreatedBy = contactRenderModel.UserName;
+                APC.CreatedOn = DateTime.Now;
                 _contactIdentifierRepository.AddAssociationData(contactRenderModel, ref projectId, ref projectSiteId, APC);
                 APC.IsContactPublic = Convert.ToBoolean(contactRenderModel.IsContactPublic);
 
@@ -194,7 +200,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     {
                         ServiceRequestId = contactRenderModel.ServiceRequestID,
                         LutContactTypeId = lpc.LutContactTypeId,
-                        ContactIdentifierId = ContactIdentifierID
+                        ContactIdentifierId = ContactIdentifierID,
+                        CreatedBy = contactRenderModel.UserName,
+                        CreatedOn=DateTime.Now
                     };
 
                     contact.ServiceRequestContacts.Add(serviceRequestContact);
@@ -206,7 +214,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             _contactIdentifierRepository.SaveContact(contactRenderModel, contact);
             ContactIdentifierID = contact.ContactIdentifierId;
             // Update IsPrimaryAssnType false if selected contact and property other contacts have same ContactType with IsPrimaryAssnType true and IsContactPublic
-            await _contactIdentifierRepository.SetPrimaryAndPublicContactDetail(contactRenderModel, ContactIdentifierID, primaryAssociations, lutPropContact, projectId, projectSiteId);
+            //await _contactIdentifierRepository.SetPrimaryAndPublicContactDetail(contactRenderModel, ContactIdentifierID, primaryAssociations, lutPropContact, projectId, projectSiteId);
 
             return ContactIdentifierID;
         }
@@ -216,10 +224,9 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// </summary>
         /// <param name="contactIdentifierId"></param>
         /// <returns></returns>
-        public async Task<Domain.ProjectDetail.ContactRenderModel> ContactIdentifier(int contactIdentifierId)
+        public async Task<Domain.ProjectDetail.ContactRenderModel> ContactIdentifier(int contactIdentifierId, int assnPropContactId)
         {
             var contactIdentifier = await _contactIdentifierRepository.ContactIdentifier(contactIdentifierId);
-
             var contactRenderModel = new Domain.ProjectDetail.ContactRenderModel();
             if (contactIdentifier != null)
             {
@@ -248,10 +255,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     Source = contactIdentifier.Source,
                     IsPrimary = contactIdentifier.IsPrimary,
                     Email = contactIdentifier.Email,
-                    //IdentifierValue = renderModel.IdentifierValue,
-                    //IdentifierType = renderModel.IdentifierType,
-                    
-
+                    ContactId = contactIdentifier.ContactId,
                 };
 
                 if (!string.IsNullOrWhiteSpace(contactIdentifier.Attributes))
@@ -262,13 +266,11 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 }
 
                 var assnPropContactsv = await _contactIdentifierRepository.AssnPropContacts(contactIdentifierId);
-                var lutPropContact = await _lutRepository.LutContactTypes(null);
-                var PrimaryTypeIds = assnPropContactsv.Where(x => x.IsPrimaryAssnType == true).Select(x => x.LutContactTypeId).ToList();
-                if (PrimaryTypeIds.Any())
+                if (assnPropContactsv.Any())
                 {
-                    contactRenderModel.PrimaryTypes = string.Join(",", lutPropContact.Where(x => PrimaryTypeIds.Contains(x.LutContactTypeId)).Select(x => x.ContactType).ToList());
+                    var propContact = assnPropContactsv.FirstOrDefault(x => x.AssnPropContactId == assnPropContactId);
+                    contactRenderModel.IdentifierType = propContact != null ? propContact.IdentifierType : "Project";
                 }
-                contactRenderModel.IsContactPublic = assnPropContactsv.Any(x => x.IsContactPublic == true);
             }
             return contactRenderModel;
         }
