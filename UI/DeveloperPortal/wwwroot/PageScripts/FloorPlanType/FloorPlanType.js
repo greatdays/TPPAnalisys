@@ -3,7 +3,8 @@ var FloorPlanType = {
     bathroomTypeOptions: "",
     bathroomOptionValues: "",
     LutBathroomType: [],
-    LutTotalBathroomTypeOption: [],
+    FloorPlanEditDropZone: "",
+    LutTotalBathroomTypeOption: [], 
     init: function () {
         this.loadFloorPlans();
         this.bindEditFloorPlanModal();
@@ -17,7 +18,7 @@ var FloorPlanType = {
         });
     },
 
-    bindEditFloorPlanModal: function () {
+    bindEditFloorPlanModal: function () {        
         $(document).on('click', '.edit-floorplan', function () {
             const floorPlanId = $(this).data('id');
             const modal = $('#editFloorPlanType');
@@ -27,7 +28,8 @@ var FloorPlanType = {
 
             $.get(APPURL + 'FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
                 modal.find('#edit_floorPlan').html(data);
-
+                
+                FloorPlanType.initializeEditDropzone();
             });
         });
 
@@ -35,8 +37,47 @@ var FloorPlanType = {
             $(this).find('#edit_floorPlan').html('');
         });
     },
+    // Separate function
+    initializeEditDropzone: function () {      
+        Dropzone.autoDiscover = false;
 
-    loadFloorPlans: function (isChanged) {
+        // Create new Dropzone instance
+         FloorPlanType.FloorPlanEditDropZone = new Dropzone("#divDropZoneFloorPlanEdit", {
+            //url: '/FloorPlanType/_EditFloorPlanType',
+            url:'#',
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 20,
+            maxFiles: 20,
+            paramName: "Files",
+            clickable: true,
+            acceptedFiles: ".jpg,.jpeg,.png,.gif,.pdf",
+            addRemoveLinks: false,
+            maxFilesize: 20,
+            previewTemplate: `
+                    <div class="dz-preview dz-file-preview card p-2 shadow-sm border rounded" 
+                        style="width: 180px; margin: 10px; display: flex; flex-direction: column;">
+                        <div class="mb-2">
+                            <p class="mb-1 font-weight-bold dz-filename">
+                                <span data-dz-name></span>
+                            </p>
+                            <small class="text-muted"><span data-dz-size></span></small>
+                        </div>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                style="width:0%;" data-dz-uploadprogress></div>
+                        </div>
+                        <button class="btn btn-sm btn-danger mt-auto" data-dz-remove>Remove</button>
+                        <div class="text-danger small mt-1" data-dz-errormessage></div>
+                    </div>
+                `,
+             init: function () {
+                 
+            }
+        });
+        },
+
+        loadFloorPlans: function (isChanged) {      
         const projectId = $('#hiddenProjectID').val();
 
         $.ajax({
@@ -160,27 +201,46 @@ var FloorPlanType = {
             }
         }
         if (isValid) {
-            var formData = $('#editFloorPlanForm').serialize();
-
-            $.ajax({
-                url: APPURL + 'FloorPlanType/_EditFloorPlanType',
-                type: 'POST',
-                data: formData,
-                contentType: "application/x-www-form-urlencoded",
-                success: function (response) {
-
-                    showMessage("Success", response.message);
-                    var modalEl = document.getElementById('editFloorPlanType');
-                    var modalInstance = bootstrap.Modal.getInstance(modalEl); // get existing instance
-                    if (modalInstance) {
-                        modalInstance.hide(); // close the modal
-                    }
-                    FloorPlanType.loadFloorPlans(true);
-                },
-                error: function () {
-                    $('#editFloorPlanMessage').html('<div class="alert alert-danger">An unexpected error occurred.</div>');
+            // Delay to ensure DOM is ready
+            setTimeout(function () {
+                var formEl = document.getElementById('editFloorPlanForm');
+                if (!formEl) {
+                    console.warn("Form element not found!");
+                    return;
                 }
-            });
+
+                var formData = new FormData(formEl);
+
+                // Optional: add Dropzone files here if needed
+                if (FloorPlanType.FloorPlanEditDropZone) {
+                    FloorPlanType.FloorPlanEditDropZone.getAcceptedFiles().forEach(file => {
+                        formData.append("Files", file);
+                    });
+                }
+                $.ajax({
+                    url: APPURL + 'FloorPlanType/_EditFloorPlanType',
+                    type: 'POST',
+                    data: formData,
+                    processData: false, 
+                    contentType: false,
+                    success: function (response) {                
+                        if (response.success) {
+                            var modalEl = document.getElementById('editFloorPlanType');
+                            var modalInstance = bootstrap.Modal.getInstance(modalEl);
+                            if (modalInstance) modalInstance.hide();
+                            FloorPlanType.loadFloorPlans();
+                            FloorPlanType.showEditFloorPlanAlert(response.message || "Floor Plan updated successfully!", 'success');
+
+                        } else {
+                            FloorPlanType.showEditFloorPlanAlert(response.message || "Something went wrong while updating.", 'danger');
+                        }
+                    },
+                    error: function () {
+                        $('#editFloorPlanMessage').html('<div class="alert alert-danger">An unexpected error oc curred.</div>');
+                    }
+                });
+
+            }, 10);
         }
     },
     safeHideModal: function (modalSelector) {
@@ -283,7 +343,6 @@ var FloorPlanType = {
 
         }
     },
-
     onSelectBathroomCount_Edit: function () {
         $('#bathroomTypeDiv_edit').empty();
         var selectedTotalBathroom = $("#bathroom_edit option:selected").text();
@@ -424,7 +483,73 @@ var FloorPlanType = {
                 }
             });
         }
-    }
+    },
+    deleteFloorPlanFile: function (docId, fileName) {
+
+        $.ajax({
+            url: APPURL + 'FloorPlanType/DeleteFile', 
+            type: 'POST',
+            data: { docId: docId },
+            success: function (response) {
+                if (response.success) {
+                    FloorPlanType.deleteEditFloorPlanAlert(response.message || "File deleted successfully!", 'success');
+                   // alert('File deleted successfully.');
+                    // refresh table or remove row dynamically
+                    $(`button[onclick*="${docId}"]`).closest('tr').remove();
+                } else {
+                    alert('Failed to delete file: ' + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('Error deleting file: ' + error);
+            }
+        });
+    },
+    showEditFloorPlanAlert: function (message, type = 'primary') {
+       
+        const alertBox = $('#EditfloorPlanAlert');
+        const alertMessage = $('#EditfloorPlanAlertMessage');
+
+        // Reset styles
+        alertBox
+            .removeClass('alert-primary alert-success alert-danger alert-warning')
+            .addClass(`alert-${type}`);
+
+        alertMessage.text(message);
+
+        // Show alert
+        alertBox.fadeIn(200).addClass('show');
+
+        // Auto hide after 2 seconds
+        setTimeout(() => {
+            alertBox.fadeOut(300, function () {
+                $(this).removeClass('show');
+            });
+        }, 5000);
+    },
+    deleteEditFloorPlanAlert: function (message, type = 'primary') {
+       
+        const alertBox = $('#deletefloorPlanAlert');
+        const alertMessage = $('#deletefloorPlanAlertMessage');
+
+        // Reset styles
+        alertBox
+            .removeClass('alert-primary alert-success alert-danger alert-warning')
+            .addClass(`alert-${type}`);
+
+        alertMessage.text(message);
+
+        // Show alert
+        alertBox.fadeIn(200).addClass('show');
+
+        // Auto hide after 2 seconds
+        setTimeout(() => {
+            alertBox.fadeOut(300, function () {
+                $(this).removeClass('show');
+            });
+        }, 12000);
+    },
+    
 };
 
 // Initialize when DOM is ready

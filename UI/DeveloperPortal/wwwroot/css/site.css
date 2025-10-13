@@ -12,6 +12,10 @@
     min-height: auto !important;
     clear: both;
 }
+.filetype_note {
+    font-size: 13px;
+    color: #747474;
+}
 
 /*a:focus, button:focus, input:focus, select:focus {
     box-shadow: 1px 2px 3px rgba(11, 11, 11, 0.4);

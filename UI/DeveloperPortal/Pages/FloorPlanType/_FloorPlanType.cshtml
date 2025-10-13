@@ -1,4 +1,16 @@
 ﻿@model DeveloperPortal.Domain.ProjectDetail.FloorPlanTypeModel
+@{
+	string fileTypes = "." + string.Join(",.", Model.SupportedFileTypes);
+}
+@* popup model  *@
+<div id="floorPlanAlert" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+	<span id="floorPlanAlertMessage">Floor Plan saved successfully!</span>
+	
+</div>
+
+<div id="EditfloorPlanAlert" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+	<span id="EditfloorPlanAlertMessage">Floor Plan updated successfully!</span>	
+</div>
 <div class="collapse multi-collapse show intake_form_acc_body" id="floor_plan">
 
 	<div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
@@ -103,6 +115,23 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-md-12">
+							<div id="divDropZoneFloorPlan" class="custom-dropzone d-flex flex-wrap dz-clickable">
+								<div class="dz-message">
+									<strong class="drop-strong">➜ Drop files</strong>
+									<span class="drop-light">to upload</span>
+									<div class="drop-small">(or click)</div>
+								</div>
+							</div>
+
+							<div class="text-left mt-2">
+								<small>
+									Supported files: .gif, .jpeg, .jpg, .pdf, .png <br>
+									Max. file size: 20Mb
+								</small>
+							</div>
+					</div>
+					<div class="row">
 						<div class="col-md-6 mb-3" id="bathroomTypeDiv">
 						</div>
 					</div>
@@ -111,7 +140,7 @@
 
 				<div class="modal-footer justify-content-center addFPTFooter">
 					<button type="button" class="btn btn-outline-light close-btn" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="FloorPlanType.saveFloorPlan();">Save</button>
+					<button id="btnSaveFloorPlan"  type="button"  class="btn btn-primary">Save</button>
 				</div>
 
 			</div>
@@ -125,8 +154,244 @@
 	FloorPlanType.bathroomOptionValues = `@Html.Raw(string.Join("", Model.LutTotalBathroomTypeOption.Select(x => $"<option value='{x.Value}'>{x.Text}</option>")))`;
 	FloorPlanType.LutBathroomType = @Html.Raw(Json.Serialize(Model.LutBathroomType));
 	FloorPlanType.LutTotalBathroomTypeOption = @Html.Raw(Json.Serialize(Model.LutTotalBathroomTypeOption));
+
+$(document).ready(function () {
+	Dropzone.autoDiscover = false;
+
+	// 🔹 Initialize Dropzone
+	var floorPlanDropzone = new Dropzone("#divDropZoneFloorPlan", {
+		url: '/FloorPlanType/AddFloorPlanType', 
+		autoProcessQueue: false,
+		uploadMultiple: true,
+		parallelUploads: 20,
+		maxFiles: 20,
+		paramName: "Files", // matches model property name
+		clickable: true,
+		acceptedFiles: ".jpg,.jpeg,.png,.gif,.pdf",
+		addRemoveLinks: false,
+		maxFilesize: 20, 
+		previewTemplate: `
+				<div class="dz-preview dz-file-preview card p-2 shadow-sm border rounded" 
+					 style="width: 180px; margin: 10px; display: flex; flex-direction: column;">
+					<div class="mb-2">
+						<p class="mb-1 font-weight-bold dz-filename">
+							<span data-dz-name></span>
+						</p>
+						<small class="text-muted"><span data-dz-size></span></small>
+					</div>
+					<div class="progress mb-2">
+						<div class="progress-bar bg-success" role="progressbar" style="width:0%;" data-dz-uploadprogress></div>
+					</div>
+					<button class="btn btn-sm btn-danger mt-auto" data-dz-remove>Remove</button>
+					<div class="text-danger small mt-1" data-dz-errormessage></div>
+				</div>
+			`,
+		init: function () {
+			this.on("addedfile", function (file) {
+						//console.log("DZ added:", file.name);
+					});
+					this.on("error", function(file, err) {
+						console.error("Dropzone error:", err);
+					});
+					this.on("dragenter", function() {
+						// optional: visual cue
+						$('#divDropZoneFloorPlan').addClass('dz-drag-hover');
+					});
+					this.on("dragleave", function() {
+						$('#divDropZoneFloorPlan').removeClass('dz-drag-hover');
+					});
+					this.on("drop", function() {
+						$('#divDropZoneFloorPlan').removeClass('dz-drag-hover');
+					});
+		}
+	});
+
+	// 🔹 On Save button click
+	$("#btnSaveFloorPlan").off("click").on("click", function (e) {
+		e.preventDefault();
+
+		// --- 1️⃣ Validate ---
+		var isValid = true;
+
+		if ($('#floorplan').val().trim() === '') {
+			$('#lblError_fp_floorplan').html('Please enter a valid floorplan name');
+			isValid = false;
+		} else {
+			$('#lblError_fp_floorplan').html('');
+		}
+
+		if ($('#squarefeet').val().trim() === '') {
+			$('#lblError_fp_squarefeet').html('Please enter a valid squarefeet');
+			isValid = false;
+		} else {
+			$('#lblError_fp_squarefeet').html('');
+		}
+
+		if ($('#bedroom').val() === 'Select') {
+			$('#lblError_fp_bedroom').html('Please select a valid Bedroom');
+			isValid = false;
+		} else {
+			$('#lblError_fp_bedroom').html('');
+		}
+
+		if ($('#bathroom').val() === 'Select') {
+			$('#lblError_fp_bathroom').html('Please select a valid Bathroom');
+			isValid = false;
+		} else {
+			$('#lblError_fp_bathroom').html('');
+		}
+
+		if (!isValid) return;
+
+		// --- 2️⃣ Build FormData ---
+		// var formData = new FormData();
+		var formData = new FormData($('#floorPlanForm')[0]);
+		// Hidden + Input fields
+		formData.append("ProjectSiteID", $('input[name=ProjectSiteID]').val());
+		formData.append("ProjectID", $('#hiddenProjectID').val());
+		formData.append("CaseId", $('input[name=CaseId]').val());
+		formData.append("Name", $('#floorplan').val());
+		formData.append("SquareFeet", $('#squarefeet').val());
+		formData.append("LutTotalBedroomID", $('#bedroom').val());
+		formData.append("LutTotalBathroomID", $('#bathroom').val());
+
+
+		// --- Append dynamic bathroom types & options ---
+		$('.add_bTypes').each(function (i, elem) {
+			formData.append("BathroomTypes[" + i + "].TypeId", $(elem).val());
+		});
+
+		$('.add_bOptions').each(function (i, elem) {
+			formData.append("BathroomTypes[" + i + "].OptionId", $(elem).val());
+		});
+			// Enforce maxFiles
+		const acceptedFiles = floorPlanDropzone.getAcceptedFiles();
+		if (acceptedFiles.length > 20) {
+			showFloorPlanAlert("Cannot upload more than 20 files.", "danger");
+			acceptedFiles = acceptedFiles.slice(0, 20); // only keep first 20
+		}
+
+		// --- 3️⃣ Append files ---
+		floorPlanDropzone.getAcceptedFiles().forEach(file => {
+			formData.append("Files", file);
+		});
+		
+
+		// --- 4️⃣ Send Ajax ---
+		$.ajax({
+			url: '/FloorPlanType/AddFloorPlanType',
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function (response) {
+				
+				if (response.success) {
+							
+					$('#floorPlanForm')[0].reset();
+					floorPlanDropzone.removeAllFiles(true);
+					var modalEl = document.getElementById('addFloorPlanType');
+					var modalInstance = bootstrap.Modal.getInstance(modalEl);
+					if (modalInstance) modalInstance.hide();
+					FloorPlanType.loadFloorPlans?.();
+					
+					showFloorPlanAlert(response.message || "Floor Plan saved successfully!", 'success');
+				} else {
+							  showFloorPlanAlert(response.message || "Something went wrong while saving.", 'danger');
+				}
+			},
+			error: function (xhr) {
+						showFloorPlanAlert("An error occurred while uploading.", 'danger');
+			}
+					
+		});
+	});
+});
+
+
+	function showFloorPlanAlert(message, type = 'primary') {
+		const alertBox = $('#floorPlanAlert');
+		const alertMessage = $('#floorPlanAlertMessage');
+
+		// Reset styles
+		alertBox
+			.removeClass('alert-primary alert-success alert-danger alert-warning')
+			.addClass(`alert-${type}`);
+
+		alertMessage.text(message);
+
+		// Show alert
+		alertBox.fadeIn(200).addClass('show');
+
+		// Auto hide after 2 seconds
+		setTimeout(() => {
+			alertBox.fadeOut(300, function () {
+				$(this).removeClass('show');
+			});
+		}, 12000);
+	}
+
 </script>
+
 <style>
+
+	/* custome css for the drop zone  */
+	.custom-dropzone {
+		border: 2px dashed #999 !important;
+		border-radius: 4px !important;
+		background: #fdfdfd !important;
+		min-height: 120px !important;
+		padding: 30px !important;
+		text-align: center !important;
+		cursor: pointer !important;
+		font-family: "Segoe UI", Arial, sans-serif !important;
+	}
+
+		.custom-dropzone.dz-drag-hover {
+			border-color: #444 !important;
+			background: #f8f8f8 !important;
+		}
+
+		.custom-dropzone .dz-message {
+			font-size: 20px !important;
+			font-weight: bold !important;
+			color: #000 !important;
+			width:100%;
+			margin-bottom:10px;
+		}
+
+		.custom-dropzone .drop-strong {
+			font-size: 22px !important;
+			font-weight: bold !important;
+			color: #000 !important;
+		}
+
+		.custom-dropzone .drop-light {
+			font-size: 22px !important;
+			font-weight: normal !important;
+			color: #333 !important;
+		}
+
+		.custom-dropzone .drop-small {
+			font-size: 14px !important;
+			color: #666 !important;
+			margin-top: 5px !important;
+		}
+
+		.dz-preview {
+			width: 150px !important; /* fixed width for square-like appearance */
+			margin: 10px; /* spacing between items */
+			display: inline-block; /* allows flex/grid to wrap properly */
+			vertical-align: top;
+		}
+
+		.dz-preview img {
+			width: 100%;
+			height: 180px;
+			object-fit: cover;
+			border-radius: 50%;
+		}
+		/* ends here  */
 	#floorplan_bathroomtype {
 		width: 592px;
 	}

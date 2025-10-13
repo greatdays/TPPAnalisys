@@ -1,9 +1,15 @@
 ﻿@model DeveloperPortal.Domain.ProjectDetail.FloorPlanTypeModel
+@* popup for delete 	 *@
+<div id="deletefloorPlanAlert" class="alert alert-primary alert-dismissible fade show" role="alert" style="display:none;">
+        <span id="deletefloorPlanAlertMessage">Floor Plan updated successfully!</span>
+    </div>
+
 <form id="editFloorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="_EditFloorPlanType">
 	<div class="row">
 		<div class="col-md-6 mb-3">
 			<input type="hidden" name="FloorPlanTypeID" value="@Model.FloorPlanTypeID" />
 			<label class="wraping_label" for="floorplan_edit">Floor Plan Type <span class="text-danger">*</span></label>
+			<input type="hidden" name="ProjectID" value="@Model.ProjectID" />
 			<input class="form-control" type="text" id="floorplan_edit" name="Name" value="@Model.Name" autocomplete="off" />
 			<div class="invalid-feedback"></div>
 			<span class="text-danger" id="lblError_fp_floorplan_edit"></span>
@@ -86,20 +92,133 @@
 										@:<option value="@type.Value" @isSelected>@type.Text</option>
 									}
 								</select>
-								
-									<span class="text-danger" style="@(!isFull ? "display:none;" : "")" id="bTypes_0_edit_span_option"></span>
-								
+
+								<span class="text-danger" style="@(!isFull ? "display:none;" : "")" id="bTypes_0_edit_span_option"></span>
+
 							</td>
-    </tr>
-}
-			</tbody>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+
+		<div class="row">
+			<div class="col-md-6 mb-3" id="bathroomTypeDiv">
+			</div>
+		</div>
+
+	</div>
+
+	<div class="row">
+		<table class="table table-bordered table-striped" id="existingFilesTable">
+		<thead class="table-light">
+			<tr>
+				<th>File Name</th>
+				<th>File Size</th>
+				     @* <th>Preview</th> *@
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+        @if (Model.File != null && Model.File.Any())
+        {
+            foreach (var file in Model.File)
+            {
+
+                <tr id="fileRow_@file.Name">
+                    <td>@file.Name</td>
+                    <td>@file.FileSize</td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "FundingSource", new { fileName = file.Name, filePath = file.URl })', '@file.Name')"><i class="fas fa-download"></i></button>
+						 <!-- Delete Button -->
+						<button type="button" 
+								class="btn btn-sm btn-danger" 
+								onclick="FloorPlanType.deleteFloorPlanFile('@file.DocID', '@file.Name')">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+						  
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No files uploaded</td>
+            </tr>
+        }
+    </tbody>
 		</table>
 	</div>
-</div>
-</form>
+	
 
+
+
+	<div class="col-md-12">
+		<div id="divDropZoneFloorPlanEdit" class="custom-dropzone d-flex flex-wrap dz-clickable">
+			<div class="dz-message">
+				<strong class="drop-strong">➜ Drop files</strong>
+				<span class="drop-light">to upload</span>
+				<div class="drop-small">(or click)</div>
+			</div>
+		</div>
+
+		<div class="text-left mt-2">
+			<small>
+				Supported files: .gif, .jpeg, .jpg, .pdf, .png <br>
+				Max. file size: 20Mb
+			</small>
+		</div>					
+	</div>
+</form>
+@* <script>
+    window.FloorPlanEditData = {
+        FloorPlanTypeID: @Model.FloorPlanTypeID,
+        ExistingFiles: @Html.Raw(Json.Serialize(Model.File)) 
+    };
+</script> *@
+<script src="@Url.Content("~/PageScripts/FloorPlanType/FloorPlanType.js")"></script>
 <script>
 	var FloorPlanType = FloorPlanType || {};
 	FloorPlanType.LutBathroomType = @Html.Raw(Json.Serialize(Model.LutBathroomType));
 	FloorPlanType.LutFloorBathrommOptions = @Html.Raw(Json.Serialize(Model.LutFloorBathrommOptions));
+
+		 function downloadFileWithProgress(url, fileName) {
+		   LoadingOverlay.show();
+		   
+			fetch(url)
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`Download failed: ${response.status}`);
+					}
+					return response.blob();
+				})
+				.then(blob => {
+					// Create and trigger download
+					const downloadUrl = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = downloadUrl;
+					a.download = fileName;
+					document.body.appendChild(a);
+					a.click();
+
+					// Cleanup
+					document.body.removeChild(a);
+					window.URL.revokeObjectURL(downloadUrl);
+				 
+					// Hide loading overlay
+					LoadingOverlay.hide();
+				})
+				.catch(error => {
+				 
+					console.error('Download error:', error);
+					LoadingOverlay.hide();
+					alert('Download failed');
+				});
+		}
+		
+
+
 </script>

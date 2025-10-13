@@ -21,6 +21,8 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         List<FloorPlanTypeModel> GetFloorPlanInformation(int ProjectID);
         List<LutBathroomTypeOption> GetLutBathroomTypeOptionbyFLoorPlanTypeID();
         FloorPlanType GetFloorPlanTypeByID(int floorPlanTypeID);
+        List<Document> GetFloorPlanFilesByID(string floorPlanTypeID);
+        
         List<FloorPlanBathroomType> GetFloorPlanBathroomTypeByFloorPlanID(int floorPlanID);
         ProjectSite GetProjectSiteIDByFloorPlanID(int ProjectSiteID);
         int UpdateFloorPlanType(FloorPlanTypeModel floorPlanTypeModel);
@@ -33,6 +35,9 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         List<LutBathroomTypeOption> GetLutBathroomTypeOptionEdit();
         int UpdateUnitAttribute(UnitAttribute unit);
         int DeleteFloorPlanType(FloorPlanType floorPlanType);
+        bool DeleteFloorPlanFile(int docId);
         List<FloorPlanInformation> GetFloorPlanInformationCompliance(int caseId);
+        public int? getLuDocumentCategoryId(string category, string subCategory);
+        public void SaveFloorPlanFile(List<Document> doclist, FloorPlanTypeModel floorPlan);
     }
 }

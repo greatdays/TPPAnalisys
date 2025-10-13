@@ -3,7 +3,9 @@
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
+using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Domain.ProjectDetail;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Index.HPRtree;
@@ -108,6 +110,13 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         public FloorPlanType GetFloorPlanTypeByID(int floorPlanTypeID)
         {
             return _context.FloorPlanTypes.FirstOrDefault(f => f.FloorPlanTypeId == floorPlanTypeID);
+        } 
+        public List<Document> GetFloorPlanFilesByID(string floorPlanTypeID)
+        {
+           var list= _context.AssnDocuments.Where(x => x.ReferenceId == floorPlanTypeID).ToList();
+            var docList=list.Select(x => x.DocumentId).ToList();
+           var files= _context.Documents.Where(x=> docList.Contains(x.DocumentId)).ToList();
+            return files;
         }
         public List<FloorPlanBathroomType> GetFloorPlanBathroomTypeByFloorPlanID(int floorPlanID)
         {
@@ -124,6 +133,23 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         public int DeleteFloorPlanType(FloorPlanType floorPlanType)
         {
             return _context.SaveChanges(floorPlanType.ModifiedBy);
+        }
+        public bool DeleteFloorPlanFile(int docId)
+        {
+            var file = _context.Documents.FirstOrDefault(d => d.DocumentId == docId);
+            if (file != null)
+            {
+
+               var data = _context.AssnDocuments.Where(x => x.DocumentId == docId);
+                if (data.Any())
+                {
+                    _context.AssnDocuments.RemoveRange(data);
+                }
+                _context.Documents.Remove(file);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
         public int RemoveFloorPlanBathroomType(FloorPlanBathroomType floorPlanBathroomType)
         {
@@ -186,6 +212,19 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
             return floorPlanInformations;
         }
+        public int? getLuDocumentCategoryId(string category, string subCategory)
+        {
+            return _context.LutDocumentCategories.Where(x => x.Category == category && x.SubCategory == subCategory).FirstOrDefault()?.LutDocumentCategoryId;
+        }
 
+        public void SaveFloorPlanFile(List<Document> doclist,FloorPlanTypeModel floorPlan)
+        {
+            foreach(Document list in doclist)
+            {
+                _context.Documents.Add(list);
+                _context.SaveChanges(list.CreatedBy);
+            }
+                
+        }
     }
 }

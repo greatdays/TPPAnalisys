@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DeveloperPortal.Domain.ProjectDetail
 {
+    public class FloorPlanFileModel
+    {
+        public int DocID { get; set; }
+        public string Name { get; set; }
+        public string FileSize { get; set; }
+        public string URl { get; set; }
+    }
+
+
     public class FloorPlanTypeModel
     {
         public int ProjectDetailId { get; set; }
@@ -41,6 +51,8 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public List<LutTotalBathroomTypeOption> LutTotalBathroomTypeOption { get; set; }
         public List<LutTotalBathroomsFloorType> LutTotalBathroomsFloorType { get; set; }
         public List<FloorPlanInformation> FloorPlanInformation { get; set; }
+        public List<IFormFile> Files { get; set; }
+        public List<FloorPlanFileModel> File { get; set; }
         public bool isUsed { get; set; }
         public string[] SupportedFileTypes { get; set; } = new[] { "gif", "jpeg", "jpg", "pdf", "png" };
     }
