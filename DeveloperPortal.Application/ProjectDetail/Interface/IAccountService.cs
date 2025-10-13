@@ -16,5 +16,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<List<VwAspNetRole>> GetUSerRole(int? ApplicationID);
         Task<APNSearch> GetAPNProjectName(String APNNumber);
         Task<bool> CreateProject(ProjectModel projectModel, HttpContext httpContext);
+
+        Task<bool> CreateProjectWithNewAPNandSite(ProjectProvisionRequest provisionModel, HttpContext httpContext);
     }
 }

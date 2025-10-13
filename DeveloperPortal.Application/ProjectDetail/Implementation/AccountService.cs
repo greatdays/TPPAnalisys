@@ -414,6 +414,12 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     {
                         APNSearch.APNSearchProjectInfolst = ConvertToList<APNSearchProjectInfo>(ds.Tables[1]);
                     }
+
+                    if (ds.Tables[2].Rows.Count > 0)
+                    {
+
+                        APNSearch.ApnExists = Convert.ToBoolean(ds.Tables[2].Rows[0][0]);
+                    }
                 }
                
              
@@ -529,9 +535,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     parameters
                 );
 
-               
-
-
                 // Check if the result is not null and contains at least one list.
                 if (result != null)
                 {
@@ -561,61 +564,69 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 var userName = UserSession.GetUserSession(httpContext).UserName;
                 if (string.IsNullOrWhiteSpace(userName)) return false;
 
+                var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+
                 // 1) PCMS first (fund 8 = TEMP/no association yet)
                 provisionModel.UserName = userName;
                 provisionModel.LutProjectFundId = 8;
 
+                // Call PCMS for project provisioning
                 var pcms = await ProvisionProjectAndSiteforPCMS(provisionModel);
-                if (pcms == null || pcms.Status != ProvisionStatus.Success)
-                    return false;
-
-                // 2) AAHR PnC SP (same SP, mapped from provisionModel)
-                var siteAddressIdInt = TryParseInt(provisionModel.SiteAddressID) ?? TryParseInt(provisionModel.RefSiteAddressId);
-
-                var parameters = new[]
+                if (pcms == null || !pcms.Success) // Use the Success convenience property
                 {
-            new SqlParameter("APN",            (object)provisionModel.APN ?? DBNull.Value),
-            new SqlParameter("ProjectAddress", (object)provisionModel.ProjectAddress ?? DBNull.Value),
-            new SqlParameter("SiteAddressID",  (object)siteAddressIdInt ?? DBNull.Value),
-            new SqlParameter("UserName",       userName),
-            new SqlParameter("ProjectName",    (object)provisionModel.ProjectName ?? DBNull.Value),
-            new SqlParameter("PropertyName",   (object)provisionModel.PropertyName ?? DBNull.Value),
-        };
-
-                var result = await _storedProcedureExecutor
-                    .ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
-                        StoredProcedureNames.SP_uspCreateNewProjectandSite,
-                        parameters);
-
-                if (result == null || result.ProjectID <= 0)
+                    // Optionally log pcms.ErrorMessage or pcms.Status
                     return false;
+                }
 
-                // 3) Link PCMS IDs to AAHR
-                //Hide for now since not sure about the value
-                //try
-                //{
-                //    var linkModel = new ProjectSiteModel
-                //    {
-                //        ProjectSiteId = result.ProjectSiteID,          // from AAHR
-                //        RefProjectId = pcms.RefProjectId,             // from PCMS
-                //        RefProjectSiteId = pcms.RefProjectSiteId,         // from PCMS
-                //        RefSiteAddressId = TryParseInt(pcms.RefSiteAddressId) ?? 0, // PCMS class uses string
-                //        FileGroup = pcms.FileGroup
-                //    };
-
-                //    await _accountRepository.UpdatePnctoPCMSProjectSite(linkModel, userName);
-                //}
-                //catch
-                //{
-                //    // log if you want; do not fail whole flow
-                //}
-
-                // 4) Associate current user to the new AAHR project (existing flow)
-                var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
-                if (contactIdentifier != null)
+                SqlParameter[] parameters;
+                try
                 {
-                    var projects = new List<string> { result.ProjectID.ToString() };
-                    await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+                    // Safely parse string IDs to integers
+                    int? siteAddressID = TryParseInt(provisionModel.SiteAddressID);
+                    int? refSiteAddressId = TryParseInt(pcms.RefSiteAddressId);
+
+                    parameters = new[]
+                    {
+                        new SqlParameter("APN", provisionModel.APN ?? (object)DBNull.Value),
+                        new SqlParameter("ProjectAddress", provisionModel.ProjectAddress ?? (object)DBNull.Value),
+                        new SqlParameter("SiteAddressID", siteAddressID.HasValue ? siteAddressID.Value : (object)DBNull.Value),
+                        new SqlParameter("UserName", userName),
+                        new SqlParameter("ProjectName", provisionModel.ProjectName ?? (object)DBNull.Value),
+                        new SqlParameter("PropertyName", provisionModel.PropertyName ?? (object)DBNull.Value),
+                        new SqlParameter("RefProjectId", pcms.RefProjectId),
+                        new SqlParameter("RefProjectSiteId", pcms.RefProjectSiteId),
+                        new SqlParameter("RefSiteAddressId", refSiteAddressId.HasValue ? refSiteAddressId.Value : (object)DBNull.Value),
+                        new SqlParameter("FileGroup", pcms.FileGroup ?? (object)DBNull.Value)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error creating SQL parameters: " + ex.ToString());
+                    return false; // Stop execution if parameter creation fails
+                }
+
+                // Execute the stored procedure and get the result
+                var result = await _storedProcedureExecutor.ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
+                    StoredProcedureNames.SP_uspCreateNewProjectandSite,
+                    parameters
+                );
+
+
+                // Check if the result is not null and contains at least one list. Then save link relationship
+                if (result != null)
+                {
+                    List<string> projects = new List<string>();
+                    projects.Add(result.ProjectID.ToString());
+                    //var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                    var (saved, notSaved) = await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+
+                }
+
+
+                if (result == null || result.Success != 1)
+                {
+                    // Log error from the AAHR stored procedure
+                    return false;
                 }
 
                 return true;
@@ -667,9 +678,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             return (savedProjects, notSavedProjects);
         }
 
-        public async Task<ProjectProvision> ProvisionProjectAndSiteforPCMS(
-     ProjectProvisionRequest request,
-     CancellationToken ct = default)
+        public async Task<ProjectProvision> ProvisionProjectAndSiteforPCMS(ProjectProvisionRequest request, CancellationToken ct = default)
         {
             var client = new HttpClient
             {
@@ -689,11 +698,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 ProjectName = Cap(request.ProjectName, 200),
                 PropertyName = Cap(request.PropertyName, 200),
                 APN = Cap(request.APN, 40),
-                AddressText = Cap(request.ProjectAddress, 500),
+                ProjectAddress = Cap(request.ProjectAddress, 500),
                 UserName = Cap(request.UserName, 100),
                 LutProjectFundId = request.LutProjectFundId,
                 RefSiteAddressId = refSiteAddressId,               // int? or null
-
                 HouseNum = Cap(request.HouseNum, 10),
                 HouseFracNum = Cap(request.HouseFracNum, 10),
                 PreDirCd = Cap(request.PreDirCd, 2),
