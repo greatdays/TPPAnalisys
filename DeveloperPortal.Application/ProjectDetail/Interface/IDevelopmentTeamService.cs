@@ -20,11 +20,13 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
 
 
         /// <summary>
+        /// <summary>
         /// GetContactDetail
         /// </summary>
-        /// <param name="contactId"></param>
+        /// <param name="developmentTeamModel"></param>
+
         /// <returns></returns>
-        Task<ContactRenderModel> GetContactDetail(int contactId, string apn, int caseId, int projectId = 0, int projectSiteId = 0);
+        Task<ContactRenderModel> GetContactDetail(DevelopmentTeamModel developmentTeamModel);
 
 
         /// <summary>

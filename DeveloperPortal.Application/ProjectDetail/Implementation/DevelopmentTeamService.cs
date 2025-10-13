@@ -62,7 +62,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                         .Select(row => new Domain.ProjectDetail.DevelopmentTeamModel
                         {
                             ContactId = row.Field<int>("ContactID"),
-                            ContactIdentifierId = row.Field<int?>("ContactIdentifierID"),
+                            ContactIdentifierId = row.Field<int>("ContactIdentifierID"),
                             ContactName = row.Field<string>("ContactName"),
                             Email = row.Field<string>("Email"),
                             Phone = row.Field<string>("Phone"),
@@ -71,6 +71,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                             Source = row.Field<string>("Source"),
                             Status = row.Field<string>("Status"),
                             CompanyName = row.Field<string>("CompanyName"),
+                            AssnPropContactID = row.Field<int>("AssnPropContactID"),
+                            LutContactTypeID = row.Field<int>("LutContactTypeID")   
                         })
                         .ToList();
                     }
@@ -87,26 +89,28 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// <summary>
         /// GetContactDetail
         /// </summary>
-        /// <param name="apn"></param>
-        /// <param name="caseId"></param>
-        /// <param name="projectId"></param>
-        /// <param name="projectSiteId"></param>
+        /// <param name="developmentTeamModel"></param>
+        
         /// <returns></returns>
-        public async Task<ContactRenderModel> GetContactDetail(int contactIdentifierId, string apn, int caseId, int projectId = 0, int projectSiteId = 0)
+        public async Task<ContactRenderModel> GetContactDetail(DevelopmentTeamModel developmentTeamModel)
         {
             ContactRenderModel contactRenderModel = new ContactRenderModel();
 
-            if (contactIdentifierId > 0)
+            if (developmentTeamModel.ContactIdentifierId > 0)
             {
-                contactRenderModel = await _contactIdentifiersService.ContactIdentifier(contactIdentifierId);
+                contactRenderModel = await _contactIdentifiersService.ContactIdentifier(developmentTeamModel.ContactIdentifierId, developmentTeamModel.AssnPropContactID);
             }
-            contactRenderModel.ContactTypeList = new List<string>() { "Owner", "Property Manager", "CASP", "Developer", "Chief NAC", "NAC", "Contractor", "Project Manager", "Developer Architect" };
-            contactRenderModel.CaseID = caseId;
-            contactRenderModel.APN = apn;
-            contactRenderModel.ProjectId = projectId;
-            contactRenderModel.ProjectSiteId = projectSiteId;
+            contactRenderModel.ContactTypeList = new List<string>() { "Developer", "CASP", "Contractor", "Developer Architect" };
+            contactRenderModel.CaseID = developmentTeamModel.CaseId;
+            contactRenderModel.APN = developmentTeamModel.APN;
+            contactRenderModel.ProjectId = developmentTeamModel.ProjectId;
+            contactRenderModel.ProjectSiteId = developmentTeamModel.ProjectSiteId;
             contactRenderModel.AddContactType = "Simple";
             contactRenderModel.Source = "TPP";
+            if(string.IsNullOrWhiteSpace(contactRenderModel.IdentifierType))
+            { contactRenderModel.IdentifierType = "Project"; 
+            }
+            
             var LutStateCDList = await _lutRepository.LutStates();
             foreach (var item in LutStateCDList)
             {
@@ -147,8 +151,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         /// <returns></returns>
         public async Task<bool> SaveContact(ContactRenderModel renderModel)
         {
-            renderModel.Type = renderModel.AssociationTypes != null ? string.Join(",", renderModel.AssociationTypes) : "";
-            renderModel.PrimaryTypes = renderModel.PrimaryAssociationTypes != null ? string.Join(",", renderModel.PrimaryAssociationTypes) : "";
+            renderModel.AssociationTypes = renderModel.Type.Split(",").ToList();
+            renderModel.PrimaryTypes = renderModel.Type;
             ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
             BaseResponse baseResponse = serviceClient.CreateRequest<BaseResponse>(renderModel, _config["AreaMgmtAPIURL:PropertyApiURL"] + WebApiConstant.PostContact, Application.ServiceClient.ServiceClient.ActionType.POST);
             if (Convert.ToInt32(baseResponse.Response) > 0)
@@ -190,7 +194,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     MobilePhoneNumber = renderModel.PhoneCell,
                     IsMarkedForMailing = renderModel.IsMarkedForMailing,
                     CASpNumber = renderModel.CASpNumber,
-                    IsContactPublic = renderModel.IsContactPublic
+                    IsContactPublic = renderModel.IsContactPublic,
+                    PropContactId = renderModel.PropContactId
                 };
                 var contactIdentifierId = await _contactIdentifiersService.SaveContact(contactIdentifierModel);
                 return true;

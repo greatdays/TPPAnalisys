@@ -1,31 +1,7 @@
 ﻿var IsLoadDevelopmentTeamTab = false;
 var DevelopmentTeam =
 {
-    Init: function (type, PrimaryTypes) {
-        $('select#AssociationTypes,select#PrimaryAssociationTypes').multiselect({
-            maxHeight: '300'
-        });
-
-        $('#divAssociationTypes .multiselect').on('click', function () {
-            setTimeout(function () {
-                if ($("#divAssociationTypes .multiselect-container").is(":visible")) { $("#divAssociationTypes .multiselect-container").hide() }
-                else {
-                    $("#divAssociationTypes .multiselect-container").show()
-                }
-            }, 200); // 2000 ms = 2 seconds
-        });
-
-        $('#divPrimaryAssociationTypes .multiselect').on('click', function () {
-            setTimeout(function () {
-                if ($("#divPrimaryAssociationTypes .multiselect-container").is(":visible")) { $("#divPrimaryAssociationTypes .multiselect-container").hide() }
-                else {
-                    $("#divPrimaryAssociationTypes .multiselect-container").show()
-                }
-
-            }, 200); // 2000 ms = 2 seconds
-        });
-       
-
+    Init: function () {
         // validate CASp number
         var regx = /^[A-Za-z0-9]+$/;
         $('#CASpNumber').keyup(function () {
@@ -37,17 +13,9 @@ var DevelopmentTeam =
             }
         });
 
-        DevelopmentTeam.SetMultipleSelection("#AssociationTypes", type);
-        DevelopmentTeam.SetMultipleSelection("#PrimaryAssociationTypes", PrimaryTypes);
 
-        $("#AssociationTypes").change(function () {
-            /*fill PrimaryAssociationTypes on the basis of AssociationTypes*/
-            var selectedV = DevelopmentTeam.MultipleSelectedValues("#AssociationTypes");
-            var selectedA = DevelopmentTeam.MultipleSelectedValues("#PrimaryAssociationTypes");
-            DevelopmentTeam.ClearSelection("#PrimaryAssociationTypes");
-            var spltV = selectedV.split(",");
-            var spltA = selectedA.split(",");
-          
+        $("#Type").change(function () {
+            var selectedV = this.value;
             /*hide sohw contractor type*/
             if (selectedV.indexOf("Contractor") != -1) {
                 $('#divContractorType').show();
@@ -65,27 +33,9 @@ var DevelopmentTeam =
                 $("#divCASP").css('display', 'none');
                 $("#CASpNumber").val("");
             }
-
-            if ($.trim(selectedV) != "") {
-                for (var i = 0; i < spltV.length; i++) {
-                    if (spltA.indexOf(spltV[i]) >= 0) {
-                        $("#PrimaryAssociationTypes").append(new Option(spltV[i], spltV[i], null, true));
-                    }
-                    else {
-                        $("#PrimaryAssociationTypes").append(new Option(spltV[i], spltV[i]));
-                    }
-                }
-            }
-
-            $("#PrimaryAssociationTypes").multiselect('rebuild');
-        });
-
-        $("#PrimaryAssociationTypes").change(function () {
-            var selectedV = DevelopmentTeam.MultipleSelectedValues("#Type");
         });
 
         $('#ContactTypeListId').on('change', function () {
-
             if ($(this).val() == "Contractor") {
                 $('#divContractorType').show();
             }
@@ -115,8 +65,6 @@ var DevelopmentTeam =
                 }
             });
         });
-
-
     },
     LoadParticipants: function () {
         if ($.fn.DataTable.isDataTable('#dtDevelopmentTeamList')) {
@@ -164,8 +112,8 @@ var DevelopmentTeam =
                 }
             }, null, true, null, false);
     },
-    Edit: function (contactIdentifierId, companyName) {
-        var url = APPURL + 'DevelopmentTeam/EditContact';
+    Edit: function (contactIdentifierId, assnPropContactID, companyName) {
+        var url = APPURL + 'DevelopmentTeam/EditContact ';
         var para = {
             ContactIdentifierId: contactIdentifierId,
             companyName: companyName,
@@ -173,6 +121,14 @@ var DevelopmentTeam =
             caseId: Id,
             projectId: ProjectId,
         };
+        if (contactList) {
+            var contact = contactList.filter(c => c.contactIdentifierId == contactIdentifierId && c.assnPropContactID == assnPropContactID);
+            if (contact && contact.length > 0) {
+                para = contact[0];
+                para.caseId = Id;
+                para.projectId = ProjectId;
+            }
+        }
         AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', para,
             function (data) {
                 $('#AddContact').html(data);
@@ -193,6 +149,7 @@ var DevelopmentTeam =
         AjaxCommunication.CreateRequest(this.window, 'POST', url, 'html', para,
             function (data) {
                 $('#AddContact').html(data);
+                $(".emailRequire").hide();
                 $('#ContactPopup').modal('show');
                 $('#PopupTitle').html("Add Contact");
             }, null, true, null, false);
@@ -202,15 +159,16 @@ var DevelopmentTeam =
     },
     OnBegin: function () {
         $("#loadingOverlay").hide();
+        if ($("#Email").val() == "") {
+            $(".emailRequire").show();
+        }
         $("#Company").attr("data-val", 'false');
-        $("#AddressLine1").attr("data-val", 'false');
         $("#AddressLine2").attr("data-val", 'false');
         $("#PhoneExtension").attr("data-val", 'false');
         $("#MiddleName").attr("data-val", 'false');
         $("#PrimaryAssociationTypes").attr("data-val", 'false');
         $("#PhoneHome").attr("data-val", 'false');
         $("#PhoneCell").attr("data-val", 'false');
-        $("#Email").attr("data-val", 'false');
         $("#IsMarkedForMailing").attr("data-val", 'false');
         var isVAlid = true;
         var identifierType = $('input[name="IdentifierType"]:checked').val();
@@ -238,7 +196,7 @@ var DevelopmentTeam =
                 }
             }
         });
-        
+
         if (isVAlid) {
             var form = $("#frmAddNewContact");
             $(form).removeData("validator").removeData("unobtrusiveValidation");
@@ -269,43 +227,6 @@ var DevelopmentTeam =
         else {
             $('#ContactPopup').modal("hide");
             $('#Error').modal("show");
-        }
-    },
-    ClearSelection: function (name) {
-        $(name).find("option").detach();
-        $(name).multiselect('rebuild');
-
-    },
-    MultipleSelectedValues: function (name) {
-        var selectedA = $(name + " option:selected");    /*Current Selected Value*/
-        var selected = "";
-        selectedA.each(function () {
-            if (selected != "")
-                selected += "," + $(this).text();
-            else
-                selected += $(this).text();
-        });
-        return selected;
-    },
-    SetMultipleSelection: function (name, values) {
-        if (values) {
-            var spltV = values.split(",").map(function (item) {
-                return item.trim();
-            });
-
-            $(name).find("option").each(function () {
-                if (spltV.indexOf($(this).text()) >= 0) {
-                    $(this).attr("selected", "selected");
-                    if ($(this).text() == 'CASP') {
-                        $("#divCASP").css('display', 'block');
-                    }
-                    else if ($(this).text() == "Contractor") {
-                        $('#divContractorType').show();
-                    }
-                  
-                }
-            });
-            $(name).multiselect('rebuild');
         }
     }
 }

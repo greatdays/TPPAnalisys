@@ -18,6 +18,7 @@
                         <th style="padding: 10px;">Phone#</th>
                         <th style="padding: 10px;">Mailing Address</th>
                         <th style="padding: 10px;">Email</th>
+                        <th style="padding: 10px;">Source</th>
                         <th style="padding: 10px;">Actions</th>
                     </tr>
                 </thead>
@@ -33,10 +34,11 @@
                                 <td>@participant.Phone</td>
                                 <td>@participant.FullAddress</td>
                                 <td>@participant.Email</td>
+                                <td>@participant.Source</td>
                                 <td style="width:180px">
                                     <div>
-                                        <button role="button" data-toggle="tooltip" data-placement="top" class="editbtn btn k-button k-button-icontext k-grid-edit  btn btn-sm btn-action" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactIdentifierId,'@participant.CompanyName')"><i class="fas fa-pen editcontent"></i></button>
-                                        <button role="button" data-toggle="tooltip" data-placement="top" class="deletebtn btn k-button   btn btn-sm btn-action" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierId)"><i class="fas fa-trash-alt deletecontent"></i></button>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="editbtn btn k-grid-edit btn-sm btn-action" title="Edit" onclick="DevelopmentTeam.Edit(@participant.ContactIdentifierId,@participant.AssnPropContactID,'@participant.CompanyName')"><i class="fas fa-pen editcontent"></i></button>
+                                        <button role="button" data-toggle="tooltip" data-placement="top" class="deletebtn btn btn-sm btn-action" title="Delete" onclick="DevelopmentTeam.Delete(@participant.ContactId, '@participant.ContactName', @participant.ContactIdentifierId)"><i class="fas fa-trash-alt deletecontent"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -110,3 +112,6 @@
     </div>
 </div>
 
+<script>
+        var contactList =  @Html.Raw(Json.Serialize(Model));
+</script>

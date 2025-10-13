@@ -2,19 +2,10 @@
 @model ContactRenderModel
 
 @{
-    List<SelectListItem> pAssociationList = new List<SelectListItem>();
     List<SelectListItem> associationList = new List<SelectListItem>();
     foreach (string item in Model.ContactTypeList)
     {
         associationList.Add(new SelectListItem { Text = item, Value = item });
-    }
-    if (!string.IsNullOrEmpty(Model.Type))
-    {
-        string[] associationTypes = Model.Type.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).ToArray();
-        foreach (string item in associationTypes)
-        {
-            pAssociationList.Add(new SelectListItem { Text = item, Value = item });
-        }
     }
 }
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -96,28 +87,19 @@
                 <div class="col-md-6">
                     <div class="form-group required" id="divAssociationTypes">
                         @Html.Label("Association", "Association", new { @class = "control-label" })
-                         @Html.DropDownListFor(e => e.AssociationTypes, associationList, new { @class = "form-control", @multiple = "multiple" }) 
-                        @Html.ValidationMessageFor(e => e.AssociationTypes, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.Type, associationList, "- Select -", new { @class = "form-control", @aria_label = "Type" })
+                        @Html.ValidationMessageFor(e => e.Type, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group" id="divPrimaryAssociationTypes">
-                        @Html.Label("Primary", "Primary", new { @class = "control-label" })
-                        <select asp-for="PrimaryAssociationTypes" asp-items="pAssociationList" multiple="multiple" class="form-control">
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group required" style="display:none" id="divContractorType">
+                <div class="col-md-6" style="display:none" id="divContractorType">
+                    <div class="form-group required" >
                         @Html.LabelFor(model => model.ContractorType, htmlAttributes: new { @class = "control-label" })
                         @Html.DropDownListFor(model => model.ContractorType, new List<SelectListItem> { new SelectListItem { Text = "General Contractor", Value = "General Contractor" }, new SelectListItem { Text = "Relocation Contractor", Value = "Relocation Contractor" }, new SelectListItem { Text = "Architect", Value = "Architect" } }, "Select", new { @id = "ContractorType", @class = "form-control notranslate", @lang = "en" })
                         @Html.ValidationMessageFor(model => model.ContractorType, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group required" style="display:none" id="divCASP">
+                <div class="col-md-6" style="display:none" id="divCASP">
+                    <div class="form-group required">
                         @Html.LabelFor(model => model.CASpNumber, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.CASpNumber, new { htmlAttributes = new { @class = "form-control", @maxlength = "50", @placeholder = "CASP Number", @aria_required = "true" } })
                         @Html.ValidationMessageFor(model => model.CASpNumber, "", new { @class = "text-danger" })
@@ -149,9 +131,18 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger emailRequire" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control", @placeholder = "Company Name (optional)" } })
+                        @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control", @placeholder = "Company Name" } })
                     </div>
                 </div>
 
@@ -159,9 +150,10 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group">
+                    <div class="form-group required">
                         @Html.LabelFor(model => model.AddressLine1, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.AddressLine1, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address Line 1" } })
+                        @Html.ValidationMessageFor(model => model.AddressLine1, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -198,23 +190,17 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PhoneBusiness, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.PhoneBusiness, new { htmlAttributes = new { @class = "form-control", @placeholder = "Business Phone" } })
                         @Html.ValidationMessageFor(model => model.PhoneBusiness, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <div class="form-group">
                         @Html.LabelFor(model => model.PhoneExtension, htmlAttributes: new { @class = "control-label" })
                         @Html.EditorFor(model => model.PhoneExtension, new { htmlAttributes = new { @class = "form-control", @placeholder = "Extension" } })
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.PhoneHome, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.PhoneHome, new { htmlAttributes = new { @class = "form-control", @placeholder = "Home Phone" } })
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -223,19 +209,8 @@
                         @Html.EditorFor(model => model.PhoneCell, new { htmlAttributes = new { @class = "form-control", @placeholder = "Cell Phone" } })
                     </div>
                 </div>
-                <div class="col-md-8">@Html.ValidationMessage("contact-val-msg", new { @class = "text-danger" })</div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @placeholder = "Email" } })
-                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                    </div>
-                </div>
             </div>
         </div>
-        
     </div>
     <!-- Modal footer -->
     <div class="modal-footer multi-button">
@@ -253,8 +228,7 @@
 
 <script>
     $(document).ready(function () {
-    DevelopmentTeam.Init("@Model.Type","@Model.PrimaryTypes");
-
+        DevelopmentTeam.Init();
         $('#PhoneHome').mask('(000) 000-0000');
         $('#PhoneBusiness').mask('(000) 000-0000');
         $('#PhoneCell').mask('(000) 000-0000');
