@@ -35,7 +35,51 @@ namespace DeveloperPortal.Domain.DMS
             TabNames = new List<string>();
         }
     }
+    public static class DocumentCategoryName
+    {
+        public const string Grievance = "Grievance";
+        public const string Training = "Training";
+        public const string Property = "Property";
+        public const string PropertyListing = "Property Listing";
+        public const string Project = "Project";
+        public const string Private = "Private";
+        public const string DocumentStatus = "DocumentStatus";
+        public const string DocumentAudience = "DocumentAudience";
+        public static Dictionary<string, string> ServerDocumentsList = new Dictionary<string, string>
+        {
+            {"AccessibleUnitWaitList", "Accessible Unit Wait List"},
+            {"AccessibleUnitTransferList", "Accessible Unit Transfer List"},
+            {"RARMLog", "Reasonable Accommodation and Reasonable Modification Log"},
+            {"GrievenceLog", "Grievance Log"},
+            {"FairHousingAccesibilityComplianceCert", "Certificate of Fair Housing & Accessibility Compliance"},
+            {"PMPMarketingOutreachList", "PMP Mandatory Affirmative Marketing Outreach List"}
+        };
 
+        public static class ProjectSubCategoryName
+        {
+            public const string PMP = "Property Management Plan";
+            public const string MarketingFlyers = "Marketing Flyers";
+        }
+
+        public static class PropertySubCategoryName
+        {
+            public const string PropertyListingImage = "Property Listing Image";
+        }
+
+        public static class DocumentSubCategoryName
+        {
+            public const string OnsiteReviewReport = "Policy Compliance Review Report";
+            public const string AccessibleUnitWaitList = "Accessible Unit Wait List";
+            public const string AccessibleUnitTransferList = "Accessible Unit Transfer List";
+            public const string RARMLog = "Reasonable Accommodation and Reasonable Modification Log";
+            public const string GrievenceLog = "Grievance Log";
+            public const string FairHousingAccesibilityComplianceCert = "Certificate of Fair Housing & Accessibility Compliance";
+            public const string PMPMarketingOutreachList = "PMP Mandatory Affirmative Marketing Outreach List";
+            public const string FloorPlan = "FloorPlanType";
+            public const string NewsLetter = "NewsLetter";
+        }
+
+    }
     public enum DMSModuleContext
     {
         Unknown,

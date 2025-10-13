@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.ProjectDetail;
+using HCIDLA.ServiceClient.DMS;
 
 namespace DeveloperPortal.Application.ProjectDetail.Interface
 {
@@ -21,7 +22,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId);
         bool EditFloorPlanType(FloorPlanTypeModel floorPlanTypeModel);
         bool DeleteFloorPlantype(int floorPlanId, string userName);
+        public bool DeleteFloorPlanFile(int docId);
         List<FloorPlanInformation> GetFloorPlanInformationCompliance(int CaseID);
+        public int? getLuDocumentCategoryId(string category, string subCategory);
+        public void SaveFloorPlanFile(FloorPlanTypeModel floorPlan,List<UploadResponse> list, int LuDocumentCategoryId,string FloorPlanTypeID,string username);
 
     }
 }
