@@ -837,6 +837,22 @@ namespace DeveloperPortal.Application.ProjectDetail
             return IsSiteCreated;
         }
 
+        public async Task<ProjectSummaryModel> GetProjectSiteDetails(int projectId)
+        {
+            ProjectSummaryModel projectDetails=new ProjectSummaryModel();
+
+            var projectSiteDetails= await _projectDetailRepository.GetProjectSiteDetails(projectId);
+            if(projectSiteDetails!=null && projectSiteDetails.ProjectSiteId>0)
+            {
+                projectDetails.ProjectId = projectId;
+                projectDetails.HIMSNumber = projectSiteDetails.Himsnumber;
+                projectDetails.ACHPNumber = projectSiteDetails.FileNumber;
+                projectDetails.APN = projectSiteDetails.PrimaryApn;
+            }
+
+            return projectDetails;
+        }
+
         #region Private Methods
 
         /// <summary>

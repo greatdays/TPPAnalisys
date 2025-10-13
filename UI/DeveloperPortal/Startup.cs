@@ -1,31 +1,33 @@
-﻿using System.Configuration;
-using DeveloperPortal.Application.DMS.Implementation;
+﻿using DeveloperPortal.Application.DMS.Implementation;
 using DeveloperPortal.Application.DMS.Interface;
+using DeveloperPortal.Application.Notification.Implementation;
+using DeveloperPortal.Application.Notification.Interface;
 using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.Application.Security;
 using DeveloperPortal.Application.Services;
 using DeveloperPortal.DataAccess;
-using DeveloperPortal.Domain.Interfaces;
-using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity;
+using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Repository;
+using DeveloperPortal.Domain.Interfaces;
+using DeveloperPortal.Extensions;
+using DeveloperPortal.Models.IDM;
 using DeveloperPortal.Serilog;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
-using DeveloperPortal.Application.Notification.Interface;
-using DeveloperPortal.Application.Notification.Implementation;
-using DeveloperPortal.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
-using DeveloperPortal.Models.IDM;
+
 
 namespace DeveloperPortal
 {
@@ -82,6 +84,21 @@ namespace DeveloperPortal
             services.AddScoped<IAngelenoAuthentication, AngelenoAuthenticationService>();
             services.AddScoped<ISignInServices, SignInServices>();
             services.AddDbContext<TPPDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("AAHR")));
+
+            services.Configure<KestrelServerOptions>(options =>
+            {
+
+                options.Limits.MaxRequestBodySize = 600 * 1024 * 1024; // 600 MB
+
+            });
+            // If you use form upload, configure FormOptions too:
+            services.Configure<FormOptions>(options =>
+
+            {
+
+                options.MultipartBodyLengthLimit = 600 * 1024 * 1024; // 600 MB
+
+            });
 
             services.AddAuthentication(options =>
             {

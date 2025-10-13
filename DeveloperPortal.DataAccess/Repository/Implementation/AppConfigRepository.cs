@@ -80,6 +80,10 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 await _context.SaveChangesAsync();
             }
         }
+        public string? getConfigValue(string value)
+        {
+            return _context.AppConfigs.Where(x => x.Name == value)?.FirstOrDefault()?.Value;
+        }
 
     }
 }

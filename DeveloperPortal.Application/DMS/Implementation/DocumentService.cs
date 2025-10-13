@@ -6,6 +6,7 @@ using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Models.PlanReview;
+using HCIDLA.ServiceClient.DMS;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -134,10 +135,11 @@ namespace DeveloperPortal.Application.DMS.Implementation
         {
             return _documentRepository.GetCategories(categories, referenceKeys);
         }
-        public int GetProjectReference(int projectId)
+        public int GetActualProjectId(int projectId)
         {
-            return _documentRepository.GetProjectReference(projectId);
+            return _documentRepository.GetActualProjectId(projectId);
         }
+       
 
 
     }

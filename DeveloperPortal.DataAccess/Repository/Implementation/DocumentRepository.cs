@@ -254,11 +254,11 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return items;
         }
 
-        public int GetProjectReference(int projectId)
+        public int GetActualProjectId(int projectId)
         {
-            return _context.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault().RefProjectId;
+            return _context.Projects.Where(x => x.RefProjectId == projectId).FirstOrDefault().ProjectId;
         }
-
+      
 
     }
 }

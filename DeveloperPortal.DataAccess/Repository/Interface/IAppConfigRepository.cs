@@ -20,5 +20,6 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         Task AddAppConfigAsync(AppConfig appConfig);
         Task UpdateAppConfigAsync(AppConfig appConfig);
         Task DeleteAppConfigAsync(int id);
+        string? getConfigValue(string value);
     }
 }

@@ -316,7 +316,7 @@ namespace DeveloperPortal.Controllers
                                     string time = (t / 60).ToString();
                                     NotificationData.Add("time", time);
                                    var notificationInfo=_sendNotificationEmail.GetNotificationInfo(EmailTemplate.ET_EmailToPersonSigningUp, NotificationData, idmuser.Email);
-                                    var notificationCrdential = _sendNotificationEmail.GetNotificationCrdential("AAHR");
+                                    var notificationCrdential = _sendNotificationEmail.GetNotificationCrdential("AcHPIntranet");
                                   await _sendNotificationEmail.SendMail(notificationInfo, notificationCrdential, EmailAction.EA_Signup);
                                 }
 
