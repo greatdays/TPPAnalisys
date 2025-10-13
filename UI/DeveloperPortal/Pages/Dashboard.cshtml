@@ -207,7 +207,7 @@
 											<button class="btn btn-primary" type="button" id="searchAPNButton" onclick="Dashboard.GetAPNProject()">Search</button>
 										</div>
 									</div>
-									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
+									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter a 10 digit APN Number.</div>
 
 									@* Modified with new requirement - ekim on 10 / 12 / 2025 *@
 									<!--  APN not found UI Logic -->
@@ -249,13 +249,22 @@
 									</div>
 
 									<div id="ProjectMeta" style="display: none;">
-										<div class="form-group mb-3">
-											<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
-											<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+										<!-- Project Name Row -->
+										<div class="row mb-3 align-items-center">
+											<!-- Label column: takes up 4 of 12 columns on medium screens and up -->
+											<label for="projectNameInput" class="col-md-4 col-form-label">Project Name<span class="text-danger">*</span></label>
+											<!-- Input column: takes up 8 of 12 columns on medium screens and up -->
+											<div class="col-md-8">
+												<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+											</div>
 										</div>
-										<div class="form-group mb-3">
-											<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
-											<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+
+										<!-- Property Name Row -->
+										<div class="row mb-3 align-items-center">
+											<label for="propertyNameInput" class="col-md-4 col-form-label">Property Name<span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+											</div>
 										</div>
 									</div>
 
@@ -274,21 +283,28 @@
 									</div>
 
 
-									<!-- Manual address - This show when user select manually input option or APN is not found-->
+									<!-- Manual address - This shows when a user selects the manual input option or when the APN is not found-->
+
+			
 									<div id="ManualAddressForm" class="border rounded p-3 mb-3" style="display:none;">
-										<div class="form-row">
-											<div class="form-group col-md-3">
-												<label>House # <span class="text-warning">*</span></label>
+										<div class="row g-3">
+											<!-- House Number -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_house" class="form-label">House # <span class="text-warning">*</span></label>
 												<input id="ma_house" type="text" class="form-control">
 											</div>
-											<div class="form-group col-md-3">
-												<label>House Fraction</label>
+
+											<!-- House Fraction -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_frac" class="form-label">House Fraction</label>
 												<input id="ma_frac" type="text" class="form-control">
 											</div>
-											<div class="form-group col-md-3">
-												<label>Pre-Direction</label>
-												<select id="ma_predir" class="form-control">
-													<option value=""></option>
+
+											<!-- Pre-Direction -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_predir" class="form-label">Pre-Direction</label>
+												<select id="ma_predir" class="form-select">
+													<option value="" selected>Choose...</option>
 													<option>N</option>
 													<option>S</option>
 													<option>E</option>
@@ -299,10 +315,18 @@
 													<option>SW</option>
 												</select>
 											</div>
-											<div class="form-group col-md-3">
-												<label>Street Type</label>
-												<select id="ma_streettype" class="form-control">
-													<option value=""></option>
+
+											<!-- Street Name -->
+											<div class="col-md-6">
+												<label for="ma_street" class="form-label">Street Name <span class="text-warning">*</span></label>
+												<input id="ma_street" type="text" class="form-control">
+											</div>
+
+											<!-- Street Type -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_streettype" class="form-label">Street Type</label>
+												<select id="ma_streettype" class="form-select">
+													<option value="" selected>Choose...</option>
 													<option>St</option>
 													<option>Ave</option>
 													<option>Blvd</option>
@@ -312,22 +336,21 @@
 													<option>Pl</option>
 												</select>
 											</div>
-										</div>
-										<div class="form-row">
-											<div class="form-group col-md-6">
-												<label>Street Name <span class="text-warning">*</span></label>
-												<input id="ma_street" type="text" class="form-control">
-											</div>
-											<div class="form-group col-md-4">
-												<label>City <span class="text-warning">*</span></label>
+
+											<!-- City -->
+											<div class="col-md-6">
+												<label for="ma_city" class="form-label">City <span class="text-warning">*</span></label>
 												<input id="ma_city" type="text" class="form-control">
 											</div>
-											<div class="form-group col-md-2">
-												<label>Zip <span class="text-warning">*</span></label>
+
+											<!-- Zip -->
+											<div class="col-md-4">
+												<label for="ma_zip" class="form-label">Zip <span class="text-warning">*</span></label>
 												<input id="ma_zip" type="text" class="form-control">
 											</div>
 										</div>
 									</div>
+
 
 									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
 										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitAPN()">Submit</button>

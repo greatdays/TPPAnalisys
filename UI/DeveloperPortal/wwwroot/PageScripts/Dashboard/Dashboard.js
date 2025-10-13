@@ -119,6 +119,20 @@
             provisionRequest.PreDirCd = $('#ma_predir').val();
             provisionRequest.StreetTypeCd = $('#ma_streettype').val();
 
+            // ** Construct the full address string **
+            const addressParts = [
+                provisionRequest.HouseNum,
+                provisionRequest.HouseFracNum,
+                provisionRequest.PreDirCd,
+                provisionRequest.StreetName,
+                provisionRequest.StreetTypeCd,
+                provisionRequest.City,
+                'CA', // Assuming State is always CA
+                provisionRequest.ZipCode
+            ];
+            provisionRequest.ProjectAddress = addressParts.filter(part => part).join(' '); // Filter out empty parts and join
+
+
         } else {
             // Dropdown Address Selection
             var selectedOption = $('#SiteAddressControlSelect option:selected');
@@ -379,16 +393,21 @@
     },
 
     GetAPNProject: function () {
+        const apnInput = $('#APNInput');
+        const apnErrorDiv = $('#APNError'); // Use the existing error div
+        const apn = apnInput.val().trim();
 
-        const input = document.getElementById("APNInput");
-        const value = input.value.trim();
-        document.getElementById("noAPNData").style.display = "none";
-        if (value === '') {
-            document.getElementById("APNError").style.display = "block";
-            return;
+        // Always hide the error initially on a new click
+        apnErrorDiv.hide();
+
+        // Validate that the APN is exactly 10 digits
+        if (!/^\d{10}$/.test(apn)) {
+            // Set the new message and show the error div
+            apnErrorDiv.text('Please enter a 10 digit APN Number').show();
+            return; // Stop the function if validation fails
         }
         else {
-            document.getElementById("APNError").style.display = "none";
+            // If valid, proceed with the search after a short delay
             setTimeout(Dashboard.SerachAPNClick, 300);
         }
     },
