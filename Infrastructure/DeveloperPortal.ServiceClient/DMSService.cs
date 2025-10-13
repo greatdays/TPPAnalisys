@@ -47,6 +47,7 @@ namespace DeveloperPortal.ServiceClient
                 { FieldType.Category, new string[] { category } },
                 { FieldType.SubCategory, new string[] { fileSubCategory } },
                 { FieldType.CaseId, new string[] { caseId.ToString() } },
+                { FieldType.AchpProjectId, new string[] {  projectReferenceId.ToString() } },
             },
                 SysData = new Dictionary<SysFieldType, string>
             {
