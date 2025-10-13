@@ -3,7 +3,11 @@ using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
+using HCIDLA.ServiceClient.DMS;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
@@ -191,6 +195,16 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }
             return true;
         }
+        public bool DeleteFloorPlanFile(int docId)
+        {
+            bool data = _floorPlanTypeRepository.DeleteFloorPlanFile(docId);
+            if (data)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<int> AddFloorPlanTypeComplianceMatrix(FloorPlanTypeModel floorPanTypeModel)
         {
             var floorPlans = new FloorPlanType
@@ -232,8 +246,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     .GetFloorPlanBathroomTypeByFloorPlanID(fpType.FloorPlanTypeID);
 
                 foreach (var fpBathroomType in floorPlanBathroomType)
-                {
-                    // Get Description for Bathroom Type
+                {                   
                     var bathroomTypeDescription = _floorPlanTypeRepository.GetLutBathroomTypeEdit()
                         .Where(p => p.LutBathroomTypeId == fpBathroomType.LutBathroomTypeId)
                         .Select(c => c.Description)
@@ -277,6 +290,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         public async Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId)
         {
             var floorPlan = _floorPlanTypeRepository.GetFloorPlanTypeByID(floorplanId);
+            var floorPlanFiles = _floorPlanTypeRepository.GetFloorPlanFilesByID(Convert.ToString(floorplanId));
 
             var floorPlanType = new FloorPlanTypeModel()
             {
@@ -288,9 +302,18 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 ProjectSiteID = floorPlan.ProjectSiteId ?? 0,
                 PropsnapShotID = floorPlan.PropsnapShotId,
                 StructureID = floorPlan.StructureId ?? 0,
-                FloorPlanTypeID = floorPlan.FloorPlanTypeId
-            }
-            ;
+                FloorPlanTypeID = floorPlan.FloorPlanTypeId,
+                File = floorPlanFiles.Select(x => new FloorPlanFileModel
+                {
+                    DocID=x.DocumentId,
+                    Name = x.Name,
+                    FileSize = x.FileSize,
+                    URl=x.Link
+                }).ToList()
+
+            };
+            
+            
             floorPlanType.FloorPlanBathroomType = new List<FloorPlanBathroomTypeModel>();
             var bTypes = _floorPlanTypeRepository.GetFloorPlanBathroomTypeByFloorPlanID(floorplanId);
             foreach (var bType in bTypes)
@@ -324,6 +347,61 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 Text = ut.Description
             }).ToList();
             return floorPlanType;
+        }
+        public int? getLuDocumentCategoryId(string category, string subCategory)
+        {
+            return _floorPlanTypeRepository.getLuDocumentCategoryId(category, subCategory);
+        }
+        public void SaveFloorPlanFile(FloorPlanTypeModel floorPlan,List<UploadResponse> uploadResponses
+            ,int LuDocumentCategoryId,string FloorPlanTypeID, string userName
+            ) {
+            List<Document> documents = new List<Document>();
+
+            for (int i = 0; i < uploadResponses.Count; i++)
+            {
+                var response = uploadResponses[i];
+                var file = floorPlan.Files[i];
+
+                if (response != null && string.IsNullOrEmpty(response.ErrorMessages?.FirstOrDefault()))
+                {
+                    documents.Add(new Document
+                    {
+
+                        Link = response.UniqueId.ToString(),
+                        FileSize = file.Length.ToString(),
+                        Name = file.FileName,
+                        Comment = "",
+                        Attributes = "",
+                        DocumentCategoryId = Convert.ToInt32(LuDocumentCategoryId),
+                        CreatedOn = DateTime.Now,
+                        CreatedBy = userName,
+                        ModifiedBy = userName,
+                        ModifiedOn = DateTime.Now,
+                        IsDeleted = false,
+                        AssnDocuments =
+                                {
+                                    new AssnDocument
+                                    {
+                                        ReferenceId = FloorPlanTypeID.ToString(),
+                                        ReferenceType = "FloorPlan",
+                                        CreatedBy =  userName,
+                                        CreatedOn =  DateTime.Now,
+                                        ModifiedBy =  userName,
+                                        ModifiedOn =  DateTime.Now
+                                    }
+                                }
+
+
+                    });
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to upload {file.FileName}: {string.Join(", ", response?.ErrorMessages ?? new string[] { "Unknown error" })}");
+                }
+            }
+
+            _floorPlanTypeRepository.SaveFloorPlanFile(documents, floorPlan);
+            
         }
     }
 }
