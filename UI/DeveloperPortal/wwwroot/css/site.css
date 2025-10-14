@@ -11738,9 +11738,9 @@ label.control-label.required-label:after {
 
 /*HELP PAGE START*/
 #help-section {
-    height: 950px;
-    width: 1000px;
-    padding: 2em;
+    height: 835px;
+    max-width: 1000px;
+    width: 100%;
     background: white;
     border-radius: 5px;
     margin: 1em auto;
@@ -11762,6 +11762,8 @@ label.control-label.required-label:after {
 
 .accordion-button {
     border: none;
+    word-wrap: break-word; 
+    white-space: normal; 
 }
 
 #accordion-help .accordion-button {
