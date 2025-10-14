@@ -11432,7 +11432,7 @@ a {
 }
 
 #tblMyProjects_wrapper .dataTables_paginate,
-#dmsDataTable_wrapper .dataTables_paginate {
+#divprojectDetail .dataTables_paginate {
     padding-top: 12px;
     padding-right: 15px;
     display: flex;
@@ -11440,7 +11440,7 @@ a {
 }
 
 #tblMyProjects_wrapper .paginate_button,
-#dmsDataTable_wrapper .paginate_button {
+#divprojectDetail .paginate_button {
     display: inline-block;
     vertical-align: middle;
     text-align: center;
@@ -11455,16 +11455,17 @@ a {
     min-height: 30px;
     height: 30px;
     box-sizing: border-box;
+    padding: 1px 10px !important;
 }
 
 #tblMyProjects_wrapper .paginate_button.current,
-#dmsDataTable_wrapper .paginate_button.current {
+#divprojectDetail .paginate_button.current {
     background-color: #2C3E5C;
     color: #fff !important;
 }
 
 #tblMyProjects_wrapper .paginate_button:hover,
-#dmsDataTable_wrapper .paginate_button:hover {
+#divprojectDetail .paginate_button:hover {
     background: #2C3E5C !important;
     color: #fff !important;
     border-color: #2C3E5C !important;
@@ -11472,21 +11473,19 @@ a {
 }
 
 #tblMyProjects_wrapper a#tblMyProjects_previous,
-#dmsDataTable_wrapper a#dmsDataTable_previous {
+#divprojectDetail a#dmsDataTable_previous {
     border-top-left-radius: 0.2rem;
     border-bottom-left-radius: 0.2rem;
 }
 
 #tblMyProjects_wrapper a#tblMyProjects_next,
-#dmsDataTable_wrapper a#dmsDataTable_next {
+#divprojectDetail a#dmsDataTable_next {
     border-top-right-radius: 0.15rem;
     border-bottom-right-radius: 0.15rem;
 }
 
 #tblMyProjects_previous,
-#tblMyProjects_next,
-#dmsDataTable_previous,
-#dmsDataTable_next {
+#tblMyProjects_next{
     display: inline-block !important;
     min-width: 30px !important;
     min-height: 30px !important;
@@ -11498,28 +11497,27 @@ a {
 }
 
 #tblMyProjects th,
-#tblMyProjects td,
-#dmsDataTable th,
-#dmsDataTable td {
+#tblMyProjects td
+{
     padding-left: 20px;
     padding-right: 20px;
     line-height: 1.25;
 }
 
-#dmsDataTable_wrapper .dataTables_length {
+#divprojectDetail .dataTables_length {
     padding-top: 14px;
     padding-left: 2px;
 }
 
-#dmsDataTable_wrapper .dataTables_filter {
+#divprojectDetail .dataTables_filter {
     padding-top: 14px;
 }
 
-#dmsDataTable_wrapper .dataTables_paginate {
+#divprojectDetail .dataTables_paginate {
     padding-right: 0px;
 }
 
-#dmsDataTable_wrapper .paginate_button {
+#divprojectDetail .paginate_button {
     display: inline-block;
     vertical-align: middle;
     text-align: center;
@@ -11556,8 +11554,6 @@ label.control-label.required-label:after {
     content: "*";
     color: red;
     font-size: 20px;
-}
-
 }
 
 #loadingOverlay {
@@ -11626,3 +11622,14 @@ label.control-label.required-label:after {
 .multiselect-container>li>a>label {
     padding: 3px 20px 3px 10px !important;
 }
+.disabled-link {
+    background: lightgray !important;
+    border: 1px solid lightgray !important;
+    cursor: default !important;
+    color: gray !important;
+}
+
+    .disabled-link:hover {
+        background: lightgray !important;
+        border: 1px solid lightgray;
+    }

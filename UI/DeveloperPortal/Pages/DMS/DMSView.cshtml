@@ -3,13 +3,16 @@
 @using Newtonsoft.Json
 
 <div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">DMS File Upload</h5>
-        <button type="button" id="btn-add-file" class="btn btn-primary" onclick="DMS.AddDocument()">
-            <i class="fas fa-plus"></i> Add Document
-        </button>
-    </div>
 
+    <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
+        <div class="k-header k-grid-toolbar ">
+            <span class="k-grid-header-title"> Project Documents</span>
+            <button type="button" id="btn-add-file" class="k-button k-button-icontext k-grid-add no-access" onclick="DMS.AddDocument()">
+               Add Document
+            </button>
+        </div>
+    </div>
+    <div class=" k-box-body" style="padding-top:20px;">
     <div class="table-responsive">
         <table id="dmsDataTable" class="table table-striped table-bordered align-middle w-100">
             <thead>
@@ -44,7 +47,7 @@
                                 {
                                     <a href="javascript:void(0)"
                                        onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
-                                       class="btn btn-sm btn-primary" title="Download @file.Name">
+                                       class="btn k-grid-edit btn-sm btn-action" title="Download @file.Name">
                                         <i class="fas fa-download"></i>
                                     </a>
                                 }
@@ -52,9 +55,29 @@
                                 {
                                     <span class="text-muted">-</span>
                                 }
-                                <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.DocumentId" type="button">
-                                    <i class="fas fa-trash-alt" title="Delete Document"></i>
-                                </button>
+
+                                @if (file.SubCategory == "FloorPlanType")
+                                {
+                                        <button class="btn btn-sm disabled-link"  type="button">
+                                            <i class="fas fa-trash-alt" title="You cannot delete the Floor plan document here. Please go to the Floor Plan tab to delete it."></i>
+                                    </button>
+                                }
+                                    else if (file.SubCategory == "FundingSource" || file.SubCategory== "Funding Source")
+                                {
+                                        <button class="btn btn-sm disabled-link" type="button">
+                                            <i class="fas fa-trash-alt" title="You cannot delete the Funding Source document here. Please go to the Funding Source tab to delete it."></i>
+                                    </button>
+                               
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.DocumentId" type="button">
+                                        <i class="fas fa-trash-alt" title="Delete Document"></i>
+                                    </button>
+                                }
+
+
+                                
                             </td>
                         </tr>
                     }
@@ -64,6 +87,7 @@
                 }
             </tbody>
         </table>
+    </div>
     </div>
 </div>
 
