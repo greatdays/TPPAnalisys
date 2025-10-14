@@ -55,6 +55,8 @@ public partial class Document
 
     public int? DocumentCategoryId { get; set; }
 
+    public string? Status { get; set; }
+
     public virtual ICollection<AssnDocument> AssnDocuments { get; set; } = new List<AssnDocument>();
 
     public virtual ICollection<AssnFolderDocument> AssnFolderDocuments { get; set; } = new List<AssnFolderDocument>();

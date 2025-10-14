@@ -7,7 +7,7 @@ public partial class LutServiceRequestType
 {
     public int LutServiceRequestTypeId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
     public string? Code { get; set; }
 
@@ -41,6 +41,10 @@ public partial class LutServiceRequestType
     public DateTime? ModifiedOn { get; set; }
 
     public Guid? ApplicationGuid { get; set; }
+
+    public string? Section { get; set; }
+
+    public string? Level { get; set; }
 
     public virtual ICollection<AssnServiceRequestTypeViolation> AssnServiceRequestTypeViolations { get; set; } = new List<AssnServiceRequestTypeViolation>();
 

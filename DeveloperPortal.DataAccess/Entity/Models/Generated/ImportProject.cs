@@ -122,4 +122,8 @@ public partial class ImportProject
     public string? YearStart { get; set; }
 
     public string? YearEnd { get; set; }
+
+    public string? Neighborhood { get; set; }
+
+    public string? Region { get; set; }
 }

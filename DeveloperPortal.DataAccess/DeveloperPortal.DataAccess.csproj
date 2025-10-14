@@ -393,6 +393,7 @@
     <Compile Include="Entity\Models\Generated\Organization.cs" />
     <Compile Include="Entity\Models\Generated\OrganizationAddress.cs" />
     <Compile Include="Entity\Models\Generated\OutreachAndAffimativeMarketing.cs" />
+    <Compile Include="Entity\Models\Generated\OutreachAndAffimativeMarketingBackup.cs" />
     <Compile Include="Entity\Models\Generated\PCMStoPncSyncLog.cs" />
     <Compile Include="Entity\Models\Generated\PhoneLog.cs" />
     <Compile Include="Entity\Models\Generated\PMP.cs" />
