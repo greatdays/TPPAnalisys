@@ -227,11 +227,11 @@ namespace DeveloperPortal.Controllers
 
 
 
-                return Json(new
+                return new JsonResult(new
                 {
                     Success = true,
                     Message = finalMessage,
-                    IsProcessingInBackground = backgroundProcessed.Any(), // NEW FLAG for front-end to check
+                    IsProcessingInBackground = backgroundProcessed.Any(),
                     UploadedCount = savedDocuments.Count,
                     TotalCount = validFiles.Count
                 });

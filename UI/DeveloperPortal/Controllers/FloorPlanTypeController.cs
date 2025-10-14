@@ -1,8 +1,10 @@
 ﻿using Azure.Core;
 using DeveloperPortal.Application.DMS.Interface;
+using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.IDM;
@@ -13,7 +15,8 @@ using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using DeveloperPortal.Domain.DMS;
+using Microsoft.Build.Evaluation;
+using Microsoft.CodeAnalysis;
 
 namespace DeveloperPortal.Controllers
 {
@@ -22,15 +25,21 @@ namespace DeveloperPortal.Controllers
     {
 
         private readonly IFloorPlanTypeService _floorPlanTypeService;
+        private IProjectDetailService _projectDetailService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _config;
         private readonly IDocumentService _documentService;
-        public FloorPlanTypeController(IConfiguration config, IFloorPlanTypeService floorPlanTypeService, IHttpContextAccessor httpContextAccessor, IDocumentService documentService)
+        private readonly IAppConfigService _appConfigService;
+        public FloorPlanTypeController(IConfiguration config, IFloorPlanTypeService 
+            floorPlanTypeService, IHttpContextAccessor httpContextAccessor, 
+            IDocumentService documentService, IProjectDetailService projectDetailService,  IAppConfigService appConfigService)
         {
             _floorPlanTypeService = floorPlanTypeService;
             _httpContextAccessor = httpContextAccessor;
             _config = config;
             _documentService = documentService;
+            _projectDetailService = projectDetailService;
+            _appConfigService = appConfigService;
         }
         [HttpGet]
         public async Task<ActionResult> _EditFloorPlanType(int id)
@@ -184,7 +193,11 @@ namespace DeveloperPortal.Controllers
             try
             {
                 var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
-                var projReferenceId = _documentService.GetProjectReference(ProjectId);
+                var refProjectId = ProjectId;
+                ProjectId = _documentService.GetActualProjectId(ProjectId);
+                var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(ProjectId);
+                projectSiteDetails.CaseID = caseId;
+                var largeFileUploadPath = _appConfigService.getConfigValue("DMSLargeFileActualPath");
 
                 foreach (var file in files)
                 {
@@ -211,7 +224,8 @@ namespace DeveloperPortal.Controllers
 
                     // Upload single file
                     var uploadResponse = await new DMSService(_config)
-                        .SubmitUploadedDocument(new List<IFormFile> { file }, projReferenceId, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
+                        .SubmitUploadedDocument(new List<IFormFile> { file }, projectSiteDetails, 
+                        fileCategory, fileSubCategory, viewModel.CreatedBy, largeFileUploadPath);
 
                     if (uploadResponse == null || uploadResponse[0].ErrorMessages?.Length > 0)
                     {

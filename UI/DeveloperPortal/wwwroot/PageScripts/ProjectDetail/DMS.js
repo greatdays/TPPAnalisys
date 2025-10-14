@@ -262,7 +262,7 @@ window.DMSManager = class DMSManager {
     // Update the performAjaxSubmission method
     performAjaxSubmission(formData, url) {
         if (this.modal) this.modal.hide();
-        typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();
+        if (typeof LoadingOverlay !== "undefined") LoadingOverlay.show();
 
         $.ajax({
             url: url,
@@ -273,26 +273,19 @@ window.DMSManager = class DMSManager {
             timeout: 0, // No timeout (or set to 600000 for 10 minutes)
 
             success: (response) => {
-                // Check for a valid response object and its status
-                if (response && response.Success === true) {
+                const res = response || {};
+                const isSuccess = res.Success === true || res.success === true;
+                const isProcessing = res.IsProcessingInBackground === true || res.isProcessingInBackground === true;
+                const message = res.Message || res.message || 'Files uploaded successfully!';
 
-                    let successMessage = response.Message || 'Files uploaded successfully!';
-
-                    // 1. Check the new flag for background processing
-                    if (response.IsProcessingInBackground === true) {
-                        // Display the special message for large files
-                        alert(successMessage);
-                        // DO NOT reloadGrid() here, as the files aren't finished yet.
-                    } else {
-                        // 2. Standard success for small files
-                        this.reloadGrid();
-                        alert(successMessage);
-                    }
-                } else if (response && response.Success === false) {
-                    // Handle success=false responses (e.g., controller-side validation errors)
-                    let errorMsg = response.Message || 'Upload failed due to a server error.';
+                if (isSuccess) {
+                    // Reload grid immediately, even for background uploads
+                    this.reloadGrid();
+                    alert(message);
+                } else if (res.Success === false || res.success === false) {
+                    const errorMsg = res.Message || res.message || 'Upload failed due to a server error.';
+                    console.error("Upload failed (Success: false):", res);
                     alert(errorMsg);
-                    console.error("Upload failed (Success: false):", response);
                 } else {
                     // Fallback for unexpected success response structure
                     this.reloadGrid();
@@ -304,26 +297,25 @@ window.DMSManager = class DMSManager {
                 let errorMsg = 'An error occurred while uploading.';
 
                 if (xhr.status === 413) {
-                    // This is where a very large file that exceeded IIS/Kestrel limits (not your attribute limits) would land
                     errorMsg = 'File size too large. Maximum allowed is 600 MB.';
                 } else if (xhr.status === 408 || xhr.statusText === 'timeout') {
                     errorMsg = 'Upload timeout. Please try again.';
                 } else if (xhr.status === 0) {
                     errorMsg = 'Network error or request was cancelled.';
-                } else if (xhr.responseJSON && xhr.responseJSON.Message) {
-                    // If the controller returns a JsonResult with Success=false
-                    errorMsg = xhr.responseJSON.Message;
+                } else if (xhr.responseJSON?.Message || xhr.responseJSON?.message) {
+                    errorMsg = xhr.responseJSON.Message || xhr.responseJSON.message;
                 }
 
-                alert(errorMsg);
                 console.error("Ajax submission failed:", xhr);
+                alert(errorMsg);
             },
 
             complete: () => {
-                typeof LoadingOverlay !== "undefined" && LoadingOverlay.hide();
+                if (typeof LoadingOverlay !== "undefined") LoadingOverlay.hide();
             }
         });
     }
+
     //performAjaxSubmission(formData, url) {
     //    if (this.modal) this.modal.hide();
     //    typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();

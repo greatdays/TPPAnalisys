@@ -1,4 +1,5 @@
 ﻿using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.Helper;
 using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.Common;
@@ -104,7 +105,7 @@ namespace DeveloperPortal.ServiceClient
                         // Handle large files separately
                         if (fileThreshold.HasValue && byteArray.Length >= fileThreshold.Value)
                         {
-                            ProcessLargeFile(info, byteArray);
+                            await ProcessLargeFile(info, byteArray);
 
                             // Return a response indicating it was processed as a large file
                             return new UploadResponse
@@ -138,10 +139,10 @@ namespace DeveloperPortal.ServiceClient
         }
 
 
-        private void ProcessLargeFile(FileUploadInfo info, byte[] fileStream)
+        private async Task ProcessLargeFile(FileUploadInfo info, byte[] fileStream)
         {
             try
-            {
+            { /*
                 // Get the XML metadata for the large file
                 string xml = DMSClientProxy.GetXmlForLargeFile(info, fileStream.Length);
 
@@ -153,7 +154,35 @@ namespace DeveloperPortal.ServiceClient
 
                 Directory.CreateDirectory(targetDir);
                 File.WriteAllText(xmlFileName, xml);
-                File.WriteAllBytes(actualFileName, fileStream);
+                File.WriteAllBytes(actualFileName, fileStream);*/
+                // Get the configured upload folder path (example: "TempUploads" or "Uploads/LargeFiles")
+
+                // Example: Get the XML metadata for the uploaded file
+                string xml = DMSClientProxy.GetXmlForLargeFile(info, fileStream.Length);
+                
+                string relativePath = "TempUploads"; // e.g. "TempUploads"
+                string folder = Guid.NewGuid().ToString();
+
+                // Equivalent to HostingEnvironment.MapPath("~" + relativePath)
+                string basePath = Path.Combine("D:\\Ananthu\\Developer Portal\\UI\\DeveloperPortal", relativePath); // app root
+                string contentPath = Path.Combine(basePath, folder);
+
+                Directory.CreateDirectory(contentPath);
+
+                string filePath = Path.Combine(contentPath, info.FileName);
+                string xmlPath = Path.Combine(contentPath, "process.xml");
+
+               
+
+                // Save XML file
+                await File.WriteAllTextAsync(xmlPath, xml);
+
+                // Save binary file
+                await File.WriteAllBytesAsync(filePath, fileStream);
+
+               
+
+
             }
             catch (Exception ex)
             {
