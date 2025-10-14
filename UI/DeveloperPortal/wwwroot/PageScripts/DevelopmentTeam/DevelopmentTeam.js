@@ -84,7 +84,8 @@ var DevelopmentTeam =
             pageLength: 10,
             "paging": true,
             "searching": true,
-            "ordering": false
+            ordering: true,
+            responsive: true
         });
     },
     Delete: function (contactId, contactName, contactIdentifierId) {
