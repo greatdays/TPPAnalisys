@@ -4,7 +4,7 @@
         <span id="deletefloorPlanAlertMessage">Floor Plan updated successfully!</span>
     </div>
 
-<form id="editFloorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="_EditFloorPlanType">
+<form id="editFloorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="_EditFloorPlanType" style="overflow-x:hidden;">
 	<div class="row">
 		<div class="col-md-6 mb-3">
 			<input type="hidden" name="FloorPlanTypeID" value="@Model.FloorPlanTypeID" />
@@ -111,51 +111,59 @@
 
 	</div>
 
-	<div class="row">
-		<table class="table table-bordered table-striped" id="existingFilesTable">
-		<thead class="table-light">
-			<tr>
-				<th>File Name</th>
-				<th>File Size</th>
-				     @* <th>Preview</th> *@
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
-        @if (Model.File != null && Model.File.Any())
-        {
-            foreach (var file in Model.File)
-            {
+<div class="row">
+	 <div class="col-md-12">
+		 <div class="table-responsive">
+		<table class="table table-bordered table-striped align-middle w-100" id="existingFilesTable">
 
-                <tr id="fileRow_@file.Name">
-                    <td>@file.Name</td>
-                    <td>@file.FileSize</td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-danger" onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "FundingSource", new { fileName = file.Name, filePath = file.URl })', '@file.Name')"><i class="fas fa-download"></i></button>
-						 <!-- Delete Button -->
-						<button type="button" 
-								class="btn btn-sm btn-danger" 
-								onclick="FloorPlanType.deleteFloorPlanFile('@file.DocID', '@file.Name')">
-							<i class="fas fa-trash-alt"></i>
-						</button>
-						  
-                    </td>
+        <thead class="table-light">
+            <tr>
+                <th>Document Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.File != null && Model.File.Any())
+            {
+                foreach (var file in Model.File)
+                {
+                    <tr id="fileRow_@file.Name">
+                        <td class="text-wrap" style="max-width: 300px;">@file.Name</td>
+                        <td>
+                            <div class="d-flex flex-row align-items-center">
+                                <!-- Download Button -->
+								<button type="button"
+										class="btn btn-sm"
+										style="background-color: #135b79; color: #fff; padding: 0.25rem 0.5rem;"
+										onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "FundingSource", new { fileName = file.Name, filePath = file.URl })', '@file.Name')">
+									<i class="fas fa-download fa-sm"></i>
+								</button>
+
+								<!-- Delete Button -->
+								<button type="button"
+										class="btn btn-sm btn-danger"
+										onclick="FloorPlanType.deleteFloorPlanFile('@file.DocID', '@file.Name')">
+									<i class="fas fa-trash-alt fa-sm"></i>
+								</button>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="2" class="text-center">No files uploaded</td>
                 </tr>
             }
-        }
-        else
-        {
-            <tr>
-                <td colspan="4" class="text-center">No files uploaded</td>
-            </tr>
-        }
-    </tbody>
-		</table>
+        </tbody>
+    </table>
 	</div>
-	
+	</div>
+</div>
 
-
-
+<div class="row">
 	<div class="col-md-12">
 		<div id="divDropZoneFloorPlanEdit" class="custom-dropzone d-flex flex-wrap dz-clickable">
 			<div class="dz-message">
@@ -171,6 +179,7 @@
 				Max. file size: 20Mb
 			</small>
 		</div>					
+	</div>
 	</div>
 </form>
 @* <script>

@@ -29,7 +29,7 @@
 <div class="modal fade discrepencyModal custModal" id="editFloorPlanType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editFloorPlanTypeTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" style="margin-right:1px;">
 				@*MOD09122023 - AAHP-5668 code changes*@
 				<h5 class="modal-title" id="editFloorPlanTypeTitle">Edit Floor Plan Type</h5>
 				<button type="button" class="close editclose" aria-label="Close" data-bs-dismiss="modal">
@@ -285,8 +285,8 @@ $(document).ready(function () {
 			contentType: false,
 			processData: false,
 			success: function (response) {
-				
-				if (response.success) {
+
+					if (response.success) {
 							
 					$('#floorPlanForm')[0].reset();
 					floorPlanDropzone.removeAllFiles(true);
@@ -328,7 +328,7 @@ $(document).ready(function () {
 			alertBox.fadeOut(300, function () {
 				$(this).removeClass('show');
 			});
-		}, 12000);
+		}, 20000);
 	}
 
 </script>
