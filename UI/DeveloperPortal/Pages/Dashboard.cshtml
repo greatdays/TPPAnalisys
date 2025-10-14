@@ -202,7 +202,7 @@
 								<form action="APNForm">
 									<label for="APNInput">Provide APN</label><span class="text-danger">*</span>
 									<div class="input-group mb-3">
-										<input type="text" id="APNInput" class="form-control" placeholder="APN" required>
+										<input type="text" id="APNInput" class="form-control" placeholder="APN" maxlength="10" inputmode="numeric" pattern="\d{1,10}" required>
 										<div class="input-group-append">
 											<button class="btn btn-primary" type="button" id="searchAPNButton" onclick="Dashboard.GetAPNProject()">Search</button>
 										</div>
@@ -213,7 +213,7 @@
 									<!--  APN not found UI Logic -->
 
 									<div id="noAPNData" class="alert alert-warning mt-2" style="display:none;">
-										We couldn't find an existing project for the APN you entered. Please verify your APN, then fill out 
+										We couldn't find the APN you entered. Please verify your APN, then fill out 
 										the form below to create a new project and link it to your account.
 									</div>
 

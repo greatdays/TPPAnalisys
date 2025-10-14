@@ -585,19 +585,62 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     int? siteAddressID = TryParseInt(provisionModel.SiteAddressID);
                     int? refSiteAddressId = TryParseInt(pcms.RefSiteAddressId);
 
+                    // Helper function to convert null/empty strings to DBNull.Value
+                    object DbNullIfEmpty(string s) => string.IsNullOrWhiteSpace(s) ? (object)DBNull.Value : s;
+
+
                     parameters = new[]
                     {
-                        new SqlParameter("APN", provisionModel.APN ?? (object)DBNull.Value),
-                        new SqlParameter("ProjectAddress", provisionModel.ProjectAddress ?? (object)DBNull.Value),
-                        new SqlParameter("SiteAddressID", siteAddressID.HasValue ? siteAddressID.Value : (object)DBNull.Value),
+                        // Required parameters
+                        new SqlParameter("APN", DbNullIfEmpty(provisionModel.APN)),
                         new SqlParameter("UserName", userName),
-                        new SqlParameter("ProjectName", provisionModel.ProjectName ?? (object)DBNull.Value),
-                        new SqlParameter("PropertyName", provisionModel.PropertyName ?? (object)DBNull.Value),
+                        new SqlParameter("ProjectName", DbNullIfEmpty(provisionModel.ProjectName)),
+                        new SqlParameter("PropertyName", DbNullIfEmpty(provisionModel.PropertyName)),
+                        new SqlParameter("ProjectAddress",  DBNull.Value),
+                        new SqlParameter("SiteAddressID", siteAddressID.HasValue ? (object)siteAddressID.Value : DBNull.Value),
                         new SqlParameter("RefProjectId", pcms.RefProjectId),
                         new SqlParameter("RefProjectSiteId", pcms.RefProjectSiteId),
-                        new SqlParameter("RefSiteAddressId", refSiteAddressId.HasValue ? refSiteAddressId.Value : (object)DBNull.Value),
-                        new SqlParameter("FileGroup", pcms.FileGroup ?? (object)DBNull.Value)
+                        new SqlParameter("RefSiteAddressId", refSiteAddressId.HasValue ? (object)refSiteAddressId.Value : DBNull.Value),
+                        new SqlParameter("FileGroup", DbNullIfEmpty(pcms.FileGroup)),
+                        new SqlParameter("HouseNum", DbNullIfEmpty(provisionModel.HouseNum)),
+                        new SqlParameter("HouseFracNum", DbNullIfEmpty(provisionModel.HouseFracNum)),
+                        new SqlParameter("PreDirCd", DbNullIfEmpty(provisionModel.PreDirCd)),
+                        new SqlParameter("StreetName", DbNullIfEmpty(provisionModel.StreetName)),
+                        new SqlParameter("StreetTypeCd", DbNullIfEmpty(provisionModel.StreetTypeCd)),
+                        new SqlParameter("PostDirCd", DbNullIfEmpty(provisionModel.PostDirCd)),
+                        new SqlParameter("City", DbNullIfEmpty(provisionModel.City)),
+                        new SqlParameter("Zip", DbNullIfEmpty(provisionModel.Zip))
+
+                    // Note: @Source parameter is omitted, as it has a default value in the stored procedure
+                    // and is not expected from the client application.
                     };
+
+
+                    // Execute the stored procedure and get the result
+                    var result = await _storedProcedureExecutor.ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
+                        StoredProcedureNames.SP_uspCreateNewProjectandSite,
+                        parameters
+                    );
+
+
+                    // Check if the result is not null and contains at least one list. Then save link relationship
+                    if (result != null)
+                    {
+                        List<string> projects = new List<string>();
+                        projects.Add(result.ProjectID.ToString());
+                        //var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                        var (saved, notSaved) = await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+
+                    }
+
+
+                    if (result == null || result.Success != 1)
+                    {
+                        // Log error from the AAHR stored procedure
+                        return false;
+                    }
+
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -605,31 +648,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     return false; // Stop execution if parameter creation fails
                 }
 
-                // Execute the stored procedure and get the result
-                var result = await _storedProcedureExecutor.ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
-                    StoredProcedureNames.SP_uspCreateNewProjectandSite,
-                    parameters
-                );
-
-
-                // Check if the result is not null and contains at least one list. Then save link relationship
-                if (result != null)
-                {
-                    List<string> projects = new List<string>();
-                    projects.Add(result.ProjectID.ToString());
-                    //var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
-                    var (saved, notSaved) = await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
-
-                }
-
-
-                if (result == null || result.Success != 1)
-                {
-                    // Log error from the AAHR stored procedure
-                    return false;
-                }
-
-                return true;
             }
             catch (Exception e)
             {
