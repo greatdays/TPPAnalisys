@@ -115,6 +115,10 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-md-6 mb-3" id="bathroomTypeDiv">
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-12">
 							<div id="divDropZoneFloorPlan" class="custom-dropzone d-flex flex-wrap dz-clickable">
 								<div class="dz-message">
@@ -131,10 +135,7 @@
 								</small>
 							</div>
 					</div>
-					<div class="row">
-						<div class="col-md-6 mb-3" id="bathroomTypeDiv">
-						</div>
-					</div>
+					
 
 				</div>
 
@@ -240,6 +241,23 @@ $(document).ready(function () {
 		} else {
 			$('#lblError_fp_bathroom').html('');
 		}
+			$('.add_bTypes').each(function (index, elem) {
+				var spanId = $(elem).attr('id') + '_span';
+				$('#' + spanId).html('');
+				if ($(elem).val() == '' || $(elem).val() == '0') {
+					isValid = false;
+					$('#' + spanId).html('Select a valid type');
+				}
+			});
+
+			$('.add_bOptions').each(function (index, elem) {
+				var spanId = $(elem).attr('id') + '_span';
+				$('#' + spanId).html('');
+				if ($(elem).is(":visible") && ($(elem).val() == '' || $(elem).val() == '0')) {
+					isValid = false;
+					$('#' + spanId).html('Select a valid option');
+				}
+			});
 
 		if (!isValid) return;
 
