@@ -61,52 +61,61 @@
                 <form id="frmSaveAddSite">
 
                     @Html.HiddenFor(m => m.ProjectID)
+                    @Html.HiddenFor(m => m.RefProjectID)
                     @Html.HiddenFor(m => m.IsAddAddress)
                     @Html.HiddenFor(m => m.ProjectSiteID)
                     @Html.HiddenFor(m => m.CaseID, new { @id = "CaseId" })
+
                     <div class="form-group mb-3">
                     @Html.LabelFor(model => model.APN, "Assessor's Parcel Number (APN)", new { @class = "form-label fw-bold" })
                     <span class="text-danger">*</span>
-                    <div class="input-group">
+                        <div class="input-group col-md-6">
                         @Html.TextBoxFor(model => model.APN, new
                             {
                                 @class = "form-control",
                                 @placeholder = "APN",
                                 @id = "APNInput",
-                                required = "required"
+                                required = "required",
+                                maxlength = 10, 
+                                autocomplete = "off"
                             })
-                        <div class="input-group-append">
+
+                            <div class="input-group-append ml-2">
                             <button class="btn btn-primary" type="button" id="searchAPNButton" onclick="SiteInformation.GetAPNProjectAddress()">Search</button>
                         </div>
                     </div>
-            </div>
+                    </div>
 
                     @* <div class="form-text infotext">Enter the APN and click Search to load available site addresses.</div> *@
                     <div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
-                    <div id="noAPNData" class="text-danger mt-1" style="display: none;">No data found.</div>
+                    <div id="noAPNData" class="lert alert-warning mt-2" style="display: none;">
+                        We couldn't find the APN you entered. Please verify your APN, then fill out
+                        the form below to create a new project site.
+                    </div>
                     <div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
                     <div id="CreateNewProjectSiteId" style="display: none;">
                         <div class="form-group mb-3">
                            @Html.LabelFor(model => model.PropertyName, new { @class = "form-label fw-bold" })
                             <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.PropertyName, new { @class = "form-control", @id = "propertyNameInput", placeholder = "Property Name" })                           
+                            @Html.TextBoxFor(model => model.PropertyName, new { @class = "form-control col-md-6", @id = "propertyNameInput", placeholder = "Property Name" })
                         </div>
                         @* <div class="form-text infotext">Public-friendly name for this site/property.</div> *@
-                        <div class="form-group mb-3">
-                            <label for="SiteAddressControlSelect" class="fw-bold">Project Address</label><span class="text-danger">*</span>
-                            <select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
-                                <option value="" disabled selected>Select Project Address</option>
-                            </select>
-                        </div>
-                       
 
-                        <div class="form-check mb-3">
-                            @Html.CheckBoxFor(model => model.IsAddAddress, new {
-                                    @class = "form-check-input", @id = "manualAddressCheck",onchange = "SiteInformation.toggleManualAddress()"
-                                })
-                            @Html.LabelFor(model => model.IsAddAddress,"I can’t find the site address — I’ll enter it manually",new { @class = "form-check-label", @for = "manualAddressCheck" })
-                        </div>
+                        <div id="apnFoundBlock">
+                            <div class="form-group mb-3">
+                                <label for="SiteAddressControlSelect" class="fw-bold">Project Address</label><span class="text-danger">*</span>
+                                <select class="form-control col-md-6" id="SiteAddressControlSelect" name="siteAddress">
+                                    <option value="" disabled selected>Select Project Address</option>
+                                </select>
+                            </div>
+                            <div class="form-check mb-3">
+                                @Html.CheckBoxFor(model => model.IsAddAddress, new {
+                                                                @class = "form-check-input", @id = "manualAddressCheck",onchange = "SiteInformation.toggleManualAddress()"
+                                                                })
+                                @Html.LabelFor(model => model.IsAddAddress, "I can’t find the site address — I’ll enter it manually", new { @class = "form-check-label", @for = "manualAddressCheck" })
+                            </div>
 
+                        </div>
 
                         <div id="manualAddressFields" style="display:none;">
 

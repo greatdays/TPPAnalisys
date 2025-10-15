@@ -1,8 +1,4 @@
-﻿using System.Data;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Reflection.Metadata;
-using DeveloperPortal.Application.Common;
+﻿using DeveloperPortal.Application.Common;
 using DeveloperPortal.Application.ProjectDetail.Interface;
 using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models;
@@ -18,6 +14,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Data;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
+using System.Reflection.Metadata;
+using System.Text;
 using static DeveloperPortal.Domain.PropertySnapshot.Constants;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
@@ -412,6 +414,12 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     {
                         APNSearch.APNSearchProjectInfolst = ConvertToList<APNSearchProjectInfo>(ds.Tables[1]);
                     }
+
+                    if (ds.Tables[2].Rows.Count > 0)
+                    {
+
+                        APNSearch.ApnExists = Convert.ToBoolean(ds.Tables[2].Rows[0][0]);
+                    }
                 }
                
              
@@ -527,9 +535,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                     parameters
                 );
 
-               
-
-
                 // Check if the result is not null and contains at least one list.
                 if (result != null)
                 {
@@ -547,6 +552,108 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             {
                 Console.WriteLine(e);
                 // Return an empty list in case of an exception.
+                return false;
+            }
+        }
+
+
+        public async Task<bool> CreateProjectWithNewAPNandSite(ProjectProvisionRequest provisionModel, HttpContext httpContext)
+        {
+            try
+            {
+                var userName = UserSession.GetUserSession(httpContext).UserName;
+                if (string.IsNullOrWhiteSpace(userName)) return false;
+
+                var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+
+                // 1) PCMS first (fund 8 = TEMP/no association yet)
+                provisionModel.UserName = userName;
+                provisionModel.LutProjectFundId = 8;
+
+                // Call PCMS for project provisioning
+                // PCMS API is not part of ACHP
+                // so we must handle its errors gracefully
+                var pcms = await ProvisionProjectAndSiteforPCMS(provisionModel);
+                if (pcms == null || !pcms.Success) // Use the Success convenience property
+                {
+                    // Optionally log pcms.ErrorMessage or pcms.Status
+                    return false;
+                }
+
+                SqlParameter[] parameters;
+                try
+                {
+                    // Safely parse string IDs to integers
+                    int? siteAddressID = TryParseInt(provisionModel.SiteAddressID);
+                    int? refSiteAddressId = TryParseInt(pcms.RefSiteAddressId);
+
+                    // Helper function to convert null/empty strings to DBNull.Value
+                    object DbNullIfEmpty(string s) => string.IsNullOrWhiteSpace(s) ? (object)DBNull.Value : s;
+
+
+                    parameters = new[]
+                    {
+                        // Required parameters
+                        new SqlParameter("APN", DbNullIfEmpty(provisionModel.APN)),
+                        new SqlParameter("UserName", userName),
+                        new SqlParameter("ProjectName", DbNullIfEmpty(provisionModel.ProjectName)),
+                        new SqlParameter("PropertyName", DbNullIfEmpty(provisionModel.PropertyName)),
+                        new SqlParameter("ProjectAddress",  DBNull.Value),
+                        new SqlParameter("SiteAddressID", siteAddressID.HasValue ? (object)siteAddressID.Value : DBNull.Value),
+                        new SqlParameter("RefProjectId", pcms.RefProjectId),
+                        new SqlParameter("RefProjectSiteId", pcms.RefProjectSiteId),
+                        new SqlParameter("RefSiteAddressId", refSiteAddressId.HasValue ? (object)refSiteAddressId.Value : DBNull.Value),
+                        new SqlParameter("FileGroup", DbNullIfEmpty(pcms.FileGroup)),
+                        new SqlParameter("HouseNum", DbNullIfEmpty(provisionModel.HouseNum)),
+                        new SqlParameter("HouseFracNum", DbNullIfEmpty(provisionModel.HouseFracNum)),
+                        new SqlParameter("PreDirCd", DbNullIfEmpty(provisionModel.PreDirCd)),
+                        new SqlParameter("StreetName", DbNullIfEmpty(provisionModel.StreetName)),
+                        new SqlParameter("StreetTypeCd", DbNullIfEmpty(provisionModel.StreetTypeCd)),
+                        new SqlParameter("PostDirCd", DbNullIfEmpty(provisionModel.PostDirCd)),
+                        new SqlParameter("City", DbNullIfEmpty(provisionModel.City)),
+                        new SqlParameter("Zip", DbNullIfEmpty(provisionModel.Zip))
+
+                    // Note: @Source parameter is omitted, as it has a default value in the stored procedure
+                    // and is not expected from the client application.
+                    };
+
+
+                    // Execute the stored procedure and get the result
+                    var result = await _storedProcedureExecutor.ExecuteStoredwithDatatableProcAsync<APNStoredProcedureResult>(
+                        StoredProcedureNames.SP_uspCreateNewProjectandSite,
+                        parameters
+                    );
+
+
+                    // Check if the result is not null and contains at least one list. Then save link relationship
+                    if (result != null)
+                    {
+                        List<string> projects = new List<string>();
+                        projects.Add(result.ProjectID.ToString());
+                        //var contactIdentifier = await _accountRepository.GetContactIdentifierByUserName(userName);
+                        var (saved, notSaved) = await SaveAssnPropContact(projects, httpContext, contactIdentifier.ContactIdentifierId);
+
+                    }
+
+
+                    if (result == null || result.Success != 1)
+                    {
+                        // Log error from the AAHR stored procedure
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error creating SQL parameters: " + ex.ToString());
+                    return false; // Stop execution if parameter creation fails
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
                 return false;
             }
         }
@@ -589,6 +696,120 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
             }
             return (savedProjects, notSavedProjects);
+        }
+
+        public async Task<ProjectProvision> ProvisionProjectAndSiteforPCMS(ProjectProvisionRequest request, CancellationToken ct = default)
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(_config["AreaMgmtAPIURL:PropertyApiURL"]),
+                Timeout = TimeSpan.FromSeconds(60)
+            };
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Convert string IDs → int? for API
+            int? refSiteAddressId = TryParseInt(request.RefSiteAddressId)
+                                    ?? TryParseInt(request.SiteAddressID);
+
+            // Build payload the PCMS API expects (AddressText/ZipCode)
+            var payload = new
+            {
+                ProjectName = Cap(request.ProjectName, 200),
+                PropertyName = Cap(request.PropertyName, 200),
+                APN = Cap(request.APN, 40),
+                ProjectAddress = Cap(request.ProjectAddress, 500),
+                UserName = Cap(request.UserName, 100),
+                LutProjectFundId = request.LutProjectFundId,
+                RefSiteAddressId = refSiteAddressId,               // int? or null
+                HouseNum = Cap(request.HouseNum, 10),
+                HouseFracNum = Cap(request.HouseFracNum, 10),
+                PreDirCd = Cap(request.PreDirCd, 2),
+                StreetName = Cap(request.StreetName, 100),
+                StreetTypeCd = Cap(request.StreetTypeCd, 10),
+                PostDirCd = Cap(request.PostDirCd, 2),
+                City = Cap(request.City, 100),
+                ZipCode = Cap(request.Zip, 10)            // API uses ZipCode
+            };
+
+            var body = JsonConvert.SerializeObject(payload);
+            using var content = new StringContent(body, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponse;
+            try
+            {
+                httpResponse = await client.PostAsync("AcHP/ProvisionProjectAndSite", content, ct).ConfigureAwait(false);
+            }
+            catch (TaskCanceledException ex)
+            {
+                return new ProjectProvision { Status = ProvisionStatus.RetryableError, ErrorMessage = "Timed out or canceled: " + ex.Message };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ProjectProvision { Status = ProvisionStatus.UnknownError, ErrorMessage = "HTTP error: " + ex.Message };
+            }
+
+            var json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                return new ProjectProvision
+                {
+                    Status = ProvisionStatus.SqlError,
+                    ErrorCode = ((int)httpResponse.StatusCode).ToString(),
+                    ErrorMessage = string.IsNullOrWhiteSpace(json) ? "PCMS API failed." : json
+                };
+            }
+
+            // Prefer strongly-typed BaseResponse<ProjectProvision>
+            try
+            {
+                var loose = JsonConvert.DeserializeObject<BaseResponse>(json);
+                if (loose == null || loose.Response == null)
+                {
+                    return new ProjectProvision
+                    {
+                        Status = ProvisionStatus.UnknownError,
+                        ErrorMessage = "Empty BaseResponse."
+                    };
+                }
+
+                // Response may be a JToken/JObject or a raw string
+                ProjectProvision prov = null;
+                var token = loose.Response as JToken;
+                if (token != null)
+                {
+                    prov = token.ToObject<ProjectProvision>();
+                }
+                else
+                {
+                    var respString = loose.Response.ToString();
+                    prov = JsonConvert.DeserializeObject<ProjectProvision>(respString);
+                }
+
+                return prov ?? new ProjectProvision
+                {
+                    Status = ProvisionStatus.UnknownError,
+                    ErrorMessage = "Unable to parse provisioning result."
+                };
+            }
+            catch (Exception ex2)
+            {
+                return new ProjectProvision
+                {
+                    Status = ProvisionStatus.UnknownError,
+                    ErrorMessage = "Parsing error: " + ex2.Message
+                };
+            }
+        }
+
+        // helpers
+        private static int? TryParseInt(string s) { int v; return int.TryParse(s, out v) ? (int?)v : null; }
+        private static string Cap(string s, int max)
+        {
+            if (string.IsNullOrWhiteSpace(s)) return null;
+            s = s.Trim();
+            return s.Length <= max ? s : s.Substring(0, max);
         }
 
 

@@ -202,17 +202,27 @@
 								<form action="APNForm">
 									<label for="APNInput">Provide APN</label><span class="text-danger">*</span>
 									<div class="input-group mb-3">
-										<input type="text" id="APNInput" class="form-control" placeholder="APN" required>
+										<input type="text" id="APNInput" class="form-control" placeholder="APN" maxlength="10" inputmode="numeric" pattern="\d{1,10}" required>
 										<div class="input-group-append">
 											<button class="btn btn-primary" type="button" id="searchAPNButton" onclick="Dashboard.GetAPNProject()">Search</button>
 										</div>
 									</div>
-									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter an APN Number.</div>
-									<div id="noAPNData" class="text-danger mt-1" style="display: none;">No data found.</div>
+									<div id="APNError" class="text-danger mt-1" style="display: none;">Please enter a 10 digit APN Number.</div>
+
+									@* Modified with new requirement - ekim on 10 / 12 / 2025 *@
+									<!--  APN not found UI Logic -->
+
+									<div id="noAPNData" class="alert alert-warning mt-2" style="display:none;">
+										We couldn't find the APN you entered. Please verify your APN, then fill out 
+										the form below to create a new project and link it to your account.
+									</div>
+
 									<div id="validationMessageAPN" class="text-danger mt-1" style="display: none;"></div>
 
+									@* Removed ExistingProjectNameId block as per new requirement - ekim on 10 / 12 / 2025 *@
+									@* Let user go ahead and create project entry with new APN and not have mapping to an existing Project *@
 
-									<div id="ExistingProjectNameId" style="display: none;">
+@* 									<div id="ExistingProjectNameId" style="display: none;">
 										<div class="table-container">
 											<p>We found one or more projects with this APN. Select an existing project to link to your account, or enter the project address, project name, and primary site (property) name.</p>
 
@@ -230,29 +240,120 @@
 											</table>
 										</div>
 
-									</div>
+									</div> *@
 
 									<div id="CreateNewProjectId" style="display: none;">
 										<div id="cantfindproject">
-											<strong>Can’t find your project?</strong> If the project you want is not listed, you can create a new project below.
+											Create New Project and link to your account
 										</div>
-									<div class="form-group mb-3">
-										<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
-										<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
-											<option value="" disabled selected>Select Project Address</option>
-										</select>
 									</div>
-									<div class="form-group mb-3">
-										<label for="projectNameInput">Project Name</label><span class="text-danger">*</span>
-										<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+
+									<div id="ProjectMeta" style="display: none;">
+										<!-- Project Name Row -->
+										<div class="row mb-3 align-items-center">
+											<!-- Label column: takes up 4 of 12 columns on medium screens and up -->
+											<label for="projectNameInput" class="col-md-4 col-form-label">Project Name<span class="text-danger">*</span></label>
+											<!-- Input column: takes up 8 of 12 columns on medium screens and up -->
+											<div class="col-md-8">
+												<input type="text" class="form-control" id="projectNameInput" name="projectName" placeholder="Please Enter Project Name">
+											</div>
+										</div>
+
+										<!-- Property Name Row -->
+										<div class="row mb-3 align-items-center">
+											<label for="propertyNameInput" class="col-md-4 col-form-label">Property Name<span class="text-danger">*</span></label>
+											<div class="col-md-8">
+												<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+											</div>
+										</div>
 									</div>
-									<div class="form-group mb-3">
-										<label for="propertyNameInput">Property Name</label><span class="text-danger">*</span>
-										<input type="text" class="form-control" id="propertyNameInput" name="propertyName" placeholder="Please Enter Property Name">
+
+									<div id="SiteAddressSelection" style="display: none;">
+										<div class="form-check mb-3">
+											<label for="SiteAddressControlSelect">Project Address</label><span class="text-danger">*</span>
+											<select class="form-control" id="SiteAddressControlSelect" name="siteAddress">
+												<option value="" disabled selected>Select Project Address</option>
+											</select>
+										</div>
+										<div class="form-check mt-2">
+											<input id="manualAddressCheck" type="checkbox" class="form-check-input" onclick="Dashboard.toggleManualAddress()" />
+											<label class="form-check-label" for="chkManualAddr">I can't find the site address — I’ll enter it manually</label>
+										</div>
+
 									</div>
+
+
+									<!-- Manual address - This shows when a user selects the manual input option or when the APN is not found-->
+
+			
+									<div id="ManualAddressForm" class="border rounded p-3 mb-3" style="display:none;">
+										<div class="row g-3">
+											<!-- House Number -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_house" class="form-label">House # <span class="text-warning">*</span></label>
+												<input id="ma_house" type="text" class="form-control">
+											</div>
+
+											<!-- House Fraction -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_frac" class="form-label">House Fraction</label>
+												<input id="ma_frac" type="text" class="form-control">
+											</div>
+
+											<!-- Pre-Direction -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_predir" class="form-label fw-bold">Pre-Direction</label>
+												<select id="ma_predir" class="form-control">
+													<option value="" selected>Choose...</option>
+													<option>N</option>
+													<option>S</option>
+													<option>E</option>
+													<option>W</option>
+													<option>NE</option>
+													<option>NW</option>
+													<option>SE</option>
+													<option>SW</option>
+												</select>
+											</div>
+
+											<!-- Street Name -->
+											<div class="col-md-6">
+												<label for="ma_street" class="form-label fw-bold">Street Name <span class="text-warning">*</span></label>
+												<input id="ma_street" type="text" class="form-control">
+											</div>
+
+											<!-- Street Type -->
+											<div class="col-lg-3 col-md-4">
+												<label for="ma_streettype" class="form-label fw-bold">Street Type</label>
+												<select id="ma_streettype" class="form-control">
+													<option value="" selected>Choose...</option>
+													<option>St</option>
+													<option>Ave</option>
+													<option>Blvd</option>
+													<option>Dr</option>
+													<option>Rd</option>
+													<option>Ln</option>
+													<option>Pl</option>
+												</select>
+											</div>
+
+											<!-- City -->
+											<div class="col-md-6">
+												<label for="ma_city" class="form-label">City <span class="text-warning">*</span></label>
+												<input id="ma_city" type="text" class="form-control">
+											</div>
+
+											<!-- Zip -->
+											<div class="col-md-4">
+												<label for="ma_zip" class="form-label">Zip <span class="text-warning">*</span></label>
+												<input id="ma_zip" type="text" class="form-control">
+											</div>
+										</div>
 									</div>
+
+
 									<div class="modal-footer d-flex justify-content-end pl-3 pr-3 pb-3">
-										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitANP()">Submit</button>
+										<button class="btn btn-primary" type="button" id="submitButton" onclick="Dashboard.handleSubmitAPN()">Submit</button>
 										<button type="button" class="btn btn-secondary" onclick="$('#ActionModal').modal('hide')">Cancel</button>
 									</div>
 

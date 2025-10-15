@@ -16,8 +16,8 @@ namespace DeveloperPortal.Application.Common
         public const string SP_uspRoGetConstructionCaseDetail = "AAHPCC.uspRoGetConstructionCaseDetail";
         public const string SP_uspGetDMSDocumentDetails = "DMS.uspGetDMSDocumentDetails";
         public const string SP_uspGetDMSFolderDetails = "DMS.uspGetDMSFolderDetails";
-        public const string SP_uspGetSiteAddressByAPN = "PnC.GetSiteAddressByAPN";
-        public const string SP_uspCreateNewProjectandSite = "AAHPCC.CreateNewProjectandSite";
+        public const string SP_uspGetSiteAddressByAPN = "PnC.uspGetSiteAddressByAPN";
+        public const string SP_uspCreateNewProjectandSite = "AAHPCC.uspCreateNewProjectandSite_dev";
         public const string SP_uspRoGetAllProjectParticipantsForTPP = "AAHR.uspRoGetAllProjectParticipantsForTPP";
         public const string SP_uspGetSiteAddressByProject = "PnC.GetSiteAddressByProject";
         public const string SP_uspRoGetBuildingParkingInfo = "AAHPCC.uspRoGetBuildingParkingInfo";
