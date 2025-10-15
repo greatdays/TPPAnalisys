@@ -135,9 +135,28 @@ window.DMSManager = class DMSManager {
     validateFile(file) {
         const allowedExtensions = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx', '.txt', '.jpg', '.jpeg', '.png', '.gif'];
         const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+        const maxSizeInBytes = 600 * 1024 * 1024; // 600 MB
 
         if (!allowedExtensions.includes(extension)) {
-            return { isValid: false, message: `File type not allowed. Please select valid file format: ${file.name}.` };
+            return {
+                isValid: false,
+                message: `File type not allowed. Please select valid file format: ${file.name}.`
+            };
+        }
+
+        if (file.size > maxSizeInBytes) {
+            const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+            return {
+                isValid: false,
+                message: `File "${file.name}" is too large (${fileSizeMB} MB). Maximum allowed: 600 MB.`
+            };
+        }
+
+        if (file.size === 0) {
+            return {
+                isValid: false,
+                message: `File "${file.name}" is empty or corrupted.`
+            };
         }
 
         return { isValid: true };
@@ -185,7 +204,7 @@ window.DMSManager = class DMSManager {
         // If all files are valid, proceed with the AJAX submission
         const formData = new FormData();
         for (let i = 0; i < files.length; i++) {
-            formData.append("Files", files[i]);
+            formData.append("files", files[i]);
         }
 
         //const categoryName = $("#category option:selected").text();
@@ -243,7 +262,7 @@ window.DMSManager = class DMSManager {
     // Update the performAjaxSubmission method
     performAjaxSubmission(formData, url) {
         if (this.modal) this.modal.hide();
-        typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();
+        if (typeof LoadingOverlay !== "undefined") LoadingOverlay.show();
 
         $.ajax({
             url: url,
@@ -251,18 +270,88 @@ window.DMSManager = class DMSManager {
             data: formData,
             processData: false,
             contentType: false,
-            success: () => {
-                this.reloadGrid();
+            timeout: 0, // No timeout (or set to 600000 for 10 minutes)
+
+            success: (response) => {
+                const res = response || {};
+                const isSuccess = res.Success === true || res.success === true;
+                const isProcessing = res.IsProcessingInBackground === true || res.isProcessingInBackground === true;
+                const message = res.Message || res.message || 'Files uploaded successfully!';
+
+                if (isSuccess) {
+                    // Reload grid immediately, even for background uploads
+                    this.reloadGrid();
+                    alert(message);
+                } else if (res.Success === false || res.success === false) {
+                    const errorMsg = res.Message || res.message || 'Upload failed due to a server error.';
+                    console.error("Upload failed (Success: false):", res);
+                    alert(errorMsg);
+                } else {
+                    // Fallback for unexpected success response structure
+                    this.reloadGrid();
+                    alert('Files uploaded successfully (response structure unknown)!');
+                }
             },
+
             error: (xhr) => {
-                alert('An error occurred while uploading.');
+                let errorMsg = 'An error occurred while uploading.';
+
+                if (xhr.status === 413) {
+                    errorMsg = 'File size too large. Maximum allowed is 600 MB.';
+                } else if (xhr.status === 408 || xhr.statusText === 'timeout') {
+                    errorMsg = 'Upload timeout. Please try again.';
+                } else if (xhr.status === 0) {
+                    errorMsg = 'Network error or request was cancelled.';
+                } else if (xhr.responseJSON?.Message || xhr.responseJSON?.message) {
+                    errorMsg = xhr.responseJSON.Message || xhr.responseJSON.message;
+                }
+
                 console.error("Ajax submission failed:", xhr);
+                alert(errorMsg);
             },
+
             complete: () => {
-                typeof LoadingOverlay !== "undefined" && LoadingOverlay.hide();
+                if (typeof LoadingOverlay !== "undefined") LoadingOverlay.hide();
             }
         });
     }
+
+    //performAjaxSubmission(formData, url) {
+    //    if (this.modal) this.modal.hide();
+    //    typeof LoadingOverlay !== "undefined" && LoadingOverlay.show();
+
+    //    $.ajax({
+    //        url: url,
+    //        type: "POST",
+    //        data: formData,
+    //        processData: false,
+    //        contentType: false,
+    //        timeout: 0, // No timeout (or set to 600000 for 10 minutes)
+    //        success: () => {
+    //            this.reloadGrid();
+    //            alert('Files uploaded successfully!');
+    //        },
+    //        error: (xhr) => {
+    //            let errorMsg = 'An error occurred while uploading.';
+
+    //            if (xhr.status === 413) {
+    //                errorMsg = 'File size too large. Maximum allowed is 600 MB.';
+    //            } else if (xhr.status === 408 || xhr.statusText === 'timeout') {
+    //                errorMsg = 'Upload timeout. Please try again.';
+    //            } else if (xhr.status === 0) {
+    //                errorMsg = 'Network error or request was cancelled.';
+    //            } else if (xhr.responseJSON && xhr.responseJSON.Message) {
+    //                errorMsg = xhr.responseJSON.Message;
+    //            }
+
+    //            alert(errorMsg);
+    //            console.error("Ajax submission failed:", xhr);
+    //        },
+    //        complete: () => {
+    //            typeof LoadingOverlay !== "undefined" && LoadingOverlay.hide();
+    //        }
+    //    });
+    //}
     loadCategories() {
         const dropdown = $("#category");
 

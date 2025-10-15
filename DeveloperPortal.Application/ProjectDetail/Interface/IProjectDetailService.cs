@@ -1,4 +1,5 @@
-﻿using DeveloperPortal.DataAccess.Entity.ViewModel;
+﻿using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.Domain.ProjectDetail;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -147,5 +148,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         List<string> GetReviewNote(int caseId);
 
         Task<bool> CreateSite(SiteInformationModel siteInformationModel, string UserName);
+
+        Task<ProjectSummaryModel> GetProjectSiteDetails(int projectId);
     }
 }

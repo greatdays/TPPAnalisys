@@ -18,18 +18,23 @@ public class FundingSourceController : Controller
     private static readonly object _lock = new object();
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IAppConfigService _appConfigService;
+    private IProjectDetailService _projectDetailService;
 
     // Mock data - replace with actual data source
 
 
     public FundingSourceController(IConfiguration configuration, IDocumentService documentService, IFundingSourceService fundingSourceService
-        , IWebHostEnvironment webHostEnvironment,  IHttpContextAccessor httpContextAccessor)
+        , IWebHostEnvironment webHostEnvironment,  
+        IHttpContextAccessor httpContextAccessor, IAppConfigService appConfigService, IProjectDetailService projectDetailService)
     {
         _config = configuration;
         _documentService = documentService;
         _fundingSourceService = fundingSourceService;
         this._webHostEnvironment = webHostEnvironment;
         _httpContextAccessor = httpContextAccessor;
+        _appConfigService = appConfigService;
+        _projectDetailService = projectDetailService;
     }
 
     // GET: /FundingSource/GetFundingSourcesById
@@ -177,6 +182,8 @@ public class FundingSourceController : Controller
                 FileUploadResult = new FileUploadResult { Success = false, ErrorMessage = "File size must be less than 10MB." };
             }
 
+            var largeFileUploadPath = _appConfigService.getConfigValue("DMSLargeFileActualPath");
+
             // Validate file type
             var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
             var fileExtension = Path.GetExtension(file[0].FileName).ToLowerInvariant();
@@ -185,17 +192,21 @@ public class FundingSourceController : Controller
             {
                 FileUploadResult =new FileUploadResult { Success = false, ErrorMessage = "File type not supported." };
             }
-
-
+            
+            var projReferenceId = ProjectId;
+            ProjectId= _documentService.GetActualProjectId(ProjectId);
+            var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(ProjectId);
+            projectSiteDetails.CaseID = caseId;
+            projectSiteDetails.RefProjectID = projReferenceId;
             // RefProjectID and AAHRProjectID concern ---------------------
             // ProjectID - Assumes current projectid is RefProjectID
             // // RefProjectID and AAHRProjectID concern ------------------
-            var projReferenceId = ProjectId;
+
 
             //var projReferenceId = _documentService.GetProjectReference(ProjectId);
             // Upload to DMS
             var uploadResponse = await new DMSService(_config)
-                .SubmitUploadedDocument(file, projReferenceId, caseId, fileCategory, fileSubCategory, viewModel.CreatedBy);
+                .SubmitUploadedDocument(file, projectSiteDetails, fileCategory, fileSubCategory, viewModel.CreatedBy, largeFileUploadPath);
 
             var response = uploadResponse;
 

@@ -8,5 +8,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
     {
 
         Task<IEnumerable<AppConfig>> GetOrdersWithCustomersAsync();
+        string? getConfigValue(string value);
     }
 }

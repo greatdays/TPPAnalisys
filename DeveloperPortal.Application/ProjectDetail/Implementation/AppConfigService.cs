@@ -24,6 +24,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             return await _appConfigRepository.GetAllAppConfigsAsync();
             
         }
+        public string? getConfigValue(string value)
+        {
+            return _appConfigRepository.getConfigValue(value);
+        }
 
 
     }

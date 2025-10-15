@@ -20,7 +20,7 @@ namespace DeveloperPortal.Application.DMS.Interface
         Task<int> GetRecentFolderId();
         Task<bool> DeleteDocument(int id);
         List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null);
-        int GetProjectReference(int categoryId);
+        int GetActualProjectId(int categoryId);
         //Task<List<FolderTree>> GetFolderTree(int projectId);
     }
 }

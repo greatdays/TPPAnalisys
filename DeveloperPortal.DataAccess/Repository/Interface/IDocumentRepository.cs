@@ -17,7 +17,7 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         Task<int> GetRecentFolderId();
         Task<bool> DeleteDocument(int id);
         List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null);
-        int GetProjectReference(int projectId);
+        int GetActualProjectId(int projectId);
 
 
     }

@@ -221,6 +221,13 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             return await _context.LutUnitTypes.Where(x => x.IsDeleted == false).OrderBy(o => o.SortOrder).ToListAsync();
         }
 
+        public async Task<ProjectSite> GetProjectSiteDetails(int projectId)
+        {
+            return await _context.ProjectSites.Where(x => x.ProjectId == projectId).FirstOrDefaultAsync();
+        }
+
+
+
 
     }
 }

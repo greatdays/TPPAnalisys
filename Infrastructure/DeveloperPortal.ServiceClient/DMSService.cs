@@ -1,5 +1,7 @@
 ﻿using DeveloperPortal.DataAccess.Entity.Data;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.Helper;
+using DeveloperPortal.Domain.ProjectDetail;
 using DeveloperPortal.Models.Common;
 using HCIDLA.ServiceClient.DMS;
 using HCIDLA.ServiceClient.LaserFiche;
@@ -12,7 +14,6 @@ using System.IO.Compression;
 using System.Net;
 using System.ServiceModel;
 using System.Text;
-using static DeveloperPortal.ServiceClient.ServiceClient;
 
 namespace DeveloperPortal.ServiceClient
 {
@@ -21,21 +22,22 @@ namespace DeveloperPortal.ServiceClient
 
        
         private IConfiguration _config;
-
+        private string getDMSLargeFileUploadPath { get; set; }
 
         public DMSService(IConfiguration config) 
         {
             _config = config;
         }
-
-
         [HttpPost]
-        public async Task<List<UploadResponse>> SubmitUploadedDocument(List<IFormFile> files,int projectReferenceId, int caseId, string category, string fileSubCategory, string createdBy)
+        public async Task<List<UploadResponse>> SubmitUploadedDocument(List<IFormFile> files,ProjectSummaryModel projectSummaryModel, string category, 
+            string fileSubCategory, string createdBy,string largeFileUploadPath)
         {
+            getDMSLargeFileUploadPath = largeFileUploadPath;
             if (files == null || !files.Any())
             {
                 return new List<UploadResponse> { new UploadResponse { ReturnStatus = Status.Failed, ErrorMessages = new[] { "No files were provided." } } };
             }
+
             // Prepare base upload info
             var baseInfo = new FileUploadInfo
             {
@@ -43,11 +45,16 @@ namespace DeveloperPortal.ServiceClient
                 DocumentType = DocType.AcHP,
                 MetaData = new Dictionary<FieldType, string[]>
             {
-                { FieldType.PrimaryKey, new string[] { projectReferenceId.ToString()} },
+                { FieldType.PrimaryKey, new string[] { projectSummaryModel.ProjectId.ToString()} },
                 { FieldType.Category, new string[] { category } },
                 { FieldType.SubCategory, new string[] { fileSubCategory } },
-                { FieldType.CaseId, new string[] { caseId.ToString() } },
-                { FieldType.AchpProjectId, new string[] {  projectReferenceId.ToString() } },
+                { FieldType.CaseId, new string[] { projectSummaryModel.CaseID.ToString() } },
+                { FieldType.AchpProjectId, new string[] { projectSummaryModel.ProjectId.ToString() } },
+                { FieldType.AchpPropertyId, new string[] { projectSummaryModel.ProjectId.ToString() } },
+                { FieldType.HIMSNumber, new string[] { projectSummaryModel.HIMSNumber.ToString() } },
+                { FieldType.AcHPNumber, new string[] { projectSummaryModel.ACHPNumber.ToString() } },
+                { FieldType.APN, new string[] { projectSummaryModel.APN.ToString() } },
+                { FieldType.ReceivedDate, new string[] { DateTime.Now.ToString("yyyy-MM-dd") } },
             },
                 SysData = new Dictionary<SysFieldType, string>
             {
@@ -55,113 +62,145 @@ namespace DeveloperPortal.ServiceClient
             }
             };
 
-            // 3. Directly call the async processing method and await its result.
-            // We no longer need the isBackground flag or Task.Run logic here,
-            // as the asynchronous nature is handled correctly by the method itself.
             var responses = await ProcessFiles(files, baseInfo);
 
             return responses;
         }
-
         private async Task<List<UploadResponse>> ProcessFiles(List<IFormFile> files, FileUploadInfo baseInfo)
         {
+            // Holds all the async upload tasks
             var uploadTasks = new List<Task<UploadResponse>>();
+
+            // Read LargeFileThreshold from configuration
+            int? fileThreshold = null;
+            if (int.TryParse(_config["DMSConfig:LargeFileThreshold"], out int threshold))
+            {
+                fileThreshold = threshold;
+            }
 
             foreach (var f in files)
             {
-                // 5. Create a new task for each file. This is the key to concurrent processing.
-                // The lambda function ensures each task gets its own scope.
+                // Each file gets processed concurrently in its own task
                 uploadTasks.Add(Task.Run(async () =>
                 {
+                    // Clone the base info so each task has its own independent copy
+                    var info = new FileUploadInfo
+                    {
+                        ApplicationId = baseInfo.ApplicationId,
+                        DocumentType = baseInfo.DocumentType,
+                        MetaData = new Dictionary<FieldType, string[]>(baseInfo.MetaData),
+                        SysData = new Dictionary<SysFieldType, string>(baseInfo.SysData),
+                        FileName = f.FileName,
+                        
+                        
+                    };
+
                     try
                     {
+                        // Read the file into memory
                         using var memoryStream = new MemoryStream();
-                        await f.CopyToAsync(memoryStream); // Await this call
+                        await f.CopyToAsync(memoryStream); // Await to avoid blocking
                         byte[] byteArray = memoryStream.ToArray();
 
-                        var info = new FileUploadInfo
+                        // Handle large files separately
+                        if (fileThreshold.HasValue && byteArray.Length >= fileThreshold.Value)
                         {
-                            ApplicationId = baseInfo.ApplicationId,
-                            DocumentType = baseInfo.DocumentType,
-                            MetaData = new Dictionary<FieldType, string[]>(baseInfo.MetaData),
-                            SysData = new Dictionary<SysFieldType, string>(baseInfo.SysData),
-                            FileName = f.FileName,
-                            FileStream = byteArray
-                        };
+                            await ProcessLargeFile(info, byteArray);
 
-                        // Assume DMSClientProxy.Upload is synchronous, so we run it on a background thread.
-                        // If it's already an async method (e.g., UploadAsync), you would just `await` it.
+                            // Return a response indicating it was processed as a large file
+                            return new UploadResponse
+                            {
+                                ReturnStatus = Status.Success,
+                                UniqueId= System.Guid.Empty,
+                                URL= "BACKGROUND_PROCESSING_INITIATED",
+                                ErrorMessages = Array.Empty<string>()
+                            };
+                        }
+
+                        // Normal-sized file upload
+                        info.FileStream = byteArray;
                         return DMSClientProxy.Upload(info);
                     }
                     catch (Exception ex)
                     {
-                        // This catch block is crucial for handling errors on a per-file basis
+                        // Catch errors on a per-file basis to avoid failing the whole batch
                         return new UploadResponse
                         {
                             ReturnStatus = Status.Failed,
-                            ErrorMessages = new string[] { ex.Message }
+                            ErrorMessages = new[] { ex.Message }
                         };
                     }
                 }));
             }
 
-            // 6. Await all the tasks to complete. This ensures all files are processed
-            // before the method returns.
+            // Await all tasks before returning
             var uploadResponses = await Task.WhenAll(uploadTasks);
-
             return uploadResponses.ToList();
         }
 
-        /* public JsonResult SubmitUploadedDocument(IFormFileCollection file,int caseId, string category, string fileSubCategory, string createdBy)
-         {
-             JsonData<UploadResponse> result = new JsonData<UploadResponse>(new UploadResponse());
-             UploadResponse response = new UploadResponse();
-             int? fileThreshold = null;
-             var isBackground = true;
-             FileUploadInfo info = new FileUploadInfo
-             {
-                 ApplicationId = new Guid(string.IsNullOrWhiteSpace(_config["DMSConfig:DMSAppIdExternal"])?"": _config["DMSConfig:DMSAppIdExternal"]),
-                 DocumentType = DocType.AcHP,
-                 MetaData = new Dictionary<FieldType, string[]>(),
-                 SysData = new Dictionary<SysFieldType, string>
-                 {
-                     { SysFieldType.CreatedBy, createdBy }
-                 },
 
-             };
-             info.MetaData.Add(FieldType.PrimaryKey, new string[] { Guid.NewGuid().ToString()});
-             info.MetaData.Add(FieldType.Category, new string[] { category });
-             info.MetaData.Add(FieldType.SubCategory, new string[] { fileSubCategory });
+        private async Task ProcessLargeFile(FileUploadInfo info, byte[] fileStream)
+        {
+            try
+            { /*
+                // Get the XML metadata for the large file
+                string xml = DMSClientProxy.GetXmlForLargeFile(info, fileStream.Length);
+
+                // Use application config for large-file path
+                string baseDir = "D:\\Ananthu\\Developer Portal\\UI\\DeveloperPortal\\TempUploads\\";
+                string targetDir = Path.Combine(baseDir, Guid.NewGuid().ToString());
+                string xmlFileName = Path.Combine(targetDir, "process.xml");
+                string actualFileName = Path.Combine(targetDir, info.FileName);
+
+                Directory.CreateDirectory(targetDir);
+                File.WriteAllText(xmlFileName, xml);
+                File.WriteAllBytes(actualFileName, fileStream);*/
+                // Get the configured upload folder path (example: "TempUploads" or "Uploads/LargeFiles")
+
+                // Example: Get the XML metadata for the uploaded file
+                string xml = DMSClientProxy.GetXmlForLargeFile(info, fileStream.Length);
+                
+                string relativePath = "TempUploads"; // e.g. "TempUploads"
+                string folder = Guid.NewGuid().ToString();
+
+                // Equivalent to HostingEnvironment.MapPath("~" + relativePath)
+                string basePath = Path.Combine("D:\\Ananthu\\Developer Portal\\UI\\DeveloperPortal", relativePath); // app root
+                string contentPath = Path.Combine(basePath, folder);
+
+                Directory.CreateDirectory(contentPath);
+
+                string filePath = Path.Combine(contentPath, info.FileName);
+                string xmlPath = Path.Combine(contentPath, "process.xml");
+
+               
+
+                // Save XML file
+                await File.WriteAllTextAsync(xmlPath, xml);
+
+                // Save binary file
+                await File.WriteAllBytesAsync(filePath, fileStream);
+
+               
 
 
-             if (Int32.TryParse(GetFormDataValue(_config["DMSConfig:LargeFileThreshold"]), out int parsedThreshold))
-             {
-                 fileThreshold = parsedThreshold;
-             }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or include inner exception details
+                Console.WriteLine($"Error in ProcessLargeFile: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+                }
 
-             if (file != null && file.Count==1) // file is IFormFile
-             {
-                 var f = file[0];
-                 using var memoryStream = new MemoryStream();
-                 f.CopyTo(memoryStream); 
-                 byte[] byteArray = memoryStream.ToArray();
+                // Optionally, rethrow if you want the calling code to handle it
+                throw;
+            }
+        }
 
-                 info.FileName = f.FileName;
-                 info.FileStream = byteArray;
 
-                 if (byteArray.Length <= fileThreshold)
-                 {
-                     response = DMSClientProxy.Upload(info);
-                     isBackground = false;
-                 }
-             }
-             if (isBackground)
-             {
-                 Task.Run(() => ProcessFiles(file, info));
-             }
-             return new JsonResult(response);
 
-         }*/
+
 
         public DMSDocument GetDocument(Guid uniqueId, bool useFakeDMS = false)
         {
@@ -205,99 +244,7 @@ namespace DeveloperPortal.ServiceClient
             }
             return document;
         }
-        string GetFormDataValue(string values)
-        {
-            return values ?? string.Empty;
-            //if (string.IsNullOrEmpty(values))
-            //{
-            //    return "";
-            //}
-
-            //string[] vals = values.Split(',');
-            //return vals[0];
-        }
-        string GetDateOrNull(string dateString)
-        {
-            if (string.IsNullOrEmpty(dateString))
-            {
-                return null;
-            }
-
-            string[] dates = dateString.Split(',');
-            if (DateTime.TryParse(dates[0], out DateTime dtOut))
-            {
-                return dtOut.ToString("yyyy-MM-dd");
-            }
-            return null;
-        }
-        //private List<UploadResponse> ProcessFiles(List<IFormFile> files, FileUploadInfo baseInfo)
-        //{
-        //    var uploadFiles = new List<UploadResponse>();
-
-        //    foreach (var f in files)
-        //    {
-        //        try
-        //        {
-        //            using var memoryStream = new MemoryStream();
-        //            f.CopyToAsync(memoryStream);
-        //            byte[] byteArray = memoryStream.ToArray();
-
-        //            // Create a new info object per file to avoid race conditions
-        //            var info = new FileUploadInfo
-        //            {
-        //                ApplicationId = baseInfo.ApplicationId,
-        //                DocumentType = baseInfo.DocumentType,
-        //                MetaData = new Dictionary<FieldType, string[]>(baseInfo.MetaData),
-        //                SysData = new Dictionary<SysFieldType, string>(baseInfo.SysData),
-        //                FileName = f.FileName,
-        //                FileStream = byteArray
-        //            };
-
-        //            UploadResponse response = DMSClientProxy.Upload(info);
-        //            uploadFiles.Add(response);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            uploadFiles.Add(new UploadResponse
-        //            {
-        //                ReturnStatus = Status.Failed,
-        //                ErrorMessages = new string[] { ex.Message }
-        //            });
-        //        }
-        //    }
-
-        //    return uploadFiles;
-        //}
-
-        /* private List<UploadResponse> ProcessFiles(IFormFileCollection files, FileUploadInfo info)
-         {
-             string errorMsg = null;
-             List<UploadResponse> uploadFiles = new List<UploadResponse>();
-             Parallel.For(0, files.Count, i =>
-             {
-                 var f = files[i];
-
-                 if (info.FileStream == null || !info.FileStream.Any())
-                 {
-                     using var memoryStream = new MemoryStream();
-                     f.CopyTo(memoryStream); // ✅ replaces InputStream.CopyTo
-                     byte[] byteArray = memoryStream.ToArray();
-                     info.FileStream = byteArray;
-                 }
-
-                 info.FileName = f.FileName;
-                 UploadResponse response = DMSClientProxy.Upload(info);
-
-                 if (response.ReturnStatus != Status.Success)
-                 {
-                     errorMsg = string.Join(", ", response.ErrorMessages);
-                 }
-                 uploadFiles.Add(response);
-             });
-
-             return uploadFiles;
-         }*/
-
+       
         private bool IsGzipCompressed(byte[] data)
         {
             // Gzip files start with 0x1F8B

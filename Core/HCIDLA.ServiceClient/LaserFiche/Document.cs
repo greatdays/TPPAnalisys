@@ -574,7 +574,13 @@ namespace HCIDLA.ServiceClient.LaserFiche
 
         public static string GetXmlForLargeFile(FileUploadInfo info, int fileSize)
         {
-            using (DMSClient dms = new DMSClient())
+            string endpointUrl = "http://43dmsw2/DMSServiceDev_V5/DMS.svc";
+
+            // 2. Create the binding and endpoint address programmatically
+            var binding = new BasicHttpBinding(); // Use the correct binding type (e.g., WSHttpBinding)
+            var endpointAddress = new EndpointAddress(endpointUrl);
+
+            using (DMSClient dms = new DMSClient(binding, endpointAddress))
             {
                 return dms.GetXMLForLargeFile(info, fileSize);
             }

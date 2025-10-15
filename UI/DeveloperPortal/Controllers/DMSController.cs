@@ -27,9 +27,11 @@ namespace DeveloperPortal.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         // Inject IHttpContextAccessor instead of HttpContext
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAppConfigService _appConfigService;
 
         public DMSController(IDocumentService documentService, IProjectDetailService projectDetailService,
-            IConfiguration config, ISendNotificationEmail _sendNotificationEmail, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
+            IConfiguration config, ISendNotificationEmail _sendNotificationEmail, 
+            IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor, IAppConfigService appConfigService)
         {
             this._config = config;
             this._documentService = documentService;
@@ -43,6 +45,7 @@ namespace DeveloperPortal.Controllers
             this.GroupEmail = _config["NotificationCredentialConfig:GroupEmail"].ToString();
             this._webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
+            _appConfigService = appConfigService;
         }
 
         [HttpGet]
@@ -70,6 +73,9 @@ namespace DeveloperPortal.Controllers
         }
         [HttpPost]
         [Route("UploadFile")]
+        [RequestSizeLimit(629145600)] // 600 MB in bytes
+        [RequestFormLimits(MultipartBodyLengthLimit = 629145600)]
+        [DisableRequestSizeLimit] // Alternative: removes all limits
         public async Task<JsonResult> UploadFile(
                                           List<IFormFile> files,
                                           [FromForm] int projectId,
@@ -81,6 +87,9 @@ namespace DeveloperPortal.Controllers
                                           [FromForm] string comments = "" // Corrected parameter name
                                          )
         {
+            // Define the background flag used in DMSService.ProcessFiles URL field
+            const string BackgroundFlag = "BACKGROUND_PROCESSING_INITIATED";
+            string finalMessage, fileCategory, fileSubCategory;
             try
             {
                 // Validate input
@@ -121,22 +130,20 @@ namespace DeveloperPortal.Controllers
                         Message = "No valid files found. Please ensure files are not empty."
                     });
                 }
-
-               
                 // Use the 'comments' parameter directly
                 var comment = comments ?? string.Empty;
                 var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor)?.UserName ?? "System";
-
-                string fileCategory = categoryGroup; //"Project";
-                string fileSubCategory = categoryName;//"Document";
-
-                // RefProjectID and AAHRProjectID concern ---------------------
-                // ProjectID - Assumes current projectid is RefProjectID
-                // // RefProjectID and AAHRProjectID concern ------------------
-                var projectRefernceId = projectId;
+                var refProjectId = projectId;
+                projectId = _documentService.GetActualProjectId(projectId);
+                var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(projectId);
+                projectSiteDetails.CaseID = caseId;
+                fileCategory = categoryGroup; //"Project";
+                fileSubCategory = categoryName;//"Document";
+                projectSiteDetails.RefProjectID = refProjectId;
+                var largeFileUploadPath = _appConfigService.getConfigValue("DMSLargeFileActualPath");
 
                 // Upload documents to DMS
-                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, projectRefernceId, caseId, fileCategory, fileSubCategory, createdBy);
+                var responses = await new DMSService(_config).SubmitUploadedDocument(validFiles, projectSiteDetails, fileCategory, fileSubCategory, createdBy, largeFileUploadPath);
 
                 if (responses == null || responses.Count == 0)
                 {
@@ -146,19 +153,20 @@ namespace DeveloperPortal.Controllers
                         Message = "Failed to upload documents. No response received from document service."
                     });
                 }
+                var backgroundProcessed = responses.Where(r => r.ReturnStatus == Status.Success &&
+                                                        r.URL == BackgroundFlag).ToList();
+                var successfulUploads = responses.Where(r => r.ReturnStatus == Status.Success &&r.URL != BackgroundFlag).ToList();
 
                 // Check for failed uploads
                 var failedUploads = responses.Where(r => r.ReturnStatus == Status.Failed).ToList();
                 if (failedUploads.Any())
                 {
-                    var errorMessages = failedUploads
-                        .SelectMany(f => f.ErrorMessages)
-                        .ToList();
+                    var errorMessages = failedUploads.SelectMany(f => f.ErrorMessages).ToList();
 
                     return Json(new
                     {
                         Success = false,
-                        Message = $"Failed to upload {failedUploads.Count} of {responses.Count} documents. Errors: {string.Join("; ", errorMessages)}"
+                        Message = $"Failed to upload {failedUploads.Count} documents. Errors: {string.Join("; ", errorMessages)}"
                     });
                 }
 
@@ -176,7 +184,7 @@ namespace DeveloperPortal.Controllers
                         var documentModel = new DocumentModel()
                         {
                             Name = file.FileName,
-                            Link = response.UniqueId.ToString() ?? string.Empty,
+                            Link = response.URL!=null?"":response.UniqueId.ToString(),
                             Attributes = string.Empty,
                             FileSize = file.Length.ToString(),
                             CaseId = caseId,
@@ -197,19 +205,33 @@ namespace DeveloperPortal.Controllers
                         Console.WriteLine($"Error saving document metadata for file {file.FileName}: {ex.Message}");
                     }
                 }
+                
+                if (backgroundProcessed.Any())
+                {
+                    // Prioritize the background processing message
+                    finalMessage = "Your file(s) are currently being uploaded. Please refresh the page after 1–2 minutes as the file size is large";
+                }
+                else if (savedDocuments.Any())
+                {
+                    // Standard success message for small files
+                    finalMessage = savedDocuments.Count == 1
+                        ? "1 document uploaded successfully."
+                        : $"{savedDocuments.Count} documents uploaded successfully.";
+                }
+                else
+                {
+                    finalMessage = "Upload request processed, but no files were saved or started processing.";
+                }
 
                 await SendEmailNotifyUploadDocument(savedDocuments, projectId, projectName);
 
-                var successMessage = savedDocuments.Count == 1
-                    ? "1 document uploaded successfully."
-                    : $"{savedDocuments.Count} documents uploaded successfully.";
 
 
-
-                return Json(new
+                return new JsonResult(new
                 {
                     Success = true,
-                    Message = successMessage,
+                    Message = finalMessage,
+                    IsProcessingInBackground = backgroundProcessed.Any(),
                     UploadedCount = savedDocuments.Count,
                     TotalCount = validFiles.Count
                 });
@@ -269,8 +291,11 @@ namespace DeveloperPortal.Controllers
         [Route("GetCategories")]
         public IActionResult GetCategories()
         {
-            string[] categories = { "Project", "Property" };
-            string[] referenceKey = { "ConstructionRetrofitProject", "ConstructionRetrofitProperty" };
+            string[] categories = { "Project" };
+            string[] referenceKey = { "ConstructionNCRehabProject" };
+
+            //Currently we are harding below values
+            //102 Design Review - Plans,103 Design Review - Accessibility Report by CASp,261 Funding SOURCE,174 FloorPlanType,110 Other
 
             var result = _documentService.GetCategories(categories, referenceKey);
 

@@ -216,7 +216,16 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         }
         public List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null)
         {
-            var items = new List<SelectListItem>();
+            List<SelectListItem> items = new List<SelectListItem>()
+            {
+                new SelectListItem(){Value="102",Group=new SelectListGroup { Name = "Project" },Text="Design Review - Plans"},
+                new SelectListItem(){Value="103",Group=new SelectListGroup { Name = "Project" },Text="Design Review - Accessibility Report by CASp"},
+                new SelectListItem(){Value="261",Group=new SelectListGroup { Name = "Project" },Text="Funding SOURCE"},
+                new SelectListItem(){Value="174",Group=new SelectListGroup { Name = "Project" },Text="FloorPlanType"},
+                new SelectListItem(){Value="110",Group=new SelectListGroup { Name = "Project" },Text="Other"},
+
+            };
+            /*var items = new List<SelectListItem>();
 
             var query = _context.LutDocumentCategories
                 .Where(d => categories.Contains(d.Category) && !d.IsDeleted);
@@ -249,16 +258,16 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                         Group = currentGroup
                     });
                 }
-            }
+            }*/
 
             return items;
         }
 
-        public int GetProjectReference(int projectId)
+        public int GetActualProjectId(int projectId)
         {
-            return _context.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault().RefProjectId;
+            return _context.Projects.Where(x => x.RefProjectId == projectId).FirstOrDefault().ProjectId;
         }
-
+      
 
     }
 }
