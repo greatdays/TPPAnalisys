@@ -525,7 +525,7 @@ var FloorPlanType = {
             alertBox.fadeOut(300, function () {
                 $(this).removeClass('show');
             });
-        }, 5000);
+        }, 20000);
     },
     deleteEditFloorPlanAlert: function (message, type = 'primary') {
        
@@ -547,7 +547,7 @@ var FloorPlanType = {
             alertBox.fadeOut(300, function () {
                 $(this).removeClass('show');
             });
-        }, 12000);
+        }, 20000);
     },
     
 };
