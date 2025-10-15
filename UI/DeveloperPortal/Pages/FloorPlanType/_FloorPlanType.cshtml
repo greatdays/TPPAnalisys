@@ -73,14 +73,14 @@
 
 					<div class="row">
 						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="floorplan">Floor Plan Type <span class="text-danger">*</span></label>
+							<label class="wraping_label" for="floorplan">Floor Plan Type </label>
 							<input class="form-control" type="text" id="floorplan" name="Name" required autocomplete="off" />
 							<div class="invalid-feedback"></div>
 							<span class="text-danger" id="lblError_fp_floorplan"></span>
 						</div>
 
 						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="squarefeet">Square Footage <span class="text-danger">*</span></label>
+							<label class="wraping_label" for="squarefeet">Square Footage </label>
 							<input class="form-control" type="number" name="SquareFeet" onkeydown="return event.keyCode != 69" min="0" id="squarefeet" maxlength="5" required />
 							<div class="invalid-feedback"></div>
 							<span class="text-danger" id="lblError_fp_squarefeet"></span>
@@ -89,7 +89,7 @@
 
 					<div class="row">
 						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="bedroom">Number of Bedroom <span class="text-danger">*</span></label>
+							<label class="wraping_label" for="bedroom">Number of Bedroom </label>
 							<select class="form-control" id="bedroom" name="LutTotalBedroomID" required>
 								<option>Select</option>
 								@foreach (var bedroom in Model.LutTotalBedrooms)
@@ -102,7 +102,7 @@
 						</div>
 
 						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="bathroom">Number of Bathroom <span class="text-danger">*</span></label>
+							<label class="wraping_label" for="bathroom">Number of Bathroom </label>
 							<select class="form-control" id="bathroom" onchange="FloorPlanType.onSelectBathroomCount();" name="LutTotalBathroomID" required>
 								<option>Select</option>
 								@foreach (var bathroom in Model.LutTotalBathrooms)
@@ -423,5 +423,11 @@ $(document).ready(function () {
 
 	#floorPlanTable_filter {
 		margin-top: 10px;
+	}
+
+	.wraping_label::after {
+		content: " *";
+		color: #dc3545;
+		margin-left: 2px;
 	}
 </style>
