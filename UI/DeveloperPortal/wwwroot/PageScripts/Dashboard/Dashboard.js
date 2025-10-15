@@ -54,7 +54,7 @@
     handleSubmitAPN: function (e) {
         $('.validation-error').remove();
         $('#validationMessageAPN').hide().text('');
-
+        
         var isValid = true;
 
         // --- Basic Validations (always required) ---

@@ -571,6 +571,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                 provisionModel.LutProjectFundId = 8;
 
                 // Call PCMS for project provisioning
+                // PCMS API is not part of ACHP
+                // so we must handle its errors gracefully
                 var pcms = await ProvisionProjectAndSiteforPCMS(provisionModel);
                 if (pcms == null || !pcms.Success) // Use the Success convenience property
                 {
