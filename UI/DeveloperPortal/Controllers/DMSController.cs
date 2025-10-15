@@ -184,7 +184,7 @@ namespace DeveloperPortal.Controllers
                         var documentModel = new DocumentModel()
                         {
                             Name = file.FileName,
-                            Link = response.URL!=null?response.UniqueId.ToString():"",
+                            Link = response.URL!=null?"":response.UniqueId.ToString(),
                             Attributes = string.Empty,
                             FileSize = file.Length.ToString(),
                             CaseId = caseId,
@@ -291,8 +291,11 @@ namespace DeveloperPortal.Controllers
         [Route("GetCategories")]
         public IActionResult GetCategories()
         {
-            string[] categories = { "Project", "Property" };
-            string[] referenceKey = { "ConstructionRetrofitProject", "ConstructionRetrofitProperty" };
+            string[] categories = { "Project" };
+            string[] referenceKey = { "ConstructionNCRehabProject" };
+
+            //Currently we are harding below values
+            //102 Design Review - Plans,103 Design Review - Accessibility Report by CASp,261 Funding SOURCE,174 FloorPlanType,110 Other
 
             var result = _documentService.GetCategories(categories, referenceKey);
 
