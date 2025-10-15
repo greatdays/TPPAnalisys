@@ -11,12 +11,14 @@ namespace DeveloperPortal.Domain.Dashboard
     {
         public List<APNSearchSiteAddress> APNSearchSiteAddresslst { get; set; }
         public List<APNSearchProjectInfo> APNSearchProjectInfolst { get; set; }
+        public bool ApnExists { get; set; }   // <-- NEW (serializes as apnExists)
     }
 
     public class APNSearchSiteAddress
     {
 
         public int SiteAddressID { get; set; }
+        public int RefSiteAddressID { get; set; }
         public string? HouseNum { get; set; }
         public string? HouseFracNum { get; set; }
         public string? PreDirCd { get; set; }

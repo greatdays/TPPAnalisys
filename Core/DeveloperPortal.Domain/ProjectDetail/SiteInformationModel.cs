@@ -10,6 +10,9 @@ namespace DeveloperPortal.Domain.ProjectDetail
         public int RefProjectSiteID { get; set; }
         public int ProjectSiteID { get; set; }
         public int ProjectID { get; set; }
+
+        public int RefProjectID { get; set; }
+        public int RefSiteaddressID { get; set; }
         public string SiteAddress { get; set; }
         public string FileNumber { get; set; }
         public string SiteName { get; set; }
@@ -62,6 +65,7 @@ namespace DeveloperPortal.Domain.ProjectDetail
     public class SiteDataModel
     {
         public int ProjectId { get; set; }
+        public int RefProjectId { get; set; }
         public int ProjectSiteID { get; set; }
 
         public int Id { get; set; }
@@ -83,6 +87,8 @@ namespace DeveloperPortal.Domain.ProjectDetail
     {
         public List<SiteInformationModel> SiteInformationData { get; set; }
         public int CaseId { get; set; }
+
+        public int RefProjectID { get; set; }
 
     }
 

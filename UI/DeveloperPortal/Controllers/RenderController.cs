@@ -82,7 +82,7 @@ namespace DeveloperPortal.Controllers
             }
 
             //local code
-            string propertyBaseUrl = "http://ccris2svctest/Property.Api/";
+            string propertyBaseUrl = "http://localhost/Property.Api/";
             
             //ServiceClient.ServiceClient serviceClient = new ServiceClient.ServiceClient(_config);
             Application.ServiceClient.ServiceClient serviceClient = new Application.ServiceClient.ServiceClient(_config);

@@ -231,9 +231,9 @@ namespace DeveloperPortal.Controllers
 
 
 
-        public async Task<JsonResult> CreateProject([FromBody] ProjectModel projectModel)
+        public async Task<JsonResult> CreateProject([FromBody] ProjectProvisionRequest ProjectProvisionRequestModel)
         {
-            bool result = await _accountService.CreateProject(projectModel, HttpContext);
+            bool result = await _accountService.CreateProjectWithNewAPNandSite(ProjectProvisionRequestModel, HttpContext);
 
 
             return new JsonResult(new { success = true, message = "Projects submitted successfully." });

@@ -7,6 +7,12 @@ var SiteInformation=
    
     LoadSiteInformation:function(isLoad)
     {
+
+        //var projectId = $('#ProjectId').val();
+        //var refProjectId = $('#ProjectId').val();
+
+        //console.log('RefProjectID:', refProjectId);
+
         $.fn.dataTableExt.pager.numbers_length = 50;
         if (IsLoadSiteInformationTab) {
             return;
@@ -22,7 +28,8 @@ var SiteInformation=
                 type: 'POST',
                 data: function (d) {
                     d.SiteInformationData = (!isLoad)? SiteInformationData:null,
-                        d.caseId = Id
+                        d.caseId = Id,
+                        d.RefProjectID = ProjectId
 
                 },
                 "headers": {
@@ -193,10 +200,14 @@ var SiteInformation=
         // Check if it prints null
         modal.style.display = "block"; // <-- this will fail if modal is null
 
-
+        // Adding site modal window opens
         $('#modal-site-add').modal('show');
         document.getElementById('noAPNData').style.display = 'none';
         document.getElementById('APNError').style.display = 'none';
+        document.getElementById('validationMessageAPN').style.display = 'none';
+        document.getElementById('apnFoundBlock').style.display = 'none';
+        document.getElementById('manualAddressFields').style.display = 'none';
+
 
         $('#APNInput').val('');
 
@@ -241,6 +252,15 @@ var SiteInformation=
     },
     GetAPNProjectAddress: function () {
         $('.validation-error').remove();
+
+        const checkbox = document.getElementById("manualAddressCheck");
+        checkbox.checked = false;
+        checkbox.disabled = false;
+        checkbox.dispatchEvent(new Event("change"));
+
+        console.log("Checkbox state:", checkbox.checked);
+
+
         const input = document.getElementById("APNInput");
         const value = input.value.trim();
         document.getElementById("noAPNData").style.display = "none";
@@ -252,7 +272,7 @@ var SiteInformation=
             document.getElementById("APNError").style.display = "none";
             setTimeout(SiteInformation.SerachOnAPNClick, 300);
         }
-    },
+    }, 
 
     SerachOnAPNClick: function () {
         var token = $('input[name="__RequestVerificationToken"]').val();
@@ -273,9 +293,19 @@ var SiteInformation=
 
                 if (response.apnSearchSiteAddresslst == null && response.apnSearchProjectInfolst == null) {
                     document.getElementById("noAPNData").style.display = "block";
-                    document.getElementById("CreateNewProjectSiteId").style.display = "none";
-                    document.getElementById("saveBtn").style.display = "None";
-                    return;
+                    document.getElementById("CreateNewProjectSiteId").style.display = "block";
+                    document.getElementById("saveBtn").style.display = "block";
+                    document.getElementById("manualAddressFields").style.display = "block";
+                    document.getElementById("apnFoundBlock").style.display = "none";
+                    // no APN found → manual mode
+                    const checkbox = document.getElementById("manualAddressCheck");
+                    checkbox.checked = true;
+                    checkbox.dispatchEvent(new Event("change"));
+                }
+                else {
+                    document.getElementById("apnFoundBlock").style.display = "block";
+                    document.getElementById("manualAddressFields").style.display = "none";
+
                 }
 
                 if (response.apnSearchSiteAddresslst != null) {
@@ -300,9 +330,9 @@ var SiteInformation=
                         }));
                     });
                 }
-                else {
-                    document.getElementById("CreateNewProjectSiteId").style.display = "none";
-                }
+                //else {
+                //    document.getElementById("CreateNewProjectSiteId").style.display = "none";
+                //}
 
                
 
@@ -329,6 +359,9 @@ var SiteInformation=
       
         if (SiteInformation.BeginSaveAddSite()) {
             var form = $("#frmSaveAddSite");
+
+            console.log($(form).serialize());
+
             $.ajax({
                 url: APPURL + "ProjectDetail/CreateSite",
                 type: "POST",
@@ -361,7 +394,11 @@ var SiteInformation=
             isValid = false;
         }
 
-        var isAddAddress = $("#IsAddAddress").val() === "True";
+        var isAddAddress =
+            $('#manualAddressCheck').is(':checked') ||
+            $('#noAPNData').is(':visible');
+
+        console.log("isAddAddress:", isAddAddress);
 
         if (isAddAddress) {
             var street = $('#StreetNameInput').val().trim();

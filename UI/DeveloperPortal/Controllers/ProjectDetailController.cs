@@ -477,6 +477,7 @@ namespace DeveloperPortal.Controllers
                         {
                             Id = siteIData.CaseID,
                             ProjectId = siteIData.ProjectID,
+                            RefProjectId = paramModel.RefProjectID,
                             DocumentControlViewModelId = siteIData.DocumentControlViewModelId,
                             LogsControlViewModelId = siteIData.LogsControlViewModelId,
                             ContactControlViewModelId = siteIData.ContactControlViewModelId,

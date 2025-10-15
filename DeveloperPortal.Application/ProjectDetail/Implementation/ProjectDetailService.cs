@@ -6,13 +6,17 @@ using DeveloperPortal.DataAccess.Entity.Models.StoredProcedureModels;
 using DeveloperPortal.DataAccess.Entity.ViewModel;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Models.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 
 namespace DeveloperPortal.Application.ProjectDetail
 {
@@ -804,37 +808,276 @@ namespace DeveloperPortal.Application.ProjectDetail
         public async Task<bool> CreateSite(SiteInformationModel siteInformationModel, string UserName)
         {
             bool IsSiteCreated=false;
-            var sqlParameters = new List<SqlParameter>
-            {
-                new SqlParameter() { ParameterName = "@ProjectID", Value = siteInformationModel.ProjectID },
-                new SqlParameter() { ParameterName = "@PropertyName", Value = siteInformationModel.PropertyName ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@PrimaryAPN", Value = siteInformationModel.APN ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@ProjectCaseID", Value = siteInformationModel.CaseID },
-                new SqlParameter() { ParameterName = "@Existing_PnCSiteAddressID", Value = siteInformationModel.SiteAddress ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@HouseNum", Value = siteInformationModel.HouseNum ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@HouseFracNum", Value = siteInformationModel.HouseFracNum ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@PreDirCd", Value = siteInformationModel.LutPreDirCd ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@StreetName", Value = siteInformationModel.StreetName ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@StreetTypeCd", Value = siteInformationModel.LutStreetTypeCD ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@PostDirCd", Value = siteInformationModel.PostDirCd ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@City", Value = siteInformationModel.City ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@Zip", Value = siteInformationModel.Zip ?? (object)DBNull.Value },
-                new SqlParameter() { ParameterName = "@UserName", Value = UserName ?? (object)DBNull.Value },
 
-                // Optional SP parameters (override defaults)
-                new SqlParameter() { ParameterName = "@SiteCaseTypeId", Value = 18 },
-                new SqlParameter() { ParameterName = "@SiteCaseType", Value = "New Construction Site" },
-                new SqlParameter() { ParameterName = "@SiteCaseStatus", Value = "Under Design Review" },
-                new SqlParameter() { ParameterName = "@LutServiceRequestTypeID_SITE", Value = 18 }
+            try
+            {
+                // Build the request model for PCMS site provisioning
+                var siteRequest = new SiteProvisionRequest
+                {
+                    PcmsProjectId = siteInformationModel.RefProjectID,
+                    ExistingPcmsSiteAddressId = siteInformationModel.RefSiteaddressID,
+                    PrimaryAPN = siteInformationModel.APN,
+                    FileNumber = siteInformationModel.FileNumber,
+                    PropertyName = siteInformationModel.PropertyName,
+                    UserName = UserName,
+                    //ProjectAddress = siteInformationModel.ProjectAddress,
+
+                    // Address parts
+                    HouseNum = siteInformationModel.HouseNum,
+                    HouseFracNum = siteInformationModel.HouseFracNum,
+                    PreDirCd = siteInformationModel.LutPreDirCd,
+                    StreetName = siteInformationModel.StreetName,
+                    StreetTypeCd = siteInformationModel.LutStreetTypeCD,
+                    PostDirCd = siteInformationModel.PostDirCd,
+                    City = siteInformationModel.City,
+                    Zip = siteInformationModel.Zip
+                };
+
+                // --- Call PCMS for site provisioning ---
+                var pcmsSiteResult = await ProvisionSiteforPCMS(siteRequest);
+
+                if (pcmsSiteResult == null ||
+                    pcmsSiteResult.SiteAddressId <= 0 ||
+                    pcmsSiteResult.ProjectSiteId <= 0 /* ensure your response also includes FileNumber */)
+                {
+                    // _logger.LogWarning("PCMS site creation failed: {0}", pcmsSiteResult?.ErrorMessage);
+                    return false;
+                }
+
+                // local helpers
+                object DbNullIfNull(object v) => v ?? (object)DBNull.Value;
+                object DbNullIfEmpty(string s) => string.IsNullOrWhiteSpace(s) ? (object)DBNull.Value : s;
+
+                // IMPORTANT: this should be a LOCAL SiteAddressID if you have it; otherwise let AAHR mirror from PCMS
+                object existingLocalSiteAddressId = DBNull.Value; // replace if you actually have SiteAddressID on your model
+
+                // Build params for AAHR "provision from PCMS" SP
+                var sqlParameters = new List<SqlParameter>
+                {
+                    // AAHR context
+                    new SqlParameter("@ProjectID", siteInformationModel.ProjectID),
+                    new SqlParameter("@PropertyName", DbNullIfEmpty(siteInformationModel.PropertyName)),
+                    new SqlParameter("@PrimaryAPN", DbNullIfEmpty(siteInformationModel.APN)),
+                    new SqlParameter("@ProjectCaseID", siteInformationModel.CaseID),
+                    new SqlParameter("@SiteaddressID", SqlDbType.Int)
+                        {
+                            Value = string.IsNullOrWhiteSpace(siteInformationModel.SiteAddress)
+                                ? (object)DBNull.Value
+                                : (int.TryParse(siteInformationModel.SiteAddress.Trim(), out var id) ? (object)id : DBNull.Value)
+                        },
+                    new SqlParameter("@Source", "ACHP TPP"),
+
+                    // PCMS outputs (be sure your PCMS response includes FileNumber)
+                    new SqlParameter("@RefProjectID", siteInformationModel.RefProjectID),                 // PCMS ProjectID
+                    new SqlParameter("@RefSiteAddressID", pcmsSiteResult.SiteAddressId),                 // PCMS SiteAddressID
+                    new SqlParameter("@RefProjectSiteID", pcmsSiteResult.ProjectSiteId),                 // PCMS ProjectSiteID
+                    new SqlParameter("@PCMS_FileNumber", DbNullIfEmpty(pcmsSiteResult.FileNumber)),      // from PCMS
+                    new SqlParameter("@PCMS_FullAddress", DbNullIfEmpty(pcmsSiteResult.FullAddress)),    // from PCMS
+
+                    // Optional address parts (assist local mirroring)
+                    new SqlParameter("@HouseNum", DbNullIfEmpty(siteInformationModel.HouseNum)),
+                    new SqlParameter("@HouseFracNum", DbNullIfEmpty(siteInformationModel.HouseFracNum)),
+                    new SqlParameter("@PreDirCd", DbNullIfEmpty(siteInformationModel.LutPreDirCd)),
+                    new SqlParameter("@StreetName", DbNullIfEmpty(siteInformationModel.StreetName)),
+                    new SqlParameter("@StreetTypeCd", DbNullIfEmpty(siteInformationModel.LutStreetTypeCD)),
+                    new SqlParameter("@PostDirCd", DbNullIfEmpty(siteInformationModel.PostDirCd)),
+                    new SqlParameter("@City", DbNullIfEmpty(siteInformationModel.City)),
+                    new SqlParameter("@Zip", DbNullIfEmpty(siteInformationModel.Zip)),
+
+                    // CMS/IMS defaults
+                    new SqlParameter("@SiteCaseTypeId", 18),
+                    new SqlParameter("@SiteCaseType", "New Construction Site"),
+                    new SqlParameter("@SiteCaseStatus", "Under Design Review"),
+                    new SqlParameter("@LutServiceRequestTypeID_SITE", 18),
+
+                    new SqlParameter("@UserName", DbNullIfEmpty(UserName))
+                };
+
+                // Call the new AAHR proc
+                var dt = ExecuteStoreProcedure("[AAHPCC].[uspCreateProjectSite_dev]", sqlParameters);
+                if (dt.Rows.Count > 0)
+                {
+                    IsSiteCreated = Convert.ToBoolean(dt.Rows[0]["Success"]);
+                }
+
+                return IsSiteCreated;
+            }
+            catch (Exception ex)
+            {
+                // Log or handle any unexpected error
+                // _logger.LogError(ex, "Error creating site for project {0}", siteInformationModel.PcmsProjectId);
+                return false;
+            }
+
+        }
+
+
+        public async Task<SiteProvisionResponse> ProvisionSiteforPCMS(SiteProvisionRequest request, CancellationToken ct = default)
+        {
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(_config["AreaMgmtAPIURL:PropertyApiURL"]),
+                Timeout = TimeSpan.FromSeconds(60)
             };
 
-            var dataTableAllSites = ExecuteStoreProcedure("[AAHPCC].[uspCreateProjectSite]", sqlParameters);
-            if (dataTableAllSites.Rows.Count > 0)
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Optional trace/auth headers
+            var correlationId = Guid.NewGuid().ToString("N");
+            client.DefaultRequestHeaders.Add("X-Correlation-ID", correlationId);
+            var apiKey = _config["AreaMgmtAPIURL:ApiKey"];
+            if (!string.IsNullOrWhiteSpace(apiKey))
+                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+            // Build payload for PCMS API (NO FileNumber — PCMS will compute)
+            var payload = new
             {
-                IsSiteCreated = Convert.ToBoolean(dataTableAllSites.Rows[0]["Success"]);
+                PcmsProjectId = request.PcmsProjectId,
+                ExistingPcmsSiteAddressId = request.ExistingPcmsSiteAddressId,   // int? or null
+                PrimaryAPN = Cap(request.PrimaryAPN, 100),
+                PropertyName = Cap(request.PropertyName, 200),
+                UserName = Cap(request.UserName, 100),
+                ProjectAddress = Cap(request.ProjectAddress, 500),
+                HouseNum = Cap(request.HouseNum, 10),
+                HouseFracNum = Cap(request.HouseFracNum, 10),
+                PreDirCd = Cap(request.PreDirCd, 2),
+                StreetName = Cap(request.StreetName, 100),
+                StreetTypeCd = Cap(request.StreetTypeCd, 10),
+                PostDirCd = Cap(request.PostDirCd, 2),
+                City = Cap(request.City, 100),
+                Zip = Cap(request.Zip, 10)
+            };
+
+            var body = JsonConvert.SerializeObject(payload);
+            using (var content = new StringContent(body, Encoding.UTF8, "application/json"))
+            {
+                HttpResponseMessage httpResponse;
+                try
+                {
+                    // POST to your PCMS site endpoint (adjust route if different)
+                    httpResponse = await client.PostAsync("AcHP/ProvisionSite", content, ct).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException ex)
+                {
+                    return new SiteProvisionResponse
+                    {
+                        SiteAddressId = 0,
+                        ProjectSiteId = 0,
+                        FullAddress = string.Empty,
+                        FileNumber = string.Empty,
+                        CorrelationId = "ERR-" + correlationId,
+                        ErrorMessage = "Timed out or canceled: " + ex.Message,
+                        ErrorCode = "Timeout"
+                    };
+                }
+                catch (HttpRequestException ex)
+                {
+                    return new SiteProvisionResponse
+                    {
+                        SiteAddressId = 0,
+                        ProjectSiteId = 0,
+                        FullAddress = string.Empty,
+                        FileNumber = string.Empty,
+                        CorrelationId = "ERR-" + correlationId,
+                        ErrorMessage = "HTTP error: " + ex.Message,
+                        ErrorCode = "HttpError"
+                    };
+                }
+
+                var json = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    return new SiteProvisionResponse
+                    {
+                        SiteAddressId = 0,
+                        ProjectSiteId = 0,
+                        FullAddress = string.Empty,
+                        FileNumber = string.Empty,
+                        CorrelationId = "ERR-" + correlationId,
+                        ErrorCode = ((int)httpResponse.StatusCode).ToString(),
+                        ErrorMessage = string.IsNullOrWhiteSpace(json) ? "PCMS site API failed." : json
+                    };
+                }
+
+                // Parse BaseResponse-wrapped payload
+                try
+                {
+                    var loose = JsonConvert.DeserializeObject<BaseResponse>(json);
+                    if (loose == null || loose.Response == null)
+                    {
+                        return new SiteProvisionResponse
+                        {
+                            SiteAddressId = 0,
+                            ProjectSiteId = 0,
+                            FullAddress = string.Empty,
+                            FileNumber = string.Empty,
+                            CorrelationId = "ERR-" + correlationId,
+                            ErrorMessage = "Empty BaseResponse.",
+                            ErrorCode = "NoContent"
+                        };
+                    }
+
+                    SiteProvisionResponse siteResponse = null;
+                    var token = loose.Response as JToken;
+                    if (token != null)
+                    {
+                        siteResponse = token.ToObject<SiteProvisionResponse>();
+                    }
+                    else
+                    {
+                        var respString = loose.Response.ToString();
+                        siteResponse = JsonConvert.DeserializeObject<SiteProvisionResponse>(respString);
+                    }
+
+                    // Ensure correlation id is set
+                    if (siteResponse != null && string.IsNullOrWhiteSpace(siteResponse.CorrelationId))
+                        siteResponse.CorrelationId = correlationId;
+
+                    // Make sure FileNumber is present (API should return it; if not, set empty)
+                    if (siteResponse != null && siteResponse.FileNumber == null)
+                        siteResponse.FileNumber = string.Empty;
+
+                    return siteResponse ?? new SiteProvisionResponse
+                    {
+                        SiteAddressId = 0,
+                        ProjectSiteId = 0,
+                        FullAddress = string.Empty,
+                        FileNumber = string.Empty,
+                        CorrelationId = "ERR-" + correlationId,
+                        ErrorMessage = "Unable to parse site provisioning result.",
+                        ErrorCode = "ParseError"
+                    };
+                }
+                catch (Exception ex2)
+                {
+                    return new SiteProvisionResponse
+                    {
+                        SiteAddressId = 0,
+                        ProjectSiteId = 0,
+                        FullAddress = string.Empty,
+                        FileNumber = string.Empty,
+                        CorrelationId = "ERR-" + correlationId,
+                        ErrorMessage = "Parsing error: " + ex2.Message,
+                        ErrorCode = "JsonParseError"
+                    };
+                }
             }
-            
-            return IsSiteCreated;
+        }
+
+        /// <summary>
+        /// Truncates a string to the specified maximum length.
+        /// Returns null if input is null or whitespace.
+        /// </summary>
+        private static string Cap(string input, int maxLength)
+        {
+            if (string.IsNullOrEmpty(input))
+                return null;
+
+            return input.Length <= maxLength
+                ? input
+                : input.Substring(0, maxLength);
         }
 
         public async Task<ProjectSummaryModel> GetProjectSiteDetails(int projectId)
