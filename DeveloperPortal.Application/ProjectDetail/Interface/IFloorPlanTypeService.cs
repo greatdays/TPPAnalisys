@@ -19,7 +19,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<List<LutTotalBathroomTypeOption>> GetLutBathroomTypeOption();
         Task<int> AddFloorPlanTypeComplianceMatrix(FloorPlanTypeModel floorPanTypeModel);
         List<FloorPlanTypeModel> GetFloorPlanInformation(int ProjectID);
-        Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId);
+        Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId , int caseID);
         bool EditFloorPlanType(FloorPlanTypeModel floorPlanTypeModel);
         bool DeleteFloorPlantype(int floorPlanId, string userName);
         public bool DeleteFloorPlanFile(int docId);
