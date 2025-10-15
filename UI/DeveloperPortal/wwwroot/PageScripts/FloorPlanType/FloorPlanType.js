@@ -411,7 +411,7 @@ var FloorPlanType = {
             default: totalCount = 5;
         }
 
-        var dynamicTable = '<h6>Bathroom Type </h6>'
+        var dynamicTable = '<h6>Bathroom Type <span class="text-danger">*</span></h6>'
             + '<table class="table table-bordered text-center table-fixed" style="width: 592px;">'
             + '<thead class="thead-light"><tr><th>Sr. no.</th><th>Type</th><th>Options</th></tr></thead><tbody>';
 
