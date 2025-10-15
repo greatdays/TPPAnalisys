@@ -53,3 +53,10 @@ function CollapseAll() {
         })
     }
 }
+
+// Tooltip initialization
+window.initializeTooltip = (element) => {
+    var tooltip = new bootstrap.Tooltip(element, {
+        trigger: 'hover focus'
+    });
+};

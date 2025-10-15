@@ -8907,6 +8907,10 @@ h2.usename.Contact-Infon-name {
         padding-left: 10px;
     }
 
+    .edit-project-button {
+        position: relative;
+        display: none;
+    }
 
     /*logged in dashboard css ends*/
 

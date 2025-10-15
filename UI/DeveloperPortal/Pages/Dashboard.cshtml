@@ -71,7 +71,17 @@
 		{
 			<div class="row dashboard-header-row">
 				<div class="col-md-12 button-container text-right mb-3">
-					<button class="edit-project-button btn btn-primary btn-lg" onclick="Dashboard.DisplayModal()">Find & Link Project(s)</button>
+					<button class="edit-project-button btn btn-primary btn-lg" onclick="Dashboard.DisplayModal()">
+						Find & Link Project(s)
+						<span class="">
+                            <component type="typeof(Pages.Shared.HelpTooltip)"
+                                       render-mode="ServerPrerendered"
+                                       param-HelpText='@("Click to search for and link existing projects")'
+                                       param-Placement='@("top")'
+                                       param-Size='@("1rem")' />
+						</span>
+						
+					</button>
 				</div>
 			</div>
 		}
