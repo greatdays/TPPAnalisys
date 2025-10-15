@@ -86,15 +86,16 @@
 	<div class="col-md-12">
 
 
-		<div class="card penal-details backgroundwhite dataTable-changes master_my_team_widget tabepenal">
-			<div class="card-header" id="collapse_ActivityLog">
-				
-				<h5 class="card-title mb-0">Funding Source</h5>
-				<button class="btn btn-primary" type="button" id="uploadFundingSourceBtn" style="float:right; margin-right:1%;" data-original-title="" title=""> <i class="fas fa-plus"></i> Add Funding Source</button>
-
-			</div>
+		<div class="dataTable-changes master_my_team_widget tabepenal">
+				<div class="k-grid " style="margin-bottom: 0px;">
+					<div class="k-header k-grid-toolbar ">
+						<span class="k-grid-header-title">Funding Source</span>
+						<button class="k-button k-button-icontext k-grid-add no-access" type="button" id="uploadFundingSourceBtn" style="float:right; margin-right:1%;" data-original-title="" title="">  Add Funding Source</button>
+					
+					</div>
+				</div>
 			
-			<div class="col-md-12 modal-body">
+			<div class="col-md-12 k-box-body">
 				<table id="fundingSourceGrid" class="table table-bordered table-striped">
 					<thead>
 						<tr>
@@ -117,17 +118,17 @@
 								<td>@Html.DisplayFor(modelItem => item.MU_Unit)</td>
 								<td>@Html.DisplayFor(modelItem => item.HV_Unit)</td>
 								<td style="width:10%">
-									<button class="btn btn-sm btn-warning btn-edit" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.EditFundingSource(@item.FundingSourceId)">
+									<button class="editbtn btn k-grid-edit btn-sm btn-action" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.EditFundingSource(@item.FundingSourceId)">
 										<i class="fas fa-edit"></i>
-									</button>
-									<button class="btn btn-sm btn-danger btn-delete" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.DeleteFundingSource(@item.FundingSourceId)">
-										<i class="fas fa-trash-alt"></i>
 									</button>
 									<a href="javascript:void(0)"
 									   onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "FundingSource", new { fileName = item.FileName, filePath = item.Link })', '@item.FileName')"
-									   class="btn btn-outline-secondary btn-sm" title="Download @item.FileName">
+									   class="editbtn btn k-grid-edit btn-sm btn-action" title="Download @item.FileName">
 										<i class="fas fa-download"></i>
 									</a>
+									<button class="deletebtn btn btn-sm btn-action" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.DeleteFundingSource(@item.FundingSourceId)">
+										<i class="fas fa-trash-alt"></i>
+									</button>
 									@* <a href="javascript:void(0)" type="button"
 									  onclick="DownloadDocument('@item.FileName', '@item.Link')"
 									   class="btn btn-outline-secondary btn-sm" title="Download @item.FileName">

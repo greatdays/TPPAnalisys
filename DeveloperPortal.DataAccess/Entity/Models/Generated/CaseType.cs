@@ -13,7 +13,7 @@ public partial class CaseType
     /// <summary>
     /// Type
     /// </summary>
-    public string Type { get; set; } = null!;
+    public string? Type { get; set; }
 
     /// <summary>
     /// Description
@@ -49,6 +49,10 @@ public partial class CaseType
     /// Modified On
     /// </summary>
     public DateTime? ModifiedOn { get; set; }
+
+    public string? Section { get; set; }
+
+    public string? Level { get; set; }
 
     public virtual ICollection<Case> Cases { get; set; } = new List<Case>();
 

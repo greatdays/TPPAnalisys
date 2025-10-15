@@ -48,7 +48,7 @@
                                 {
                                     <a href="javascript:void(0)"
                                        onclick="downloadFileWithProgress('@Url.Action("DownloadDocument", "DMS", new { fileName = file.Name, filePath = driveFileId })', '@file.Name')"
-                                       class="btn btn-sm btn-primary" title="Download @file.Name">
+                                       class="btn k-grid-edit btn-sm btn-action" title="Download @file.Name">
                                         <i class="fas fa-download"></i>
                                     </a>
                                 }
@@ -58,9 +58,29 @@
                                         Please click on Refresh button after 2-3 minutes to see the download icon.
                                     </span>
                                 }
-                                <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.DocumentId" type="button">
-                                    <i class="fas fa-trash-alt" title="Delete Document"></i>
-                                </button>
+
+                                @if (file.SubCategory == "FloorPlanType")
+                                {
+                                        <button class="btn btn-sm disabled-link"  type="button">
+                                            <i class="fas fa-trash-alt" title="You cannot delete the Floor plan document here. Please go to the Floor Plan tab to delete it."></i>
+                                    </button>
+                                }
+                                    else if (file.SubCategory == "FundingSource" || file.SubCategory== "Funding Source")
+                                {
+                                        <button class="btn btn-sm disabled-link" type="button">
+                                            <i class="fas fa-trash-alt" title="You cannot delete the Funding Source document here. Please go to the Funding Source tab to delete it."></i>
+                                    </button>
+                               
+                                }
+                                else
+                                {
+                                    <button class="btn btn-sm btn-danger btn-delete-file" data-id="@file.DocumentId" type="button">
+                                        <i class="fas fa-trash-alt" title="Delete Document"></i>
+                                    </button>
+                                }
+
+
+                                
                             </td>
                         </tr>
                     }
@@ -68,6 +88,7 @@
             </tbody>
 
         </table>
+    </div>
     </div>
 </div>
 

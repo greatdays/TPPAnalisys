@@ -737,6 +737,8 @@ public partial class AAHREntities : DbContext
 
     public virtual DbSet<OutreachAndAffimativeMarketing> OutreachAndAffimativeMarketings { get; set; }
 
+    public virtual DbSet<OutreachAndAffimativeMarketingBackup> OutreachAndAffimativeMarketingBackups { get; set; }
+
     public virtual DbSet<PcmstoPncSyncLog> PcmstoPncSyncLogs { get; set; }
 
     public virtual DbSet<PhoneLog> PhoneLogs { get; set; }
@@ -774,8 +776,6 @@ public partial class AAHREntities : DbContext
     public virtual DbSet<PmpunitInfoSummarySnap> PmpunitInfoSummarySnaps { get; set; }
 
     public virtual DbSet<PmpunitSnap> PmpunitSnaps { get; set; }
-
-    public virtual DbSet<PnCFundingSource> PnCFundingSources { get; set; }
 
     public virtual DbSet<PolicyComplianceDetail> PolicyComplianceDetails { get; set; }
 
@@ -4939,6 +4939,7 @@ public partial class AAHREntities : DbContext
                 .HasColumnType("datetime");
             entity.Property(e => e.Description).HasComment("Description");
             entity.Property(e => e.IsObsolete).HasComment("Is Obsolete flag");
+            entity.Property(e => e.Level).HasMaxLength(100);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -4946,8 +4947,9 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ModifiedOn)
                 .HasComment("Modified On")
                 .HasColumnType("datetime");
+            entity.Property(e => e.Section).HasMaxLength(100);
             entity.Property(e => e.Type)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .HasComment("Type");
             entity.Property(e => e.WfDefinitionId)
                 .HasComment("Work flow Definition")
@@ -5796,6 +5798,7 @@ public partial class AAHREntities : DbContext
             entity.Property(e => e.ServiceTrackingId)
                 .HasMaxLength(100)
                 .HasColumnName("ServiceTrackingID");
+            entity.Property(e => e.Status).HasMaxLength(50);
 
             entity.HasOne(d => d.DocumentCategory).WithMany(p => p.Documents)
                 .HasForeignKey(d => d.DocumentCategoryId)
@@ -11438,6 +11441,7 @@ public partial class AAHREntities : DbContext
                 .HasComment("Created on which datetime")
                 .HasColumnType("datetime");
             entity.Property(e => e.IsObsolete).HasComment("Obsolete yes or no");
+            entity.Property(e => e.Level).HasMaxLength(100);
             entity.Property(e => e.ModifiedBy)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -11446,7 +11450,8 @@ public partial class AAHREntities : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasComment("Modified on which datetime")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Name).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Section).HasMaxLength(100);
 
             entity.HasMany(d => d.LutViolationLocations).WithMany(p => p.LutServiceRequestTypes)
                 .UsingEntity<Dictionary<string, object>>(
@@ -12938,6 +12943,7 @@ public partial class AAHREntities : DbContext
             entity.ToTable("OutreachAndAffimativeMarketing", "AAHR");
 
             entity.Property(e => e.OutreachId).HasColumnName("OutreachID");
+            entity.Property(e => e.ContactEmail).HasMaxLength(50);
             entity.Property(e => e.ContactName).HasMaxLength(500);
             entity.Property(e => e.ContactPhone).HasMaxLength(20);
             entity.Property(e => e.CreatedBy)
@@ -12952,6 +12958,33 @@ public partial class AAHREntities : DbContext
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS");
             entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.OrganizationName).HasMaxLength(500);
+            entity.Property(e => e.OutreachType).IsUnicode(false);
+            entity.Property(e => e.PartyForDistrubution).IsUnicode(false);
+        });
+
+        modelBuilder.Entity<OutreachAndAffimativeMarketingBackup>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("OutreachAndAffimativeMarketing_Backup", "AAHR");
+
+            entity.Property(e => e.ContactName).HasMaxLength(500);
+            entity.Property(e => e.ContactPhone).HasMaxLength(20);
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.DateOfOutreach).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedBy)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
+            entity.Property(e => e.OrganizationName).HasMaxLength(500);
+            entity.Property(e => e.OutreachId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("OutreachID");
             entity.Property(e => e.OutreachType).IsUnicode(false);
             entity.Property(e => e.PartyForDistrubution).IsUnicode(false);
         });
@@ -13862,30 +13895,6 @@ public partial class AAHREntities : DbContext
                 .HasConstraintName("FK_PMPUnitSnap_Unit");
         });
 
-        modelBuilder.Entity<PnCFundingSource>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PnC.FundingSource");
-
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsFixedLength();
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.DocumentId).HasColumnName("DocumentID");
-            entity.Property(e => e.FundingSourceId).ValueGeneratedOnAdd();
-            entity.Property(e => e.HvUnit).HasColumnName("HV_Unit");
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
-                .IsFixedLength();
-            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.MuUnit).HasColumnName("MU_Unit");
-
-            entity.HasOne(d => d.Document).WithMany()
-                .HasForeignKey(d => d.DocumentId)
-                .HasConstraintName("FK_PnC.FundingSource_Document");
-        });
-
         modelBuilder.Entity<PolicyComplianceDetail>(entity =>
         {
             entity.HasKey(e => e.PolicyComplianceDetailId).HasName("PK_PolicyComplainceDetail");
@@ -14672,12 +14681,24 @@ public partial class AAHREntities : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
-            entity.Property(e => e.IsNoChangeInAutwl).HasColumnName("IsNoChangeInAUTWL");
-            entity.Property(e => e.IsNoChangeInAuwl).HasColumnName("IsNoChangeInAUWL");
-            entity.Property(e => e.IsNoChangeInEc).HasColumnName("IsNoChangeInEC");
-            entity.Property(e => e.IsNoChangeInGl).HasColumnName("IsNoChangeInGL");
-            entity.Property(e => e.IsNoChangeInOs).HasColumnName("IsNoChangeInOS");
-            entity.Property(e => e.IsNoChangeInRa).HasColumnName("IsNoChangeInRA");
+            entity.Property(e => e.IsNoChangeInAutwl)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInAUTWL");
+            entity.Property(e => e.IsNoChangeInAuwl)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInAUWL");
+            entity.Property(e => e.IsNoChangeInEc)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInEC");
+            entity.Property(e => e.IsNoChangeInGl)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInGL");
+            entity.Property(e => e.IsNoChangeInOs)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInOS");
+            entity.Property(e => e.IsNoChangeInRa)
+                .HasDefaultValue(false)
+                .HasColumnName("IsNoChangeInRA");
             entity.Property(e => e.IsNoChangeInUs).HasColumnName("IsNoChangeInUS");
             entity.Property(e => e.IsNoChangeInUuv).HasColumnName("IsNoChangeInUUV");
             entity.Property(e => e.ModifiedBy)
@@ -21245,12 +21266,9 @@ public partial class AAHREntities : DbContext
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("Modified By");
-            entity.Property(e => e.ModifiedOn)
-                .HasMaxLength(200)
-                .IsUnicode(false)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+            entity.Property(e => e.ModifiedOn).HasColumnType("datetime");
             entity.Property(e => e.OriginalFileName)
-                .HasMaxLength(4000)
+                .HasMaxLength(200)
                 .IsUnicode(false)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("Original File Name");
@@ -23787,7 +23805,7 @@ public partial class AAHREntities : DbContext
                 .HasColumnName("AssignedRCS");
             entity.Property(e => e.CaseStatus).HasMaxLength(50);
             entity.Property(e => e.Casetype)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .HasColumnName("casetype");
             entity.Property(e => e.DoFairHousingActAccessibilityProvisionsApply)
                 .HasMaxLength(1)

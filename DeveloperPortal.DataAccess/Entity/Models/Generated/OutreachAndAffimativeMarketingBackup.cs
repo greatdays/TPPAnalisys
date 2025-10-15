@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DeveloperPortal.DataAccess.Entity.Models.Generated;
 
-public partial class OutreachAndAffimativeMarketing
+public partial class OutreachAndAffimativeMarketingBackup
 {
     public int OutreachId { get; set; }
 
@@ -30,10 +30,4 @@ public partial class OutreachAndAffimativeMarketing
     public string? ModifiedBy { get; set; }
 
     public DateTime? ModifiedOn { get; set; }
-
-    public string? ContactEmail { get; set; }
-
-    public virtual ICollection<AssnOutreachTargetAudience> AssnOutreachTargetAudiences { get; set; } = new List<AssnOutreachTargetAudience>();
-
-    public virtual ICollection<AssnPmpsitesOutreach> AssnPmpsitesOutreaches { get; set; } = new List<AssnPmpsitesOutreach>();
 }

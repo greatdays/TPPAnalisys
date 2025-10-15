@@ -63,5 +63,5 @@ public partial class VwDmsdocument
 
     public DateTime? CreatedOn { get; set; }
 
-    public string? ModifiedOn { get; set; }
+    public DateTime? ModifiedOn { get; set; }
 }
