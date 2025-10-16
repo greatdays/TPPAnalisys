@@ -5,12 +5,21 @@
             console.error('CaseId is required');
             return;
         }
+        debugger;
 
-        $.get(APPURL + 'FundingSource/GetFundingSourcesById', { caseId, projectId, controlViewModelId })
-            .done((html) => {
-                $(`#divFundingSource`).html(html);
-
-            });
+       
+        $.ajax({
+            url: APPURL + 'FundingSource/GetFundingSourcesById',
+            type: 'GET',
+            cache: false, // <— prevents browser caching
+            data: { caseId, projectId, controlViewModelId },
+            success: function (html) {
+                $('#divFundingSource').empty().html(html);
+            },
+            error: function (xhr) {
+                console.error('Error loading funding sources:', xhr.responseText);
+            }
+        });
     },
 
 
