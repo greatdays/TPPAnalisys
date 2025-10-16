@@ -98,7 +98,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     {
                         document.DocumentId = viewModel.DocumentID ?? 0;
                         document.Name = viewModel.FileName;
-                      //  document.OtherDocumentType = "FundingSource";
+                        document.OtherDocumentType = "FundingSource";
                         document.Comment = viewModel.Notes;
                         document.DocumentCategoryId = viewModel.LuDocumentCategoryId;
                         _context.Documents.Update(document);
