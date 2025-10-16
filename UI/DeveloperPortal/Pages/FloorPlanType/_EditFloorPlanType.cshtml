@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-md-6 mb-3">
 			<input type="hidden" name="FloorPlanTypeID" value="@Model.FloorPlanTypeID" />
-			<label class="wraping_label" for="floorplan_edit">Floor Plan Type <span class="text-danger">*</span></label>
+			<label class="wraping_label" for="floorplan_edit">Floor Plan Type</label>
 			<input type="hidden" name="ProjectID" value="@Model.ProjectID" />
 			<input type="hidden" name="CaseId" value="@Model.CaseId" />
 			<input class="form-control" type="text" id="floorplan_edit" name="Name" value="@Model.Name" autocomplete="off" />
@@ -16,7 +16,7 @@
 			<span class="text-danger" id="lblError_fp_floorplan_edit"></span>
 		</div>
 		<div class="col-md-6 mb-3">
-			<label class="wraping_label" for="squarefeet_edit">Square Footage <span class="text-danger">*</span></label>
+			<label class="wraping_label" for="squarefeet_edit">Square Footage </label>
 			<input class="form-control" type="number" name="SquareFeet" min="0" id="squarefeet_edit" onkeydown="javascript: return event.keyCode == 69 ? false : true" value="@Model.SquareFeet" maxlength="5" />
 			<div class="invalid-feedback"></div>
 			<span class="text-danger" id="lblError_fp_squarefeet_edit"></span>
@@ -24,7 +24,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6 mb-3">
-			<label class="wraping_label" for="bedroom_edit">Number of Bedroom <span class="text-danger">*</span></label>
+			<label class="wraping_label" for="bedroom_edit">Number of Bedroom </label>
 			<select class="form-control" id="bedroom_edit" name="LutTotalBedroomID">
 				<option>Select</option>
 				@foreach (var bedroom in Model.LutTotalBedrooms)
@@ -40,7 +40,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-6 mb-3 ">
-			<label class="wraping_label" for="bathroom_edit">Number of Bathroom <span class="text-danger">*</span></label>
+			<label class="wraping_label" for="bathroom_edit">Number of Bathroom</label>
 			<select class="form-control" id="bathroom_edit" onchange="FloorPlanType.onSelectBathroomCount_Edit();" name="LutTotalBathroomID" autocomplete="off">
 				<option>Select</option>
 				@foreach (var bathroom in Model.LutTotalBathrooms)
