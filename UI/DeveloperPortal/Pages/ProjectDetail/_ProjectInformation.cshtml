@@ -1,12 +1,30 @@
 ﻿<div>
     @Html.AntiForgeryToken()
-    @* Parking Information *@
+
+    <div class="alert alert-info mt-2" role="alert">
+        <strong>Building, Parking, and Unit Information</strong><br />
+        On this page, you can manage all <b>Building</b>, <b>Parking</b>, and <b>Unit</b> details for your project.<br />
+        Please make sure the <b>Site Information</b> has been completed in the <b>Site Information</b> tab before adding any building.<br />
+        Once the site information is provided, you can begin by <b>adding a building</b>. After adding at least one building, you’ll be able to enter or upload unit information and update parking details.
+    </div>
+
+
     <div class="k-grid " style="margin-top:10px;">
         <div class="k-header k-grid-toolbar">
             <span class="k-grid-header-title"> Building Information</span>
             <a id="addBuildingInformation" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" role="button" role-access="true" onclick="BuildingInformation.AddBuildingInfo()">Add Building</a>
         </div>
     </div>
+@*     <div class="mt-2 ms-1 text-start">
+        <a id="addBuildingInformation"
+           class="btn btn-primary btn-sm"
+           role="button"
+           role-access="true"
+           onclick="BuildingInformation.AddBuildingInfo()">
+            Add Building
+        </a>
+    </div> *@
+
 
     <div class=" k-box-body">
         <br />
