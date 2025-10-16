@@ -596,13 +596,19 @@ namespace HCIDLA.ServiceClient.LaserFiche
 
         public static ResponseBase Update(ReplaceDataInfo replaceDataInfo)
         {
-            using (DMSClient dms = new DMSClient())
+            string endpointUrl = "http://43dmsw2/DMSServiceDev_V5/DMS.svc";
+            var binding = new BasicHttpBinding(BasicHttpSecurityMode.None);
+            //var endpoint = new EndpointAddress("http://43dmsw2/DMSServiceDev_V4/DMS.svc");
+            var endpoint = new EndpointAddress(endpointUrl);
+
+            using (var dms = new DMSClient(binding, endpoint))
             {
                 return dms.ReplaceData(replaceDataInfo);
-        }
+            }
+
         }
 
-      
+
 
 
     }

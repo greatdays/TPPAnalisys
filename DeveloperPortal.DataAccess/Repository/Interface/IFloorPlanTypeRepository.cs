@@ -34,8 +34,8 @@ namespace DeveloperPortal.DataAccess.Repository.Interface
         List<LutBathroomType> GetLutBathroomTypeEdit();
         List<LutBathroomTypeOption> GetLutBathroomTypeOptionEdit();
         int UpdateUnitAttribute(UnitAttribute unit);
-        int DeleteFloorPlanType(FloorPlanType floorPlanType);
-        bool DeleteFloorPlanFile(int docId);
+        List<string> DeleteFloorPlanType(FloorPlanType floorPlanType);
+        bool DeleteFloorPlanFile(int docId,string username);
         List<FloorPlanInformation> GetFloorPlanInformationCompliance(int caseId);
         public int? getLuDocumentCategoryId(string category, string subCategory);
         public void SaveFloorPlanFile(List<Document> doclist, FloorPlanTypeModel floorPlan);

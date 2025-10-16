@@ -1,4 +1,6 @@
-﻿using Azure.Core;
+﻿using System.Net;
+using System.Threading.Tasks;
+using Azure.Core;
 using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail;
 using DeveloperPortal.Application.ProjectDetail.Implementation;
@@ -7,12 +9,14 @@ using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Domain.ProjectDetail;
+using DeveloperPortal.Models.Common;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.Models.PlanReview;
 using DeveloperPortal.Pages.FloorPlanType;
 using DeveloperPortal.Pages.ProjectDetail;
 using DeveloperPortal.ServiceClient;
 using HCIDLA.ServiceClient.DMS;
+using HCIDLA.ServiceClient.LaserFiche;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Evaluation;
@@ -104,11 +108,21 @@ namespace DeveloperPortal.Controllers
             }
         }
         [HttpPost]
-        public ActionResult DeleteFloorPlan(int floorPlanTypeId)
+        public async Task<ActionResult> DeleteFloorPlan(int floorPlanTypeId)
         {
             var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
-            return Json(_floorPlanTypeService.DeleteFloorPlantype(floorPlanTypeId, userName));
+            var links = _floorPlanTypeService.DeleteFloorPlantype(floorPlanTypeId, userName);
+            foreach(var item in links)
+            {
+               await DeletedDocument(item);
+            }
+            return Json(new
+            {
+                success = true,
+            
+            });
         }
+
         [RequestSizeLimit(524288000)] 
         [HttpPost]
         public async Task<IActionResult> AddFloorPlanType(FloorPlanTypeModel floorPlanTypeModel)
@@ -164,23 +178,95 @@ namespace DeveloperPortal.Controllers
                 return Json(new { success = false, message = "Exception: " + ex.Message });
             }
         }
+        /// <summary>
+        /// Flag the document as delete on the wcf 
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> DeletedDocument(string link)
+        {
+            var response = new BaseResponse();
+
+            if (string.IsNullOrWhiteSpace(link))
+            {
+                response.ResponseCode = HttpStatusCode.BadRequest;
+                response.ResponseDescription = "Document link is required.";
+                return StatusCode((int)response.ResponseCode, response);
+            }
+
+            try
+            {
+                var appIdStr = _config["DMSConfig:DMSAppIdExternal"];
+                if (string.IsNullOrWhiteSpace(appIdStr) || !Guid.TryParse(appIdStr, out Guid appId))
+                {
+                    response.ResponseCode = HttpStatusCode.InternalServerError;
+                    response.ResponseDescription = "DMS configuration is missing or invalid.";
+                    return StatusCode((int)response.ResponseCode, response);
+                }
+
+                var replaceDataInfo = new ReplaceDataInfo
+                {
+                    ApplicationId = appId,
+                    UniqueId = Guid.Parse(link),
+                    MetaData = new Dictionary<FieldType, string[]>(),
+                    SysData = new Dictionary<SysFieldType, string>()
+                };
+
+                replaceDataInfo.MetaData.Add(FieldType.Status, new[] { "Deleted" });
+
+                var username = UserSession.GetUserSession(_httpContextAccessor).UserName;
+                replaceDataInfo.SysData.Add(SysFieldType.ModifiedBy, username);
+
+                var replaceResult = DMSClientProxy.Update(replaceDataInfo);
+
+                response.ResponseCode = HttpStatusCode.OK;
+                response.ResponseDescription = "Document marked as deleted successfully.";
+                response.Response = replaceResult;
+
+                return StatusCode((int)response.ResponseCode, response);
+            }
+            catch (Exception ex)
+            {
+
+                response.ResponseCode = HttpStatusCode.InternalServerError;
+                response.ResponseDescription = "An error occurred while deleting the document.";
+               
+                return StatusCode((int)response.ResponseCode, response);
+            }
+        }
+
 
         [HttpPost]
-        public JsonResult DeleteFile(int docId)
+        public async Task<JsonResult> DeleteFile(int docId, string Link)
         {
             try
             {
-                var result = _floorPlanTypeService.DeleteFloorPlanFile(docId);
+                var username = UserSession.GetUserSession(_httpContextAccessor).UserName;
+                var deletedDocResult = await DeletedDocument(Link) as ObjectResult;
+
+                if (deletedDocResult == null || deletedDocResult.StatusCode != (int)HttpStatusCode.OK)
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = deletedDocResult?.Value ?? "Failed to mark document as deleted."
+                    });
+                }
+
+                var result = _floorPlanTypeService.DeleteFloorPlanFile(docId, username);
+
                 if (result)
                     return Json(new { success = true });
                 else
-                    return Json(new { success = false, message = "File could not be deleted." });
+                    return Json(new { success = false, message = "File could not be deleted from database." });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
+
 
         private async Task<List<UploadResponse>> SubmitFloorPlanDocument(
             List<IFormFile> files,
