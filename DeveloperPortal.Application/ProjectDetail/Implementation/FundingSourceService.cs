@@ -15,29 +15,41 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
         private IConfiguration _config;
         private readonly IFundingSourceRepository _fundingSourceRepository;
-
-        public FundingSourceService(IStoredProcedureExecutor storedProcedureExecutor, IConfiguration config, IFundingSourceRepository fundingSourceRepository)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public readonly IAccountRepository _accountRepository;
+        public FundingSourceService(IStoredProcedureExecutor storedProcedureExecutor, IConfiguration config, IFundingSourceRepository fundingSourceRepository, IAccountRepository accountRepository, IHttpContextAccessor httpContextAccessor)
         {
             _storedProcedureExecutor = storedProcedureExecutor;
             _config = config;
             _fundingSourceRepository = fundingSourceRepository;
+            _accountRepository = accountRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
 
 
 
-        public async Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId)
+        public async Task<List<FundingSourceViewModel>> GetAllFundingSourceDoc(string caseId, string projectId)
         {
+            var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
+            var contactIdentifierID = await _accountRepository.GetContactIdentifierByUserName(userName);
+            bool verified=false;
             List<FundingSourceViewModel> lstFundingSourceViewModel = new List<FundingSourceViewModel>();
-            try
+
+            if (contactIdentifierID != null)
             {
-                lstFundingSourceViewModel = _fundingSourceRepository.GetFundingSource(caseId).Result;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return null;
+                 verified = _fundingSourceRepository.IsContactVerified(contactIdentifierID.ContactIdentifierId, int.Parse(projectId));
+
+                try
+                {
+                    lstFundingSourceViewModel = _fundingSourceRepository.GetFundingSourceByUsers(caseId, userName, verified).Result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    return null;
+                }
             }
             return lstFundingSourceViewModel;
         }

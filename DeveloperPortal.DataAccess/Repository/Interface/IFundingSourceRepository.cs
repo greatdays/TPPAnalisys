@@ -16,8 +16,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 {
     public interface IFundingSourceRepository
     {
-
-        Task<List<FundingSourceViewModel>> GetFundingSource(string referenceId);
+        Task<List<FundingSourceViewModel>> GetFundingSourceByUsers(string referenceId, string userName, bool verified);
 
         Task<FundingSourceViewModel> GetFundingSourceById(int funDingSourceId);
 
@@ -27,5 +26,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         int? getLuDocumentCategoryId(string category, string subCategory);
 
         Task<FundingSource> GetFundingSourcebyId(int id);
+        bool IsContactVerified(int contactIdentifierID, int ProjectId);
+
     }
 }

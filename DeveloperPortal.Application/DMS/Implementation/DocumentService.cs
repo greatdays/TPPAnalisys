@@ -5,8 +5,10 @@ using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.DataAccess.Repository.Implementation;
 using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.DMS;
+using DeveloperPortal.Models.IDM;
 using DeveloperPortal.Models.PlanReview;
 using HCIDLA.ServiceClient.DMS;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -20,25 +22,31 @@ namespace DeveloperPortal.Application.DMS.Implementation
     {
         private readonly IStoredProcedureExecutor _storedProcedureExecutor;
         private readonly IDocumentRepository _documentRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public DocumentService( IStoredProcedureExecutor storedProcedureExecutor, IDocumentRepository documentRepository)
+        public DocumentService( IStoredProcedureExecutor storedProcedureExecutor, IDocumentRepository documentRepository, IHttpContextAccessor httpContextAccessor)
         {
             _storedProcedureExecutor= storedProcedureExecutor;
             _documentRepository = documentRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<FolderDetails> GetAllDocumentsBasedOnProjectId(int caseId,int projectId)
         {
+            var userName = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
             List<DocumentModel> resultDocuments = new List<DocumentModel>();
             List< Domain.DMS.FileModel> fileModels = new List<Domain.DMS.FileModel>();
             Domain.DMS.FileModel fileModel = null;
             FolderDetails folderDetails = null;
-            var projectIdParam = new SqlParameter("CaseID", caseId);
-
+            var parameters = new[]
+            {
+                new SqlParameter("CaseID", caseId),
+                new SqlParameter("UserName", userName)
+            };
             resultDocuments = await _storedProcedureExecutor.ExecuteStoredProcAsync<DocumentModel>(
-                                                    StoredProcedureNames.SP_uspGetDMSDocumentDetails,
-                                                    projectIdParam);
+                StoredProcedureNames.SP_uspGetDMSDocumentDetails,
+                parameters
+            );
             if(resultDocuments!=null && resultDocuments.Count>0)
             {
                 folderDetails = new FolderDetails();
