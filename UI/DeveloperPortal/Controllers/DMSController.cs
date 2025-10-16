@@ -134,7 +134,7 @@ namespace DeveloperPortal.Controllers
                 var comment = comments ?? string.Empty;
                 var createdBy = DeveloperPortal.Models.IDM.UserSession.GetUserSession(_httpContextAccessor)?.UserName ?? "System";
                 var refProjectId = projectId;
-                projectId = _documentService.GetActualProjectId(projectId);
+                //projectId = _documentService.GetActualProjectId(projectId);
                 var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(projectId);
                 projectSiteDetails.CaseID = caseId;
                 fileCategory = categoryGroup; //"Project";

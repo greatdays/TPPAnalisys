@@ -194,7 +194,7 @@ public class FundingSourceController : Controller
             }
             
             var projReferenceId = ProjectId;
-            ProjectId= _documentService.GetActualProjectId(ProjectId);
+            //ProjectId= _documentService.GetActualProjectId(ProjectId);
             var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(ProjectId);
             projectSiteDetails.CaseID = caseId;
             projectSiteDetails.RefProjectID = projReferenceId;

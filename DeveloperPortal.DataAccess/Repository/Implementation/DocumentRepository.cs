@@ -267,7 +267,12 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         {
             return _context.Projects.Where(x => x.RefProjectId == projectId).FirstOrDefault().ProjectId;
         }
-      
+
+        public int GetRefProjectId(int actualProjectId)
+        {
+            return _context.Projects.Where(x => x.ProjectId == actualProjectId).FirstOrDefault().RefProjectId;
+        }
+
 
     }
 }

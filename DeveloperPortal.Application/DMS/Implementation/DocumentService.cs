@@ -139,8 +139,11 @@ namespace DeveloperPortal.Application.DMS.Implementation
         {
             return _documentRepository.GetActualProjectId(projectId);
         }
-       
 
+        public int GetRefProjectId(int actualProjectId)
+        {
+            return _documentRepository.GetRefProjectId(actualProjectId);
+        }
 
     }
 }
