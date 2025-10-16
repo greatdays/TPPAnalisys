@@ -46,7 +46,7 @@ public class FundingSourceController : Controller
             //{
             //    fs.CaseId = caseId;
             //}
-            var fundingsource = _fundingSourceService.GetAllFundingSourceDoc(caseId);
+            var fundingsource = _fundingSourceService.GetAllFundingSourceDoc(caseId,projectId);
             var model = new FundingSourcePageViewModel
             {
                 CaseId = caseId,
@@ -64,9 +64,9 @@ public class FundingSourceController : Controller
     /// </summary>
     /// 
     [HttpGet("{id}")]
-    public ActionResult GetFundingSource(string Id, int ProjectId, int controlViewModelId)
+    public ActionResult GetFundingSource(string Id, string ProjectId, int controlViewModelId)
     {
-        var fundingsource = _fundingSourceService.GetAllFundingSourceDoc(Id);
+        var fundingsource = _fundingSourceService.GetAllFundingSourceDoc(Id,ProjectId);
 
         var pg = new FundingSourcePageViewModel
         {

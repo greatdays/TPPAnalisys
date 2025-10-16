@@ -23,34 +23,39 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             _storedProcedureExecutor = storedProcedureExecutor;
         }
 
-        public async Task<List<FundingSourceViewModel>> GetFundingSource(string referenceId)
+        public async Task<List<FundingSourceViewModel>> GetFundingSourceByUsers(string referenceId, string userName, bool verified)
         {
+            var fundingSources = await (
+                from fs in _context.FundingSources
+                join d in _context.Documents on fs.DocumentId equals d.DocumentId
+                join ad in _context.AssnDocuments on d.DocumentId equals ad.DocumentId
+                where !(fs.IsDeleted ?? false)
+        && ad.ReferenceId == referenceId
+        && (
+                            // If verified, include both user's docs and approved ones from others
+                            verified
+                                ? (d.CreatedBy == userName || (d.Status == "Approved" && d.CreatedBy != userName))
+                                // If not verified, include only user's docs
+                                : (d.CreatedBy == userName)
+                         )
+                orderby fs.FundingSourceId
+                select new FundingSourceViewModel
+                {
+                    FundingSourceId = fs.FundingSourceId,
+                    FundingSource = fs.FundingSourceName,
+                    FileName = d.Name,
+                    MU_Unit = fs.MuUnit,
+                    HV_Unit = fs.HvUnit,
+                    CaseId = ad.ReferenceId,
+                    Notes = d.Comment,
+                    DocumentID = d.DocumentId,
+                    Link = d.Link,
+                    CreatedDate = fs.CreatedOn,
+                    FileSize = d.FileSize,
+                    CreatedBy = fs.CreatedBy
+                }
+            ).ToListAsync();
 
-            var fundingSources = (from fs in _context.FundingSources
-                                  where !(fs.IsDeleted ?? false)
-                                  join d in _context.Documents
-                                             on fs.DocumentId equals d.DocumentId
-                                         join ad in _context.AssnDocuments
-                                             on d.DocumentId equals ad.DocumentId
-                                         where ad.ReferenceId == referenceId  
-                                         orderby fs.FundingSourceId
-                                         select new FundingSourceViewModel
-                                         {
-                                             FundingSourceId = fs.FundingSourceId,
-                                             FundingSource = fs.FundingSourceName,
-                                             FileName = d.Name,
-                                             MU_Unit = fs.MuUnit,
-                                             HV_Unit = fs.HvUnit,
-                                             CaseId = ad.ReferenceId,
-                                             Notes = d.Comment,
-                                             DocumentID = d.DocumentId,
-                                             Link = d.Link,
-                                             CreatedDate = fs.CreatedOn,
-                                             FileSize = d.FileSize,
-                                             CreatedBy = fs.CreatedBy
-                                         }).ToList();
-
-           
             return fundingSources;
         }
 
@@ -284,6 +289,15 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
             }
             // Mark as deleted
            
+        }
+
+        public bool IsContactVerified(int contactIdentifierID, int projectId)
+        {
+            int actualProjectId= _context.Projects.Where(x => x.RefProjectId == projectId).FirstOrDefault().ProjectId;
+
+            bool exists =  _context.AssnPropContacts
+                .Any(x => x.ProjectId == actualProjectId && x.ContactIdentifierId == contactIdentifierID && x.Status=="V");
+            return exists;
         }
 
     }
