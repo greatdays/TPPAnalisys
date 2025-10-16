@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using static DeveloperPortal.DataAccess.Entity.Models.Generated.Case;
 
 namespace DeveloperPortal.Application.ProjectDetail.Implementation
 {
@@ -287,7 +288,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             return floorPlanTypeModel;
         }
 
-        public async Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId)
+        public async Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId, int caseId)
         {
             var floorPlan = _floorPlanTypeRepository.GetFloorPlanTypeByID(floorplanId);
             var floorPlanFiles = _floorPlanTypeRepository.GetFloorPlanFilesByID(Convert.ToString(floorplanId));
@@ -383,7 +384,7 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
                                     new AssnDocument
                                     {
                                         ReferenceId = FloorPlanTypeID.ToString(),
-                                        ReferenceType = "FloorPlan",
+                                        ReferenceType = "FloorPlanType",
                                         CreatedBy =  userName,
                                         CreatedOn =  DateTime.Now,
                                         ModifiedBy =  userName,

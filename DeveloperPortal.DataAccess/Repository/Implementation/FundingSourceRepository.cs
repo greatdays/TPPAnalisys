@@ -1,8 +1,12 @@
-﻿using DeveloperPortal.DataAccess.Entity.Data;
+﻿using DeveloperPortal.DataAccess.Common;
+using DeveloperPortal.DataAccess.Entity.Data;
 using DeveloperPortal.DataAccess.Entity.Models.Generated;
+using DeveloperPortal.DataAccess.Repository.Interface;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Models.IDM;
+using DeveloperPortal.Models.PlanReview;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using static DeveloperPortal.DataAccess.Entity.ViewModels.CommentModel;
 
@@ -11,10 +15,12 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
     public class FundingSourceRepository : IFundingSourceRepository
     {
         private readonly AAHREntities _context;
+        private readonly IStoredProcedureExecutor _storedProcedureExecutor;
 
-        public FundingSourceRepository(AAHREntities context)
+        public FundingSourceRepository(AAHREntities context, IStoredProcedureExecutor storedProcedureExecutor)
         {
             _context = context;
+            _storedProcedureExecutor = storedProcedureExecutor;
         }
 
         public async Task<List<FundingSourceViewModel>> GetFundingSource(string referenceId)
@@ -157,6 +163,16 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                     };
                     _context.FundingSources.Add(fundingSource);
                     _context.SaveChanges(viewModel.CreatedBy);
+
+                    if (fundingSource.Document.DocumentId > 0)
+                    {
+                        UpdateDocumentFolderDetail(new FolderModel() { ProjectId = Convert.ToInt32(viewModel.CaseId), Link = fundingSource.Document.Link }, "Case", viewModel.CreatedBy);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -168,6 +184,35 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
             return true;
         }
+
+        private FolderModel UpdateDocumentFolderDetail(FolderModel folderModel, string refenceType, string username)
+        {
+
+            if (folderModel == null)
+            {
+                return folderModel;
+            }
+            var sqlParameters = new List<SqlParameter>
+            {
+                new SqlParameter() { ParameterName = "@RefenceId", Value = folderModel.ProjectId },
+                new SqlParameter() { ParameterName = "@RefenceType", Value = refenceType},
+                new SqlParameter() { ParameterName = "@FolderId", Value =  folderModel.FolderId },
+                new SqlParameter() { ParameterName = "@Link", Value =  folderModel.Link },
+                new SqlParameter() { ParameterName = "@Username", Value = username }
+            };
+            using (var dataTableUnits = _storedProcedureExecutor.ExecuteStoreProcedure("DMS.uspUpdateDocumentFolderDetailForACHP", sqlParameters))
+            {
+                var planReviewDocumentList = dataTableUnits.ConvertDataTable<FolderModel>();
+                if (planReviewDocumentList != null && planReviewDocumentList.Count > 0)
+                {
+                    folderModel = planReviewDocumentList[0];
+                }
+            }
+
+            return folderModel;
+        }
+
+
         public int? getLuDocumentCategoryId(string category,string subCategory)
         {
             return _context.LutDocumentCategories.Where(x => x.Category == category && x.SubCategory == subCategory).FirstOrDefault()?.LutDocumentCategoryId;
