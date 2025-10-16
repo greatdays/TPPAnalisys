@@ -21,6 +21,8 @@ namespace DeveloperPortal.Application.DMS.Interface
         Task<bool> DeleteDocument(int id);
         List<SelectListItem> GetCategories(string[] categories, string[] referenceKeys = null);
         int GetActualProjectId(int categoryId);
+
+        int GetRefProjectId(int actualProjectId);
         //Task<List<FolderTree>> GetFolderTree(int projectId);
     }
 }

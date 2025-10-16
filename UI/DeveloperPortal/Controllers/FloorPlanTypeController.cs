@@ -194,8 +194,11 @@ namespace DeveloperPortal.Controllers
             try
             {
                 var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
-                var refProjectId = ProjectId;
+                
+               
                 var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(ProjectId);
+                int refProjectId = _documentService.GetRefProjectId(ProjectId);
+                projectSiteDetails.ProjectId = refProjectId;
                 projectSiteDetails.CaseID = caseId;
                 var largeFileUploadPath = _appConfigService.getConfigValue("DMSLargeFileActualPath");
 
