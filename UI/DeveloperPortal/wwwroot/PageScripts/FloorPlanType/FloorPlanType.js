@@ -18,15 +18,14 @@ var FloorPlanType = {
         });
     },
 
-    bindEditFloorPlanModal: function () {        
+    bindEditFloorPlanModal: function () {  
         $(document).on('click', '.edit-floorplan', function () {
             const floorPlanId = $(this).data('id');
             const modal = $('#editFloorPlanType');
-
+            const CaseId  = $('#CaseId').val()
             modal.find('#edit_floorPlan').html('<p>Loading...</p>');
             modal.modal('show');
-
-            $.get(APPURL + 'FloorPlanType/_EditFloorPlanType', { id: floorPlanId }, function (data) {
+            $.get(APPURL + 'FloorPlanType/_EditFloorPlanType', { id: floorPlanId, caseId: CaseId }, function (data) {
                 modal.find('#edit_floorPlan').html(data);
                 
                 FloorPlanType.initializeEditDropzone();

@@ -42,9 +42,10 @@ namespace DeveloperPortal.Controllers
             _appConfigService = appConfigService;
         }
         [HttpGet]
-        public async Task<ActionResult> _EditFloorPlanType(int id)
+        public async Task<ActionResult> _EditFloorPlanType(int id, int caseId)
         {
-            var floorPlan = await _floorPlanTypeService.FetchFloorPlanById(id);
+            var floorPlan = await _floorPlanTypeService.FetchFloorPlanById(id, caseId);
+            floorPlan.CaseId = caseId;
             return PartialView(@"~/Pages/FloorPlanType/_EditFloorPlanType.cshtml", floorPlan);
         }
 
@@ -194,7 +195,6 @@ namespace DeveloperPortal.Controllers
             {
                 var allowedExtensions = new[] { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".jpg", ".jpeg", ".png", ".gif" };
                 var refProjectId = ProjectId;
-                ProjectId = _documentService.GetActualProjectId(ProjectId);
                 var projectSiteDetails = await _projectDetailService.GetProjectSiteDetails(ProjectId);
                 projectSiteDetails.CaseID = caseId;
                 var largeFileUploadPath = _appConfigService.getConfigValue("DMSLargeFileActualPath");
