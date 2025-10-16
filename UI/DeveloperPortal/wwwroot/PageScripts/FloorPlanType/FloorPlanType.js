@@ -483,12 +483,12 @@ var FloorPlanType = {
             });
         }
     },
-    deleteFloorPlanFile: function (docId, fileName) {
-
+    deleteFloorPlanFile: function (docId, fileName, Url) {
+        console.log("File to delete", docId, Url);
         $.ajax({
             url: APPURL + 'FloorPlanType/DeleteFile', 
             type: 'POST',
-            data: { docId: docId },
+            data: { docId: docId,Link:Url },
             success: function (response) {
                 if (response.success) {
                     FloorPlanType.deleteEditFloorPlanAlert(response.message || "File deleted successfully!", 'success');

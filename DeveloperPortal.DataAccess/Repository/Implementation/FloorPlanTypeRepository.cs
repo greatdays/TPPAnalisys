@@ -130,11 +130,23 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
         {
             return _context.SaveChanges(floorPlanTypeModel.UserName);
         }
-        public int DeleteFloorPlanType(FloorPlanType floorPlanType)
+        public List<string> DeleteFloorPlanType(FloorPlanType floorPlanType)
         {
-            return _context.SaveChanges(floorPlanType.ModifiedBy);
+           var documentIds= _context.AssnDocuments.Where(x => x.ReferenceId == Convert.ToString(floorPlanType.FloorPlanTypeId)).Select(x=>x.DocumentId).ToList();
+            //if (!documentIds.Any())
+            //    return '';
+            var documents = _context.Documents.Where(x => documentIds.Contains(x.DocumentId)).ToList();
+            foreach (var doc in documents)
+            {
+                doc.IsDeleted = true;
+                doc.ModifiedBy = floorPlanType.ModifiedBy;
+                doc.ModifiedOn = DateTime.Now;
+         
+            }
+            _context.SaveChanges();
+            return documents.Select(x => x.Link).ToList();
         }
-        public bool DeleteFloorPlanFile(int docId)
+        public bool DeleteFloorPlanFile(int docId,string username)
         {
             var file = _context.Documents.FirstOrDefault(d => d.DocumentId == docId);
             if (file != null)
@@ -145,7 +157,11 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
                 {
                     _context.AssnDocuments.RemoveRange(data);
                 }
-                _context.Documents.Remove(file);
+                //_context.Documents.Remove(file);
+                file.IsDeleted = true;
+                file.ModifiedBy = username;
+                file.ModifiedOn = DateTime.Now;
+                _context.Documents.Update(file);
                 _context.SaveChanges();
                 return true;
             }

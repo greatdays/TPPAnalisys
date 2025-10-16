@@ -21,8 +21,8 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         List<FloorPlanTypeModel> GetFloorPlanInformation(int ProjectID);
         Task<FloorPlanTypeModel> FetchFloorPlanById(int floorplanId , int caseID);
         bool EditFloorPlanType(FloorPlanTypeModel floorPlanTypeModel);
-        bool DeleteFloorPlantype(int floorPlanId, string userName);
-        public bool DeleteFloorPlanFile(int docId);
+        List<string> DeleteFloorPlantype(int floorPlanId, string userName);
+        public bool DeleteFloorPlanFile(int docId,string username);
         List<FloorPlanInformation> GetFloorPlanInformationCompliance(int CaseID);
         public int? getLuDocumentCategoryId(string category, string subCategory);
         public void SaveFloorPlanFile(FloorPlanTypeModel floorPlan,List<UploadResponse> list, int LuDocumentCategoryId,string FloorPlanTypeID,string username);

@@ -179,26 +179,37 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
             }).ToList();
             return LutBathroomTypeOption;
         }
-        public bool DeleteFloorPlantype(int floorPlanTypeId, string userName)
+        public List<string> DeleteFloorPlantype(int floorPlanTypeId, string userName)
         {
+            // 1️⃣ Get floor plan type and mark deleted
             var floorPlanType = _floorPlanTypeRepository.GetFloorPlanTypeByID(floorPlanTypeId);
+            if (floorPlanType == null)
+                return new List<string>(); // nothing to delete
+
             floorPlanType.IsDeleted = true;
             floorPlanType.ModifiedBy = userName;
-            var result = _floorPlanTypeRepository.DeleteFloorPlanType(floorPlanType);
-            var Units = _floorPlanTypeRepository.GetUnitAttributesbyFloorPlanID(floorPlanTypeId);
-            if (Units.Any())
+
+            // 2️⃣ Delete associated documents and get links
+            var links = _floorPlanTypeRepository.DeleteFloorPlanType(floorPlanType);
+
+            // 3️⃣ Unlink units
+            var units = _floorPlanTypeRepository.GetUnitAttributesbyFloorPlanID(floorPlanTypeId);
+            if (units != null && units.Any())
             {
-                foreach (var unit in Units)
+                foreach (var unit in units)
                 {
                     unit.FloorPlanTypeId = 0;
                     _floorPlanTypeRepository.UpdateUnitAttribute(unit);
                 }
             }
-            return true;
+
+            // 4️⃣ Return document links at the end
+            return links ?? new List<string>();
         }
-        public bool DeleteFloorPlanFile(int docId)
+
+        public bool DeleteFloorPlanFile(int docId, string username)
         {
-            bool data = _floorPlanTypeRepository.DeleteFloorPlanFile(docId);
+            bool data = _floorPlanTypeRepository.DeleteFloorPlanFile(docId, username);
             if (data)
             {
                 return true;
