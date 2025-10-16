@@ -186,9 +186,15 @@
         border: 1px solid #fff;
     }
 
+    .input-tight {
+        padding-left: 0 !important;
+        padding-right: 0.25rem !important; /* optional */
+    }
+
 </style>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
 
 <div class="site-parking-summary" style="margin-top:15px;">
     <div class="row">
@@ -200,230 +206,223 @@
                 @Html.HiddenFor(m => m.ProjectSiteId)
                 @Html.HiddenFor(m => m.PropSnapshotID)
                 @Html.HiddenFor(m => m.CaseId)
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-8">
-                        @{
-                            if (!string.IsNullOrWhiteSpace(Model.StructureNo))
-                            {
-                                <h3 class="site-title ">
-                                    @Model.BuildingFileNumber  -   @Model.StructureNo
-                                </h3>
-                            }
-                            else
-                            {
 
-                                <h3 class="site-title ">
-                                    @Model.BuildingFileNumber
-                                </h3>
-
-                            }
+                <div class="row align-items-center gy-2">
+                    <!-- Title -->
+                    <div class="col-12 col-lg">
+                        @if (!string.IsNullOrWhiteSpace(Model.StructureNo))
+                        {
+                            <h5 class="site-title mb-0">
+                                @Model.BuildingFileNumber - @Model.StructureNo
+                            </h5>
+                        }
+                        else
+                        {
+                            <h5 class="site-title mb-0">
+                                @Model.BuildingFileNumber
+                            </h5>
                         }
                     </div>
-                    <div class="col-sm-4">
 
-                        <a id="editBuildingSummary" class="k-button k-button-icontext k-grid-add no-access btn btn-primary btn-sm" style="background: #113F67;color: white;" role-access="true" onclick="BuildingInformation.editBuildingSummary(@Model.ProjectSiteId)">Edit Selected Building</a>
-                        <a id="cancelEditBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;margin-left :15px;" onclick="BuildingInformation.cancelBuildingSummary()">Cancel</a>
-                        <button id="updateBuildingSummary" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" style="background: #113F67;color: white;" type="submit">Update</button>
-                    </div>
+                    <!-- Actions -->
+                    <div class="col-12 col-lg-auto">
+                        <div class="d-flex flex-wrap justify-content-lg-end">
+                            <a id="editBuildingSummary"
+                               class="k-button k-button-icontext k-grid-add no-access btn btn-primary btn-sm me-2 mb-2"
+                               style="background:#113F67; color:white;"
+                               role-access="true"
+                               onclick="BuildingInformation.editBuildingSummary(@Model.ProjectSiteId)">
+                                Edit Selected Building
+                            </a>
 
-                </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-12">
-                        <div class="row-box">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td class="row-title">
-                                        Type of Construction Project
-                                    </td>
-                                    <td class="row-text" style="min-width: 170px;">
-                                        @Model.TypeOfConstruction
-                                        @*@Html.TextBoxFor(x => x.TypeOfConstruction, new { @class = "form-control input-building-summar1 " ,disabled= "disabled" })*@
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Type of Occupancy
-                                    </td>
-                                    <td class="row-text">
-                                        @Model.TypeOfOccupancy
-                                        @*@Html.TextBoxFor(x => x.TypeOfOccupancy, new { @class = "form-control NumberOfUnits input-building-summary " })*@
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Building Permit Number
-                                    </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.BuildingPermitNumber, new { @class = "input-number form-control NumberOfUnits input-building-summary ", @MaxLength = "7" })
-                                    </td>
-                                </tr>
-                            </table>
+                            <a id="cancelEditBuildingSummary"
+                               class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm me-2 mb-2"
+                               style="background:#113F67; color:white;"
+                               onclick="BuildingInformation.cancelBuildingSummary()">
+                                Cancel
+                            </a>
+
+                            <button id="updateBuildingSummary"
+                                    type="submit"
+                                    class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm mb-2"
+                                    style="background:#113F67; color:white;">
+                                Update
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-12">
-                        <div class="row-box">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td class="row-title" width="190px">
-                                        Building Address
-                                    </td>
-                                    <td class="row-text" style="min-width: 170px;">
+       
+                <div class="container-fluid">
+                    <!-- Information layout -->
+                    <div class="row gy-3 gx-5">
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">Building Permit Number: </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.BuildingPermitNumber, new {
+                                @class = "input-number form-control NumberOfUnits input-building-summary w-auto  input-tight ", @MaxLength = "7", style = "width: 75px;" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">Building Address</div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable">
+                                    @Model.FullAddress
+                                </spam>
+                                <div class="radio-building-summary-edit">
+                                    @Html.DropDownListFor(x => x.BuildingAddressId, new List<SelectListItem>(), "Building Address", new { @class = "form-control input-building-summary ", @id = "BuildingAddressDL" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">Building Description</div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable" id="lblBuildingDescription">
+                                    @Model.BuildingDescription
+                                </spam>
+                                <div class="radio-building-summary-edit">
+                                    @Html.DropDownListFor(model => model.BuildingDescription, new List<SelectListItem>(), "Select", new { @id = "BuildingDescriptionDL", @class = "form-control input-building-summary " })
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">Non-Residential</div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable">
+                                    @(Model.NonResidental.HasValue && Model.NonResidental == true ? "Yes" : "No")
+                                </spam>
+                                <div class="input-group yesno_radio radio-building-summary-edit">
+                                    <div class="custom-control custom-radio" aria-labelledby="s_NonResidental1" style="margin-right:10px;">
+                                        @Html.RadioButtonFor(model => model.NonResidental, "true", new { @id = "s_NonResidental1", @class = "radio-building-summary custom-control-input" })
+                                        <label class="custom-control-label" for="s_NonResidental1">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-radio " aria-labelledby="s_NonResidental2">
+                                        @Html.RadioButtonFor(model => model.NonResidental, "false", new { @id = "s_NonResidental2", @class = "radio-building-summary custom-control-input " })
+                                        <label class="custom-control-label" for="s_NonResidental2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">Applicable Codes</div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable">
+                                    @Model.ApplicableCodes
+                                </spam>
+                                <div class="radio-building-summary-edit" style="width:400px;" id="divApplicableCodesDL">
+                                    @Html.DropDownListFor(model => model.LutApplicableAccessibilityStandardIdList, Model.LutApplicableAccessibilityList, "Select", new { @id = "ApplicableCodesDL", @multiple = "multiple", @class = "form-control input-building-summary " })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row gy-3 gx-5 mt-1">
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Total Number of Units
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfUnits, new { @class = "input-number form-control input-building-summary input-tight", @MaxLength = "5" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Number of Mobility Units
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfMobilityUnits, new { @class = "input-number form-control input-building-summary input-tight", @MaxLength = "50" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Number of Communication Units
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfCommunicationUnits, new { @class = " input-number form-control input-building-summary input-tight", @MaxLength = "50" })
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Number of Adaptable Units
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfAdaptableUnits, new { @class = " input-number form-control input-building-summary input-tight", @MaxLength = "5" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Number of Floors in Buildings
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfFloors, new { @class = "input-number form-control NumberOfFloors input-building-summary input-tight", @MaxLength = "5" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Elevator?
+                            </div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable">
+                                    @(Model.IsElevator ? "Yes" : "No")
+                                </spam>
+                                <div class="input-group yesno_radio radio-building-summary-edit">
+                                    <div class="custom-control custom-radio" aria-labelledby="s_IsElevator1" style="margin-right:10px;">
+                                        @Html.RadioButtonFor(model => model.IsElevator, "true", new { @id = "s_IsElevator1", @class = "radio-building-summary custom-control-input" })
+                                        <label class="custom-control-label" for="s_IsElevator1">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-radio " aria-labelledby="s_IsElevator2">
+                                        @Html.RadioButtonFor(model => model.IsElevator, "false", new { @id = "s_IsElevator2", @class = " radio-building-summary custom-control-input" })
+                                        <label class="custom-control-label" for="s_IsElevator2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gy-3 gx-5 mt-1">
+                        <div class="col-12 col-sm-6 col-lg-2">
+                            <div class=" text-secondary mb-1">
+                                Number of Parkings
+                            </div>
+                            <div class="fw-semibold">
+                                @Html.TextBoxFor(x => x.NumberOfParkings, new { @class = "input-number form-control input-building-summary", @MaxLength = "5" })
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <div class=" text-secondary mb-1">
+                                Will Parking be provided for Each Residential Dwelling Unit?
+                            </div>
+                            <div class="fw-semibold">
+                                <spam class="radio-building-summary-lable">
+                                    @(Model.ParkingAvailableAtbuildingLevel ? "Yes" : "No")
+                                </spam>
+                                <div class="input-group yesno_radio radio-building-summary-edit">
+                                    <div class="custom-control custom-radio" aria-labelledby="s_ParkingAvailableAtbuildingLevel1" style="margin-right:10px;">
+                                        @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_ParkingAvailableAtbuildingLevel1", @class = "radio-building-summary custom-control-input" })
+                                        <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel1">Yes</label>
+                                    </div>
+                                    <div class="custom-control custom-radio " aria-labelledby="s_ParkingAvailableAtbuildingLevel2">
+                                        @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_ParkingAvailableAtbuildingLevel2", @class = " radio-building-summary custom-control-input" })
+                                        <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel2">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
-                                        <spam class="radio-building-summary-lable">
-                                            @Model.FullAddress
-                                        </spam>
-                                        <div class="radio-building-summary-edit">
-                                            @Html.DropDownListFor(x => x.BuildingAddressId, new List<SelectListItem>(), "Building Address", new { @class = "form-control input-building-summary ", @id = "BuildingAddressDL" })
-                                        </div>
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Building Description
-                                    </td>
-                                    <td class="row-text">
-                                        <spam class="radio-building-summary-lable" id="lblBuildingDescription">
-                                            @Model.BuildingDescription
-                                        </spam>
-                                        <div class="radio-building-summary-edit">
-                                            @Html.DropDownListFor(model => model.BuildingDescription, new List<SelectListItem>(), "Select", new { @id = "BuildingDescriptionDL", @class = "form-control input-building-summary " })
-                                        </div>
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Non-Residential
-                                    </td>
-                                    <td class="row-text">
-                                        <spam class="radio-building-summary-lable">
-                                            @(Model.NonResidental.HasValue && Model.NonResidental == true ? "Yes" : "No")
-                                        </spam>
-                                        <div class="input-group yesno_radio radio-building-summary-edit">
-                                            <div class="custom-control custom-radio" aria-labelledby="s_NonResidental1" style="margin-right:10px;">
-                                                @Html.RadioButtonFor(model => model.NonResidental, "true", new { @id = "s_NonResidental1", @class = "radio-building-summary custom-control-input" })
-                                                <label class="custom-control-label" for="s_NonResidental1">Yes</label>
-                                            </div>
-                                            <div class="custom-control custom-radio " aria-labelledby="s_NonResidental2">
-                                                @Html.RadioButtonFor(model => model.NonResidental, "false", new { @id = "s_NonResidental2", @class = "radio-building-summary custom-control-input " })
-                                                <label class="custom-control-label" for="s_NonResidental2">No</label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-12">
-                        <div class="row-box">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td class="row-title" width="190px">
-                                        Applicable Codes
-                                    </td>
-                                    <td class="row-text">
-                                        <spam class="radio-building-summary-lable">
-                                            @Model.ApplicableCodes
-                                        </spam>
-                                        <div class="radio-building-summary-edit" style="width:400px;" id="divApplicableCodesDL">
-                                            @Html.DropDownListFor(model => model.LutApplicableAccessibilityStandardIdList, Model.LutApplicableAccessibilityList, "Select", new { @id = "ApplicableCodesDL", @multiple = "multiple", @class = "form-control input-building-summary " })
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-12">
-                        <div class="row-box">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td class="row-title">
-                                        Total Number of Units
-                                    </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "5" })
-                                    </td>
-                                    <td class="row-title  lelf-border">
-                                        # of Mobility Units
-                                    </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfMobilityUnits, new { @class = "input-number form-control input-building-summary ", @MaxLength = "50" })
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        # of Communication Units
-                                    </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfCommunicationUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "50" })
-                                    </td>
-                                    <td class="row-title lelf-border"> # of Adaptable Units </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfAdaptableUnits, new { @class = " input-number form-control input-building-summary ", @MaxLength = "5" })
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-sm-12">
-                        <div class="row-box">
-                            <table style="width: 100%;">
-                                <tr>
-                                    <td class="row-title">
-                                        Number of Floors in Buildings
-                                    </td>
-                                    <td class="row-text" style="min-width: 170px;">
-                                        @Html.TextBoxFor(x => x.NumberOfFloors, new { @class = "input-number form-control NumberOfFloors input-building-summary ", @MaxLength = "5" })
-                                    </td>
-
-                                    <td class="row-title lelf-border">
-                                        Elevator?
-                                    </td>
-                                    <td class="row-text">
-                                        <spam class="radio-building-summary-lable">
-                                            @(Model.IsElevator ? "Yes" : "No")
-                                        </spam>
-                                        <div class="input-group yesno_radio radio-building-summary-edit">
-                                            <div class="custom-control custom-radio" aria-labelledby="s_IsElevator1" style="margin-right:10px;">
-                                                @Html.RadioButtonFor(model => model.IsElevator, "true", new { @id = "s_IsElevator1", @class = "radio-building-summary custom-control-input" })
-                                                <label class="custom-control-label" for="s_IsElevator1">Yes</label>
-                                            </div>
-                                            <div class="custom-control custom-radio " aria-labelledby="s_IsElevator2">
-                                                @Html.RadioButtonFor(model => model.IsElevator, "false", new { @id = "s_IsElevator2", @class = " radio-building-summary custom-control-input" })
-                                                <label class="custom-control-label" for="s_IsElevator2">No</label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Number of Parkings
-                                    </td>
-                                    <td class="row-text">
-                                        @Html.TextBoxFor(x => x.NumberOfParkings, new { @class = "input-number form-control input-building-summary", @MaxLength = "5" })
-                                    </td>
-                                    <td class="row-title lelf-border">
-                                        Will Parking be provided for Each Residential Dwelling Unit?
-                                    </td>
-                                    <td class="row-text">
-                                        <spam class="radio-building-summary-lable">
-                                            @(Model.ParkingAvailableAtbuildingLevel ? "Yes" : "No")
-                                        </spam>
-                                        <div class="input-group yesno_radio radio-building-summary-edit">
-                                            <div class="custom-control custom-radio" aria-labelledby="s_ParkingAvailableAtbuildingLevel1" style="margin-right:10px;">
-                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_ParkingAvailableAtbuildingLevel1", @class = "radio-building-summary custom-control-input" })
-                                                <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel1">Yes</label>
-                                            </div>
-                                            <div class="custom-control custom-radio " aria-labelledby="s_ParkingAvailableAtbuildingLevel2">
-                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_ParkingAvailableAtbuildingLevel2", @class = " radio-building-summary custom-control-input" })
-                                                <label class="custom-control-label" for="s_ParkingAvailableAtbuildingLevel2">No</label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </form>
         </div>
     </div>
+
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title">LADBS Building Permit Info</span>
@@ -431,18 +430,18 @@
         </div>
         <div>
             <div class="d-flex justify-content-between">
-                <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em; max-width:470px;">
+                <div style="float: inline-start;padding-left: 2em;padding-top: 1em;padding-bottom: 2em; max-width:670px;">
                     <table>
                         <tbody>
                             <tr>
                                 <td style="border: 0px;">
-                                    <label for="LADBS_PermitNumber" style="width: 60px;">Permit #:</label>
+                                    <label for="LADBS_PermitNumber" >Permit #:</label>
                                 </td>
                                 <td style="border: 0px;">
                                     <input id="LADBS_PermitNumber" class="input-number form-control" style="width: 200px;">
                                 </td>
                                 <td style="border: 0px;">
-                                    <button id="linkPermitNumber" class="btn btn btn-primary" style="/* margin-left: 1em; */width: 200px;" onclick="LadbsInformation.linkPermitNumber()">Query Permit Number</button>
+                                    <button id="linkPermitNumber" class="btn btn btn-primary" style="/* margin-left: 1em; */width: 250px;" onclick="LadbsInformation.linkPermitNumber()">Query Permit Number</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -450,10 +449,10 @@
                     <div id="invalid-permit-message" style="display: none; width:100%; padding-top:10px;"></div>
                     <div id="LADBSerror" class="text-danger" style="padding:10px 0 0 60px;" hidden> </div>
                 </div>
-                <div style="float: inline-end;padding-right: 1em;padding-top: 1em;padding-bottom: 2em;">
+@*                 <div style="float: inline-end;padding-right: 1em;padding-top: 1em;padding-bottom: 2em;">
                     <button id="syncPermitNumbers" class="btn btn btn-primary" onclick="LadbsInformation.syncPermitNumbers()">Sync All Permit Numbers</button>
                     <img src="~/Images/question-circle.svg" class="question-mark-tooltip" data-bs-toggle="tooltip" data-bs-placement="top" title="Uses all permit numbers saved onto this building. (Original, Prior, Current, Historic, Conversion)" />
-                </div>
+                </div> *@
             </div>
 
 
@@ -484,6 +483,7 @@
             <button id="updateBuildingParking" class="k-button k-button-icontext k-grid-add" role="button" onclick="ParkingInformation.update()">Update</button>
         </div>
     </div>
+
     <div class="hide-hover">
         <form id="ParkingInfoForm">
             <table style="width:100%" id="tblparkinginfo">
