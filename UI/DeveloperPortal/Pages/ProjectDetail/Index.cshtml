@@ -4,11 +4,7 @@
 	ViewData["Title"] = "Project Details";
 }
 <style>
-	/* === Layout helpers used by tables/sections === */
-.table-responsive .row { margin-bottom: 15px; }
-.datatbl { width: 100% !important; }
-#unitKgrid .k-grid-add { margin-right: 110px; }
-.k-grid-content tr:last-child { border-bottom: 1px solid lightgray; }
+
 
 /* Tab: Site Information pagination fixes (plugin uses <li><a>) */
 #tabSiteInformation .pagination { display: list-item !important; text-align: start; }
@@ -116,13 +112,6 @@ a.paginate_button { float: left !important; }
 }
 .tpp-step.complete .tpp-step-badge { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
 
-/* Reusable page gutter so cards align (replaces inline styles) */
-.tpp-gutter { padding-left: 10px; padding-right: 10px; }
-
-@@media (min-width: 1200px) {
-  .tpp-gutter { padding-left: 22px; padding-right: 22px; }
-}
-
 /* Visually unstyled button that still behaves like a button */
 .tablink-plain{
   background: none;
@@ -184,7 +173,7 @@ a.paginate_button { float: left !important; }
 
     <!-- End Project Notification -->
     </div>
-	<div class="tpp-gutter">
+	<div  class="px-2 px-xl-4">
         @{
             Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
         }
@@ -195,49 +184,37 @@ a.paginate_button { float: left !important; }
 	<!-- Project Checklist (same card style as summary) -->
 
 
-	<div class="tpp-gutter">
-		<section class="tpp-checklist" id="panel-checklist" aria-label="Project Checklist">
-		  <div class="tpp-checklist__header">
-			<h4>Project Checklist</h4>
-			
+	<div  class="px-2 px-xl-4">
+		<section class="card shadow-lg border-0 rounded-4" id="panel-checklist" aria-label="Project Checklist">
+		  <div class="card-header d-flex align-items-center bg-light p-3">
+			<h4 class="mb-0">Project Checklist</h4>
 		  </div>
 
-		  <div class="tpp-checklist__body">
+		  <div class="card-body p-4">
 			<ol class="tpp-steps" id="steps">
-
-					<li class="tpp-step step" data-step="Documents" onclick="ProjectInformation.openTab(event, 'tabDocuments')">
-				<span class="tpp-step-idx idx">1</span>
-					<button class="tablink-plain"  >Project Documents</button>
-			
-			  </li>
-					<li class="tpp-step step" data-step="team" onclick="ProjectInformation.openTab(event, 'tabDevelopmentTeamList')">
+				<li class="tpp-step step" id="checklist-step-documents" data-step="Documents" onclick="ProjectInformation.openTab(event, 'tabDocuments')">
+					<span class="tpp-step-idx idx">1</span>
+				<button class="tablink-plain"  >Project Documents</button>
+				</li>
+				<li class="tpp-step step" data-step="team" onclick="ProjectInformation.openTab(event, 'tabDevelopmentTeamList')">
 				<span class="tpp-step-idx idx">2</span>
 					<button class="tablink-plain" >Project Team Information</button>
-				
-			  </li>
-					<li class="tpp-step step" data-step="site" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')">
+				</li>
+				<li class="tpp-step step" data-step="site" onclick="ProjectInformation.openTab(event, 'tabSiteInformation')">
 				<span class="tpp-step-idx idx">3</span>
 					<button   class="tablink-plain"   id="btnSiteInformation">Site Information </button>
-
-			  </li>
-					<li class="tpp-step step" data-step="floor" onclick="ProjectInformation.openTab(event, 'partialContainer')">
+				</li>
+				<li class="tpp-step step" data-step="floor" onclick="ProjectInformation.openTab(event, 'partialContainer')">
 				<span class="tpp-step-idx idx">4</span>
 					<button  class="tablink-plain"  >Floor Plan Type</button>
-
-			  </li>
-					<li class="tpp-step step" data-step="Building & Units" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')">
+				</li>
+				<li class="tpp-step step" data-step="Building & Units" onclick="ProjectInformation.openTab(event, 'tabProjectInformation')">
 				<span class="tpp-step-idx idx">5</span>
 				  <button  class="tablink-plain"    id="btnProjectInformation">Building & Unit Information </button>
-				
-			  </li>
-	@* 		  <li class="tpp-step step" data-step="parking">
+				</li>
+				<li class="tpp-step step" data-step="Funding" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">
 				<span class="tpp-step-idx idx">6</span>
-				<span class="tpp-step-label">Parking Information</span>
-				<span class="tpp-step-badge badge">Required</span>
-			  </li> *@
-					<li class="tpp-step step" data-step="Funding" onclick="ProjectInformation.openTab(event, 'tabFundingSource')">
-				<span class="tpp-step-idx idx">6</span>
-				 <button  class="tablink-plain" >Funding Source</button>
+				<button  class="tablink-plain" >Funding Source</button>
 	
 			  </li>
 			 @*  <button class="tablinks hide" onclick="ProjectInformation.openTab(event, 'tabLogs')">Plan Review</button> *@
@@ -253,7 +230,7 @@ a.paginate_button { float: left !important; }
 
 	<br />
 
-	<div class="tpp-gutter">
+	<div class="px-2 px-xl-4">
 		<!-- Tab content -->
 		<div id="tabProjectInformation" class="tabcontent">
 			@{
@@ -299,33 +276,12 @@ a.paginate_button { float: left !important; }
 @{
 	Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
 }
+
 <div id="Help">
 	@{
 		Html.RenderPartial("_Help", Model.ProjectSummary);
 	}
 </div>
-
-@* <!--START Printing Deatils Popup -->
-<div class="modal" id="printDetailsPopup" data-backdrop="static" aria-labelledby="LinkPropertyPopupTitle" aria-modal="true" role="dialog" tabindex="-1" aria-hidden="true" style="overflow: hidden;">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content" style="width:660px">
-			<div class="modal-header">
-				<div class="modal-title" id="EditAccountTitle">Print Case Details</div>
-			</div>
-
-			<div class="row">
-				<div id="checkboxContainerPart1" class="col-md-5" style="margin-left:20px">  </div>
-				<div id="checkboxContainerPart2" class="col-md-5" style="margin-left:20px"> </div>
-			</div>
-
-			<div class="modal-footer multi-button">
-				<button id="cancelButton" class="modal-button left-button">Cancel</button>
-				<button id="printButton" class="modal-button right-button">Print Details</button>
-
-			</div>
-		</div>
-	</div>
-</div> *@
 
 <script type="text/javascript">
 	var baseUrl = window.location.origin;
@@ -359,32 +315,34 @@ a.paginate_button { float: left !important; }
 
 <script>
   (function () {
-    function showDocsDefault() {
-      // 1) Try the top tab bar button first
-      var btnDocs =
-        document.getElementById('btnDocuments') ||
-        document.querySelector('.tab .tablinks[onclick*="tabDocuments"]') ||
-        // 2) Then try the checklist trigger
-        document.querySelector('[id="lnkChecklistDocuments"], .tpp-checklist [onclick*="tabDocuments"], .tpp-checklist [data-target="tabDocuments"]');
+	function showDocsDefault() {
+	  // Try the most reliable and specific elements first.
+	  var btnDocs =
+		// Try the top tab bar button first (most direct access)
+		document.getElementById('btnDocuments') ||
+		// Fallback to the Checklist Item's unique ID
+		document.getElementById('checklist-step-documents');
 
-      // If we found any real trigger, click it (lets your existing logic run)
-      if (btnDocs && typeof btnDocs.click === 'function') {
-        btnDocs.click();
-        return;
-      }
+	  // If a trigger is found, click it to run the standard tab-switching logic
+	  if (btnDocs && typeof btnDocs.click === 'function') {
+		btnDocs.click();
+		return;
+	  }
 
-      // 3) Hard fallback: manually show the pane and set active state
-      var panes = document.querySelectorAll('.tabcontent');
-      panes.forEach(el => el.style.display = 'none');
-      var docsPane = document.getElementById('tabDocuments');
-      if (docsPane) docsPane.style.display = 'block';
+	  // --- Hard Fallback (Section 3 in your original code) ---
+	  // Only run if NO button was found above.
+	  var panes = document.querySelectorAll('.tabcontent');
+	  panes.forEach(el => el.style.display = 'none');
+	  var docsPane = document.getElementById('tabDocuments');
+	  if (docsPane) docsPane.style.display = 'block';
 
-      // best-effort: mark whichever button exists as active
-      var active = document.querySelector('.tab .tablinks.active');
-      if (active) active.classList.remove('active');
-      var topBtn = document.getElementById('btnDocuments');
-      if (topBtn) topBtn.classList.add('active');
-    }
+	  // best-effort: mark whichever button exists as active
+	  // NOTE: You should update this selector if you replace .tablinks with Bootstrap's .nav-link
+	  var active = document.querySelector('.tab .tablinks.active'); 
+	  if (active) active.classList.remove('active');
+	  var topBtn = document.getElementById('btnDocuments');
+	  if (topBtn) topBtn.classList.add('active');
+	}
 
     // Run AFTER everything else wires up (other scripts may set a default)
     window.addEventListener('load', function () {
