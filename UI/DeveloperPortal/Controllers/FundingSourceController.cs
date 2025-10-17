@@ -1,5 +1,6 @@
 ﻿using DeveloperPortal.Application.DMS.Interface;
 using DeveloperPortal.Application.ProjectDetail.Interface;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.FundingSource;
 using DeveloperPortal.Models.IDM;
 using DeveloperPortal.ServiceClient;
@@ -51,7 +52,7 @@ public class FundingSourceController : Controller
             {
                 CaseId = caseId,
                 ProjectId= projectId,
-               // ControlViewModelId = controlViewModelId,
+                // ControlViewModelId = controlViewModelId,
                 FundingSources = fundingsource.Result
             };
 
@@ -72,7 +73,8 @@ public class FundingSourceController : Controller
         {
             CaseId = Id,
             ControlViewModelId = controlViewModelId,
-            FundingSources = fundingsource.Result
+            FundingSources = fundingsource.Result,
+            ProjectId = ProjectId
         };
 
 
@@ -86,10 +88,11 @@ public class FundingSourceController : Controller
     /// </summary>
     /// 
     
-    public async Task<ActionResult> EditFundingSource(int id)
+    public async Task<ActionResult> EditFundingSource(int id, int ProjectId)
     {
 
         var fundingSource = await _fundingSourceService.GetFundingSourceById(id);
+        fundingSource.ProjectId = Convert.ToString(ProjectId);
         if (fundingSource == null)
         {
             return Json(new { success = false, message = "Funding source not found." });

@@ -50,7 +50,7 @@ var FloorPlanType = {
             maxFiles: 20,
             paramName: "Files",
             clickable: true,
-            acceptedFiles: ".jpg,.jpeg,.png,.gif,.pdf",
+             acceptedFiles: " .PDF, .DOC, .DOCX, .XLS, .XLSX, .PPT, .PPTX, .TXT, .JPG, .JPEG, .PNG, .GIF",
             addRemoveLinks: false,
             maxFilesize: 20,
             previewTemplate: `
@@ -227,7 +227,7 @@ var FloorPlanType = {
                             var modalEl = document.getElementById('editFloorPlanType');
                             var modalInstance = bootstrap.Modal.getInstance(modalEl);
                             if (modalInstance) modalInstance.hide();
-                            FloorPlanType.loadFloorPlans();
+                            FloorPlanType.loadFloorPlans(true);
                             FloorPlanType.showEditFloorPlanAlert(response.message || "Floor Plan updated successfully!", 'success');
 
                         } else {
