@@ -46,12 +46,13 @@
 	</div>
 </div>
 <div class="modal fade discrepencyModal custModal" id="addFloorPlanType" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addFloorPlanTypeTitle" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<form id="floorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="AddFloorPlanType">
-			<input type="hidden" name="ProjectSiteID" value="@Model.ProjectSiteID" />
-			<input type="hidden" id="hiddenProjectID" name="ProjectID" value="@Model.ProjectID" />
-			<input type="hidden" name="CaseId" value="@Context.Request.Query["Id"]" />
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+	
 			<div class="modal-content">
+				<form id="floorPlanForm" method="post" asp-controller="FloorPlanType" asp-action="AddFloorPlanType">
+				<input type="hidden" name="ProjectSiteID" value="@Model.ProjectSiteID" />
+				<input type="hidden" id="hiddenProjectID" name="ProjectID" value="@Model.ProjectID" />
+				<input type="hidden" name="CaseId" value="@Context.Request.Query["Id"]" />
 				<div class="modal-header">
 					<h5 class="modal-title" id="discrepencyModalTitle">Add Floor Plan Type</h5>
 					<button type="button" class="close" aria-label="Close" data-bs-dismiss="modal">
@@ -70,56 +71,50 @@
 							<span class="text-danger" id="lblError_fp_buildings"></span>
 						</div>
 					</div>
+					<div class="row"> 
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label class="wraping_label" for="floorplan">Floor Plan Type </label>
+								<input class="form-control" type="text" id="floorplan" name="Name" required autocomplete="off" />
+								<div class="invalid-feedback"></div>
+								<span class="text-danger" id="lblError_fp_floorplan"></span>
+							</div>
+							<div class="mb-3">
+								<label class="wraping_label" for="bedroom">Number of Bedroom </label>
+								<select class="form-control" id="bedroom" name="LutTotalBedroomID" required>
+									<option>Select</option>
+									@foreach (var bedroom in Model.LutTotalBedrooms)
+									{
+										<option value="@bedroom.Value">@bedroom.Text</option>
+									}
+								</select>
+								<div class="invalid-feedback"></div>
+								<span class="text-danger" id="lblError_fp_bedroom"></span>
+							</div>
 
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="floorplan">Floor Plan Type </label>
-							<input class="form-control" type="text" id="floorplan" name="Name" required autocomplete="off" />
-							<div class="invalid-feedback"></div>
-							<span class="text-danger" id="lblError_fp_floorplan"></span>
-						</div>
+							<div class=" mb-3">
+								<label class="wraping_label" for="bathroom">Number of Bathroom </label>
+								<select class="form-control" id="bathroom" onchange="FloorPlanType.onSelectBathroomCount();" name="LutTotalBathroomID" required>
+									<option>Select</option>
+									@foreach (var bathroom in Model.LutTotalBathrooms)
+									{
+										<option value="@bathroom.Value">@bathroom.Text</option>
+									}
+								</select>
+								<div class="invalid-feedback"></div>
+								<span class="text-danger" id="lblError_fp_bathroom"></span>
+							</div>
+							<div class="mb-3" id="bathroomTypeDiv">
+							</div>
 
-						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="squarefeet">Square Footage </label>
-							<input class="form-control" type="number" name="SquareFeet" onkeydown="return event.keyCode != 69" min="0" id="squarefeet" maxlength="5" required />
-							<div class="invalid-feedback"></div>
-							<span class="text-danger" id="lblError_fp_squarefeet"></span>
 						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="bedroom">Number of Bedroom </label>
-							<select class="form-control" id="bedroom" name="LutTotalBedroomID" required>
-								<option>Select</option>
-								@foreach (var bedroom in Model.LutTotalBedrooms)
-								{
-									<option value="@bedroom.Value">@bedroom.Text</option>
-								}
-							</select>
-							<div class="invalid-feedback"></div>
-							<span class="text-danger" id="lblError_fp_bedroom"></span>
-						</div>
-
-						<div class="col-md-6 mb-3">
-							<label class="wraping_label" for="bathroom">Number of Bathroom </label>
-							<select class="form-control" id="bathroom" onchange="FloorPlanType.onSelectBathroomCount();" name="LutTotalBathroomID" required>
-								<option>Select</option>
-								@foreach (var bathroom in Model.LutTotalBathrooms)
-								{
-									<option value="@bathroom.Value">@bathroom.Text</option>
-								}
-							</select>
-							<div class="invalid-feedback"></div>
-							<span class="text-danger" id="lblError_fp_bathroom"></span>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 mb-3" id="bathroomTypeDiv">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
+							<div class="mb-3">
+								<label class="wraping_label" for="squarefeet">Square Footage </label>
+								<input class="form-control" type="number" name="SquareFeet" onkeydown="return event.keyCode != 69" min="0" id="squarefeet" maxlength="5" required />
+								<div class="invalid-feedback"></div>
+								<span class="text-danger" id="lblError_fp_squarefeet"></span>
+							</div>
 							<div id="divDropZoneFloorPlan" class="custom-dropzone d-flex flex-wrap dz-clickable">
 								<div class="dz-message">
 									<strong class="drop-strong">➜ Drop files</strong>
@@ -128,24 +123,24 @@
 								</div>
 							</div>
 
-							<div class="text-left mt-2">
+							<div class="text-left mt-2 mb-3">
 								<small>
 									Supported files: .gif, .jpeg, .jpg, .pdf, .png <br>
 									Max. file size: 20Mb
 								</small>
 							</div>
+
+						</div>
 					</div>
 					
-
-				</div>
-
 					<div class="modal-footer multi-button addFPTFooter">
 					<button type="button" class="btn btn-outline-light close-btn" data-bs-dismiss="modal">Close</button>
 					<button id="btnSaveFloorPlan"  type="button"  class="btn btn-primary">Save</button>
 				</div>
 				</div>
+			</form>
 			</div>
-		</form>
+		
 	</div>
 </div>
 
