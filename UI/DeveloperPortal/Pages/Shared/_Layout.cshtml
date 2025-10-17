@@ -16,26 +16,29 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <title>@ViewData["Title"] - DeveloperPortal</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap-5.3.8/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-5.3.8/css/bootstrap-overrides.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/remixicon.css" asp-append-version="true" />
+    <link href="~/content/font-awesome.css" rel="stylesheet" />
+
     <link href="~/css/font-awesont-icons/css/all.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    <link rel="stylesheet" href="~/DeveloperPortal.styles.css" asp-append-version="true" />
-    <link href="~/content/font-awesome.css" rel="stylesheet" />
+    
 
-
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.rawgit.com/enyo/dropzone/master/dist/dropzone.css">
     <link href="https://kendo.cdn.telerik.com/themes/6.6.0/default/default-main.css" rel="stylesheet" />
     <link href="~/content/kendocss/kendo.custom.css" rel="stylesheet" />
 
-
+    <!-- This libarary will be update -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-5.3.8/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.min.js"></script>
     <script src="~/js/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="~/js/CustomValidations.js" asp-append-version="true"></script>
@@ -49,7 +52,6 @@
     <script src="~/js/kendojs/kendo.timezones.min.js"></script>
     <script src="~/js/kendojs/kendo.aspnetmvc.min.js"></script>
     <script src="~/js/customcommon.js"></script>
-    <script src="//navbar.lacity.org/global_nav.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <script>
         var APPURL ='@Configuration["AppSettings:ApplicationURL"]';
@@ -89,201 +91,158 @@
         }
     </script>
     @* ADA *@
-    <script>
-        // correct lacity global navbar
-        $(document).ready(function () {
-        $('#global_nav_la_4324422-311-pill, #global_nav_la_4324422-citydirectory-pill').attr('aria-hidden', false);
-        $('#global_nav_la_4324422-311-pill > .pill-icon').text('311 City Services');
-        $('#global_nav_la_4324422-citydirectory-pill > .pill-icon').text('LA City Directory');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').text('');
-        $('#global_nav_la_4324422-311-icon-text, #global_nav_la_4324422-citydirectory-icon-text').attr('aria-hidden', 'true');
-        $("#global_nav_la_4324422-rightwrap > a").each(function () {
-        var imgSrc = APPURL + "Images/icons8-external-link-30.png"; // your dynamic path
-        $(this).append('<img class="navbar-new-window-icon" title="Opens in new window" src="' + imgSrc + '" alt="Opens in new window">');
-        });
-        });
-    </script>
 
 
 </head>
 <body>
-    @* <script src="//navbar.lacity.org/global_nav.js"></script> *@
-    <header id="header-navs">
-        <div class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow topNavBar">
-            <div class="navbarContainer topNavBar-container">
-                <div class="navbar-header">
-                    <div class="navBarIdentity">
-                        <a class="navBarIdentityHome navbar-brand" href="/">
-                            <img src="~/logo.png" />
-                        </a>
-                        <span class="navBarTitle"> ACHP Construction Portal</span>
-                    </div>
-                    <div class="navBar-decor"></div>
+    <!-- Header -->
+    <header class="lahd-header">
+        <!-- Topbar -->
+        <div class="global-topbar bg-dark d-flex justify-content-between align-items-center text-white container-fluid">
+            <div class="d-flex gap-2 font-14 align-items-center lh-sm"><span><img src="images/official-website-icon.svg" alt="An Official Website of the City of Los Angeles"></span>  An Official Website of the City of Los Angeles </div>
+            <div class="d-flex top-right-icons">
+                <a href="#" class="icon" title="Opens in new window"><i class="ri-external-link-line"></i></a>
+                <a href="#" class="icon" title="Opens in new window"><i class="ri-external-link-line"></i></a>
+            </div>
+        </div>
+        <!-- End Topbar -->
+        <!-- Container -->
+        <div class="containter-fluid d-flex justify-content-between">
+            <div class="lahd-left-content d-flex align-items-center">
+                <div class="lahd-logo"><a href="#"><img src="images/logo.png" alt=""></a></div>
+                <span class="website-title ms-4 font-14 fw-bolder ls">ACHP Construction Portal</span>
+            </div>
+            <div class="lahd-right-content d-flex align-items-center pe-3">
+                <ul class="navbar-nav navbar-nav-icons flex-row pt-2">
+                    <!-- User menu and dropdown-->
                     <!-- User dropdown -->
                     @if (usr.UserID != 0)
                     {
                         var firstInitial = !string.IsNullOrEmpty(usr.FirstName) ? usr.FirstName[0].ToString().ToUpper() : "";
-                        var lastInitial  = !string.IsNullOrEmpty(usr.LastName) ? usr.LastName[0].ToString().ToUpper() : "";
+                        var lastInitial = !string.IsNullOrEmpty(usr.LastName) ? usr.LastName[0].ToString().ToUpper() : "";
                         var initials = firstInitial + lastInitial;
-
-                        <ul class="ttp-user-dropdown navbar-nav ms-auto flex-row align-items-center">
-                            <li class="nav-item dropdown">
-                                <!-- Initials Button -->
-                                <button class="user-btn dropdown-toggle rounded-circle bg-primary text-white border-0"
-                                type="button" data-toggle="dropdown" aria-expanded="false">
-                                    @initials
-                                </button>
-
-                                <!-- Dropdown Menu -->
-                                <div class="dropdown-menu dropdown-menu-end py-0 rounded-4" aria-labelledby="navbarDropdownUser">
-                                    <div class="bg-light rounded-3 py-3">
-
-                                        <!-- Full Name -->
-                                        <a class="dropdown-item font-weight-bold text-primary" href="#">
-                                            @usr.FullName
+                        <li class="nav-item dropdown ttp-user-dropdown">
+                            <a class="dropdown-toggle btn btn-primary user-btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @initials
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- Full Name -->
+                                <li><a class="dropdown-item" href="#">@usr.FullName</a></li>
+                                <!-- Email -->
+                                <li><a class="dropdown-item" href="#">@usr.Email</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                @if (usr.Roles?.Contains("Property Developer") == true)
+                                {
+                                    <!-- Account Profile -->
+                                    <li class="dropdown-item d-flex align-items-center text-primary">
+                                        <a class="dropdown-item" href="@Url.Action("MyAccount", "Account")">
+                                        <i class="fa fa-user me-2 account-dropdown"></i>
+                                        <span>Account Profile</span>
                                         </a>
+                                    </li>
 
-                                        <!-- Email -->
-                                        <a class="dropdown-item d-flex align-items-center text-muted small" href="#">
-                                            @usr.Email 
-                                        </a>
-
-                                        <div class="dropdown-divider"></div>
-                                        @if (usr.Roles?.Contains("Property Developer") == true)
-                                        {
-                                            <!-- Account Profile -->
-                                            <a class="dropdown-item d-flex align-items-center text-primary" href="@Url.Action("MyAccount", "Account")">
-                                                <i class="fa fa-user me-2 account-dropdown"></i>
-                                                <span>Account Profile</span>
-                                            </a>
-
-                                            <div class="dropdown-divider"></div>
-                                        }
-
-                                        <!-- Logout -->
-                                        <!-- Hidden logout form -->
+                                    <div class="dropdown-divider"></div>
+                                }
+                                <!-- Logout -->
+                                <!-- Hidden logout form -->
+                                <li>
+                                    <a class="dropdown-item" href="#">
                                         <form id="logoutForm" method="post" action="@Url.Action("LogOff", "Login")" style="display:none;">
-                                            @Html.AntiForgeryToken()
-                                        </form>
+                                    @Html.AntiForgeryToken()
+                                </form>
+                                </li>
+                                <!-- Logout button -->
+                                <li>
+                                <a class="dropdown-item d-flex align-items-center text-primary" href="#" id="btnLogout">
+                                    <i class="fas fa-sign-out-alt me-2 account-dropdown"></i>
+                                    <span>Logout</span>
+                                </a>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function(){
 
-                                        <!-- Logout button -->
-                                        <a class="dropdown-item d-flex align-items-center text-primary" href="#" id="btnLogout">
-                                            <i class="fas fa-sign-out-alt me-2 account-dropdown"></i>
-                                            <span>Logout</span>
-                                        </a>
-                                        <script>
-                                            document.addEventListener("DOMContentLoaded", function(){
+                                            // Public landing page after logout
+                                            var logoutRedirectUrl = '@Configuration["AppSettings:ApplicationURL"]';
 
-                                                // Public landing page after logout
-                                                var logoutRedirectUrl = '@Configuration["AppSettings:ApplicationURL"]';
+                                            // Ensure trailing slash
+                                            if(!logoutRedirectUrl.endsWith("/")) logoutRedirectUrl += "/";
 
-                                                // Ensure trailing slash
-                                                if(!logoutRedirectUrl.endsWith("/")) logoutRedirectUrl += "/";
+                                            // Logout button
+                                            var btnLogout = document.getElementById("btnLogout");
+                                            if(btnLogout){
+                                                btnLogout.addEventListener("click", function(e){
+                                                    e.preventDefault();
 
-                                                // Logout button
-                                                var btnLogout = document.getElementById("btnLogout");
-                                                if(btnLogout){
-                                                    btnLogout.addEventListener("click", function(e){
-                                                        e.preventDefault();
+                                                    // 1️⃣ Set cross-tab logout flags
+                                                    localStorage.setItem("isLoggedIn", "false");
+                                                    localStorage.setItem("logoutTimestamp", new Date().getTime());
 
-                                                        // 1️⃣ Set cross-tab logout flags
-                                                        localStorage.setItem("isLoggedIn", "false");
-                                                        localStorage.setItem("logoutTimestamp", new Date().getTime());
-
-                                                        // 2️⃣ Submit the hidden POST logout form
-                                                        var form = document.getElementById("logoutForm");
-                                                        if(form) form.submit();
-                                                    });
-                                                }
-
-                                                // Cross-tab logout listener
-                                                window.addEventListener("storage", function(e){
-                                                    if( localStorage.getItem("isLoggedIn") === "false"){
-                                                        // Redirect to **public landing page** (not protected)
-                                                        window.location.href = logoutRedirectUrl;
-                                                    }
+                                                    // 2️⃣ Submit the hidden POST logout form
+                                                    var form = document.getElementById("logoutForm");
+                                                    if(form) form.submit();
                                                 });
+                                            }
+
+                                            // Cross-tab logout listener
+                                            window.addEventListener("storage", function(e){
+                                                if( localStorage.getItem("isLoggedIn") === "false"){
+                                                    // Redirect to **public landing page** (not protected)
+                                                    window.location.href = logoutRedirectUrl;
+                                                }
                                             });
-                                        </script>
-
-
-
-
-
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-
-
-                     
-                        <script>
-                            $(document).ready(function() {
-                            $(".user-btn").click(function(e) {
-                            e.stopPropagation();
-                            $(".dropdown-menu").toggle();
-                            });
-
-                            // Hide dropdown when clicking outside
-                            $(document).click(function() {
-                            $(".dropdown-menu").hide();
-                            });
-                            });
-                        </script>
+                                        });
+                                    </script>
+                                </li>
+                            </ul>
+                        </li>
                     }
-
-                    <!-- End User dropdown -->
-                </div>
+                
+                    <!-- End user menu and dropdown-->
+                </ul>
             </div>
         </div>
-        <div id="developerPortalNavBar" class="navbar-expand-sm navbar-dark bottomNavBar">
-            @if (usr.UserID != 0)
-            {
-                    <div id="leftMenu collapse navbar-collapse">
-                        <ul class="navbar-nav botNav-left-hide">
-                            <li class="nav-item navItem-decor">
-                                <a class="nav-link nav-link-basic" href='~/dashboard'>
-                                    My Dashboard
-                                </a>
-                            </li>
-                        @* <li class="nav-item navItem-decor">
-                            <a class="nav-link nav-link-basic" href='~/PlanReview'>
-                                PlanReview
-                            </a>
-                        </li> *@
-                        </ul>
-                    </div>
-            }
-            <div id="rightMenu">
-                    <div>
-                        <a class="nav-link nav-link-basic" id="navbar-help" href="~/Help">Help</a>
-                    </div>
-                    <div class="SignInContatiner">
-                        <partial name="_LoginPartial" />
+        <!-- End Container -->
+        <!-- Main Navigation -->
+        <nav class="navbar bg-primary border-bottom border-body navbar-expand" data-bs-theme="dark">
+            <div class="container-fluid justify-content-between">
+                <ul class="navbar-nav">
+                    @if (usr.UserID != 0)
+                            {
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="~/dashboard">My Dashboard</a></li>
+                    }
+                </ul>
+                <div class="nav-right d-flex">
+                    <ul class="navbar-nav pe-3">
+                        <li class="nav-item"><a class="nav-link" href="~/Help">Help</a></li>
+                    </ul>
+
+                    <partial name="_LoginPartial" />
                     @if (usr.UserID == 0)
                     {
-                                <ul class="nav navbar-nav navbar-right">
-                                <li>@Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-white" })</li>
-                                    <li>@Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+
+                        @Html.ActionLink("Sign up", "SignUp", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-light me-2" })
+                        @Html.ActionLink("Sign in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "btn btn-primary me-2" })
                             @*   <li>
                                     @Html.ActionLink("My Account", "MyAccount", "Account", routeValues: null, htmlAttributes: new { id = "btnMyAccount" })
                                 </li> *@
-                                </ul>
+                        
                     }
-                    </div>
                 </div>
             </div>
-        </header>
-        <div class=" body-content">
+        </nav>
+        <!-- End Main Navigation -->
+    </header>
+    <!-- End Header -->
+
+    @* <script src="//navbar.lacity.org/global_nav.js"></script> *@
+
+    <div class="page-content pt-4 pb-4">
             <main role="main" class="">
             @RenderBody()
             </main>
         </div>
 
-        <footer class="border-top footer text-muted">
-            <div class="container" style="max-width: 100%; padding: 0px;">
-                <partial name="_StandardAppFooter" />
-            </div>
+       <footer class="lahd-footer"> 
+           <partial name="_StandardAppFooter" />
         </footer>
 
 
