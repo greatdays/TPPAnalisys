@@ -6,11 +6,13 @@
     <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">DMS File Upload</h5>
         <div class="d-flex gap-2">
-            <button type="button" id="btn-refresh" class="btn btn-secondary" onclick="DMS.ReloadFiles()">
-                <i class="fas fa-sync-alt"></i> Refresh
-            </button>
-            <button type="button" id="btn-add-file" class="btn btn-primary" onclick="DMS.AddDocument()">
+           
+            <button type="button" id="btn-add-file" class="btn btn-primary rounded-0" onclick="DMS.AddDocument()">
                 <i class="fas fa-plus"></i> Add Document
+            </button>
+            &nbsp;
+            <button type="button" id="btn-refresh" class="btn btn-light rounded-0" onclick="DMS.ReloadFiles()">
+                <i class="fas fa-sync-alt"></i> Refresh
             </button>
         </div>
     </div>

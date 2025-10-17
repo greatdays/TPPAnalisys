@@ -1179,7 +1179,7 @@ a.nav-link.nav-link-basic:hover {
 .tabcontent {
     display: none;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: none;
     background-color: white;
     border-radius: 5px;
     min-height: 200px;

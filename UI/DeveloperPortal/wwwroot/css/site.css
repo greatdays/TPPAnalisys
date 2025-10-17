@@ -220,7 +220,7 @@ header._hcidla-service-portal-header._fixed-Header {
 
 body {
     /*font-family: Quicksand,Helvetica,Arial,sans-serif;*/
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: Verdana, Arial !important;
     background: #F2F2F2 !important;
     -webkit-transition: background-color .3s ease;
     font-weight: 400;
@@ -230,11 +230,11 @@ body {
 }
 
 ._custome-header {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: Verdana, Arial !important;
 }
 
 .goog-te-gadget .goog-te-combo {
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: 'Verdana', Arial !important;
 }
 
 .link {

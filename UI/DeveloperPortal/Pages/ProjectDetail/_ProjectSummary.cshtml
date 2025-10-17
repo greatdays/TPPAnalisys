@@ -93,12 +93,12 @@
             <div class="card-header tpp-summary__header">
                 <div class="tpp-summary__top">
                     <div class="tpp-title">
-                        <span class="bold">Project:</span>
+                        <span class="bold">Project Name:</span>
                         <span class="cd-value">@Model.ProjectName</span>
                     </div>
-                    <div class="tpp-top-right">
+                    <!-- <div class="tpp-top-right">
                         <span class="tpp-status" id="overall-status">@Model.Status</span>
-                    </div>
+                    </div>-->
                 </div>
 
                 <!-- pill-style key/values -->
@@ -106,7 +106,7 @@
                     <li class="tpp-kv"><span>Address:</span><strong>@Model.SiteAddress</strong></li>
                     <li class="tpp-kv"><span>ACHP #:</span><strong>@Model.AcHPFileProjectNumber</strong></li>
                     <li class="tpp-kv"><span>Type of Occupancy:</span><strong>@Model.TypeOfOccupancy</strong></li>
-                    <li class="tpp-kv"><span>Status:</span><strong>@Model.Status</strong></li>
+                    <!--  <li class="tpp-kv"><span>Status:</span><strong>@Model.Status</strong></li>-->
                     <li class="tpp-kv"><span>Type of Construction:</span><strong>@Model.CaseType</strong></li>
                     <li class="tpp-kv"><span>Assigned Staff:</span><strong>@Model.AssigneeName</strong></li>
                     <li class="tpp-kv"><span>APN:</span><strong>@(string.IsNullOrWhiteSpace(Model.APN) ? "—" : Model.APN)</strong></li>

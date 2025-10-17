@@ -5,6 +5,13 @@
 }
 <style>
 
+/* Page max width shell */
+.project-details-shell{
+  max-width: 1200px;      /* comfortable reading width */
+  margin: 0 auto;         /* center it */
+  padding: 0 16px;        /* breathing room on small screens */
+}
+
 
 /* Tab: Site Information pagination fixes (plugin uses <li><a>) */
 #tabSiteInformation .pagination { display: list-item !important; text-align: start; }
@@ -150,7 +157,8 @@ a.paginate_button { float: left !important; }
 <script src="~/pagescripts/ProjectDetail/FundingSource.js"></script>
 <script src="~/PageScripts/DevelopmentTeam/DevelopmentTeam.js"></script>
 <script src="~/PageScripts/FloorPlanType/FloorPlanType.js"></script>
-<div class="page-content" id="divprojectDetail">
+<div class="page-content project-details-shell" id="divprojectDetail">
+
     <div class="container-fluid">
     <!-- Project Notification -->
     @* Project Notification *@
@@ -178,14 +186,13 @@ a.paginate_button { float: left !important; }
             Html.RenderPartial("_ProjectSummary", Model.ProjectSummary);
         }
     </div>
-	
-	<br />
+
 
 	<!-- Project Checklist (same card style as summary) -->
 
 
 	<div  class="px-2 px-xl-4">
-		<section class="card shadow-lg border-0 rounded-4" id="panel-checklist" aria-label="Project Checklist">
+		<section class="card border-0 " id="panel-checklist" aria-label="Project Checklist">
 		  <div class="card-header d-flex align-items-center bg-light p-3">
 			<h4 class="mb-0">Project Checklist</h4>
 		  </div>
@@ -228,7 +235,6 @@ a.paginate_button { float: left !important; }
 		</section>
 	</div>
 
-	<br />
 
 	<div class="px-2 px-xl-4">
 		<!-- Tab content -->
@@ -271,7 +277,11 @@ a.paginate_button { float: left !important; }
 			<div id="divLogs"></div>
 		</div>
 	</div>
+
+
 </div>
+
+
 
 @{
 	Html.RenderPartial("UploadUnitInfo", Model.ProjectSummary);
