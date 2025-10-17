@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DeveloperPortal.DataAccess.Entity.Models.Generated;
 using DeveloperPortal.Domain.DMS;
 using DeveloperPortal.Domain.FundingSource;
 using Microsoft.AspNetCore.Http;
@@ -17,5 +18,6 @@ namespace DeveloperPortal.Application.ProjectDetail.Interface
         Task<bool> SaveDocumentForFundingSource(FundingSourceViewModel viewModel);
         Task<bool> DeleteFundingSource(int id, string modifiedBy);
         int? getLuDocumentCategoryId(string category, string subCategory);
+       Document getDocumentById(int? id);
     }
 }

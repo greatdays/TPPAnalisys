@@ -10,6 +10,7 @@ using HCIDLA.ServiceClient.LaserFiche;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Index.HPRtree;
 using System.Net;
 using System.Net.Mime;
@@ -200,7 +201,7 @@ public class FundingSourceController : Controller
     [HttpPost]
     public async Task<ActionResult> SaveFundingSource(FundingSourceViewModel viewModel, List<IFormFile> File)
     {
-
+        
         var fileCategory = "Project";
         var fileSubCategory = "Funding Source";
         viewModel.CreatedBy = viewModel.ModifiedBy = UserSession.GetUserSession(_httpContextAccessor.HttpContext).UserName;
@@ -217,6 +218,11 @@ public class FundingSourceController : Controller
             viewModel.FileName =  File[0].FileName;
             viewModel.LuDocumentCategoryId = _fundingSourceService.getLuDocumentCategoryId(fileCategory, fileSubCategory);
             bool val  = await  _fundingSourceService.SaveDocumentForFundingSource(viewModel);
+           var document= _fundingSourceService.getDocumentById(viewModel.DocumentID);
+            if(document != null)
+            {
+                await DeletedDocument(document.Link);
+            }
         }
         else
         {

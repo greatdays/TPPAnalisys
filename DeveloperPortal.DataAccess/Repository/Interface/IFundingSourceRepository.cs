@@ -24,7 +24,7 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
         Task<bool> DeleteFundingSource(int id , string modifiedBy);
         int? getLuDocumentCategoryId(string category, string subCategory);
-
+        Document getDocumentById(int? id);
         Task<FundingSource> GetFundingSourcebyId(int id);
         bool IsContactVerified(int contactIdentifierID, int ProjectId);
 
