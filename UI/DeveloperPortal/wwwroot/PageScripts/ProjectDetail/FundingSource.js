@@ -23,9 +23,9 @@
     },
 
 
-    DeleteFundingSource: function (id) {
+    DeleteFundingSource: function (id,link) {
         
-        const data = { id: id };
+        const data = { id: id,link:link };
         const url = APPURL + 'FundingSource/DeleteFundingSource';
 
         AjaxCommunication.CreateRequest(this.window, "POST", url, "html", data,

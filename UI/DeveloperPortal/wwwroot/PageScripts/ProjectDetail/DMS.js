@@ -107,9 +107,13 @@ window.DMSManager = class DMSManager {
 
         $(document).on("click.dms", ".btn-delete-file", (e) => {
             e.preventDefault();
-            const documentId = $(e.target).closest("button").data("id");
-            if (documentId) {
-                this.handleDelete(documentId);
+           
+            const $btn = $(e.target).closest("button");
+            const documentId = $btn.data("id");
+            const fileLink = $btn.data("link");
+            console.log(fileLink)
+            if (documentId && fileLink) {
+                this.handleDelete(documentId, fileLink);
             }
         });
 
@@ -391,7 +395,7 @@ window.DMSManager = class DMSManager {
 
 
     // New method for handling the delete action
-    handleDelete(documentId) {
+    handleDelete(documentId, fileLink) {
         if (!documentId) {
             console.error("DMSManager: documentId is required to delete.");
             return;
@@ -407,7 +411,7 @@ window.DMSManager = class DMSManager {
         $.ajax({
             url: window.dmsConfig.deleteUrl,
             type: "POST",
-            data: { id: documentId },
+            data: { id: documentId, link: fileLink },
             dataType: "json", // Expect a JSON response from the controller
             success: (response) => {
                 if (response.success) {
@@ -486,9 +490,9 @@ window.DMS = class DMS {
     }
 
     // Public API method for deleting a document
-    static DeleteDocument(documentId) {
+    static DeleteDocument(documentId,link) {
         if (window.dmsManager) {
-            window.dmsManager.handleDelete(documentId);
+            window.dmsManager.handleDelete(documentId,link);
         } else {
             console.error("DMS Manager not initialized. Cannot delete document.");
         }
