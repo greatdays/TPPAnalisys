@@ -227,7 +227,7 @@ var FloorPlanType = {
                             var modalEl = document.getElementById('editFloorPlanType');
                             var modalInstance = bootstrap.Modal.getInstance(modalEl);
                             if (modalInstance) modalInstance.hide();
-                            FloorPlanType.loadFloorPlans();
+                            FloorPlanType.loadFloorPlans(true);
                             FloorPlanType.showEditFloorPlanAlert(response.message || "Floor Plan updated successfully!", 'success');
 
                         } else {
