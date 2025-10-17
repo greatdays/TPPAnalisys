@@ -332,6 +332,28 @@
 			isValid = false;
 		}
 		
+					var allowedExtensions = [
+				".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx",
+				".txt", ".jpg", ".jpeg", ".png", ".gif"
+			];
+
+
+		if (fileInput > 0) { // Only validate if a new file is selected
+			var file = $('#addFileUploader')[0].files[0];
+			var fileName = file.name.toLowerCase();
+			var extension = '.' + fileName.split('.').pop();
+
+			// Validate extension
+			if (!allowedExtensions.includes(extension)) {
+				$('#addFileUploader').addClass('is-invalid');
+				if (!firstInvalid) firstInvalid = $('#addFileUploader');
+				isValid = false;
+			}
+
+			
+		}
+
+
 		if (notes.length > 250) {
 			$('#Notes').addClass('is-invalid')
 				.after('<small id="notesError" class="text-danger">Maximum 250 characters allowed.</small>');
