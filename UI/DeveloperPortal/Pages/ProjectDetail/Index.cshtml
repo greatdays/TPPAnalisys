@@ -150,7 +150,7 @@ a.paginate_button { float: left !important; }
 <script src="~/pagescripts/ProjectDetail/FundingSource.js"></script>
 <script src="~/PageScripts/DevelopmentTeam/DevelopmentTeam.js"></script>
 <script src="~/PageScripts/FloorPlanType/FloorPlanType.js"></script>
-<div class="page-content">
+<div class="page-content" id="divprojectDetail">
     <div class="container-fluid">
     <!-- Project Notification -->
     @* Project Notification *@
@@ -242,7 +242,7 @@ a.paginate_button { float: left !important; }
 				Html.RenderPartial(@"~/Pages/FloorPlanType/_FloorPlanType.cshtml", Model.FloorPlanTypes);
 			}
 		</div>
-		<div id="tabSiteInformation" class="tabcontent">
+		<div id="tabSiteInformation" class="tabcontent" style="padding-top: 30px;">
 			<div class="k-header k-grid-toolbar">
 				<span class="k-grid-header-title">Site Information</span>
 				<a id="addSite" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" role="button" role-access="true" onclick="SiteInformation.DisplayModal()">Add Site</a>
