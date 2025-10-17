@@ -45,10 +45,10 @@
 
   
 
-    EditFundingSource: function (id) {
+    EditFundingSource: function (id, ProjectId) {
         
         $('#editFundingSourceModal .modal-body').empty();
-        const data = { id: id };
+        const data = { id: id, ProjectId: ProjectId };
         const url = APPURL + 'FundingSource/EditFundingSource';
         AjaxCommunication.CreateRequest(this.window, "GET", url, "html", data,
             function (result) {

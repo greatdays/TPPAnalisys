@@ -118,7 +118,7 @@
 								<td>@Html.DisplayFor(modelItem => item.MU_Unit)</td>
 								<td>@Html.DisplayFor(modelItem => item.HV_Unit)</td>
 								<td style="width:10%">
-									<button class="editbtn btn k-grid-edit btn-sm btn-action" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.EditFundingSource(@item.FundingSourceId)">
+									<button class="editbtn btn k-grid-edit btn-sm btn-action" data-id="@item.FundingSourceId" type="button" onclick="FundingSource.EditFundingSource(@item.FundingSourceId, @Model.ProjectId)">
 										<i class="fas fa-edit"></i>
 									</button>
 									<a href="javascript:void(0)"
