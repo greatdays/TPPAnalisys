@@ -220,7 +220,7 @@ header._hcidla-service-portal-header._fixed-Header {
 
 body {
     /*font-family: Quicksand,Helvetica,Arial,sans-serif;*/
-    font-family: Verdana, Arial !important;
+    font-family: 'Montserrat', sans-serif !important;
     background: #F2F2F2 !important;
     -webkit-transition: background-color .3s ease;
     font-weight: 400;
@@ -230,11 +230,11 @@ body {
 }
 
 ._custome-header {
-    font-family: Verdana, Arial !important;
+    font-family: 'Montserrat', sans-serif !important;
 }
 
 .goog-te-gadget .goog-te-combo {
-    font-family: 'Verdana', Arial !important;
+    font-family: 'Montserrat', sans-serif !important;
 }
 
 .link {
@@ -858,7 +858,7 @@ span.twitter-typeahead {
     width: 300px !important;
 }
 
-.dropdown-menu {
+/*.dropdown-menu {
     padding: 0;
 }
 
@@ -904,7 +904,7 @@ span.twitter-typeahead {
             background-color: #f8f8f8;
             padding: 8px 0;
             border-top: 1px solid rgba(0, 0, 0, 0.15);
-        }
+        }*/
 
 .multiselect.dropdown-toggle.btn.btn-default {
     background-color: #fff;
@@ -2681,7 +2681,7 @@ ul.list-alpha {
     box-shadow: 0 8px 25px -8px rgba(0, 99, 129, 0.3);
 }
 
-.btn-primary {
+/*.btn-primary {
     color: #FFF !important;
     background-color: #001D80 !important;
     border-color: #001D80 !important;
@@ -2701,7 +2701,7 @@ ul.list-alpha {
         box-shadow: 0 2px 4px 0px rgba(6, 6, 6, 0.4);
         color: #fff !important;
     }
-
+*/
 .btn-outline-primary {
     color: #001D80 !important;
     border-color: #001D80 !important;
@@ -2783,7 +2783,7 @@ a.btn.btn-secondary {
     border-color: #e4e3e3;
 }
 
-.dropdown-menu {
+/*.dropdown-menu {
     padding: 0;
     font-size: 14px;
 }
@@ -2807,7 +2807,7 @@ a.btn.btn-secondary {
         color: #212529;
         text-decoration: none;
         background-color: transparent;
-    }
+    }*/
 
 .responsive-img {
     width: 100%;
@@ -5153,7 +5153,7 @@ _:-ms-fullscreen, :root .table.dataTable td, _:-ms-fullscreen, :root .table.data
     vertical-align: top !important;
 }
 
-ul.dropdown-menu {
+/*ul.dropdown-menu {
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.65);
     border-radius: 10px !IMPORTANT;
 }
@@ -5173,7 +5173,7 @@ nav.navclass ul.dropdown-menu li.dropdown-item:last-child {
 .navbar-nav ul.dropdown-menu.show li.dropdown-item > a {
     padding: 12px 20px !important;
 }
-
+*/
 .list-type-none.PropertyStatus-ul li li {
     border-right: none;
 }
@@ -11390,11 +11390,11 @@ h1.white-text{
     }
 /*Signup Page CSS - End*/
 
-a {
+/*a {
     cursor: pointer;
     padding: 0.5rem 1rem;
 }
-
+*/
 .dataTables_length select {
     height: 38px;
     border: 1px solid #e4e4e4;
