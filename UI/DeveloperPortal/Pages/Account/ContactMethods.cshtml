@@ -8,29 +8,27 @@
             All fields marked with an asterisk <span aria-hidden="true">(*)</span> are required!
         </div>
         <div class="form_body">
-            <div class="row">
-                <div class="col-md-4 app-input-descr">
-                    @Html.Label("", "Phone Type")
-                    @Html.Label("", "*", new { @class = "asterisk" })
-                </div>
-                <div class="col-md-4 app-input-descr">
-                    @Html.Label("", "Phone Number")
-                    @Html.Label("", "*", new { @class = "asterisk" })
-                </div>
-                <div class="col-md-4 app-input-descr">
-                    @Html.Label("", "Extension")
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row align-items-baseline">
+                <div class="col-12 col-md-4">
+                    <div class="app-input-descr">
+                        @Html.Label("", "Phone Type")
+                        @Html.Label("", "*", new { @class = "asterisk" })
+                    </div>
                     @Html.DropDownList("PhoneType", new List<SelectListItem>{
-                    new SelectListItem(text:"Select a Phone Type", value:"0")
-                    }, null, new { @class = "form-control", data_required = "true" })
+                    new SelectListItem(text: "Select a Phone Type", value: "0")
+                                        }, null, new { @class = "form-control", data_required = "true" })
                 </div>
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
+                    <div class="app-input-descr">
+                        @Html.Label("", "Phone Number")
+                        @Html.Label("", "*", new { @class = "asterisk" })
+                    </div>
                     @Html.TextBox("PhoneNumber", "", new { @class = "form-control", data_required = "true" })
                 </div>
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
+                    <div class="app-input-descr">
+                        @Html.Label("", "Extension")
+                    </div>
                     @Html.TextBox("Extension", "", new { @class = "form-control" })
                 </div>
             </div>
@@ -45,7 +43,7 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "P.O.Box?", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                   
+
                 </div>
                 <div class="col-md-12">
                     <label class="radio-label">
@@ -61,7 +59,7 @@
                 <div class="row align-items-baseline">
                     <div class="col-md-12">
                         @Html.Label("", "Street Number", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                       
+
                     </div>
                     <div class="col-md-12">
                         @Html.TextBox("StreetNumber", "", new { @class = "form-control", data_required = "true" })
@@ -73,14 +71,14 @@
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownList("StreetDirection", new List<SelectListItem>{
-                        new SelectListItem(text:"Select a Direction", value:"0")
-                        }, null, new { @class = "form-control", data_required = "true" })
+                                                new SelectListItem(text: "Select a Direction", value: "0")
+                                                }, null, new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
                     <div class="col-md-12">
                         @Html.Label("", "Street Name", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                       
+
                     </div>
                     <div class="col-md-12">
                         @Html.TextBox("StreetName", "", new { @class = "form-control", data_required = "true" })
@@ -92,16 +90,16 @@
                     </div>
                     <div class="col-md-12">
                         @Html.DropDownList("StreetType", new List<SelectListItem>{
-                        new SelectListItem(text:"Select a Street Type", value:"0")
-                        }, null, new { @class = "form-control", data_required = "true" })
+                                                new SelectListItem(text: "Select a Street Type", value: "0")
+                                                }, null, new { @class = "form-control", data_required = "true" })
                     </div>
                 </div>
                 <div class="row align-items-baseline">
                     <div class="col-md-12">
-                        @Html.Label("", "Unit Number", new { @class = "app-input-descr control-label required-label font-weight-bold" })
+                        @Html.Label("", "Unit Number", new { @class = "app-input-descr control-label font-weight-bold" })
                     </div>
                     <div class="col-md-12">
-                        @Html.TextBox("UnitNumber", "", new { @class = "form-control", data_required = "true" })
+                        @Html.TextBox("UnitNumber", "", new { @class = "form-control" })
                     </div>
                 </div>
 
@@ -109,7 +107,7 @@
             <div id="divPOBoxYes">
                 <div class="col-md-12 padding-zero">
                     @Html.Label("", "P.O.Box", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                  
+
                 </div>
                 <div class="col-md-12 padding-zero">
                     @Html.TextBox("POBoxNumber", "", new { @class = "form-control", data_required = "true" })
@@ -118,7 +116,7 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "City", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    
+
                 </div>
                 <div class="col-md-12">
                     @Html.TextBox("City", "", new { @class = "form-control", data_required = "true" })
@@ -127,17 +125,17 @@
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "State", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    
+
                 </div>
                 <div class="col-md-12">
                     @Html.DropDownList("State", new List<SelectListItem>{
-                    new SelectListItem(text:"Select a State", value:"0")}, null, new { @class = "form-control", data_required = "true" })
+                                        new SelectListItem(text: "Select a State", value: "0")}, null, new { @class = "form-control", data_required = "true" })
                 </div>
             </div>
             <div class="row align-items-baseline">
                 <div class="col-md-12">
                     @Html.Label("", "Zip Code", new { @class = "app-input-descr control-label required-label font-weight-bold" })
-                    
+
                 </div>
                 <div class="col-md-12">
                     @Html.TextBox("ZipCode", "", new { @class = "form-control", data_required = "true" })
