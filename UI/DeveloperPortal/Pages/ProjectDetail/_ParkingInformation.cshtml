@@ -6,7 +6,7 @@
 
     #dtPrkingData .input-parking {
         border: 0px solid #828282 !important;
-        text-align: right;
+        text-align: left;
         pointer-events: none;
     }
 
@@ -16,14 +16,14 @@
 
     .input-parking-total {
         border: 0px !important;
-        text-align: right;
+        text-align: left;
         pointer-events: none;
     }
 
     .input-parking-edit {
         border: 1px solid #828282 !important;
         pointer-events: auto !important;
-        text-align: right;
+        text-align: left;
         pointer-events: none;
     }
 
@@ -70,7 +70,7 @@
 
     #dtPrkingData .input-parking {
         border: 0px;
-        text-align: right;
+        text-align: left;
         pointer-events: none;
     }
 
@@ -81,7 +81,7 @@
 
     .input-parking-total {
         border: 0px !important;
-        text-align: right;
+        text-align: left;
         pointer-events: none;
     }
 
@@ -191,6 +191,11 @@
         padding-right: 0.25rem !important; /* optional */
     }
 
+    .show-border {
+        border: 1px solid #ced4da !important;
+        background-color: #fff !important;
+        pointer-events: auto !important;
+    }
 </style>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
@@ -254,7 +259,7 @@
        
                 <div class="container-fluid">
                     <!-- Information layout -->
-                    <div class="row gy-3 gx-5">
+                    <div class="row gy-3 gx-5 border-bottom">
 
                         <div class="col-12 col-sm-6 col-lg-2">
                             <div class=" text-secondary mb-1">Building Permit Number: </div>
@@ -321,7 +326,7 @@
                         </div>
                     </div>
 
-                    <div class="row gy-3 gx-5 mt-1">
+                    <div class="row gy-3 gx-5 mt-1 border-bottom">
                         <div class="col-12 col-sm-6 col-lg-2">
                             <div class=" text-secondary mb-1">
                                 Total Number of Units
@@ -475,6 +480,9 @@
         </div>
     </div>
 
+
+ @* Parking Information starts from here *@
+
     <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
         <div class="k-header k-grid-toolbar ">
             <span class="k-grid-header-title"> Parking Information</span>
@@ -484,144 +492,207 @@
         </div>
     </div>
 
+
+
     <div class="hide-hover">
-        <form id="ParkingInfoForm">
-            <table style="width:100%" id="tblparkinginfo">
-                <tr>
-                    <td style="width:45%">
-                        <div class="k-grid totalGrid">
-                            <table style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color:transparent !important; font-size:15px; border-right: 1px solid #dee2e6 ">
-                                            <label class="">Residential Parking</label>
-                                        </th>
-                                        <th colspan="2" scope="col" role="columnheader" dclass="k-header" style="text-align: center; background-color: transparent !important; font-size: 15px; ">
-                                            <label class="">Commercial Parking</label>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tr>
-                                    <td> <label class="wraping_label">    Will Parking be provided for Each Residential Dwelling Unit?</label></td>
-                                    <td>
+        <form id="ParkingInfoForm" >
 
-                                        <div class="input-group yesno_radio" style="width: 115px;border:none; margin:10px 0px; ">
-                                            <div class="custom-control custom-radio" aria-labelledby="s_parking1" style="margin-right:10px;">
-                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_parking1", @class = "radio-parking custom-control-input" })
-                                                <label class="custom-control-label" for="s_parking1">Yes</label>
-                                            </div>
-                                            <div class="custom-control custom-radio " aria-labelledby="s_parking2">
-                                                @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_parking2", @class = " radio-parking custom-control-input" })
-                                                <label class="custom-control-label" for="s_parking2">No</label>
-                                            </div>
-                                        </div>
+            <div class="container-fluid">
+                <h5 class="fw-bold pt-4 ps-7 mb-3">Residential Parking</h5>
+                <!-- Information layout -->
+                <div class="row gy-3 gx-5 border-bottom">
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class=" text-secondary mb-1">
 
-
-                                    </td>
-                                    <td colspan="2">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Residential Parking</td>
-                                    <td style="width: 90px; text-align: right">
-                                        @Html.TextBoxFor(x => x.ResindentialSpaces, new { @class = "form-control residentialSpaces input-parking " })
-                                        @Html.HiddenFor(x => x.PropSnapshotID)
-                                    </td>
-                                    <td>  Commercial Parking Spaces</td>
-                                    <td style="width: 100px; text-align: right">
-                                        @Html.TextBoxFor(x => x.StandardCommercialSpaces, new { @class = "form-control comercialSpaces input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Accessible Parking</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.AccessibleSpaces, new { @class = "form-control residentialSpaces input-parking " })
-                                    </td>
-                                    <td> Commercial Accessible Parking Spaces</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Van Accessible Parking</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.VanAccessibleSpaces, new { @class = "form-control residentialSpaces input-parking " })
-                                    </td>
-                                    <td> Commercial Van Accessible Parking Spaces</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialVanAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking " })
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td style="font-weight: bold; font-size: 15px;">Total Residential Parking Spaces</td>
-                                    <td class="total-td">
-                                        @Html.TextBoxFor(x => x.TotalResidentialParking, new { @class = "form-control residentialSpacesTotal input-parking-total", @readonly = "readonly" })
-                                    </td>
-                                    <td style="font-weight: bold; font-size: 15px;">Total Commercial Parking Spaces</td>
-                                    <td class="total-td">
-                                        @Html.TextBoxFor(x => x.TotalCommercialParking, new { @class = "form-control comercialSpacesTotal input-parking-total", @readonly = "readonly" })
-                                    </td>
-                                </tr>
-                                <tr class="tr-header">
-                                    <td style="font-weight: bold; font-size: 15px;" colspan="2">Residential Electric Vehicle Charging Stations</td>
-                                    <td style="font-weight: bold; font-size: 15px;" colspan="2">Commercial Electric Vehicle Charging Stations</td>
-                                </tr>
-                                <tr>
-                                    <td>Electric Vehicle Charging Station</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.ElectricVehicleChargingStations, new { @class = "form-control chargingStations input-parking " })
-                                    </td>
-                                    <td>Commercial Vehicle Charging Stations</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialVehicleChargingStations, new { @class = "form-control commercialcharging input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Van Accessible Charging Station</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.VanAccessibleChargingStations, new { @class = "form-control chargingStations input-parking " })
-                                    </td>
-                                    <td>  Commercial Van Accessible Charging Stations</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialElectricVanAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Standard Accessible Charging Station</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.StandardAccessibleChargingStations, new { @class = "form-control chargingStations input-parking " })
-                                    </td>
-                                    <td> Commercial Standard Accessible Charging Stations</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialElectricStandardAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Ambulatory Charging Station</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.AmbulatoryChargingStations, new { @class = "form-control chargingStations input-parking " })
-                                    </td>
-                                    <td>  Commercial Ambulatory Charging Stations</td>
-                                    <td style="text-align:right">
-                                        @Html.TextBoxFor(x => x.CommercialElectricAmbulatoryChargingStation, new { @class = "form-control commercialcharging input-parking " })
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="font-weight: bold; font-size: 15px;">  Total Number of Electric Vehicle Charging Stations</td>
-                                    <td class="total-td">
-                                        @Html.TextBoxFor(x => x.TotalNumberofElectricVehicleChargingStations, new { @class = "form-control chargingStationsTotal input-parking-total", @readonly = "readonly" })
-                                    </td>
-                                    <td style="font-weight: bold; font-size: 15px;"> Total Number of Commercial Charging Stations</td>
-                                    <td class="total-td">
-                                        @Html.TextBoxFor(x => x.TotalNumberofCommercialElectricVehicleChargingStations, new { @class = "form-control commercialchargingTotal input-parking-total", @readonly = "readonly" })
-                                    </td>
-                                </tr>
-                            </table>
+                            <label class="wraping_label">Will Parking be provided for Each Residential Dwelling Unit?</label>
                         </div>
-                    </td>
-                </tr>
-            </table>
+                        <div class="fw-semibold">
+
+                            <div class="input-group yesno_radio" style="width: 115px;border:none; margin:10px 0px; ">
+                                <div class="custom-control custom-radio" aria-labelledby="s_parking1" style="margin-right:10px;">
+                                    @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "true", new { @id = "s_parking1", @class = "radio-parking custom-control-input" })
+                                    <label class="custom-control-label" for="s_parking1">Yes</label>
+                                </div>
+                                <div class="custom-control custom-radio " aria-labelledby="s_parking2">
+                                    @Html.RadioButtonFor(model => model.ParkingAvailableAtbuildingLevel, "false", new { @id = "s_parking2", @class = " radio-parking custom-control-input" })
+                                    <label class="custom-control-label" for="s_parking2">No</label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Residential Parking
+                           
+                        </div>
+                        <div class="fw-semibold">
+
+                            @Html.TextBoxFor(x => x.ResindentialSpaces, new { @class = "form-control residentialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                            @Html.HiddenFor(x => x.PropSnapshotID)
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Accessible Parking
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.AccessibleSpaces, new { @class = "form-control residentialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Van Accessible Parkin
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.VanAccessibleSpaces, new { @class = "form-control residentialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                   
+                </div>
+
+
+                <div class="row gy-3 gx-5 ">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        Total Residential Parking Spaces
+                 
+                        @Html.TextBoxFor(x => x.TotalResidentialParking, new { @class = "form-control residentialSpacesTotal input-parking-total", @readonly = "readonly", style = "width: 75px;" })
+                    </div>
+                </div>
+
+                <h5 class="fw-bold pt-4 ps-7 mb-3">Residential Electric Vehicle Charging Stations</h5>
+                <div class="row gy-3 gx-5 border-bottom">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Electric Vehicle Charging Station
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.ElectricVehicleChargingStations, new { @class = "form-control chargingStations input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Van Accessible Charging Station
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.VanAccessibleChargingStations, new { @class = "form-control chargingStations input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Standard Accessible Charging Station
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.StandardAccessibleChargingStations, new { @class = "form-control chargingStations input-parking  input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Ambulatory Charging Station
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.AmbulatoryChargingStations, new { @class = "form-control chargingStations input-parking  input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row gy-3 gx-5 ">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        Total Number of Electric Vehicle Charging Stations
+
+                        @Html.TextBoxFor(x => x.TotalNumberofElectricVehicleChargingStations, new { @class = "form-control chargingStationsTotal input-parking-total", @readonly = "readonly", style = "width: 75px;" })
+                    </div>
+                </div>
+
+                <h5 class="fw-bold pt-4 ps-7 mb-3">Commercial Parking</h5>
+
+                <div class="row gy-3 gx-5 border-bottom">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Parking Spaces
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.StandardCommercialSpaces, new { @class = "form-control comercialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Accessible Parking Spaces
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Van Accessible Parking Spaces
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialVanAccessibleSpaces, new { @class = "form-control comercialSpaces input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gy-3 gx-5 ">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        Total Commercial Parking Spaces
+
+                        @Html.TextBoxFor(x => x.TotalCommercialParking, new { @class = "form-control comercialSpacesTotal input-parking-total", @readonly = "readonly", style = "width: 75px;" })
+                        
+                    </div>
+                </div>
+
+                <h5 class="fw-bold pt-4 ps-7 mb-3">Commercial Vehicle Charging Stations</h5>
+
+                <div class="row gy-3 gx-5 border-bottom">
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Vehicle Charging Stations
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialVehicleChargingStations, new { @class = "form-control commercialcharging input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Van Accessible Charging Stations
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialElectricVanAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Standard Accessible Charging Stations
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialElectricStandardAccessibleChargingStation, new { @class = "form-control commercialcharging input-parking input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-2">
+                        <div class=" text-secondary mb-1">
+                            Commercial Ambulatory Charging Stations
+                        </div>
+                        <div class="fw-semibold">
+                            @Html.TextBoxFor(x => x.CommercialElectricAmbulatoryChargingStation, new { @class = "form-control commercialcharging input-parking  input-tight show-border", @MaxLength = "7", style = "width: 75px;" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row gy-3 gx-5 ">
+                    <div class="col-12 col-sm-12 col-lg-12">
+                        Total Number of Commercial Charging Stations
+
+                        @Html.TextBoxFor(x => x.TotalNumberofCommercialElectricVehicleChargingStations, new { @class = "form-control commercialchargingTotal input-parking-total", @readonly = "readonly", style = "width: 75px;" })
+                    </div>
+                </div>
+        
+            </div>
+
         </form>
     </div>
 </div>
