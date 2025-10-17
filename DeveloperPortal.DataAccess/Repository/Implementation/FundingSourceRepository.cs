@@ -232,6 +232,10 @@ namespace DeveloperPortal.DataAccess.Repository.Implementation
 
         }
 
+       public Document getDocumentById(int? id)
+        {
+            return _context.Documents.Where(x => x.DocumentId == id ).FirstOrDefault();
+        }
         public async Task<FundingSource> GetFundingSource(Document document)
         {
             using (var context = new AAHREntities()) // Creates and disposes of a context manually

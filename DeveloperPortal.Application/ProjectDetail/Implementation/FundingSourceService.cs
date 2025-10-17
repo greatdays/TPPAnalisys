@@ -98,6 +98,10 @@ namespace DeveloperPortal.Application.ProjectDetail.Implementation
 
             return await _fundingSourceRepository.DeleteFundingSource(id, modifiedBy);
         }
+        public Document getDocumentById(int? id)
+        {
+            return _fundingSourceRepository.getDocumentById(id);
+        }
     }
 }
 
