@@ -50,7 +50,7 @@ var FloorPlanType = {
             maxFiles: 20,
             paramName: "Files",
             clickable: true,
-            acceptedFiles: ".jpg,.jpeg,.png,.gif,.pdf",
+             acceptedFiles: " .PDF, .DOC, .DOCX, .XLS, .XLSX, .PPT, .PPTX, .TXT, .JPG, .JPEG, .PNG, .GIF",
             addRemoveLinks: false,
             maxFilesize: 20,
             previewTemplate: `
