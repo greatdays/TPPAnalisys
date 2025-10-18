@@ -22,23 +22,24 @@
 
 /* landing page body bg */
 .bg-light-gray {
-	background-color: #CBDAE1;
+	background-color: #d7e5ef;
 }
 
 
 .landing-page-container {
-	max-width: 800px !important;
-	min-height: 520px;
+	max-width: 1000px !important;
+	min-height: 560px;
 }
 
 	.landing-page-container h1 {
-		font-size: 50px;
-		font-weight: bold;
+		font-weight: 700;
+		font-size: 3.2rem;
 		color: #000;
 	}
 
 	.landing-page-container h2 {
-		font-size: 18px;
+		color: #333;
+		font-size: 1.1rem;
 	}
 
 	.landing-page-container .btn {
