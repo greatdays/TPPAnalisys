@@ -11374,7 +11374,7 @@ h1.white-text{
     margin-top: -10px;
     border: solid 1px #135b79;
 }
-
+/*
 #tblMyProjects_wrapper .dataTables_length {
     padding-top: 20px;
     padding-left: 15px;
@@ -11389,7 +11389,7 @@ h1.white-text{
     padding-left: 15px;
 }
 
-#tblMyProjects_wrapper .dataTables_paginate,
+#tblMyProjects_wrapper .dataTables_paginate,*/
 #divprojectDetail .dataTables_paginate {
     padding-top: 12px;
     padding-right: 15px;
@@ -11397,7 +11397,7 @@ h1.white-text{
     justify-content: flex-end;
 }
 
-#tblMyProjects_wrapper .paginate_button,
+/*#tblMyProjects_wrapper .paginate_button,*/
 #divprojectDetail .paginate_button {
     display: inline-block;
     vertical-align: middle;
@@ -11416,13 +11416,13 @@ h1.white-text{
     padding: 1px 10px !important;
 }
 
-#tblMyProjects_wrapper .paginate_button.current,
+/*#tblMyProjects_wrapper .paginate_button.current,*/
 #divprojectDetail .paginate_button.current {
     background-color: #2C3E5C;
     color: #fff !important;
 }
 
-#tblMyProjects_wrapper .paginate_button:hover,
+/*#tblMyProjects_wrapper .paginate_button:hover,*/
 #divprojectDetail .paginate_button:hover {
     background: #2C3E5C !important;
     color: #fff !important;
@@ -11430,18 +11430,18 @@ h1.white-text{
     cursor: pointer;
 }
 
-#tblMyProjects_wrapper a#tblMyProjects_previous,
+/*#tblMyProjects_wrapper a#tblMyProjects_previous,*/
 #divprojectDetail a#dmsDataTable_previous {
     border-top-left-radius: 0.2rem;
     border-bottom-left-radius: 0.2rem;
 }
 
-#tblMyProjects_wrapper a#tblMyProjects_next,
+/*#tblMyProjects_wrapper a#tblMyProjects_next,*/
 #divprojectDetail a#dmsDataTable_next {
     border-top-right-radius: 0.15rem;
     border-bottom-right-radius: 0.15rem;
 }
-
+/*
 #tblMyProjects_previous,
 #tblMyProjects_next{
     display: inline-block !important;
@@ -11460,7 +11460,7 @@ h1.white-text{
     padding-left: 20px;
     padding-right: 20px;
     line-height: 1.25;
-}
+}*/
 
 #divprojectDetail .dataTables_length {
     padding-top: 14px;

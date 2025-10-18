@@ -1747,13 +1747,7 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
 }
 /* End Alerts */
 
-/* LAHD Large Container */
-.container-lahd {
-    max-width: 1600px;
-    width: 100%;
-    margin: 0 auto;
-}
-/* End LAHD Large Container */
+
 
 /* Text Colors */
 .text-primary {
@@ -2001,7 +1995,7 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
     padding: 10px 14px;
     border-top: 1px solid rgba(255,255,255,0.03);
 }
-.notification-icon{ position:fixed; right:30px; bottom:40px; border:none!important; outline:none;}
+
 /* responsive */
 @media (max-width:480px) {
     .notification-sidebar .sidebar {

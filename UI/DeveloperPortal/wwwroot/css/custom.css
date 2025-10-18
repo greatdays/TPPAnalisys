@@ -15,53 +15,6 @@
 .ttp-user-dropdown .user-btn::after {  display: none !important; }
 /* End Header */
 
-._custome-header {
-	font-family: Verdana, Arial !important;
-}
-
-
-/* landing page body bg */
-.bg-light-gray {
-	background-color: #d7e5ef;
-}
-
-
-.landing-page-container {
-	max-width: 1000px !important;
-	min-height: 560px;
-}
-
-	.landing-page-container h1 {
-		font-weight: 700;
-		font-size: 3.2rem;
-		color: #000;
-	}
-
-	.landing-page-container h2 {
-		color: #333;
-		font-size: 1.1rem;
-	}
-
-	.landing-page-container .btn {
-		min-width: 160px;
-	}
-
-
-
-.goog-te-gadget .goog-te-combo {
-	font-family: 'Verdana', Arial !important;
-}
-
-body {
-	/*font-family: Quicksand,Helvetica,Arial,sans-serif;*/
-	font-family: 'Verdana', Arial !important;
-	background: #F2F2F2 !important;
-	-webkit-transition: background-color .3s ease;
-	font-weight: 400;
-	max-width: 100%;
-	font-size: 14px !important;
-}
-
 /* Page Content */
 .page-content{ min-height: 500px;}
 project-notifications {
@@ -142,4 +95,57 @@ project-notifications {
 
 @media (max-width: 575.98px) {
 	.lahd-header .lahd-left-content .website-title{ display: none!important;}
+}
+
+
+.notification-icon {
+	position: fixed;
+	right: 30px;
+	bottom: 40px;
+	border: none !important;
+	outline: none;
+}
+
+/* landing page body bg */
+.bg-light-gray {
+	background-color: #d7e5ef;
+}
+
+
+/* LAHD Large Container */
+.container-lahd {
+	max-width: 1000px;
+	width: 100%;
+	margin: 0 auto;
+}
+/* End LAHD Large Container */
+
+.landing-page-container {
+	max-width: 1000px !important;
+	min-height: 560px;
+}
+
+	.landing-page-container h1 {
+		font-weight: 700;
+		font-size: 3.2rem;
+		color: #000;
+	}
+
+	.landing-page-container h2 {
+		color: #333;
+		font-size: 1.1rem;
+	}
+
+	.landing-page-container .btn {
+		min-width: 160px;
+	}
+
+
+body {
+	font-family: 'Verdana', Arial !important;
+	background: #F0F4F8 !important;
+	-webkit-transition: background-color .3s ease;
+	font-weight: 400;
+	max-width: 100%;
+	font-size: 14px !important;
 }

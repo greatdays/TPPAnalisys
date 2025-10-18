@@ -1,4 +1,6 @@
-﻿<div>
+﻿
+
+<div>
     @Html.AntiForgeryToken()
 
     <div class="alert alert-info mt-2" role="alert">
@@ -7,7 +9,6 @@
         Please make sure the <b>Site Information</b> has been completed in the <b>Site Information</b> tab before adding any building.<br />
         Once the site information is provided, you can begin by <b>adding a building</b>. After adding at least one building, you’ll be able to enter or upload unit information and update parking details.
     </div>
-
 
     <div class="k-grid " style="margin-top:10px;">
         <div class="k-header k-grid-toolbar">
@@ -217,3 +218,50 @@
 <script type="text/javascript">
     UnitMatrixInformation.init();
 </script>
+
+
+<style>
+    /* Put label + buttons on one row */
+    #dtPrkingData_paginate {
+        display: flex !important; /* override DT/Bootstrap floats */
+        align-items: center !important; /* vertical centering */
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+        /* Make the DIV label behave like the pill */
+        #dtPrkingData_paginate .select-site-title {
+            display: inline-flex; /* flex so text centers vertically */
+            align-items: center;
+            height: 28px; /* match your pill height */
+            line-height: 28px;
+            margin: 0; /* kill top/bottom margins */
+            padding: 0; /* no padding shift */
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        /* Your pill/button (keep what you already had; these ensure centering) */
+        #dtPrkingData_paginate .paginate_button,
+        #dtPrkingData_paginate .building-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 28px;
+            line-height: 1;
+            padding: 6px 12px;
+            border-radius: 2px;
+            border: 1px solid #ccc;
+            background: #111;
+            color: #fff !important;
+            text-decoration: none !important;
+            box-sizing: border-box;
+            font-weight: 500;
+        }
+
+        /* (Optional) tiny nudge if fonts render 1px off on some browsers */
+        #dtPrkingData_paginate .select-site-title {
+            transform: translateY(1px);
+        }
+
+</style>

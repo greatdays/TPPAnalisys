@@ -250,7 +250,8 @@
                 dataType: 'json',
                 dataSrc: ''
             },
-
+            responsive: true,
+            autoWidth: false,
             columns: [
                 {
                     data: 'acHPFileProjectNumber',
@@ -274,10 +275,7 @@
                     }
                 },
                 { data: 'projectName' },
-                { data: 'projectAddress', },
-                { data: 'type' },
-                { data: 'status' }
-
+                { data: 'projectAddress', }
             ],
             initComplete: function (settings, json) {
                 if (json && json.length > 0) {

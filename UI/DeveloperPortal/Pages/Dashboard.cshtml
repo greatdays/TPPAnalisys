@@ -8,7 +8,8 @@
 }
 <div class="container">
 	<div class="container-lahd">
-		<h3 class="title text-primary m-0">My Dashboard</h3>
+		
+		<h1 class="h3 text-primary mb-0 mt-5">My Dashboard</h1>
 		<!-- THIS IS NOTIFICATION POPUP FOR NOW WE ARE HIDING IT AS PER requirement we will work on this-->
 		<!-- Notification Window -->
 		@Html.AntiForgeryToken()
@@ -26,34 +27,38 @@
 		@if (usr.Roles?.Contains("Property Developer") == true)
 		{
 			<div class="row dashboard-header-row">
-				<div class="col-md-12 button-container text-right mb-3">
-					<button class="edit-project-button btn btn-primary btn-lg" onclick="Dashboard.DisplayModal()">Find & Link Project(s)</button>
+				<div class="col-md-12 button-container text-end mb-3">
+					<button class="btn btn-primary" onclick="Dashboard.DisplayModal()">Find & Link Project(s)</button>
 				</div>
 			</div>
 		}
 
-		<div class="row">
-			<div class="col-md-12">
-				<div class="dashboard-summary-container content-box">
-					<span class="dashboard-summary-header">
+		<div class="card shadow-lg border-0 rounded-4">
+			<div class="card-body p-4 p-md-5">
+				<!-- Title Section -->
+				<div class="mb-4 mb-md-5">
+					<!-- Using d-inline-block and border utilities to recreate the title look -->
+					<h1 class="h5 fw-bold text-dark border-bottom border-6 border-primary pb-2 d-inline-block">
 						My Projects
-					</span>
-					<div style="height:88.5%;overflow:auto;scroll-behavior:smooth;scrollbar-width:thin">
-						<table id="tblMyProjects" class="display" style="width:100%">
-							<thead>
-								<tr>
-									<th>ACHP Number</th>
-									<th>Project Name</th>
-									<th>Project Address</th>
-									<th>Project Type</th>
-									<th>Status</th>
-								</tr>
-							</thead>
-						</table>
-					</div>
+					</h1>
+					<p class="mt-1 text-secondary">Manage and track your linked projects.</p>
 				</div>
+
+				<div id="myProjectsSummaryChart"></div>
+				<table id="tblMyProjects" class="table">
+					<thead>
+						<tr>
+							<th>ACHP Number</th>
+							<th>Project Name</th>
+							<th>Project Address</th>
+						</tr>
+					</thead>
+				</table>
+
 			</div>
 		</div>
+
+
 		<div class="row" style="display:none">
 			<div class="col-md-4">
 				<div class="dashboard-summary-container content-box">
@@ -419,16 +424,5 @@
 		// });
 
 	</script>
-	<style>
-		#tblMyProjects_wrapper .disabled {
-			background: #808080 !important;
-			cursor: not-allowed !important;
-		}
-
-			#tblMyProjects_wrapper .disabled:hover {
-				background: #808080 !important;
-				cursor: not-allowed !important;
-			}
-	</style>
 
 }
