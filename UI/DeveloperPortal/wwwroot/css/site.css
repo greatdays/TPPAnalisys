@@ -118,31 +118,6 @@
         color: black;
     }*/
 
-.landing-signin-field {
-    margin-bottom: 1em;
-}
-
-    .landing-signin-field input {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 0.75rem 1rem;
-        border-radius: 4px;
-        font-size: 1rem;
-        color: #1a1a1a;
-        outline: none;
-        transition: box-shadow 0.2s ease-in-out;
-        border: 1px solid #ccd1d9;
-    }
-
-        .landing-signin-field input:focus {
-            box-shadow: 0 0 0 3px rgba(0, 97, 255, 0.25);
-        }
-
-.landing-signin-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2em;
-}
 
 /*.landing-signup-button {
     width: 100%;
@@ -218,24 +193,7 @@ header._hcidla-service-portal-header._fixed-Header {
     border: 1px solid #000000;
 }
 
-body {
-    /*font-family: Quicksand,Helvetica,Arial,sans-serif;*/
-    font-family: 'Montserrat', sans-serif !important;
-    background: #F2F2F2 !important;
-    -webkit-transition: background-color .3s ease;
-    font-weight: 400;
-    max-width: 100%;
-    color: #626262;
-    font-size: 14px !important;
-}
 
-._custome-header {
-    font-family: 'Montserrat', sans-serif !important;
-}
-
-.goog-te-gadget .goog-te-combo {
-    font-family: 'Montserrat', sans-serif !important;
-}
 
 .link {
     color: #0c4f88;

@@ -1767,15 +1767,6 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
 }
 /* End Backgrounds colors */
 
-/* Font Size */
-.font-14 {
-    font-size: 14px;
-}
-.font-15{ 
-    font-size:15px;
-}
-/* End Font Size */
-
 
 .tabs {
     display: flex;
@@ -2025,24 +2016,7 @@ project-notifications{ width:100%; max-width:1600px; margin:0 auto 20px;}
     margin-right:7px !important;
 }
 
-.bg-light-gray { background-color: #CBDAE1;}
 
-.landing-page-container {
-    max-width:800px!important;
-    min-height:520px;
-}
-.landing-page-container h1 {
-    font-size: 50px;
-    font-weight: bold;
-    color:#000;
- }
-.landing-page-container h2 {
-    font-size: 18px;
-}
-
-    .landing-page-container .btn {
-        min-width:160px;
-    }
 #cantfindproject {
     background-color: #e6f7ff; 
     padding: 10px;

@@ -13,19 +13,15 @@
             <form id="landing-signin">
                 <div class="d-flex justify-content-center">
 
-                <div class="landing-signup-actions pr-2">
-                    <button type="submit" class="landing-signin-button btn btn-primary btn-lg" id="btnSignIn">Sign In</button>
-                    @* @Html.ActionLink("Sign In", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "landing-signin-button w-100", id = "btnSignIn"  }) *@
-                </div>
+                    <div class="pr-2">
+                        <button type="submit" class="landing-signin-button btn btn-primary btn-lg me-2" id="btnSignIn">Sign In</button>
+                    </div>
 
+                    <div class="pl-2">
+                            <button type="submit" class="landing-signup-button btn btn-outline-dark btn-lg" id="btnSignUp">Sign Up</button>
+                    </div>
 
-                <div class="landing-signup-actions pl-2">
-                        <button type="submit" class="landing-signup-button btn btn-outline-dark btn-lg" id="btnSignUp">Sign Up</button>
                 </div>
-                @*  <div class="landing-signup-actions">
-            <button type="submit" class="landing-signup-button" id="btnMyAccount">My Account</button>
-        </div> *@
-        </div>
 
                 <div id="loginError" style="color: red; margin-top: 1em; width:100%;"></div>
             </form>
