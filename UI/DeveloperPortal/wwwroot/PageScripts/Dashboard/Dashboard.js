@@ -332,16 +332,32 @@
     },
 
     showTab1: function () {
-        // Deactivate all tabs and their content
-        document.querySelectorAll('.tab, .tab-content').forEach(el => {
-            el.classList.remove('active', 'show');
-        });
+        var tabTrigger = document.getElementById('tab-achp-tab');
+        if (!tabTrigger) {
+            return;
+        }
 
-        // Activate tab-1
-        document.querySelector('.tab[data-tab="1"]').classList.add('active');
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
+            var tabInstance = bootstrap.Tab.getOrCreateInstance(tabTrigger);
+            tabInstance.show();
+        } else {
+            document.querySelectorAll('#lahdTab button[data-bs-toggle="tab"]').forEach(function (btn) {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-selected', 'false');
+            });
 
-        // Activate tab-1 content
-        document.getElementById('tab-1').classList.add('active', 'show');
+            tabTrigger.classList.add('active');
+            tabTrigger.setAttribute('aria-selected', 'true');
+
+            document.querySelectorAll('#lahdTabContent .tab-pane').forEach(function (pane) {
+                pane.classList.remove('active', 'show');
+            });
+
+            var tabPane = document.getElementById('tab-achp');
+            if (tabPane) {
+                tabPane.classList.add('active', 'show');
+            }
+        }
     },
 
     DisplayModal: function () {
