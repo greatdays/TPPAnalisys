@@ -234,51 +234,68 @@ a.paginate_button { float: left !important; }
 		  </div>
 		</section>
 	</div>
+	<div  class="px-2 px-xl-4">
+		<div class="card" >
+			<div class="card-body p-3">
+				<div class="px-2 px-xl-4">
+					<!-- Tab content -->
+					<div id="tabProjectInformation" class="tabcontent">
+						@{
+							Html.RenderPartial("_ProjectInformation");
+						}
+					</div>
+					<div id="partialContainer" class="tabcontent">
+						@{
+							Html.RenderPartial(@"~/Pages/FloorPlanType/_FloorPlanType.cshtml", Model.FloorPlanTypes);
+						}
+					</div>
+					<div id="tabSiteInformation" class="tabcontent ">
+						@* <div class="k-header k-grid-toolbar">
+							<span class="k-grid-header-title">Site Information</span>
+							<a id="addSite" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" role="button" role-access="true" onclick="SiteInformation.DisplayModal()">Add Site</a>
+						</div> *@
+						<!-- Header -->
+						<div class="d-flex justify-content-between align-items-center pb-2 mb-2 border-bottom">
+						  <h4 class="mb-0">Site Information</h4>
+						  <button id="uploadFundingSourceBtn"
+								  type="button"
+								  class="btn btn-primary"
+								  role="button" role-access="true"
+								  onclick="SiteInformation.DisplayModal()">
+							Add Site
+						  </button>
+						</div>
+
+						<!-- Pager toolbar band (we’ll move the DataTables pager into here) -->
+						<div id="site-toolbar" class="d-flex align-items-center gap-2 small text-muted mb-2"></div>
 
 
-	<div class="px-2 px-xl-4">
-		<!-- Tab content -->
-		<div id="tabProjectInformation" class="tabcontent">
-			@{
-				Html.RenderPartial("_ProjectInformation");
-			}
-		</div>
-		<div id="partialContainer" class="tabcontent">
-			@{
-				Html.RenderPartial(@"~/Pages/FloorPlanType/_FloorPlanType.cshtml", Model.FloorPlanTypes);
-			}
-		</div>
-		<div id="tabSiteInformation" class="tabcontent" style="padding-top: 30px;">
-			<div class="k-header k-grid-toolbar">
-				<span class="k-grid-header-title">Site Information</span>
-				<a id="addSite" class="k-button k-button-icontext k-grid-add btn btn-primary btn-sm" role="button" role-access="true" onclick="SiteInformation.DisplayModal()">Add Site</a>
+						<table id="dtSiteData"></table>
+				
+					</div>
+					<div id="tabImportantDates" class="tabcontent">
+						<div id="divImportantDates"></div>
+					</div>
+					<div id="tabDevelopmentTeamList" class="tabcontent">
+						<div id="divDevelopmentTeamList">
+						</div>
+					</div>
+					<div id="tabPolicyContacts" class="tabcontent">
+						<div id="divPolicyContacts"></div>
+					</div>
+					<div id="tabDocuments" class="tabcontent"  style="display: block">
+						<div id="divDocument"></div>
+					</div>
+					<div id="tabFundingSource" class="tabcontent">
+						<div id="divFundingSource"></div>
+					</div>
+					<div id="tabLogs" class="tabcontent">
+						<div id="divLogs"></div>
+					</div>
+				</div>
 			</div>
-			<div class=" k-box-body">
-				<table id="dtSiteData"></table>
-			</div>
-		</div>
-		<div id="tabImportantDates" class="tabcontent">
-			<div id="divImportantDates"></div>
-		</div>
-		<div id="tabDevelopmentTeamList" class="tabcontent">
-			<div id="divDevelopmentTeamList">
-			</div>
-		</div>
-		<div id="tabPolicyContacts" class="tabcontent">
-			<div id="divPolicyContacts"></div>
-		</div>
-		<div id="tabDocuments" class="tabcontent"  style="display: block">
-			<div id="divDocument"></div>
-		</div>
-		<div id="tabFundingSource" class="tabcontent">
-			<div id="divFundingSource"></div>
-		</div>
-		<div id="tabLogs" class="tabcontent">
-			<div id="divLogs"></div>
 		</div>
 	</div>
-
-
 </div>
 
 
@@ -375,3 +392,68 @@ window.addEventListener('load', () => {
     ?.classList.add('current');
 });
 </script>
+
+
+<style>
+/* Pager: left aligned, vertically centered, compact */
+#dtSiteData_wrapper .dataTables_paginate {
+  float: none !important;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: .5rem;
+  text-align: left !important;
+  margin: 0;
+}
+
+/* The 'Select Site:' label we prepend */
+#dtSiteData_paginate .select-site-title {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+/* Make pills look like Bootstrap buttons and center text */
+#dtSiteData_paginate .paginate_button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center;
+  line-height: 1;
+  padding: .25rem .6rem;
+  border-radius: 50rem; /* rounded-pill */
+}
+
+/* Current = primary, others = outline secondary */
+#dtSiteData_paginate .paginate_button.current {
+  background-color: var(--bs-primary) !important;
+  border-color: var(--bs-primary) !important;
+  color: #fff !important;
+}
+#dtSiteData_paginate .paginate_button:not(.current) {
+  background: transparent !important;
+  border: 1px solid var(--bs-secondary-border-subtle, #ced4da) !important;
+  color: var(--bs-secondary-color, #6c757d) !important;
+}
+
+/* Make injected partial consume full width; remove cell padding */
+#dtSiteData,
+#dtSiteData_wrapper,
+#dtSiteData tbody,
+#dtSiteData tbody tr,
+#dtSiteData tbody td {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+#dtSiteData tbody td { padding: 0 !important; }
+
+/* Optional: tidy partial’s typography if you add these classes */
+.site-summary { padding: .5rem 0 1rem; }
+.site-summary .site-title { font-size: 1.5rem; margin: .25rem 0 .75rem; }
+.site-summary .site-address { color: #495057; margin-bottom: .75rem; }
+.site-summary .hr-thin { border-top: 1px solid #dee2e6; margin: .75rem 0; }
+.site-stat { border: 1px solid #e9ecef; border-radius: .5rem; padding: .5rem .75rem; background: #fff; }
+.site-stat .label { color: #6c757d; font-size: .85rem; }
+.site-stat .value { font-weight: 600; font-size: 1.1rem; }
+</style>

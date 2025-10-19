@@ -87,13 +87,28 @@
 
 
 		<div class="dataTable-changes master_my_team_widget tabepenal">
-				<div class="k-grid " style="margin-bottom: 0px;">
+@* 				<div class="k-grid " style="margin-bottom: 0px;">
 					<div class="k-header k-grid-toolbar ">
 						<span class="k-grid-header-title">Funding Source</span>
 						<button class="k-button k-button-icontext k-grid-add no-access" type="button" id="uploadFundingSourceBtn" style="float:right; margin-right:1%;" data-original-title="" title="">  Add Funding Source</button>
 					
 					</div>
+				</div> *@
+
+			<div class="border-bottom pb-2 mb-3">
+				<div class="row align-items-center">
+					<div class="col-md-6 col-12">
+						<h4 class="mb-0">Funding Source</h4>
+					</div>
+					<div class="col-md-6 col-12 text-md-end mt-2 mt-md-0">
+						<button id="uploadFundingSourceBtn"
+								class="btn btn-primary"
+								type="button">
+							Add Funding Source
+						</button>
+					</div>
 				</div>
+			</div>
 			
 			<div class="col-md-12 k-box-body">
 				<table id="fundingSourceGrid" class="table table-bordered table-striped">

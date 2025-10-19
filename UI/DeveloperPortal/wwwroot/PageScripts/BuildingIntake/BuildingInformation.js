@@ -37,7 +37,8 @@ var BuildingInformation =
 
         dtBuildingDataTable.on('draw.dt', function () {
             if ($("#dtPrkingData_paginate .select-site-title").length == 0) {
-                $("#dtPrkingData_paginate").prepend("<div class='select-site-title'>Select Building:  </div>")
+                $("#dtPrkingData_paginate").prepend("<div class='select-site-title'>Select Building:  </div>");
+                $("#dtPrkingData_paginate").addClass("d-flex justify-content-start align-items-center gap-2");
             }
             $(".dataTables_length").hide();
             var buildingData =dtBuildingDataTable.fnGetData();

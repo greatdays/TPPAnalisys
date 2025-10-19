@@ -8,43 +8,41 @@
         display: flex;
     }
 </style>
-<div class="site-summary">
+<div class="site-summary w-100">
     <div class="row">
         <div class="col-sm-8">
-            <h3 class="site-title ">@Model.SiteName - @Model.FileNumber</h3>
+            <!-- Title -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <h5 class="h4 mb-0">@Model.SiteName <span class="text-muted">–</span> @Model.FileNumber</h5>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="row-box">
-                        <span class="row-title">Address</span>
-                        <span class="row-text">@Model.SiteAddress</span>
+                    <!-- Address -->
+                    <div class="text-secondary mb-3">
+                        <span class="fw-semibold me-1">Address:</span>
+                        @Model.SiteAddress
                     </div>
                 </div>
             </div>
-            <br />
             <div class="row">
-                <div class="col-sm-6">
-                    <div class="row-box">
-                        <span class="row-title lelf-border"># of Buildings</span>
-                        <span class="row-text"> @Model.NoOfBuildings</span>
+                <!-- Stats -->
+                <div class="row g-3 mb-2">
+                    <div class="col-6 col-md-3">
+                        <div class="site-stat p-2 rounded border bg-white h-100">
+                            <div class="text-muted small"># of Buildings</div>
+                            <div class="fs-5 fw-semibold">@Model.NoOfBuildings</div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row-box">
-                        <span class="row-title lelf-border"> # of Units</span>
-                        <span class="row-text"> @Model.NoOfUnits</span>
+                    <div class="col-6 col-md-3">
+                        <div class="site-stat p-2 rounded border bg-white h-100">
+                            <div class="text-muted small"># of Units</div>
+                            <div class="fs-5 fw-semibold">@Model.NoOfUnits</div>
+                        </div>
                     </div>
-                </div>
+
             </div>
            
             
-        </div>
-        <div class="col-sm-4">
-           @*  <h3 class="site-more-info">Actions</h3>
-            <div class="row">
-                <div class="col-sm-12 link action-link">
-                    @Html.Raw(Model.Actions)
-                </div>
-            </div> *@
         </div>
     </div>
 </div>

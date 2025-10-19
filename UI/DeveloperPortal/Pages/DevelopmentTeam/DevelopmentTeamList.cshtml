@@ -1,12 +1,25 @@
 ﻿@using DeveloperPortal.Domain.ProjectDetail
 @model List<DevelopmentTeamModel>
 <div id="divDevelopmentTeamList">
-    <div class="k-grid " style="margin-top: 10px; margin-bottom: 0px;">
-        <div class="k-header k-grid-toolbar ">
-            <span class="k-grid-header-title"> Development Team List</span>
-            <button id="AddNewContact" class="k-button k-button-icontext k-grid-add no-access" role="button" role-access="true" onclick="DevelopmentTeam.Add()">Add Contact</button>
+
+    <div class="border-bottom pb-2 mb-3">
+        <div class="row align-items-center">
+            <div class="col-md-6 col-12">
+                <h4 class="mb-0">Development Team List</h4>
+            </div>
+            <div class="col-md-6 col-12 text-md-end mt-2 mt-md-0">
+                <button id="AddNewContact"
+                        type="button"
+                        class="btn btn-primary"
+                        role="button"
+                        role-access="true"
+                        onclick="DevelopmentTeam.Add()">
+                    Add Contact
+                </button>
+            </div>
         </div>
     </div>
+
     <div class=" k-box-body" style="padding-top:20px;">
         <div class="col-md-12 modal-body">
             <table id="dtDevelopmentTeamList" class="table table-striped table-bordered align-middle w-100">

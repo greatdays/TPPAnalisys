@@ -19,6 +19,13 @@ var SiteInformation=
         }
         // Destroy existing table if it exists
         if ($.fn.DataTable.isDataTable('#dtSiteData')) {
+
+            if ($.fn.DataTable.isDataTable('#dtSiteData')) {
+                // remove toolbar that sits outside the DT lifecycle (defensive)
+                $("#dtSiteData_wrapper #site-toolbar").remove();
+                $('#dtSiteData').DataTable().clear().destroy();
+            }
+
             $('#dtSiteData').DataTable().clear().destroy();
         }
 
@@ -30,19 +37,13 @@ var SiteInformation=
                     d.SiteInformationData = (!isLoad)? SiteInformationData:null,
                         d.caseId = Id,
                         d.RefProjectID = ProjectId
-
                 },
                 "headers": {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
                 dataType: 'json'
-
             },
-            "columns": [
-                {
-                    "data": 'siteInfomationData'
-                }
-            ],
+            "columns": [{"data": 'siteInfomationData'}],
             processing: true,
             serverSide: true,
             pagingType: 'numbers',
@@ -50,39 +51,66 @@ var SiteInformation=
             "paging": true,
             "searching": true,
             "ordering": false,
-            "dom": "<'row'<'<'col-sm-12'p>>",
-            "oLanguage": {
-                "sEmptyTable": "No record found."
-            }
+            "autoWidth": false,                 // ← don't let DT compute fixed widths
+            "responsive": false,                // ← keep layout you render
+            columnDefs: [
+                { targets: 0, className: 'p-0 w-100' } // ← cell has no padding and full width
+            ],
+            dom: "<'row'<'col-12' p>>",       // ← keep pager on its own row
+            oLanguage: { sEmptyTable: "No record found." }
         });
-        dtSiteDataTable.on('draw.dt', function () {
-             if ($("#dtSiteData_paginate .select-site-title").length == 0) {
-                $("#dtSiteData_paginate").prepend("<div class='select-site-title'>Select Site:  </div> " )
+        dtSiteDataTable.off('draw.dt').on('draw.dt', function () {
+            const $wrapper = $("#dtSiteData_wrapper");
+            const $p = $("#dtSiteData_paginate");
+
+            // 1) Ensure the toolbar exists INSIDE the wrapper (so destroy cleans it up)
+            let $toolbar = $wrapper.find("#site-toolbar");
+            if (!$toolbar.length) {
+                $toolbar = $('<div id="site-toolbar" class="d-flex align-items-center gap-2 small text-muted mb-2"></div>');
+                // place it at the top of the wrapper
+                $wrapper.prepend($toolbar);
             }
 
-            $(".dataTables_length").hide();
-            var siteData = $('#dtSiteData').dataTable().fnGetData();
+            // 2) Remove any old pagers that might have been left behind
+            $toolbar.find(".dataTables_paginate").not($p).remove();
 
-            var siteLength = siteData.length;
-            if (siteLength > 0) {
-                $("#dtSiteData_paginate").show();
-                documentControlViewModelId = siteData[0].documentControlViewModelId;
-                logsControlViewModelId = siteData[0].logsControlViewModelId;
-                ContactControlViewModelId = siteData[0].contactControlViewModelId;
-                SiteInformationData = siteData[0].siteInformationData;
-                var pageItems = $("#tabSiteInformation .paginate_button");
-                var siteList = siteData[0].siteList;
-                for (var i = 0; i < pageItems.length; i++) {
-                    var text = pageItems[i].text
-                     if (text != '…') {
-                         if (parseInt(text).toString() != "NaN") {
-                             pageItems[i].text=siteList[parseInt(text) - 1];
-                         }
-                     }
-                }
+            // 3) Move the current pager into the toolbar
+            $toolbar.append($p);
+
+            // 4) Align & style
+            $p.addClass("d-flex justify-content-start align-items-center gap-2")
+                .css({ float: "none", textAlign: "left", margin: 0 });
+
+            if ($p.find(".select-site-title").length === 0) {
+                $p.prepend('<div class="select-site-title">Select Site:</div>');
+            }
+
+            $p.find(".paginate_button")
+                .addClass("btn btn-sm rounded-pill")
+                .removeClass("previous next");
+
+            $p.find(".paginate_button").not(".current")
+                .removeClass("btn-primary").addClass("btn-outline-secondary");
+            $p.find(".paginate_button.current")
+                .removeClass("btn-outline-secondary").addClass("btn-primary");
+
+            // 5) Relabel only the current pager’s buttons (not global)
+            const siteData = $('#dtSiteData').dataTable().fnGetData();
+            if (siteData && siteData.length > 0) {
+                const siteList = siteData[0].siteList || [];
+                $p.find(".paginate_button").each(function () {
+                    const t = this.textContent;
+                    if (t !== '…') {
+                        const idx = parseInt(t, 10);
+                        if (!Number.isNaN(idx) && siteList[idx - 1]) {
+                            this.textContent = siteList[idx - 1];
+                        }
+                    }
+                });
                 $("#btnSiteInformation").text("Site Information (" + siteList.length + ")");
+            } else {
+                $p.hide();
             }
-            else { $("#dtSiteData_paginate").hide(); }
         });
         $("#siteInformationPopup").on("hide.bs.modal", function (e) {
             if ($(e.target).attr("id") !== "siteInformationPopup") {
